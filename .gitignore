@@ -1,0 +1,24 @@
+# 원본 PPTX는 저장소에 올리지 않는다 — 배포는 _pdf/의 PDF로 한다.
+# (바이너리라 수정할 때마다 히스토리에 통째로 쌓여 저장소가 급격히 무거워진다)
+*.pptx
+*.ppt
+
+# 기타 편집 원본
+*.docx
+*.doc
+*.xlsx
+*.hwp
+*.hwpx
+
+# 제3자 저작물 — 재배포하지 않고 원문 링크로 대신한다 (_참고자료/README.md 참조)
+_참고자료/CPP_TPA리포트_MeasuringWhatMatters_2026-07_EN.pdf
+_pdf/CPP_TPA리포트_MeasuringWhatMatters_2026-07_EN.pdf
+
+# 작업 부산물
+_구판/
+*.tmp
+~$*
+
+# macOS
+.DS_Store
+._*

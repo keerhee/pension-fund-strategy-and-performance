@@ -1,0 +1,22 @@
+# ── 텍스트 ────────────────────────────────────────────────
+# 줄바꿈은 저장소에 LF로 통일한다(맥·윈도우 혼용 시 diff 오염 방지).
+*               text=auto eol=lf
+*.md            text eol=lf diff=markdown
+
+# ── 바이너리 ──────────────────────────────────────────────
+# Git이 텍스트로 오인해 diff·머지를 시도하지 않도록 명시한다.
+# 표시하지 않으면 PDF가 깨진 텍스트로 diff에 쏟아진다.
+*.pdf           binary
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+*.gif           binary
+
+# 혹시 예외적으로 커밋할 경우를 위해 남겨 둔다(평소엔 .gitignore로 제외됨).
+*.pptx          binary
+*.docx          binary
+
+# ── GitHub 언어 통계 ──────────────────────────────────────
+# 강의 자료 저장소이므로 마크다운이 "코드"로 집계되지 않게 한다.
+*.md            linguist-documentation
+_참고자료/*     linguist-vendored
