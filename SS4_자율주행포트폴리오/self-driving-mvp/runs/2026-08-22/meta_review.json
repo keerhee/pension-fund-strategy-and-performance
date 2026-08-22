@@ -1,0 +1,64 @@
+{
+  "run": "2026-08-22",
+  "test_period": "2022-09-01 ~ 2025-07-01 (35개월)",
+  "forecast_error": {
+    "SPY": 0.1008,
+    "EFA": 0.1108,
+    "EEM": 0.0515,
+    "IEF": -0.0247,
+    "TLT": -0.0875,
+    "LQD": -0.0006,
+    "HYG": 0.0425,
+    "TIP": -0.027,
+    "VNQ": -0.0415,
+    "GLD": 0.1823,
+    "DBC": -0.084
+  },
+  "mae": 0.0684786823748429,
+  "portfolios": [
+    {
+      "agent": "alloc-mvo",
+      "expected_ret": 0.059273879677255,
+      "realized_ret": 0.08583097437528742,
+      "realized_vol": 0.08321399180709277,
+      "mdd": -0.05014625284779317,
+      "sharpe": 1.031448828632826,
+      "gap": 0.02655709469803242,
+      "eligible": false
+    },
+    {
+      "agent": "alloc-bl",
+      "expected_ret": 0.023324312913042256,
+      "realized_ret": 0.048005253719471286,
+      "realized_vol": 0.12405912731165314,
+      "mdd": -0.10332271800416881,
+      "sharpe": 0.38695463010049763,
+      "gap": 0.02468094080642903,
+      "eligible": true
+    },
+    {
+      "agent": "alloc-riskparity",
+      "expected_ret": 0.05245278384906529,
+      "realized_ret": 0.07429529327448137,
+      "realized_vol": 0.10456204146964071,
+      "mdd": -0.07565081896874393,
+      "sharpe": 0.7105378991290333,
+      "gap": 0.021842509425416073,
+      "eligible": true
+    }
+  ],
+  "proposals": [
+    {
+      "target": "cma-builder",
+      "change": "SHRINK_MU 0.5 → 0.7 (역사적 평균 의존을 낮춘다)",
+      "why": "평균 절대 예측오차 6.8%p"
+    },
+    {
+      "target": "cma-builder",
+      "change": "GLD의 기대수익률 산정에 국면 구분을 추가한다",
+      "why": "GLD 오차 18.2%p로 최대"
+    }
+  ],
+  "auto_applied": false,
+  "gate": "IPS 7.4항 — 사람이 변경 이력을 검토한 뒤에만 반영한다"
+}

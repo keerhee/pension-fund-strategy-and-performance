@@ -14,6 +14,14 @@
 _참고자료/CPP_TPA리포트_MeasuringWhatMatters_2026-07_EN.pdf
 _pdf/CPP_TPA리포트_MeasuringWhatMatters_2026-07_EN.pdf
 
+# 파이썬 가상환경·캐시 (SS4 실습)
+.venv/
+__pycache__/
+*.pyc
+
+# 제3자 스킬 사본 — 원 저장소에서 받는다 (설치 명령은 SS4 강의본 23쪽)
+SS4_자율주행포트폴리오/self-driving-mvp/.claude/skills/harness/
+
 # 작업 부산물
 _구판/
 *.tmp

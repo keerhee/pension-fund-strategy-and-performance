@@ -1,0 +1,40 @@
+{
+  "method": "MVO (max Sharpe, IPS-constrained)",
+  "agent": "alloc-mvo",
+  "week": "W04",
+  "tickers": [
+    "SPY",
+    "EFA",
+    "EEM",
+    "IEF",
+    "TLT",
+    "LQD",
+    "HYG",
+    "TIP",
+    "VNQ",
+    "GLD",
+    "DBC"
+  ],
+  "weights": {
+    "SPY": 0.3,
+    "EFA": 0.0,
+    "EEM": 0.0,
+    "IEF": 0.3,
+    "TLT": 0.0,
+    "LQD": 0.0,
+    "HYG": 0.0,
+    "TIP": 0.25,
+    "VNQ": 0.0,
+    "GLD": 0.0901,
+    "DBC": 0.0599
+  },
+  "expected": {
+    "ret": 0.059273879677255,
+    "vol": 0.0661783425883365,
+    "sharpe": 0.8956688451079708,
+    "effective_n": 3.933799204013248
+  },
+  "ips_violations": [
+    "유효 종목 수 3.93 < 4.0"
+  ]
+}
