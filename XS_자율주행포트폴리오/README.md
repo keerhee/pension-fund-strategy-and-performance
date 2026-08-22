@@ -1,4 +1,7 @@
-# SS4 — 자율주행 포트폴리오
+# XS — 자율주행 포트폴리오
+
+> **XS**(eXtra Session)는 특정 주차에 속하지 않는 독립세션이다. W07·W14·W15 안에 든
+> 특별세션(SS1~SS3)과 달리 폴더가 따로 있고, 파일명 정렬에서도 W16 뒤에 온다.
 
 Ang, A., Azimbayev, N., & Kim, A. (2026). *The Self Driving Portfolio: Agentic
 Architecture for Institutional Asset Management* (arXiv:2604.02279)의 파이프라인을
@@ -13,8 +16,8 @@ Architecture for Institutional Asset Management* (arXiv:2604.02279)의 파이프
 
 | 파일 | 내용 |
 |---|---|
-| `SS4_자율주행포트폴리오_강의본.pdf` | 38장 — 논문 구조 · 교재 매핑 · harness · MVP 실습 · 한계 |
-| `SS4_케이스_자율파이프라인도입과규율_IC.pdf` | 19장 — 모의 투자위원회, 안건 2건 |
+| `XS_자율주행포트폴리오_강의본.pdf` | 38장 — 논문 구조 · 교재 매핑 · harness · MVP 실습 · 한계 |
+| `XS_케이스_자율파이프라인도입과규율_IC.pdf` | 19장 — 모의 투자위원회, 안건 2건 |
 | `self-driving-mvp/` | 실제로 돌아가는 구현체 |
 | `_build/` | 덱 생성 스크립트 (재빌드용) |
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""SS4 자율주행 포트폴리오 — 강의본 덱"""
+"""XS 자율주행 포트폴리오 — 강의본 덱"""
 import sys, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from deckkit import *
@@ -8,8 +8,8 @@ from pptx.util import Inches, Pt
 from pptx.enum.text import PP_ALIGN
 
 OUT = ("/Users/keerhee/Project/2026_연기금 운용전략과 성과평가_강의노트/"
-       "New_Lecture_with_New_Cases/SS4_자율주행포트폴리오/"
-       "SS4_자율주행포트폴리오_강의본.pptx")
+       "New_Lecture_with_New_Cases/XS_자율주행포트폴리오/"
+       "XS_자율주행포트폴리오_강의본.pptx")
 
 prs = new_deck(); P = [0]; OVER = []
 def slide():
@@ -55,9 +55,9 @@ def step(s, where, note, cmd, out, check, cmd_fs=16, out_fs=16):
 
 def ss4_cover(s):
     _rect(s, 0, 0, 13.333, 7.5, NAVY)
-    _tb(s, 1.0, 1.32, 4.0, 1.3, "SS4", 64, ORANGE, True)
+    _tb(s, 1.0, 1.32, 4.0, 1.3, "XS", 64, ORANGE, True)
     _rect(s, 1.0, 2.86, 3.9, 0.42, ORANGE)
-    _tb(s, 1.0, 2.90, 3.9, 0.36, "특별세션 · 강의본", 15, WHITE, True, align=PP_ALIGN.CENTER)
+    _tb(s, 1.0, 2.90, 3.9, 0.36, "독립세션 · 강의본", 15, WHITE, True, align=PP_ALIGN.CENTER)
     _tb(s, 1.0, 3.55, 11.3, 1.0, "자율주행 포트폴리오", 44, WHITE, True)
     _tb(s, 1.0, 4.55, 11.3, 0.5, "에이전트 아키텍처로 자산배분을 자동화한다", 22,
         RGBColor(0xC3, 0xD0, 0xE6))
@@ -609,7 +609,7 @@ y = table(s, 0.6, TOP, 12.1, ["구분", "출처"],
      ["교재", "본 과정 W03 · W04 · W05 · W06 · W10 · W16 및 각 주차 실습데이터 덱"]],
     widths=[1.5, 10.6], fs=16)
 _tb(s, 0.6, y + 0.30, 12.1, 0.9,
-    "이 세션의 실습 코드와 산출물은 SS4_자율주행포트폴리오/self-driving-mvp/ 에 있다. "
+    "이 세션의 실습 코드와 산출물은 XS_자율주행포트폴리오/self-driving-mvp/ 에 있다. "
     "덱의 모든 출력은 2026-08-22에 실제로 실행해 얻은 것이다.", 18, MUTED, line=1.36)
 
 prs.save(OUT)
