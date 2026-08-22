@@ -1,0 +1,59 @@
+{
+  "run": "2026-08-22-b",
+  "nominal_target": 0.065,
+  "lenses": [
+    "목표달성",
+    "위험한도",
+    "분산",
+    "집중도"
+  ],
+  "candidates": [
+    {
+      "agent": "alloc-mvo",
+      "method": "MVO (max Sharpe, IPS-constrained)",
+      "week": "W04",
+      "violations": [],
+      "eligible": true,
+      "scores": {
+        "목표달성": 9.12,
+        "위험한도": 10.0,
+        "분산": 4.92,
+        "집중도": 2.0
+      },
+      "total": 26.04,
+      "note": ""
+    },
+    {
+      "agent": "alloc-bl",
+      "method": "Black-Litterman (2 views, IPS-constrained)",
+      "week": "W05",
+      "violations": [],
+      "eligible": true,
+      "scores": {
+        "목표달성": 3.59,
+        "위험한도": 10.0,
+        "분산": 6.91,
+        "집중도": 2.0
+      },
+      "total": 22.5,
+      "note": ""
+    },
+    {
+      "agent": "alloc-riskparity",
+      "method": "Risk Parity (ERC, IPS-constrained)",
+      "week": "W06",
+      "violations": [],
+      "eligible": true,
+      "scores": {
+        "목표달성": 8.07,
+        "위험한도": 10.0,
+        "분산": 10,
+        "집중도": 7.89
+      },
+      "total": 35.96,
+      "note": ""
+    }
+  ],
+  "winner": "alloc-riskparity",
+  "decision": "채택: Risk Parity (ERC, IPS-constrained)"
+}

@@ -3,7 +3,7 @@
 import json, os, re
 import numpy as np, pandas as pd
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 RUNS = os.path.join(ROOT, "runs")
 
 def load_ips(path=None):
