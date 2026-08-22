@@ -45,7 +45,7 @@ def step(s, where, note, cmd, out, check, cmd_fs=16, out_fs=16):
     total = y + _cbox_h(cmd) + 0.16 + _cbox_h(out) + 0.18 + need
     if total > FOOT + 0.01:
         OVER.append((P[0], round(total - FOOT, 2)))
-    y = _cbox(s, 0.6, y, 12.1, "입력", cmd, BLUE, cmd_fs)
+    y = _cbox(s, 0.6, y, 12.1, "입력 · 프롬프트", cmd, ORANGE, cmd_fs)
     y = _cbox(s, 0.6, y + 0.16, 12.1, "출력", out, NAVY, out_fs) + 0.18
     _rect(s, 0.6, y, 1.15, 0.34, GREEN)
     _tb(s, 0.6, y + 0.03, 1.15, 0.30, "확인", 13, WHITE, True, align=PP_ALIGN.CENTER)
@@ -351,7 +351,7 @@ y2 = table(s, 6.75, TOP, 5.95, ["#", "무엇을 시키는가", "무엇이 생기
      ["P10", "정책 바꿔 재실행", "규칙의 효과 확인"]],
     widths=[0.72, 2.69, 2.54], fs=16)
 y = max(y1, y2)
-y = band(s, y + 0.26, "P1~P4 구조를 세운다  ·  P5~P8 한 사이클을 돈다  ·  P9~P10 판단하고 정책을 고친다", fill=BLUE)
+y = band(s, y + 0.26, "P1~P4 구조를 세운다  ·  P5~P8 한 사이클을 돈다  ·  P9~P10 판단하고 정책을 고친다", fill=ORANGE)
 _tb(s, 0.6, y + 0.20, 12.1, 0.5,
     "계산은 P5에서 처음 시작한다. 그 전까지는 구조만 만든다.", 18, INK)
 
@@ -370,7 +370,7 @@ y = panel(s, 0.6, y + 0.22, 12.1, None, "좋은 메타프롬프트의 조건",
 
 # ── 23 P1 환경 ───────────────────────────────────────────
 s, p = slide()
-chrome(s, "P1", "실습 환경을 준비시킨다", "", p)
+chrome(s, "P1", "실습 환경을 준비시킨다", "", p, eyebrow_fill=ORANGE)
 step(s, "Claude Code · 빈 폴더에서", "명령어는 한 줄도 치지 않는다",
 """이 폴더에 자율주행 포트폴리오 실습 환경을 만들어줘.
 파이썬 환경과 필요한 패키지, revfactory/harness 스킬 설치까지
@@ -382,7 +382,7 @@ harness 스킬을 .claude/skills/harness/ 에 설치했습니다 (SKILL.md + ref
 
 # ── 24 P2 팀 설계 ────────────────────────────────────────
 s, p = slide()
-chrome(s, "P2", "팀을 설계시킨다 — 메타프롬프트", "", p)
+chrome(s, "P2", "팀을 설계시킨다 — 메타프롬프트", "", p, eyebrow_fill=ORANGE)
 step(s, "Claude Code", "이 한 문장이 에이전트 7개를 만든다",
 """자율주행 포트폴리오 하네스를 구성해줘. ips.md 의 제약 안에서
 자본시장 가정을 만들고, MVO·블랙리터맨·리스크패리티 세 방법으로
@@ -397,7 +397,7 @@ step(s, "Claude Code", "이 한 문장이 에이전트 7개를 만든다",
 
 # ── 25 P3 정책 ───────────────────────────────────────────
 s, p = slide()
-chrome(s, "P3", "규율을 세운다", "", p)
+chrome(s, "P3", "규율을 세운다", "", p, eyebrow_fill=ORANGE)
 step(s, "Claude Code", "감독 조항을 반드시 요구한다",
 """우리 기금 투자정책서를 ips.md 로 써줘. 목표는 장기 실질 4.5%,
 연 변동성 10% 이하, 주식 30~60% 채권 25~55% 대체 5~25%,
@@ -411,7 +411,7 @@ step(s, "Claude Code", "감독 조항을 반드시 요구한다",
 
 # ── 26 P4 구조 확인 ──────────────────────────────────────
 s, p = slide()
-chrome(s, "P4", "만들어진 팀을 확인한다", "", p)
+chrome(s, "P4", "만들어진 팀을 확인한다", "", p, eyebrow_fill=ORANGE)
 step(s, "Claude Code", "에이전트를 이름으로 익힌다",
 """방금 만든 에이전트들을 표로 보여줘. 각각이 논문의 어느 층이고
 우리 교재 몇 주차인지, 무엇을 입력받아 무엇을 내는지 함께.""",
@@ -425,7 +425,7 @@ meta-reviewer     자기개선    W10      전부 → meta_review.json""",
 
 # ── 27 P5 가정 ───────────────────────────────────────────
 s, p = slide()
-chrome(s, "P5", "가정을 만든다", "", p)
+chrome(s, "P5", "가정을 만든다", "", p, eyebrow_fill=ORANGE)
 step(s, "Claude Code", "데이터 수집도 함께 시킨다",
 """cma-builder 를 실행해줘. 데이터가 없으면 W04 실습데이터 덱
 명세대로 받아서 써줘.""",
@@ -439,7 +439,7 @@ cma-builder 실행 완료
 
 # ── 28 P6 구성 ───────────────────────────────────────────
 s, p = slide()
-chrome(s, "P6", "세 방법을 경쟁시킨다", "", p)
+chrome(s, "P6", "세 방법을 경쟁시킨다", "", p, eyebrow_fill=ORANGE)
 step(s, "Claude Code", "독립성을 명시적으로 요구한다",
 """alloc-mvo, alloc-bl, alloc-riskparity 를 모두 실행해줘.
 서로의 결과를 참조하지 않게 해줘.""",
@@ -454,7 +454,7 @@ step(s, "Claude Code", "독립성을 명시적으로 요구한다",
 
 # ── 29 P7 표결 ───────────────────────────────────────────
 s, p = slide()
-chrome(s, "P7", "투자위원회가 표결한다", "", p)
+chrome(s, "P7", "투자위원회가 표결한다", "", p, eyebrow_fill=ORANGE)
 step(s, "Claude Code", "16주 동안 사람으로 해온 절차",
 """ic-critic 으로 심사하고 표결해줘.""",
 """적격 심사를 먼저 했습니다. IPS 위반 후보는 표결에 올리지 않습니다(7.3항).
@@ -469,7 +469,7 @@ step(s, "Claude Code", "16주 동안 사람으로 해온 절차",
 
 # ── 30 P8 대조 ───────────────────────────────────────────
 s, p = slide()
-chrome(s, "P8", "예측을 실현과 대조한다", "", p)
+chrome(s, "P8", "예측을 실현과 대조한다", "", p, eyebrow_fill=ORANGE)
 step(s, "Claude Code", "평가구간을 여기서 처음 연다",
 """meta-reviewer 로 예측과 실현을 대조해줘.""",
 """평가구간 35개월(2022-09~2025-07)을 이 단계에서 처음 열었습니다.
@@ -484,7 +484,7 @@ step(s, "Claude Code", "평가구간을 여기서 처음 연다",
 
 # ── 31 P9 사람의 판단 ────────────────────────────────────
 s, p = slide()
-chrome(s, "P9", "사람이 판단할 지점을 뽑는다", "", p)
+chrome(s, "P9", "사람이 판단할 지점을 뽑는다", "", p, eyebrow_fill=ORANGE)
 step(s, "Claude Code", "요약이 아니라 결정 목록을 요구한다",
 """이번 사이클에서 사람이 판단해야 할 지점만 정리해줘.
 각각 무엇을 근거로 결정해야 하는지 함께.""",
@@ -498,7 +498,7 @@ step(s, "Claude Code", "요약이 아니라 결정 목록을 요구한다",
 
 # ── 32 P10 정책 변경 ─────────────────────────────────────
 s, p = slide()
-chrome(s, "P10", "정책을 바꿔 다시 돌린다", "", p)
+chrome(s, "P10", "정책을 바꿔 다시 돌린다", "", p, eyebrow_fill=ORANGE)
 step(s, "Claude Code", "코드가 아니라 문서를 고친다",
 """ips.md 의 유효 종목 수 하한을 3.5 로 낮추고 표결까지 다시 돌려줘.
 무엇이 달라지는지 앞 결과와 비교해줘.""",
