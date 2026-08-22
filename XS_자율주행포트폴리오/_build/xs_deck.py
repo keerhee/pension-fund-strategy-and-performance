@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 """XS 자율주행 포트폴리오 — 강의본 덱"""
 import sys, os
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+_HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _HERE)
 from deckkit import *
 from deckkit import _rect, _tb, _wrapped_lines
 from pptx.util import Inches, Pt
 from pptx.enum.text import PP_ALIGN
 
-OUT = ("/Users/keerhee/Project/2026_연기금 운용전략과 성과평가_강의노트/"
-       "New_Lecture_with_New_Cases/XS_자율주행포트폴리오/"
-       "XS_자율주행포트폴리오_강의본.pptx")
+# 저장 위치는 스크립트 기준 상대경로 — 상위 폴더명이 바뀌어도 그대로 동작한다
+OUT = os.path.join(os.path.dirname(_HERE), "XS_자율주행포트폴리오_강의본.pptx")
 
 prs = new_deck(); P = [0]; OVER = []
 def slide():

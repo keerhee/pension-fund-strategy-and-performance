@@ -2,7 +2,7 @@
 title: "New_Lecture_with_New_Cases 요약정리"
 course: "연기금 운용전략과 성과평가 (BAF.60080, 2026 가을)"
 type: "folder-digest"
-scope: "2026_연기금 운용전략과 성과평가_강의노트/New_Lecture_with_New_Cases"
+scope: "[2026]연기금 운용전략과 성과평가_강의노트/New_Lecture_with_New_Cases"
 date: 2026-08-21
 tags: [연기금, IC, 케이스, TPA, 채권, 팩터, CTA, 대체투자]
 ---
