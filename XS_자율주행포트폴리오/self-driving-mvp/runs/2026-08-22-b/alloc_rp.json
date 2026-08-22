@@ -1,0 +1,51 @@
+{
+  "method": "Risk Parity (ERC, IPS-constrained)",
+  "agent": "alloc-riskparity",
+  "week": "W06",
+  "tickers": [
+    "SPY",
+    "EFA",
+    "EEM",
+    "IEF",
+    "TLT",
+    "LQD",
+    "HYG",
+    "TIP",
+    "VNQ",
+    "GLD",
+    "DBC"
+  ],
+  "weights": {
+    "SPY": 0.1,
+    "EFA": 0.1071,
+    "EEM": 0.0929,
+    "IEF": 0.1527,
+    "TLT": 0.1243,
+    "LQD": 0.0829,
+    "HYG": 0.0658,
+    "TIP": 0.0948,
+    "VNQ": 0.043,
+    "GLD": 0.0852,
+    "DBC": 0.0513
+  },
+  "risk_contrib": {
+    "SPY": 0.1638,
+    "EFA": 0.1667,
+    "EEM": 0.1597,
+    "IEF": 0.0479,
+    "TLT": 0.0921,
+    "LQD": 0.063,
+    "HYG": 0.0546,
+    "TIP": 0.0401,
+    "VNQ": 0.0722,
+    "GLD": 0.0836,
+    "DBC": 0.0563
+  },
+  "expected": {
+    "ret": 0.05245278384906529,
+    "vol": 0.07314713967530605,
+    "sharpe": 0.7170859186278337,
+    "effective_n": 9.920981430229547
+  },
+  "ips_violations": []
+}
