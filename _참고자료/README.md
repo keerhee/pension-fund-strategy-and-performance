@@ -20,9 +20,9 @@ TPA 성과를 리스크 타게팅 · 익스포저 타게팅 · 투자선정의 �
 
 | 자료 | 위치 |
 |---|---|
-| 한국어 리뷰 덱 (22장) | [`_pdf/TPA_성과평가_MeasuringWhatMatters_리뷰.pdf`](../_pdf/TPA_성과평가_MeasuringWhatMatters_리뷰.pdf) |
-| W16 제2부 강의본 (25장) | [`_pdf/W16_TPA_제2부_MeasuringWhatMatters_성과평가.pdf`](../_pdf/W16_TPA_제2부_MeasuringWhatMatters_성과평가.pdf) |
-| W16 케이스 제2호 안건 | [`_pdf/W16_케이스_KFP_TPA전환과평가체계_IC.pdf`](../_pdf/W16_케이스_KFP_TPA전환과평가체계_IC.pdf) |
+| 한국어 리뷰 덱 (22장) | [`_참고자료/TPA_성과평가_MeasuringWhatMatters_리뷰.pdf`](TPA_%EC%84%B1%EA%B3%BC%ED%8F%89%EA%B0%80_MeasuringWhatMatters_%EB%A6%AC%EB%B7%B0.pdf) |
+| 15주 · TPA 제2부 강의본 (25장) | [`W15_TPA/W15_TPA_제2부_MeasuringWhatMatters_성과평가.pdf`](../W15_TPA/W15_TPA_%EC%A0%9C2%EB%B6%80_MeasuringWhatMatters_%EC%84%B1%EA%B3%BC%ED%8F%89%EA%B0%80.pdf) |
+| 15주 · 케이스 제2호 안건 | [`W15_TPA/W15_케이스_KFP_TPA전환과평가체계_IC.pdf`](../W15_TPA/W15_%EC%BC%80%EC%9D%B4%EC%8A%A4_KFP_TPA%EC%A0%84%ED%99%98%EA%B3%BC%ED%8F%89%EA%B0%80%EC%B2%B4%EA%B3%84_IC.pdf) |
 
 리뷰 덱과 강의본은 원문을 한국어로 정리·재구성한 것이며 이 저장소의
 [LICENSE](../LICENSE)를 따른다. 원문 자체의 권리는 CPP Investments에 있다.
