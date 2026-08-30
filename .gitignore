@@ -18,6 +18,9 @@ _pdf/CPP_TPA리포트_MeasuringWhatMatters_2026-07_EN.pdf
 # 편집 원본 .docx는 위 규칙으로 이미 제외되므로, 렌더한 PDF만 여기서 막는다.
 _과정운영/강의계획서_*.pdf
 
+# 프라이머 그림은 중간 산출물이다 — _build/w04_art.py 로 언제든 다시 만든다.
+_build/_art/
+
 # 파이썬 가상환경·캐시 (SS4 실습)
 .venv/
 __pycache__/
