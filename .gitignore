@@ -14,6 +14,10 @@
 _참고자료/CPP_TPA리포트_MeasuringWhatMatters_2026-07_EN.pdf
 _pdf/CPP_TPA리포트_MeasuringWhatMatters_2026-07_EN.pdf
 
+# 강의계획서 — 학과 제출 문서라 공개하지 않는다.
+# 편집 원본 .docx는 위 규칙으로 이미 제외되므로, 렌더한 PDF만 여기서 막는다.
+_과정운영/강의계획서_*.pdf
+
 # 파이썬 가상환경·캐시 (SS4 실습)
 .venv/
 __pycache__/
