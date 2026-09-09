@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 W4 IC 케이스 판정 조건 계산 스크립트 (자체 완결)
-  [M4 기금위]  K1 추정오차 검정 · K2 이행 실행 가능성 · K3 2031 정합성 · K4 시장 점유 상한
-  [M5 BL IC]   V1 형식 · V2 Ω 정직성(Idzorek 역산) · V3 적중률 요건 · V4 스트레스 / N1 위험 예산 정합성
+  [M4 기금위]  조건 ① 추정오차 검정 · 조건 ② 이행 실행 가능성 · 조건 ③ 2031 정합성 · 조건 ④ 시장 점유 상한
+  [M5 BL IC]   제1호 조건 ① 형식 · 제1호 조건 ② Ω 정직성(Idzorek 역산) · 제1호 조건 ③ 적중률 요건 · 제1호 조건 ④ 스트레스 / 제2호 조건 ① 위험 예산 정합성
 실행: python w4_build.py && python w4_compute.py
 """
 import numpy as np, pandas as pd
@@ -46,7 +46,7 @@ def ledoit_wolf(R):
     delta = max(0, min(1, kappa / T))
     return delta * F + (1 - delta) * S, delta
 
-print("=" * 70); print("[M4] K1 추정오차 검정 — 국내주식(eq_kr) 비중이 후보 수치를 구분하는가")
+print("=" * 70); print("[M4] 조건 ① 추정오차 검정 — 국내주식(eq_kr) 비중이 후보 수치를 구분하는가")
 mu5, box5, S5 = mu[RISKY], box[RISKY], Sigma[np.ix_(RISKY, RISKY)]; n5 = [names[i] for i in RISKY]
 print(f"  요구수익 r* = {R_STAR:.2%} (2027 목표 배분의 CMA 기대수익) · 5자산(단기자금 제외) · 공매도 금지")
 caps = np.array([1, 0.40, 1, 1, 0.15])
@@ -70,7 +70,7 @@ print("  γ 민감도(효용 최대화·제약 동일, 국내주식 %):", {g: ro
 print(f"  현재 29.1% · 2027 목표 20.8% · 후보 14.9 / 18.0 / 20.8 — 강건 해(Robust·LW·Michaud) 국내주식 최대 {tab.iloc[2:,0].max()*100:.1f}% < 20.8% → 상향·동결의 MVO 근거 없음")
 print(f"  후보가 분포 구간 안에 있는가: 14.9 {'안' if q[0]<=14.9<=q[2] else '밖'} · 18.0 {'안' if q[0]<=18<=q[2] else '밖'} · 20.8 {'안' if q[0]<=20.8<=q[2] else '밖'} → 구간 안이면 MVO만으로 수치 확정 불가")
 
-print("=" * 70); print("[M4] K2 이행 실행 가능성 — 무매도 표류 경로와 연 순매도 한도")
+print("=" * 70); print("[M4] 조건 ② 이행 실행 가능성 — 무매도 표류 경로와 연 순매도 한도")
 A0 = P.aum_trn_krw; g = P.aum_growth; pr = P.eq_kr_price_return; H = int(P.horizon_years)
 w0 = P.w_eq_kr_now
 drift = [w0 * ((1 + pr) / (1 + g)) ** t for t in range(H + 1)]
@@ -85,16 +85,16 @@ for k, x in cands.items():
 x_star = drift[-1] - limit * H / A_H
 print(f"  한도를 꽉 채웠을 때 도달 가능한 2031 종점 = {x_star*100:.1f}% → 기본 답의 하한")
 
-print("=" * 70); print("[M4] K3 2031 정합성 — 주식 55% 안에서 해외주식이 2027 목표(35.6%) 아래로 내려가지 않는 국내주식 상한")
+print("=" * 70); print("[M4] 조건 ③ 2031 정합성 — 주식 55% 안에서 해외주식이 2027 목표(35.6%) 아래로 내려가지 않는 국내주식 상한")
 x_max = P.w_equity_target_2031 - P.w_eq_gl_target_2027
 print(f"  국내주식 상한 = 55.0 − 35.6 = {x_max*100:.1f}% → 20.8% 동결은 해외주식 축소(35.6→34.2)를 뜻해 정합성 위반")
 
-print("=" * 70); print("[M4] K4 시장 점유 상한 — 2031 보유액 / 국내주식 시가총액")
+print("=" * 70); print("[M4] 조건 ④ 시장 점유 상한 — 2031 보유액 / 국내주식 시가총액")
 cap31 = P.mktcap_kr_trn_krw * (1 + pr) ** H
 for k, x in cands.items():
     sh = x * A_H / cap31
     print(f"  {k}: 보유 {x*A_H:,.0f}조 / 시총 {cap31:,.0f}조 = {sh:.1%} → {'상한 이내' if sh <= P.share_cap else '상한 초과'}")
-print(f"  현재 점유(2026.2) 7.7% · 2026.6 추정 {w0*A0/P.mktcap_kr_trn_krw:.1%} — K4는 어느 후보도 배제하지 않는다(구분력 없음, 기록만)")
+print(f"  현재 점유(2026.2) 7.7% · 2026.6 추정 {w0*A0/P.mktcap_kr_trn_krw:.1%} — 조건 ④는 어느 후보도 배제하지 않는다(구분력 없음, 기록만)")
 
 # ---------------------------------------------------------------- BL
 print("=" * 70); print("[M5] KIC 5자산 Black-Litterman")
@@ -106,7 +106,7 @@ pi = delta * KS @ wm
 print("  균형 초과수익 π(δ=2.5):", dict(zip(kn, (pi * 100).round(2))))
 V = pd.read_csv("fml_w4_views.csv")
 Pm = V[[f"p_{c}" for c in kc]].values.astype(float); Q = V.q.values.copy(); conf = V.confidence.values.copy()
-print("  V1 형식 — P 행합:", Pm.sum(1), "(절대=1 · 상대=0 ✓)", "| Q 단위: 초과수익(π와 동일) ✓ | Ω 대각·양수 ✓")
+print("  제1호 조건 ① 형식 — P 행합:", Pm.sum(1), "(절대=1 · 상대=0 ✓)", "| Q 단위: 초과수익(π와 동일) ✓ | Ω 대각·양수 ✓")
 
 def bl_post(Om):
     tS = tau * KS
@@ -144,21 +144,21 @@ w_c = constrained(mu_c, KS); w_i = constrained(mu_i, KS)
 tS = tau * KS
 wt_case = [(Pm[k] @ tS @ Pm[k]) / (Pm[k] @ tS @ Pm[k] + Om_case[k, k]) for k in range(3)]
 wt_idz = [(Pm[k] @ tS @ Pm[k]) / (Pm[k] @ tS @ Pm[k] + Om_idz[k, k]) for k in range(3)]
-print("  V2 Ω 정직성 — 케이스 Ω:", np.diag(Om_case), "→ 뷰 반영률", np.round(wt_case, 2))
+print("  제1호 조건 ② Ω 정직성 — 케이스 Ω:", np.diag(Om_case), "→ 뷰 반영률", np.round(wt_case, 2))
 print("               Idzorek 역산 Ω(70·60·50%):", np.array2string(np.diag(Om_idz), formatter={"float_kind": lambda x: f"{x:.2e}"}), "→ 뷰 반영률", np.round(wt_idz, 2))
 res = pd.DataFrame({"시장 비중": wm, "π": pi, "사후 μ(케이스 Ω)": mu_c, "비중(케이스 Ω)": w_c, "사후 μ(Idzorek)": mu_i, "비중(Idzorek)": w_i}, index=kn)
 print((res * 100).round(1))
 print(f"  (비중은 공매도 금지·합=1 제약 하의 사후 최적화) 케이스 덱 표기 '미 국채 20→26 · IG 15→11 · PE 10→8' 대조: 케이스 Ω 결과 {np.round(w_c[[1,2,3]]*100,1)} · Idzorek 결과 {np.round(w_i[[1,2,3]]*100,1)}")
-# V4 스트레스: 세 뷰가 동시에 반대(뷰 크기만큼 반대 방향) 실현
+# 제1호 조건 ④ 스트레스: 세 뷰가 동시에 반대(뷰 크기만큼 반대 방향) 실현
 dw = w_i - wm
 shock = np.zeros(len(kc))
 for k in range(3):
     shock += Pm[k] * (-(Q[k] - Pm[k] @ pi))       # 뷰가 예상한 편차가 같은 크기로 반대 실현
 loss = dw @ shock
 te = np.sqrt(dw @ KS @ dw)
-print(f"  V4 스트레스 — 활성 비중 Δw = {np.round(dw*100,1)} · TE {te:.2%} · 세 뷰 동시 반대 시 손실 {loss:.2%} → 예산 −0.50% {'이내' if loss >= -0.005 else '초과'}")
+print(f"  제1호 조건 ④ 스트레스 — 활성 비중 Δw = {np.round(dw*100,1)} · TE {te:.2%} · 세 뷰 동시 반대 시 손실 {loss:.2%} → 예산 −0.50% {'이내' if loss >= -0.005 else '초과'}")
 
-print("  V3 자신감 상한 탐색 — 뷰 적중 이력이 없을 때 TE 예산(1.0%) 안에 드는 최대 균일 자신감 c")
+print("  제1호 조건 ③ 자신감 상한 탐색 — 뷰 적중 이력이 없을 때 TE 예산(1.0%) 안에 드는 최대 균일 자신감 c")
 conf0 = conf.copy(); rows = []
 for c in [0.10, 0.20, 0.25, 0.30, 0.40, 0.50, 0.70]:
     conf[:] = c; Om_c = idzorek_omega(); mu_cc, _ = bl_post(Om_c); w_cc = constrained(mu_cc, KS)
@@ -170,7 +170,7 @@ for c, te_c, wu, wi_, l in rows:
 c_star = max(c for c, te_c, *_ in rows if te_c <= 0.01)
 print(f"  → TE ≤ 1.0%를 만족하는 최대 자신감 c* = {c_star:.0%} : 이력 없는 뷰의 자신감 상한(조건부 승인 조건 1)")
 
-print("=" * 70); print("[M5] 제2호 N1 — NPS 6자산 BL 가상 시나리오(교육용): 사후 비중과 기준포트폴리오 위험 예산")
+print("=" * 70); print("[M5] 제2호 제2호 조건 ① — NPS 6자산 BL 가상 시나리오(교육용): 사후 비중과 기준포트폴리오 위험 예산")
 wm6 = w27; Sig6 = Sigma; pi6 = delta * Sig6 @ wm6
 P6 = np.array([[-1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 1, 0], [0, 0, 1, -1, 0, 0]], float)   # 해외>국내 +0.5%p · 대체 초과 3% · 국내채권 > 해외채권 +0.2%p
 Q6 = np.array([0.005, 0.030, 0.002]); c6 = np.array([0.5, 0.5, 0.5])
@@ -200,7 +200,7 @@ w6 = constrained6(mu6)
 print("  π(2027 목표 비중 역산):", dict(zip(names, (pi6*100).round(2))))
 print("  사후 비중:", dict(zip(names, (w6*100).round(1))), f"| 합 {w6.sum():.3f}")
 s_ref = np.sqrt(wm6 @ Sig6 @ wm6); s_post = np.sqrt(w6 @ Sig6 @ w6)
-print(f"  N1 위험 예산 — 기준(2027 목표) σ {s_ref:.2%} · 사후 σ {s_post:.2%} → {'예산 이내(σ 비율 %.2f)' % (s_post/s_ref) if s_post <= s_ref*1.05 else '예산 초과'}")
+print(f"  제2호 조건 ① 위험 예산 — 기준(2027 목표) σ {s_ref:.2%} · 사후 σ {s_post:.2%} → {'예산 이내(σ 비율 %.2f)' % (s_post/s_ref) if s_post <= s_ref*1.05 else '예산 초과'}")
 print("  주의: 국내주식 사후 비중은 뷰 선택에 따라 달라진다 — '17.5% 일치'는 검증이 아니라 가정의 산물(교육용)")
 
 # ---------------------------------------------------------------- 결과 저장 (덱 그림용)
