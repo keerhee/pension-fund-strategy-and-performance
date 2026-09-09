@@ -1,0 +1,6 @@
+institution,asset,asset_kr,w_mkt,sigma,asof,source,is_assumed
+KIC,eq_gl,글로벌 주식,0.5,0.15,2026-09-09,W4 강의 심층·KIC(교육용 가정),1
+KIC,ust,미 국채,0.2,0.06,2026-09-09,W4 강의 심층·KIC(교육용 가정),1
+KIC,ig,IG 채권,0.15,0.05,2026-09-09,W4 강의 심층·KIC(교육용 가정),1
+KIC,alt_pe,PE,0.1,0.2,2026-09-09,W4 강의 심층·KIC(교육용 가정),1
+KIC,alt_infra,인프라,0.05,0.12,2026-09-09,W4 강의 심층·KIC(교육용 가정),1
