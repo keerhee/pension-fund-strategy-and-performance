@@ -186,3 +186,21 @@ def set_size_px(shape, w=None, h=None):
     from pptx.util import Inches
     if w is not None: shape.width = Inches(w / 96)
     if h is not None: shape.height = Inches(h / 96)
+
+def pictures(slide):
+    return [sh for sh in slide.shapes if sh.shape_type == 13]
+
+def replace_picture(pic, path, fit=True):
+    """그림 도형의 이미지를 path 로 바꾼다. fit=True 면 기존 상자 안에 비율을 지켜 가운데 맞춤."""
+    from PIL import Image
+    rId = pic._element.blipFill.blip.rEmbed
+    part = pic.part.related_part(rId)
+    data = open(path, "rb").read()
+    part._blob = data
+    if fit:
+        iw, ih = Image.open(path).size
+        bx, by, bw, bh = pic.left, pic.top, pic.width, pic.height
+        s = min(bw / iw, bh / ih)
+        nw, nh = int(iw * s), int(ih * s)
+        pic.left = bx + (bw - nw) // 2; pic.top = by + (bh - nh) // 2
+        pic.width, pic.height = nw, nh
