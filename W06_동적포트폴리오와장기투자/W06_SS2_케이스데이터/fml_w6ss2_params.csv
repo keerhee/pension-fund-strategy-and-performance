@@ -1,0 +1,40 @@
+key,value,meaning,is_assumed
+asof,2026-09-21,기준일,0
+fund_2025_trn,1458.0,2025년 말 적립금(조원),0
+fund_2026h1_trn,1866.0,2026.6 말 적립금(조원),0
+ret_2025_pct,18.82,2025 기금 수익률 %,0
+ret_2026h1_pct,27.22,2026 상반기 기금 수익률 %,0
+ret_kr_eq_2025_pct,82.44,2025 국내주식 수익률 %,0
+ret_kr_eq_2026h1_pct,107.37,2026 상반기 국내주식 수익률 %,0
+cvar_limit_pct,-15.0,위험한도 CVaR(α=0.05) ≥ −15% (지침 제6조의2),0
+ref_risk_share,0.65,기준포트폴리오 위험자산 비중,0
+saa_band_eq_kr,3.0,"SAA 허용범위 국내주식 ±%p (별표 1, 2024.5.31)",0
+saa_band_bond_kr,7.0,국내채권 ±%p,0
+saa_band_eq_fx,4.0,해외주식 ±%p,0
+saa_band_bond_fx,0.5,해외채권 ±%p,0
+taa_band_eq_kr,2.0,TAA 허용범위 국내주식 ±%p,0
+saa_band_eq_kr_temp,6.0,2026.5.28 한시 확대(언론 추정) ±%p,0
+rebal_cap_new_bp,25,월 최대 조정 bp (2026.7~),0
+rebal_cap_new_days,20,월 영업일,0
+rebal_cap_old_bp,50,월 최대 조정 bp (2026.1~6),0
+rebal_cap_old_days,10,월 영업일,0
+adv_kospi_2025,16.9,코스피 일평균 거래대금 2025 (조원),0
+adv_kospi_2026_05,48.0,2026.5 (조원),0
+adv_k200_night_2026_05,16.7,코스피200 야간선물 일평균 2026.5 (조원),0
+adv_k200_fut_total,30.0,"코스피200 선물 정규장 일평균(교육용 가정, 조원)",1
+impact_eta,0.5,시장충격 계수 η,1
+part_cash,0.05,현물 참여율,1
+part_fut,0.2,선물 참여율,1
+max_days,20,조건 ③ 임계 — 복원 거래 완료 거래일,1
+net_min_bp,0.0,조건 ② 임계 — 순 프리미엄 > 0 bp,1
+net_tol_bp,5.0,최적 규칙과의 허용 격차 bp,1
+t_min,2.0,조건 ① 임계 — |t| ≥ 2,1
+risk_band_total,2.0,안 B 총 위험자산 밴드 ±%p,1
+mu_risk,8.0,두 자산 CMA 위험자산 μ %,1
+mu_safe,3.0,안전자산 μ %,1
+sig_risk,15.0,위험자산 σ %,1
+sig_safe,4.5,안전자산 σ %,1
+rho,0.1,상관,1
+n_years,20,모의 패널 길이(년),1
+seed,6606,패널 난수 시드(설계 범위에 드는 첫 시드),1
+nps_net_flow_pct,0.75,NPS 연간 순현금흐름/적립금 % (W6 교육용 추계),1
