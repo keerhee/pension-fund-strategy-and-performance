@@ -180,3 +180,9 @@ def renumber(prs, x_min=1000, y_min=640):
 def scan_codes(prs):
     """문자 약호 K1·V1·N1·P1·Q1 스캔."""
     return grep(prs, r"(?<![A-Za-z])[KVNPQ]\d")
+
+def set_size_px(shape, w=None, h=None):
+    """도형 크기를 픽셀(1280×720 기준)로 바꾼다."""
+    from pptx.util import Inches
+    if w is not None: shape.width = Inches(w / 96)
+    if h is not None: shape.height = Inches(h / 96)
