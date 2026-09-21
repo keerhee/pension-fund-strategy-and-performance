@@ -1,0 +1,707 @@
+{
+ "asof": "2026-09-20",
+ "agenda1": {
+  "cond1": {
+   "HF_2026": 1.157,
+   "trigger_year": 2042,
+   "net_outflow_year": 2037,
+   "peak_year_A": 2061,
+   "table": [
+    {
+     "year": 2026,
+     "H_trn": 1687.0,
+     "F_trn": 1458.0,
+     "HF": 1.157,
+     "risk_share_total_wealth": 0.301
+    },
+    {
+     "year": 2027,
+     "H_trn": 1746.0,
+     "F_trn": 1563.0,
+     "HF": 1.117,
+     "risk_share_total_wealth": 0.307
+    },
+    {
+     "year": 2028,
+     "H_trn": 1805.0,
+     "F_trn": 1676.0,
+     "HF": 1.077,
+     "risk_share_total_wealth": 0.313
+    },
+    {
+     "year": 2029,
+     "H_trn": 1861.0,
+     "F_trn": 1797.0,
+     "HF": 1.036,
+     "risk_share_total_wealth": 0.319
+    },
+    {
+     "year": 2030,
+     "H_trn": 1916.0,
+     "F_trn": 1926.0,
+     "HF": 0.995,
+     "risk_share_total_wealth": 0.326
+    },
+    {
+     "year": 2031,
+     "H_trn": 1969.0,
+     "F_trn": 2064.0,
+     "HF": 0.954,
+     "risk_share_total_wealth": 0.333
+    },
+    {
+     "year": 2032,
+     "H_trn": 2020.0,
+     "F_trn": 2211.0,
+     "HF": 0.914,
+     "risk_share_total_wealth": 0.34
+    },
+    {
+     "year": 2033,
+     "H_trn": 2068.0,
+     "F_trn": 2367.0,
+     "HF": 0.874,
+     "risk_share_total_wealth": 0.347
+    },
+    {
+     "year": 2034,
+     "H_trn": 2113.0,
+     "F_trn": 2534.0,
+     "HF": 0.834,
+     "risk_share_total_wealth": 0.354
+    },
+    {
+     "year": 2035,
+     "H_trn": 2159.0,
+     "F_trn": 2706.0,
+     "HF": 0.798,
+     "risk_share_total_wealth": 0.362
+    },
+    {
+     "year": 2036,
+     "H_trn": 2206.0,
+     "F_trn": 2884.0,
+     "HF": 0.765,
+     "risk_share_total_wealth": 0.368
+    },
+    {
+     "year": 2037,
+     "H_trn": 2254.0,
+     "F_trn": 3068.0,
+     "HF": 0.735,
+     "risk_share_total_wealth": 0.375
+    },
+    {
+     "year": 2038,
+     "H_trn": 2303.0,
+     "F_trn": 3257.0,
+     "HF": 0.707,
+     "risk_share_total_wealth": 0.381
+    },
+    {
+     "year": 2039,
+     "H_trn": 2353.0,
+     "F_trn": 3451.0,
+     "HF": 0.682,
+     "risk_share_total_wealth": 0.386
+    },
+    {
+     "year": 2040,
+     "H_trn": 2404.0,
+     "F_trn": 3650.0,
+     "HF": 0.659,
+     "risk_share_total_wealth": 0.392
+    },
+    {
+     "year": 2041,
+     "H_trn": 2457.0,
+     "F_trn": 3854.0,
+     "HF": 0.638,
+     "risk_share_total_wealth": 0.397
+    },
+    {
+     "year": 2042,
+     "H_trn": 2510.0,
+     "F_trn": 4061.0,
+     "HF": 0.618,
+     "risk_share_total_wealth": 0.402
+    },
+    {
+     "year": 2043,
+     "H_trn": 2565.0,
+     "F_trn": 4272.0,
+     "HF": 0.6,
+     "risk_share_total_wealth": 0.406
+    },
+    {
+     "year": 2044,
+     "H_trn": 2621.0,
+     "F_trn": 4486.0,
+     "HF": 0.584,
+     "risk_share_total_wealth": 0.41
+    },
+    {
+     "year": 2045,
+     "H_trn": 2678.0,
+     "F_trn": 4701.0,
+     "HF": 0.57,
+     "risk_share_total_wealth": 0.414
+    },
+    {
+     "year": 2046,
+     "H_trn": 2736.0,
+     "F_trn": 4918.0,
+     "HF": 0.556,
+     "risk_share_total_wealth": 0.418
+    },
+    {
+     "year": 2047,
+     "H_trn": 2795.0,
+     "F_trn": 5135.0,
+     "HF": 0.544,
+     "risk_share_total_wealth": 0.421
+    },
+    {
+     "year": 2048,
+     "H_trn": 2856.0,
+     "F_trn": 5350.0,
+     "HF": 0.534,
+     "risk_share_total_wealth": 0.424
+    },
+    {
+     "year": 2049,
+     "H_trn": 2918.0,
+     "F_trn": 5564.0,
+     "HF": 0.525,
+     "risk_share_total_wealth": 0.426
+    },
+    {
+     "year": 2050,
+     "H_trn": 2982.0,
+     "F_trn": 5773.0,
+     "HF": 0.517,
+     "risk_share_total_wealth": 0.429
+    },
+    {
+     "year": 2051,
+     "H_trn": 3047.0,
+     "F_trn": 5977.0,
+     "HF": 0.51,
+     "risk_share_total_wealth": 0.431
+    },
+    {
+     "year": 2052,
+     "H_trn": 3113.0,
+     "F_trn": 6175.0,
+     "HF": 0.504,
+     "risk_share_total_wealth": 0.432
+    },
+    {
+     "year": 2053,
+     "H_trn": 3181.0,
+     "F_trn": 6367.0,
+     "HF": 0.5,
+     "risk_share_total_wealth": 0.433
+    },
+    {
+     "year": 2054,
+     "H_trn": 3250.0,
+     "F_trn": 6550.0,
+     "HF": 0.496,
+     "risk_share_total_wealth": 0.434
+    },
+    {
+     "year": 2055,
+     "H_trn": 3321.0,
+     "F_trn": 6722.0,
+     "HF": 0.494,
+     "risk_share_total_wealth": 0.435
+    },
+    {
+     "year": 2056,
+     "H_trn": 3393.0,
+     "F_trn": 6880.0,
+     "HF": 0.493,
+     "risk_share_total_wealth": 0.435
+    },
+    {
+     "year": 2057,
+     "H_trn": 3467.0,
+     "F_trn": 7023.0,
+     "HF": 0.494,
+     "risk_share_total_wealth": 0.435
+    },
+    {
+     "year": 2058,
+     "H_trn": 3542.0,
+     "F_trn": 7147.0,
+     "HF": 0.496,
+     "risk_share_total_wealth": 0.435
+    },
+    {
+     "year": 2059,
+     "H_trn": 3619.0,
+     "F_trn": 7248.0,
+     "HF": 0.499,
+     "risk_share_total_wealth": 0.434
+    },
+    {
+     "year": 2060,
+     "H_trn": 3698.0,
+     "F_trn": 7324.0,
+     "HF": 0.505,
+     "risk_share_total_wealth": 0.432
+    },
+    {
+     "year": 2061,
+     "H_trn": 3779.0,
+     "F_trn": 7371.0,
+     "HF": 0.513,
+     "risk_share_total_wealth": 0.43
+    },
+    {
+     "year": 2062,
+     "H_trn": 3861.0,
+     "F_trn": 7383.0,
+     "HF": 0.523,
+     "risk_share_total_wealth": 0.427
+    },
+    {
+     "year": 2063,
+     "H_trn": 3945.0,
+     "F_trn": 7357.0,
+     "HF": 0.536,
+     "risk_share_total_wealth": 0.423
+    },
+    {
+     "year": 2064,
+     "H_trn": 4031.0,
+     "F_trn": 7287.0,
+     "HF": 0.553,
+     "risk_share_total_wealth": 0.418
+    },
+    {
+     "year": 2065,
+     "H_trn": 4118.0,
+     "F_trn": 7166.0,
+     "HF": 0.575,
+     "risk_share_total_wealth": 0.413
+    },
+    {
+     "year": 2066,
+     "H_trn": 4208.0,
+     "F_trn": 6990.0,
+     "HF": 0.602,
+     "risk_share_total_wealth": 0.406
+    },
+    {
+     "year": 2067,
+     "H_trn": 4213.0,
+     "F_trn": 6750.0,
+     "HF": 0.624,
+     "risk_share_total_wealth": 0.4
+    },
+    {
+     "year": 2068,
+     "H_trn": 4213.0,
+     "F_trn": 6439.0,
+     "HF": 0.654,
+     "risk_share_total_wealth": 0.393
+    },
+    {
+     "year": 2069,
+     "H_trn": 4208.0,
+     "F_trn": 6048.0,
+     "HF": 0.696,
+     "risk_share_total_wealth": 0.383
+    },
+    {
+     "year": 2070,
+     "H_trn": 4198.0,
+     "F_trn": 5569.0,
+     "HF": 0.754,
+     "risk_share_total_wealth": 0.371
+    },
+    {
+     "year": 2071,
+     "H_trn": 4182.0,
+     "F_trn": 4991.0,
+     "HF": 0.838,
+     "risk_share_total_wealth": 0.354
+    },
+    {
+     "year": 2072,
+     "H_trn": 4160.0,
+     "F_trn": 4341.0,
+     "HF": 0.958,
+     "risk_share_total_wealth": 0.332
+    },
+    {
+     "year": 2073,
+     "H_trn": 4130.0,
+     "F_trn": 3613.0,
+     "HF": 1.143,
+     "risk_share_total_wealth": 0.303
+    },
+    {
+     "year": 2074,
+     "H_trn": 4094.0,
+     "F_trn": 2802.0,
+     "HF": 1.461,
+     "risk_share_total_wealth": 0.264
+    },
+    {
+     "year": 2075,
+     "H_trn": 4050.0,
+     "F_trn": 1900.0,
+     "HF": 2.131,
+     "risk_share_total_wealth": 0.208
+    },
+    {
+     "year": 2076,
+     "H_trn": 3998.0,
+     "F_trn": 901.0,
+     "HF": 4.439,
+     "risk_share_total_wealth": 0.12
+    }
+   ]
+  },
+  "hurdle_min_w": 0.5,
+  "paths": [
+   {
+    "path": "A",
+    "start_year": null,
+    "w_end": 0.65,
+    "mu_2026": 6.25,
+    "mu_end": 6.25,
+    "peak_year": 2061,
+    "peak_fund": 7383,
+    "deplete_year": 2076,
+    "loss_ratio_max": 1.1,
+    "loss_ratio_2060": null,
+    "seq_2008_at_netout": 5,
+    "seq_2008_at_2027": 4,
+    "seq_2008_at_2050": 4,
+    "seq_2022_at_netout": 3,
+    "buffer_min_years": 1.4,
+    "buffer_min_year": 2071,
+    "cond1_ok": true,
+    "cond2_ok": true,
+    "cond3_ok": false,
+    "cond4_ok": true,
+    "cond5_ok": false
+   },
+   {
+    "path": "B",
+    "start_year": 2042,
+    "w_end": 0.5,
+    "mu_2026": 6.25,
+    "mu_end": 5.5,
+    "peak_year": 2058,
+    "peak_fund": 6623,
+    "deplete_year": 2074,
+    "loss_ratio_max": 0.76,
+    "loss_ratio_2060": null,
+    "seq_2008_at_netout": 4,
+    "seq_2008_at_2027": 4,
+    "seq_2008_at_2050": 3,
+    "seq_2022_at_netout": 3,
+    "buffer_min_years": 2.0,
+    "buffer_min_year": 2069,
+    "cond1_ok": true,
+    "cond2_ok": true,
+    "cond3_ok": true,
+    "cond4_ok": true,
+    "cond5_ok": true
+   },
+   {
+    "path": "C",
+    "start_year": 2027,
+    "w_end": 0.45,
+    "mu_2026": 6.25,
+    "mu_end": 5.25,
+    "peak_year": 2055,
+    "peak_fund": 5405,
+    "deplete_year": 2071,
+    "loss_ratio_max": 0.53,
+    "loss_ratio_2060": null,
+    "seq_2008_at_netout": 3,
+    "seq_2008_at_2027": 3,
+    "seq_2008_at_2050": 2,
+    "seq_2022_at_netout": 3,
+    "buffer_min_years": 2.2,
+    "buffer_min_year": 2066,
+    "cond1_ok": false,
+    "cond2_ok": false,
+    "cond3_ok": true,
+    "cond4_ok": true,
+    "cond5_ok": true
+   }
+  ],
+  "sensitivity_B": [
+   {
+    "speed": 0.5,
+    "floor": 60,
+    "deplete": 2075,
+    "loss_ratio_max": 0.97,
+    "mu_end": 6.0,
+    "cond2_ok": true,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 0.5,
+    "floor": 55,
+    "deplete": 2075,
+    "loss_ratio_max": 0.88,
+    "mu_end": 5.75,
+    "cond2_ok": true,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 0.5,
+    "floor": 50,
+    "deplete": 2075,
+    "loss_ratio_max": 0.88,
+    "mu_end": 5.5,
+    "cond2_ok": true,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 0.5,
+    "floor": 45,
+    "deplete": 2075,
+    "loss_ratio_max": 0.88,
+    "mu_end": 5.25,
+    "cond2_ok": false,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 0.5,
+    "floor": 40,
+    "deplete": 2075,
+    "loss_ratio_max": 0.88,
+    "mu_end": 5.0,
+    "cond2_ok": false,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 1.0,
+    "floor": 60,
+    "deplete": 2075,
+    "loss_ratio_max": 0.96,
+    "mu_end": 6.0,
+    "cond2_ok": true,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 1.0,
+    "floor": 55,
+    "deplete": 2074,
+    "loss_ratio_max": 0.85,
+    "mu_end": 5.75,
+    "cond2_ok": true,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 1.0,
+    "floor": 50,
+    "deplete": 2074,
+    "loss_ratio_max": 0.76,
+    "mu_end": 5.5,
+    "cond2_ok": true,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 1.0,
+    "floor": 45,
+    "deplete": 2073,
+    "loss_ratio_max": 0.68,
+    "mu_end": 5.25,
+    "cond2_ok": false,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 1.0,
+    "floor": 40,
+    "deplete": 2073,
+    "loss_ratio_max": 0.68,
+    "mu_end": 5.0,
+    "cond2_ok": false,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 2.0,
+    "floor": 60,
+    "deplete": 2075,
+    "loss_ratio_max": 0.96,
+    "mu_end": 6.0,
+    "cond2_ok": true,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 2.0,
+    "floor": 55,
+    "deplete": 2074,
+    "loss_ratio_max": 0.83,
+    "mu_end": 5.75,
+    "cond2_ok": true,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 2.0,
+    "floor": 50,
+    "deplete": 2073,
+    "loss_ratio_max": 0.72,
+    "mu_end": 5.5,
+    "cond2_ok": true,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 2.0,
+    "floor": 45,
+    "deplete": 2073,
+    "loss_ratio_max": 0.63,
+    "mu_end": 5.25,
+    "cond2_ok": false,
+    "cond3_ok": true,
+    "cond4_ok": true
+   },
+   {
+    "speed": 2.0,
+    "floor": 40,
+    "deplete": 2072,
+    "loss_ratio_max": 0.55,
+    "mu_end": 5.0,
+    "cond2_ok": false,
+    "cond3_ok": true,
+    "cond4_ok": true
+   }
+  ],
+  "time_div": [
+   {
+    "T": 1,
+    "annualized": 10.03,
+    "cumulative": 10.0
+   },
+   {
+    "T": 5,
+    "annualized": 4.49,
+    "cumulative": 22.4
+   },
+   {
+    "T": 10,
+    "annualized": 3.17,
+    "cumulative": 31.7
+   },
+   {
+    "T": 20,
+    "annualized": 2.24,
+    "cumulative": 44.9
+   },
+   {
+    "T": 30,
+    "annualized": 1.83,
+    "cumulative": 54.9
+   }
+  ]
+ },
+ "agenda2": {
+  "instruments": [
+   {
+    "instrument": "bond_long",
+    "name": "장기 국채 오버레이",
+    "state_var": "yield10",
+    "beta": 1.077,
+    "t": 4.08,
+    "sig_state": 0.485,
+    "sig_asset": 4.22,
+    "hedge_pp": 9.9,
+    "carry_cost_bp": 5,
+    "cond1_ok": true,
+    "cond2_ok": true,
+    "cond3_ok": true,
+    "verdict": "채택"
+   },
+   {
+    "instrument": "tips",
+    "name": "물가연동채 · 실물자산",
+    "state_var": "infl_exp",
+    "beta": 1.5,
+    "t": 2.55,
+    "sig_state": 0.277,
+    "sig_asset": 3.41,
+    "hedge_pp": 9.7,
+    "carry_cost_bp": 15,
+    "cond1_ok": true,
+    "cond2_ok": true,
+    "cond3_ok": true,
+    "verdict": "채택"
+   },
+   {
+    "instrument": "vol_hedge",
+    "name": "변동성 헤지(옵션 · VIX 상품)",
+    "state_var": "vix",
+    "beta": -0.254,
+    "t": -1.57,
+    "sig_state": 5.415,
+    "sig_asset": 24.06,
+    "hedge_pp": -4.6,
+    "carry_cost_bp": 140,
+    "cond1_ok": false,
+    "cond2_ok": false,
+    "cond3_ok": false,
+    "verdict": "기각"
+   }
+  ],
+  "gamma": 5.0,
+  "horizon": 10,
+  "bond_horizon": [
+   {
+    "horizon": 1,
+    "beta": 1.329,
+    "t": 1.3
+   },
+   {
+    "horizon": 5,
+    "beta": 0.843,
+    "t": 1.4
+   },
+   {
+    "horizon": 10,
+    "beta": 1.077,
+    "t": 4.08
+   }
+  ],
+  "gamma_sens": [
+   {
+    "gamma": 1,
+    "bond_pp": 0.0
+   },
+   {
+    "gamma": 2,
+    "bond_pp": 6.2
+   },
+   {
+    "gamma": 5,
+    "bond_pp": 9.9
+   },
+   {
+    "gamma": 10,
+    "bond_pp": 11.1
+   }
+  ]
+ }
+}

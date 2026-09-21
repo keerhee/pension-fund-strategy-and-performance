@@ -1,0 +1,4 @@
+instrument,name,state_var,bad_state,carry_cost_bp,liquidity_score,is_assumed,asof
+bond_long,장기 국채 오버레이,yield10,금리 하락(재투자 수익 악화),5,90,1,2026-09-20
+tips,물가연동채 · 실물자산,infl_exp,인플레 상승(실질가치 하락),15,60,1,2026-09-20
+vol_hedge,변동성 헤지(옵션 · VIX 상품),vix,변동성 상승(투자 기회 악화),140,40,1,2026-09-20

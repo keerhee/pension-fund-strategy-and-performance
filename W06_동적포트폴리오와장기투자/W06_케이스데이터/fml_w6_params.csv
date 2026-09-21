@@ -1,0 +1,37 @@
+key,value,meaning,is_assumed
+asof,2026-09-20,기준일,0
+fund_2025_trn,1458.0,2025년 말 적립금(조),0
+peak_year_official,2053,2025 재정추계 최대 적립 시점,0
+peak_fund_official,3659.0,최대 적립 규모(조),0
+deplete_45_official,2064,소진 시점 — 수익률 4.5%,0
+deplete_55_official,2071,소진 시점 — 수익률 5.5%,0
+hurdle_pct,5.5,연금개혁 전제 기금수익률,0
+ref_port_risk,0.65,기준포트폴리오 위험자산 비중,0
+cvar_limit_pct,-15.0,기준포트폴리오 위험한도 CVaR95,0
+benefit_2025_est,51.7,"2025~26.4 연환산 지출(조), 누적 지출 차분",0
+contrib_2026,70.0,2026 보험료 수입(조),1
+benefit_2026,56.0,2026 급여 지출(조),1
+wage_g,0.03,임금 상승률,1
+insured_g,-0.008,가입자 증가율,1
+benefit_g_early,0.075,급여 증가율 ~2050 (정점·소진에 맞춘 값),1
+benefit_g_late,0.0675,급여 증가율 2051~,1
+disc,0.055,인적자본 유사물 할인율,1
+h_window,30,인적자본 유사물 창(년),1
+mu_risk,8.0,위험자산 μ,1
+mu_safe,3.0,안전자산 μ,1
+sig_risk,15.0,위험자산 σ,1
+sig_safe,4.5,안전자산 σ,1
+rho,0.1,상관,1
+hf_trigger,0.625,조건 ① H/F 임계(총부 위험비중 40%),1
+seq_limit_years,5.0,참고 — 충격 1회 소진 앞당김(년),1
+loss_ratio_max,1.0,조건 ③ 1σ 손실액/급여 상한(년치),1
+buffer_years,1.5,조건 ⑤ 안전자산 ≥ 급여 n년치,1
+glide_speed,1.0,감축 속도 %p/년,1
+floor_B,50.0,안 B 종점,1
+floor_C,45.0,안 C 종점,1
+gamma_kic,5.0,KIC 위험회피도,1
+kic_panel_seed,71,KIC 모의 패널 난수 시드(설계 범위 탐색 결과),1
+horizon_kic,10,KIC 지평(년),1
+t_min,2.0,제2호 조건 ① 예측력 t값 하한,1
+hedge_min_pp,5.0,제2호 조건 ② 헤징 수요 하한(%p),1
+cost_max_bp,30.0,제2호 조건 ③ 연 캐리 비용 상한(bp),1
