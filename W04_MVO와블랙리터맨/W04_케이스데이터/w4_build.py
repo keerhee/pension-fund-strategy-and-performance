@@ -65,12 +65,12 @@ pp = [
     ("mktcap_kr_trn_krw", 7000.0, "2026-06-30", "교육용 가정(2026.2말 5,146조에 이후 지수 상승 반영) — KRX에서 확인", 1),
     ("nps_share_of_mktcap_2026_02", 0.077, "2026-02-28", "언론 보도(395.1조 / 5,146.4조)", 0),
     ("adv_trn_krw", 20.0, "2026-06-30", "교육용 가정(국내주식 일평균 거래대금) — KRX에서 확인", 1),
-    ("participation_cap", 0.01, ASOF, "교육용 가정(연기금 순매도 참여율 상한)", 1),
+    ("participation_cap", 0.01, ASOF, "교육용 가정(연기금 순매도 거래참여율 상한)", 1),
     ("trading_days", 240, ASOF, "교육용 가정", 1),
     ("aum_growth", 0.07, ASOF, "교육용 가정(순유입 + 운용수익)", 1),
     ("eq_kr_price_return", 0.055, ASOF, "교육용 가정(국내주식 가격수익 = μ 7.5% − 배당 2.0%)", 1),
     ("eq_kr_div_yield", 0.020, ASOF, "교육용 가정", 1),
-    ("share_cap", 0.10, ASOF, "교육용 가정(시장 점유 상한)", 1),
+    ("share_cap", 0.10, ASOF, "교육용 가정(시가총액 대비 보유비중 상한)", 1),
     ("horizon_years", 5, ASOF, "2026 → 2031", 0),
 ]
 pd.DataFrame(pp, columns=["param", "value", "asof", "source", "is_assumed"]).to_csv("fml_w4_path_params.csv", index=False)

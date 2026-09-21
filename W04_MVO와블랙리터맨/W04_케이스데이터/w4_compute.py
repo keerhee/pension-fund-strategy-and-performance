@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
 W4 IC 케이스 판정 조건 계산 스크립트 (자체 완결)
-  [M4 기금위]  조건 ① 추정오차 검정 · 조건 ② 이행 실행 가능성 · 조건 ③ 2031 정합성 · 조건 ④ 시장 점유 상한
-  [M5 BL IC]   제1호 조건 ① 형식 · 제1호 조건 ② Ω 정직성(Idzorek 역산) · 제1호 조건 ③ 적중률 요건 · 제1호 조건 ④ 스트레스 / 제2호 조건 ① 위험 예산 정합성
+  [M4 기금위]  조건 ① 추정오차 검정 · 조건 ② 이행 실행 가능성 · 조건 ③ 국내주식 상한 (해외주식 목표 유지조건) · 조건 ④ 시가총액 대비 보유비중 상한
+  [M5 BL IC]   제1호 조건 ① 형식 · 제1호 조건 ② Ω 정직성(Idzorek 역산) · 제1호 조건 ③ 적중률 요건 · 제1호 조건 ④ 스트레스 / 제2호 조건 ① 위험 예산 국내주식 상한
 실행: python w4_build.py && python w4_compute.py
 """
 import numpy as np, pandas as pd
@@ -67,17 +67,17 @@ print((tab * 100).round(1))
 q = np.percentile(W[:, 0], [5, 50, 95]) * 100
 print(f"  국내주식 부트스트랩 분포(B={B}, T={T}) 5%·50%·95% = {q[0]:.1f} / {q[1]:.1f} / {q[2]:.1f} %  | LW 수축 강도 {dlt:.2f}")
 print("  γ 민감도(효용 최대화·제약 동일, 국내주식 %):", {g: round(util_max(mu5, S5, g, caps)[0]*100, 1) for g in [1.5, 2.5, 4.0, 6.0]})
-print(f"  현재 29.1% · 2027 목표 20.8% · 후보 14.9 / 18.0 / 20.8 — 강건 해(Robust·LW·Michaud) 국내주식 최대 {tab.iloc[2:,0].max()*100:.1f}% < 20.8% → 상향·동결의 MVO 근거 없음")
+print(f"  현재 29.1% · 2027 목표 20.8% · 후보 14.9 / 18.0 / 20.8 — 강건최적화결과(Robust·LW·Michaud) 국내주식 최대 {tab.iloc[2:,0].max()*100:.1f}% < 20.8% → 상향·동결의 MVO 근거 없음")
 print(f"  후보가 분포 구간 안에 있는가: 14.9 {'안' if q[0]<=14.9<=q[2] else '밖'} · 18.0 {'안' if q[0]<=18<=q[2] else '밖'} · 20.8 {'안' if q[0]<=20.8<=q[2] else '밖'} → 구간 안이면 MVO만으로 수치 확정 불가")
 
-print("=" * 70); print("[M4] 조건 ② 이행 실행 가능성 — 무매도 표류 경로와 연 순매도 한도")
+print("=" * 70); print("[M4] 조건 ② 이행 실행 가능성 — 무매도 자연감소경로와 연 순매도 한도")
 A0 = P.aum_trn_krw; g = P.aum_growth; pr = P.eq_kr_price_return; H = int(P.horizon_years)
 w0 = P.w_eq_kr_now
 drift = [w0 * ((1 + pr) / (1 + g)) ** t for t in range(H + 1)]
 A_H = A0 * (1 + g) ** H
 limit = P.adv_trn_krw * P.participation_cap * P.trading_days
-print(f"  표류 경로(신규 자금 배제·배당 비재투자): " + " → ".join(f"{d*100:.1f}" for d in drift) + " %  (2026→2031)")
-print(f"  2031 총자산 {A_H:,.0f}조 · 연 순매도 한도 = ADV {P.adv_trn_krw}조 × 참여율 {P.participation_cap:.0%} × {int(P.trading_days)}일 = {limit:.0f}조/년")
+print(f"  자연감소경로(신규 자금 배제·배당 비재투자): " + " → ".join(f"{d*100:.1f}" for d in drift) + " %  (2026→2031)")
+print(f"  2031 총자산 {A_H:,.0f}조 · 연 순매도 한도 = ADV {P.adv_trn_krw}조 × 거래참여율 {P.participation_cap:.0%} × {int(P.trading_days)}일 = {limit:.0f}조/년")
 cands = {"안 A 14.9%": 0.149, "안 C 17.5%": 0.175, "안 C 18.0%": 0.18, "안 B 20.8%": 0.208}
 for k, x in cands.items():
     need = (drift[-1] - x) * A_H / H
@@ -85,11 +85,11 @@ for k, x in cands.items():
 x_star = drift[-1] - limit * H / A_H
 print(f"  한도를 꽉 채웠을 때 도달 가능한 2031 종점 = {x_star*100:.1f}% → 기본 답의 하한")
 
-print("=" * 70); print("[M4] 조건 ③ 2031 정합성 — 주식 55% 안에서 해외주식이 2027 목표(35.6%) 아래로 내려가지 않는 국내주식 상한")
+print("=" * 70); print("[M4] 조건 ③ 국내주식 상한 (해외주식 목표 유지조건) — 주식 55% 안에서 해외주식이 2027 목표(35.6%) 아래로 내려가지 않는 국내주식 상한")
 x_max = P.w_equity_target_2031 - P.w_eq_gl_target_2027
-print(f"  국내주식 상한 = 55.0 − 35.6 = {x_max*100:.1f}% → 20.8% 동결은 해외주식 축소(35.6→34.2)를 뜻해 정합성 위반")
+print(f"  국내주식 상한 = 55.0 − 35.6 = {x_max*100:.1f}% → 20.8% 동결은 해외주식 축소(35.6→34.2)를 뜻해 국내주식 상한 위반")
 
-print("=" * 70); print("[M4] 조건 ④ 시장 점유 상한 — 2031 보유액 / 국내주식 시가총액")
+print("=" * 70); print("[M4] 조건 ④ 시가총액 대비 보유비중 상한 — 2031 보유액 / 국내주식 시가총액")
 cap31 = P.mktcap_kr_trn_krw * (1 + pr) ** H
 for k, x in cands.items():
     sh = x * A_H / cap31

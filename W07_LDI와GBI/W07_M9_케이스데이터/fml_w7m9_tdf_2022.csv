@@ -1,0 +1,9 @@
+code,name,market,ret_2022_pct,fee_pct,floor_device,source,asof,is_assumed
+VTTVX,Vanguard Target Retirement 2025,US,-15.55,0.08,없음 — 정적 글라이드패스,Vanguard 팩트시트 2026.6,2022-12-31,0
+FFTWX,Fidelity Freedom 2025,US,-16.6,0.58,없음 — 능동 배분,AAII 펀드 데이터(Morningstar),2022-12-31,0
+TRRHX,T. Rowe Price Retirement 2025,US,-15.7,0.53,없음 — 주식 55% 유지,AAII 펀드 데이터 · T. Rowe 팩트시트 2026.6,2022-12-31,0
+KR_TDF2025,국내 TDF2025 1년 평균,KR,-14.0,0.48,펀드별 상이 — 편차 큼,자본시장연구원 이슈보고서 26-08,2022-12-31,0
+KR_TDF2045,국내 TDF2045 1년 평균,KR,-16.8,0.68,펀드별 상이,자본시장연구원 이슈보고서 26-08,2022-12-31,0
+KOSPI,KOSPI 2022,KR,-24.1,,지수,자본시장연구원 이슈보고서 26-08,2022-12-31,0
+MSCI,MSCI 지수 2022,US,-19.8,,지수,자본시장연구원 이슈보고서 26-08,2022-12-31,0
+TIAA_TRAD,TIAA Traditional(RA 계약) 보증 최저,US,3.0,,보증 3% + 추가 적립이율,TIAA 계약 안내,2022-12-31,0

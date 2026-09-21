@@ -1,0 +1,46 @@
+key,value,meaning,is_assumed
+asof,2026-09-21,기준일,0
+dc_guar_ret_pct,3.09,원리금보장 평균 수익률(Market 목표의 기준),0
+panel_seed,7207,모의 패널 난수 시드(설계 범위 탐색 결과),1
+n_panel,480,패널 개월 수,1
+age0,55,케이스 1 표준 가입자 나이,1
+retire_age,65,은퇴 나이(지평 10년),1
+a0,1.0,초기 적립금(=1),1
+g_s_mult,1.1,"Safety 목표 G_S = 초기 자산 × 배수(명목, T=10)",1
+ghp_y0,3.0,10년 금리 출발값 %,1
+market_alt_ret_pct,3.09,"Market 목표 G_M = (1+r)^10, r = 원리금보장 수익률",0
+safety_fail_max,0.05,조건 ① P(W_T<G_S) 상한,1
+cash_trap_max,0.1,조건 ② Cash Trap 확률 상한,1
+market_min,0.7,조건 ③ P(W_T≥G_M) 하한,1
+breach_max,0.01,조건 ④ 2022형 Floor 위반율 상한,1
+cash_trap_cushion,0.01,Cash Trap — 쿠션/W 임계,1
+rebal_months,3,리밸런싱 주기(개월),1
+n_path_cppi,4000,CPPI 경로 수,1
+shock_2022_dy_bp,25.0,2022형 월 금리 상승 bp(×12),1
+month_loss_cap,-0.15,패널 월간 손실 절단,1
+gap_shock,-0.22,갭 스트레스 — 한 달 수익률(1987년 10월형),1
+endow_bn_krw,5000.0,H대 기금(억),1
+fixed_spend_bn,175.0,고정 지출(억) 3.5%,1
+current_spend_bn,200.0,현행 지출(억) 4.0% — 이사회 유지 결의,1
+lump_bn,600.0,목돈 인출(억),1
+lump_year,3,목돈 인출 연차,1
+lockup_years,10,조건 ① 락업(년),1
+real_keep_min,0.5,조건 ② 실질가치 유지 확률 하한,1
+spend_margin_pp,0.5,조건 ② 안전마진 %p,1
+infl_pct,2.0,물가 %,1
+staff_h,1,H대 대체 전담 인력(명),1
+staff_min,3,조건 ③ 전담 인력 하한,1
+mgr_min,15,조건 ③ 매니저 분산 하한(개),1
+min_commit_bn,100.0,최소 출자(억),1
+unfunded_share,0.4,미납 약정 = 목표 × 비율,1
+call_years,4,납입 연수,1
+dist_start,6,분배 개시 연차,1
+smooth_w,0.8,지출 평활 가중(전년 지출),1
+spend_keep_min,0.95,조건 ④ 고정 지출 유지 확률 하한,1
+no_sell_years,3,충격 후 매도 금지 연수,1
+n_path_endow,4000,기금 경로 수,1
+z_list,3.5|4.0|4.5|5.25,지출률 후보,1
+y_list,15|20|25|30|40,안전 유동자산 하한 후보,1
+horizon_endow,30,기금 지평(년),1
+yale_illiq_cap,0.5,Yale 정책 비유동 상한(참고),0
+yale_spend_target,5.25,Yale 목표 지출률(참고),0
