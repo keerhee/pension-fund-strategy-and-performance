@@ -1,0 +1,4 @@
+code,name,liability,gov_bond_market,long_market_or_ldi,hedge_ratio,unit,is_assumed,note,asof
+UK,영국 DB(2022),1400.0,2200.0,1500.0,0.65,십억 파운드,0,PPF · DMO · BoE — 부채·길트 잔액은 근사(±10%),2026-09-21
+NL,네덜란드 DB(전환 전),1700.0,,,0.72,십억 유로,0,DNB · 업계 추정(유로 스왑 시장이 헤지 수단이라 국채 잔액 비교 생략),2026-09-21
+KR,국민연금(2026),,1159.4,437.3,,조원,1,부채·헤지 비율은 w7m8_compute.py 가 채운다(교육용),2026-09-21

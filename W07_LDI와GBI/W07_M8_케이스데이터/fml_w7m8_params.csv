@@ -1,0 +1,41 @@
+key,value,meaning,is_assumed
+asof,2026-09-21,기준일,0
+fund_2025_trn,1458.0,2025년 말 적립금(조),0
+fund_2026h1_trn,1865.6,"2026년 6월 말 적립금(조, 잠정)",0
+peak_year_official,2053,2025 재정추계 최대 적립 시점,0
+peak_fund_official,3659.0,최대 적립 규모(조),0
+deplete_45_official,2064,소진 — 수익률 4.5%,0
+deplete_55_official,2071,소진 — 수익률 5.5%,0
+hurdle_pct,5.5,허들 — 연금개혁 전제 기금수익률,0
+cvar_limit_pct,-15.0,기준포트폴리오 위험한도 CVaR95(지침 제6조의2),0
+saa_range_bond_dom_pp,7.0,국내채권 SAA 허용범위 ±%p(지침 별표 1),0
+target_bond_dom_2027_pct,21.8,2027년 말 국내채권 목표 비중,0
+bond_dom_gov_share,0.412,국내채권 중 국채 비중(2026 2분기),0
+benefit_2025_official,50.1,"2025 급여 지출(조, 중기재정전망)",0
+benefit_2026_official,56.7,"2026 급여 지출(조, 중기재정전망)",0
+contrib_2026,70.0,2026 보험료 수입(조),1
+benefit_2026,56.0,2026 급여 지출(조),1
+wage_g,0.03,임금 상승률,1
+insured_g,-0.008,가입자 증가율,1
+benefit_g_early,0.075,급여 증가율 ~2050,1
+benefit_g_late,0.0675,급여 증가율 2051~2070,1
+benefit_g_tail,0.035,급여 증가율 2071~,1
+liab_end_year,2071,부채 창 종료 연도(순유출 PV 의 마지막 해),1
+kofr_pct,3.75,단기 변동금리,1
+swap_spread_30y_pp,-0.15,IRS 30년 − 국고채 30년,1
+hedge_tenor_y,30,헤지 수단 만기,1
+program_years,5,안 B 프로그램 기간,1
+cap_issue_share,0.3,조건 ② 매입 ≤ 장기물 발행의 비율,1
+cap_irs_turnover_share,0.05,조건 ② IRS 명목 ≤ 연간 거래규모의 비율,1
+buffer_bp,250,조건 ③ 버퍼(영국 TPR 최소 회복력),0
+replenish_days,5,버퍼 재충전 기한(영업일),0
+shock_bp_3d,200,조건 ③ 스트레스 — 3영업일 급등 bp,1
+dfr_material_pp,-5.0,조건 ① 임계 — −100bp 시 ΔFR_g,1
+hedge_target_C,0.3,안 C 헤지 비율 목표,1
+irs_turnover_2025_trn,5986.0,2025 원화 IRS 거래규모(조),0
+uk_ldi_exposure_bn_gbp,1500,"영국 LDI 레버리지 익스포저(2021, 십억 파운드)",0
+uk_boe_envelope_bn,65,BoE 매입 한도,0
+uk_boe_bought_bn,19.3,BoE 실매입,0
+nl_hedge_ratio,0.72,"네덜란드 부채 헤지 비율(전환 전, 업계 추정)",0
+nl_wtp_deadline,2028-01-01,네덜란드 새 연금계약 전환 기한,0
+unfunded_nabo_trn,1820.0,"미적립부채(국회예산정책처, 70년)",0

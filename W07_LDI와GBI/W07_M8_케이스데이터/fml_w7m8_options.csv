@@ -1,0 +1,4 @@
+option,description,instrument,hedge_ratio_target,program_years,buffer_bp,lbp_disclosure,is_assumed,asof
+A,현행 — 헤지 추가 없음 · 부채 벤치마크 없음,none,0.0,0,0,0,1,2026-09-21
+B,"시장 상한형 — 현물 30년 국고채, 5년 프로그램, 매입 ≤ 장기물 발행의 30% · 부채 벤치마크(LBP) 공시",cash_bond_30y,,5,0,1,1,2026-09-21
+C,"오버레이형 — IRS 30년 오버레이로 헤지 비율 30%, 버퍼 250bp · 부채 벤치마크 공시",irs_30y,0.3,1,250,1,1,2026-09-21
