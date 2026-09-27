@@ -42,11 +42,11 @@ module.exports = {
     { type: "eq", file: "equation.png", cap: "이 자산이 지는 위험의 몫",
       title: "각자가 진 위험을 한 줄로 적습니다",
       cards: [{ cap: "w", title: "얼마씩 담았나" },
-              { cap: "(Σw)", title: "밀어 올린 몫" },
+              { cap: "Cov(rᵢ, rₚ)", title: "함께 움직이는 정도" },
               { cap: "σₚ", title: "전체 변동성" },
               { kind: "lime", cap: "RC", title: "이 자산이 진 위험" }],
       punch: [{ text: "각자의 몫을 다 더하면 전체 변동성이 됩니다. 그래서 “나눈다”고 말합니다.", color: C.teal },
-              { text: "비중이 작아도 많이 출렁이면 큰 몫을 집니다.", color: C.red }] },
+              { text: "비중이 작아도 많이 출렁이고 포트폴리오와 함께 움직이면 큰 몫을 집니다.", color: C.red }] },
 
     { type: "divider", num: "03", title: "위험으로 맞추면",
       sub: "위험을 반반으로 만들려면 돈은 반반이 아닙니다" },
