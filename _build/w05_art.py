@@ -7,10 +7,10 @@ from primer_lib import (out_dir, save, clean, svg, box, limebox, darkbox,
                         INK, PAPER, WHITE, LIME, TEAL, RED, BLUE, AMBER, MUTED, HAIR, DARK)
 
 OUT = out_dir("w05")
-EX = "주식 18% · 채권 5% · 상관 0.2 로 놓고 계산한 예시입니다"
+EX = "주식 16% · 채권 5% · 상관 0.2 로 놓고 계산한 예시입니다"
 
 # 예시 자산 — 주식과 채권
-SD = np.array([0.18, 0.05])
+SD = np.array([0.16, 0.05])   # W03 2교시가 데이터에서 끌어낸 3교시 입력값(22·25쪽)과 같게
 RHO = 0.2
 COV = np.array([[SD[0]**2, RHO * SD[0] * SD[1]],
                 [RHO * SD[0] * SD[1], SD[1]**2]])
