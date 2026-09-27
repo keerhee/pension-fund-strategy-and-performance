@@ -9,7 +9,7 @@
 행렬 표기 (Σw)_i 는 정의 페이지(W03 36쪽)에서 '논문 표기'로 한 번만 소개한다.
 
   W03 강의본 36쪽 — 정의(MCTR·RC)와 합 = σ_p 의 한 줄 증명
-  W05 프라이머 7쪽 — 읽기 쉬운 식 하나, 카드·결론 문장
+  W05 프라이머 7쪽 — 읽기 쉬운 식 하나(w_i도 분자에 — '전체 변동성 분의 몫'), 카드·결론 문장
   W05 강의본 10쪽 — ERC 조건을 Cov 로, 정의 한 줄
   W05 케이스 12쪽 — '합이 1'인 쪽은 RC 비율(RC_i/σ_p)로 기호를 구분
 
@@ -176,7 +176,7 @@ def main():
         pics = {sh.name: sh for sh in slide.shapes if sh.shape_type == 13}
 
         if key == 'W05P':
-            png = primer_lib.equation(rf'$RC_i\;=\;w_i\;\times\;\frac{{\mathrm{{Cov}}\left(r_i,\,r_p\right)}}{{\sigma_p}}$',
+            png = primer_lib.equation(rf'$RC_i\;=\;\frac{{w_i\,\mathrm{{Cov}}\left(r_i,\,r_p\right)}}{{\sigma_p}}$',
                                       name='w05p_eq.png', fontsize=44, width=8.0)
             swap_picture(slide, pics['Image 0'], png)
         else:

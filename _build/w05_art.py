@@ -123,7 +123,7 @@ def y2022():
 
 # ── 수식 ─────────────────────────────────────────────────────────
 def equation():
-    return eq_png(r"$RC_i\;=\;w_i\;\times\;\frac{\mathrm{Cov}\left(r_i,\,r_p\right)}{\sigma_p}$",
+    return eq_png(r"$RC_i\;=\;\frac{w_i\,\mathrm{Cov}\left(r_i,\,r_p\right)}{\sigma_p}$",
                   fontsize=44, width=8.0)
 
 
