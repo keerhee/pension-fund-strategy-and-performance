@@ -31,8 +31,9 @@
 | [`Risk_Based_Allocation_Workbook_III.pdf`](6_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Workbook_III.pdf) | 33 | 본편·특별 세션에서 결과만 쓴 숫자를 한 단계씩 손계산으로 따라가는 워크북 | **W05 리스크패리티와HRP** |
 | [`BL_Expected_Return_Update_bj.pdf`](7_%EB%B8%94%EB%9E%99%EB%A6%AC%ED%84%B0%EB%A7%A8_W04/BL_Expected_Return_Update_bj.pdf) | 25 | Black–Litterman 수치 예제 — 5종목·가치/모멘텀 뷰로 균형 기대수익 Π에서 BL 기대수익까지 2단계 계산, 부록 Grinold 알파 공식 | **W04 MVO와블랙리터맨** |
 | [`HRP_NCO_JJ_Brief_II.pdf`](9_HRP%EC%99%80NCO_W05/HRP_NCO_JJ_Brief_II.pdf) | 62 | HRP와 NCO — 공분산 역행렬의 불안정을 다루는 두 방법. HRP 3단계, RMT 디노이징, ONC 군집화, NCO 손계산과 비교 | **W05 리스크패리티와HRP** |
+| [`RMT_Covariance_Filter_JJ.pdf`](10_RMT%ED%95%84%ED%84%B0_W05/RMT_Covariance_Filter_JJ.pdf) | 32 | 랜덤행렬이론 공분산 필터링 — Marchenko–Pastur로 잡음 고유값을 골라 평탄화하고, 표본·RMT·Ledoit–Wolf 공분산을 out-of-sample로 비교한다. 실습 노트북 [`rmt_covariance_filter_lab.ipynb`](10_RMT%ED%95%84%ED%84%B0_W05/rmt_covariance_filter_lab.ipynb) 동봉 | **W05 리스크패리티와HRP** |
 
-19개 · 753쪽. CMA만 세 편이라 W03은 따로 묶어 본다.
+20개 · 785쪽. CMA만 세 편이라 W03은 따로 묶어 본다.
 
 ## 폴더
 
@@ -47,6 +48,7 @@
 | `7_블랙리터맨_W04/` | BL 기대수익률 업데이트 수치 예제 |
 | `8_Cerberus_사모신용_W14/02_Courses/` | 사모신용 과정 두 편 — Direct Lending · Residential Credit·ABS |
 | `9_HRP와NCO_W05/` | HRP와 NCO 설명자료 — RMT 디노이징 · ONC 군집화 |
+| `10_RMT필터_W05/` | RMT 공분산 필터 덱 + 실습 노트북(yfinance로 데이터를 직접 받는다) |
 
 ---
 
@@ -89,4 +91,4 @@ XBRL)이 정리돼 있다. W10 퀀트 모델과 XS 자율주행 포트폴리오�
   `stock-data-architecture-review`는 내부 데이터 구축 보고서를 검토한 것이라(작성자·이슈 번호는 지웠다)
   구독 범위·일정은 2026년 9월 시점 기준이다.
   인용할 때는 표지에 적힌 출처를 그대로 쓴다.
-- 여기에는 **PDF만 둔다.** 저장소 규칙대로 편집 원본 PPTX는 올리지 않는다.
+- 여기에는 **PDF만 둔다**(예외: `10_RMT필터_W05/`의 실습 노트북). 저장소 규칙대로 편집 원본 PPTX는 올리지 않는다.
