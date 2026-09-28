@@ -35,6 +35,41 @@
 
 20개 · 785쪽. CMA만 세 편이라 W03은 따로 묶어 본다.
 
+### 11_매크로전략_W13 — 글로벌 매크로·통화·인플레이션 (W13 글로벌매크로와CTA · SS1 통화 헤지와 함께)
+
+**강의덱** (11편 · 373쪽) — 파일명의 `11-5주차`·`12-0주차` 같은 번호는 2024년 과정의 주차라 이 과정의 주차와 다르다.
+
+| 자료 | 쪽 | 무엇을 다루나 |
+|---|---:|---|
+| [`12-0주차 글로벌 매크로 101.pdf`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EA%B0%95%EC%9D%98%EB%8D%B1/12-0%EC%A3%BC%EC%B0%A8%20%EA%B8%80%EB%A1%9C%EB%B2%8C%20%EB%A7%A4%ED%81%AC%EB%A1%9C%20101.pdf) | 20 | **글로벌 매크로 101** — Wellington 웨비나 정리 — 글로벌 매크로란 무엇인가, 배분 효과, 유리한 환경, 위험 요소 |
+| [`12-1주차 글로벌 매크로.pdf`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EA%B0%95%EC%9D%98%EB%8D%B1/12-1%EC%A3%BC%EC%B0%A8%20%EA%B8%80%EB%A1%9C%EB%B2%8C%20%EB%A7%A4%ED%81%AC%EB%A1%9C.pdf) | 25 | **글로벌 매크로 전략** — 수요·공급 충격과 네 경제 환경, 연준 점도표, 국가 선택·캐리·교역조건·수익률 곡선·버블 거래 |
+| [`12-2-1주차 국제금융_기초.pdf`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EA%B0%95%EC%9D%98%EB%8D%B1/12-2-1%EC%A3%BC%EC%B0%A8%20%EA%B5%AD%EC%A0%9C%EA%B8%88%EC%9C%B5_%EA%B8%B0%EC%B4%88.pdf) | 28 | **국제금융 기초** — 무차익 환율, PPP, UIP·CIP, 선도 프리미엄 퍼즐, 피셔 방정식 |
+| [`국제금융_기초2.pdf`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EA%B0%95%EC%9D%98%EB%8D%B1/%EA%B5%AD%EC%A0%9C%EA%B8%88%EC%9C%B5_%EA%B8%B0%EC%B4%882.pdf) | 62 | **국제금융 기초 2** — PPP·UIP·피셔 방정식, 위험회피와 UIP, 통화위기 모형, 통화·금리 스왑 |
+| [`12-2주차 캐리전략_Pedersen.pdf`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EA%B0%95%EC%9D%98%EB%8D%B1/12-2%EC%A3%BC%EC%B0%A8%20%EC%BA%90%EB%A6%AC%EC%A0%84%EB%9E%B5_Pedersen.pdf) | 25 | **캐리 전략 (Pedersen)** — 자산군별 캐리의 정의와 수익 예측력, 위험 노출, 드로다운과 경기침체 위험 |
+| [`12-3주차 추세추종과 TS 모멘텀 전략.pdf`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EA%B0%95%EC%9D%98%EB%8D%B1/12-3%EC%A3%BC%EC%B0%A8%20%EC%B6%94%EC%84%B8%EC%B6%94%EC%A2%85%EA%B3%BC%20TS%20%EB%AA%A8%EB%A9%98%ED%85%80%20%EC%A0%84%EB%9E%B5.pdf) | 13 | **추세추종과 시계열 모멘텀** — Managed Futures와 시계열 모멘텀 — 추세의 수명주기, 100년 백테스트, 구현 비용과 위험 |
+| [`Global Macro Risk Model for factors.pdf`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EA%B0%95%EC%9D%98%EB%8D%B1/Global%20Macro%20Risk%20Model%20for%20factors.pdf) | 45 | **글로벌 매크로 위험 모형과 팩터** — 가치·모멘텀 수익을 글로벌 거시 위험요인으로 설명 (Cooper·Mitrache·Priestley 해설) |
+| [`11-5주차.Defensive_전략_v2.pdf`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EA%B0%95%EC%9D%98%EB%8D%B1/11-5%EC%A3%BC%EC%B0%A8.Defensive_%EC%A0%84%EB%9E%B5_v2.pdf) | 43 | **저위험(Defensive) 전략** — 저변동성·저베타(BAB) 효과, SML이 평평한 이유, 버핏 수익의 팩터 분해 |
+| [`11장_실질자산.pdf`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EA%B0%95%EC%9D%98%EB%8D%B1/11%EC%9E%A5_%EC%8B%A4%EC%A7%88%EC%9E%90%EC%82%B0.pdf) | 19 | **실질자산** — 인플레이션과 실질채권(TIPS)·상품·금·부동산 |
+| [`13주차 인플레이션 헤지전략.pdf`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EA%B0%95%EC%9D%98%EB%8D%B1/13%EC%A3%BC%EC%B0%A8%20%EC%9D%B8%ED%94%8C%EB%A0%88%EC%9D%B4%EC%85%98%20%ED%97%A4%EC%A7%80%EC%A0%84%EB%9E%B5.pdf) | 50 | **인플레이션 헤지 전략** — 인플레이션 국면별 자산 성과와 헤지 포트폴리오 구성 |
+| [`Getting to the Core.pdf`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EA%B0%95%EC%9D%98%EB%8D%B1/Getting%20to%20the%20Core.pdf) | 43 | **Getting to the Core — 인플레이션 위험** — 근원·에너지 인플레이션 충격과 자산군별 베타 (Roussanov 웨비나 해설) |
+
+**참고자료** (11편 · 909쪽) — 외부 논문·리포트·웨비나 슬라이드. 파일명은 `저자_연도_제목_출처`로 고쳤다. 권리는 각 원저작자에게 있다.
+
+| 자료 | 쪽 | 출처 |
+|---|---:|---|
+| [`Global Macro Strategies 101`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/Wellington_Endowus_2023_Global_Macro_Strategies_101_Webinar.pdf) | 10 | Wellington Management · Endowus 웨비나 슬라이드 (2023) |
+| [`Factor Investing in Currency Markets: Does it Make Sense?`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/Amundi_Roncalli_et_al_2019_Factor_Investing_in_Currency_Markets_WP-89.pdf) | 116 | Baku·Hervé·Lezmi·Malongo·Roncalli·Xu, Amundi Working Paper 89 (2019) |
+| [`A Global Macroeconomic Risk Model for Value, Momentum, and Other Asset Classes`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/Cooper_Mitrache_Priestley_2017_Global_Macroeconomic_Risk_Model_Value_Momentum.pdf) | 70 | Cooper·Mitrache·Priestley (2017) 논문 |
+| [`A Global Macroeconomic Risk Model — 발표 슬라이드`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/Cooper_Mitrache_Priestley_Global_Macroeconomic_Risk_Model_Wharton_Slides.pdf) | 23 | Cooper·Mitrache·Priestley, Wharton Jacobs Levy 발표 |
+| [`Sequencing the Strategy Genome`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/Lazanas_et_al_2011_Sequencing_the_Strategy_Genome_Barclays.pdf) | 32 | Lazanas·Ghia·Staal·Rennison, Barclays 리스크 프리미엄 보고서 (2011, 현 Bloomberg) |
+| [`Currency Management by International Fixed Income Mutual Funds`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/Sialm_Zhu_2021_Currency_Management_by_International_Fixed_Income_Funds_NBER_w29082.pdf) | 62 | Sialm·Zhu, NBER Working Paper 29082 (2021) |
+| [`Global Asset Allocation in Fixed Income Markets`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/Ramaswamy_1997_Global_Asset_Allocation_in_Fixed_Income_Markets_BIS_WP46.pdf) | 35 | Ramaswamy, BIS Working Paper 46 (1997) |
+| [`Tips from TIPS: the Informational Content of TIPS Prices`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/DAmico_Kim_Wei_2016_Tips_from_TIPS_FEDS_2014-024.pdf) | 88 | D’Amico·Kim·Wei, Fed FEDS 2014-024 (2016 개정판) |
+| [`Getting to the Core: Inflation Risks within and across Asset Classes`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/Roussanov_Fang_Liu_Getting_to_the_Core_Inflation_Risks_Wharton_Webinar.pdf) | 24 | Roussanov·Fang·Liu, Wharton Jacobs Levy 웨비나 슬라이드 |
+| [`The Empirical Foundations of the Arbitrage Pricing Theory I`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/Lehmann_Modest_1985_Empirical_Foundations_of_APT_NBER_w1725.pdf) | 64 | Lehmann·Modest, NBER Working Paper 1725 (1985) |
+| [`Factor Investing Handbook`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/UBS_MSCI_2015_Factor_Investing_Handbook.pdf) | 385 | UBS·MSCI (2015) |
+
+
 ## 폴더
 
 | 폴더 | 무엇이 들었나 |
@@ -49,6 +84,7 @@
 | `8_대체투자_W14/02_Courses/` | 사모신용 과정 두 편 — Direct Lending · Residential Credit·ABS |
 | `9_HRP와NCO_W05/` | HRP와 NCO 설명자료 — RMT 디노이징 · ONC 군집화 |
 | `10_RMT필터_W04/` | RMT 공분산 필터 덱 + 실습 노트북(yfinance로 데이터를 직접 받는다) + `SandP500_wiki.csv`(Wikipedia 접속이 안 될 때 쓰는 S&P 500 종목·섹터 목록, 2026-09-28 기준 503종목) |
+| `11_매크로전략_W13/` | 글로벌 매크로·국제금융·캐리·추세추종·인플레이션 헤지 강의덱 11편 + 외부 참고자료 11편 |
 
 ---
 
@@ -91,4 +127,4 @@ XBRL)이 정리돼 있다. W10 퀀트 모델과 XS 자율주행 포트폴리오�
   `stock-data-architecture-review`는 내부 데이터 구축 보고서를 검토한 것이라(작성자·이슈 번호는 지웠다)
   구독 범위·일정은 2026년 9월 시점 기준이다.
   인용할 때는 표지에 적힌 출처를 그대로 쓴다.
-- 여기에는 **PDF만 둔다**(예외: `10_RMT필터_W04/`의 실습 노트북과 종목 목록 CSV). 저장소 규칙대로 편집 원본 PPTX는 올리지 않는다.
+- 여기에는 **PDF만 둔다**(`11_매크로전략_W13/참고자료/`는 외부 원문 PDF를 그대로 둔다. 예외: `10_RMT필터_W04/`의 실습 노트북과 종목 목록 CSV). 저장소 규칙대로 편집 원본 PPTX는 올리지 않는다.
