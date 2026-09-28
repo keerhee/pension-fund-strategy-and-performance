@@ -12,25 +12,25 @@
 
 | 자료 | 쪽 | 무엇을 다루나 | 함께 보면 좋은 주차 |
 |---|---:|---|---|
-| [`quant_investing_motivation.pdf`](1_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/quant_investing_motivation.pdf) | 50 | 퀀트 인베스팅 전반 — 정의 · 팩터 · 포트폴리오 구축 · FLAM · 주요 운용사 | 과정 시작 전 · W10 · W12 |
-| [`W03_BuildingBlock_CMA_ZeroOne.pdf`](2_CMA_W03/W03_BuildingBlock_CMA_ZeroOne.pdf) | 45 | Building Block CMA — 28개 자산군의 수익률을 여덟 개 블록으로 분해한다 | **W03 연기금모델과CMA** |
-| [`BlackRock_Boracay_LongTerm_CMA.pdf`](2_CMA_W03/BlackRock_Boracay_LongTerm_CMA.pdf) | 42 | 장기 자본시장가정(CMA) — 미국 ERP, 주식·채권 기대수익 추정 (BlackRock Boracay Phase 1 · Topic 5) | **W03 연기금모델과CMA** |
-| [`W03_Macro_First_CMA_ZeroOne.pdf`](2_CMA_W03/W03_Macro_First_CMA_ZeroOne.pdf) | 42 | Macro-first Building Block — GDP·인플레이션에서 시작해 모든 자산군으로 내려온다 | **W03 연기금모델과CMA** |
-| [`stock-data-architecture-review.pdf`](5_%EB%8D%B0%EC%9D%B4%ED%84%B0/stock-data-architecture-review.pdf) | 40 | 주식 데이터 아키텍처 검토와 제안 — CRSP·Compustat·WRDS 구독 범위, 회사-종목 연결, PIT 재무, 상장폐지 처리 | W10 주식퀀트모델 · XS · [실습 데이터 가이드](../_%EA%B3%BC%EC%A0%95%EC%9A%B4%EC%98%81/) |
-| [`Moskowitz_Quality_Defensive_Investing.pdf`](3_%ED%8C%A9%ED%84%B0_W12/Moskowitz_Quality_Defensive_Investing.pdf) | 36 | Quality·Defensive 투자 — 좋은 기업을 합리적 가격에, 안전한 자산에 레버리지를 (Yale SOM Master Class) | **W12 팩터투자** |
-| [`13F_Predatory_Trading_3Agent_MBA_Deck.pdf`](4_TPA_W15/13F_Predatory_Trading_3Agent_MBA_Deck.pdf) | 36 | 13F 전략적 공시와 포식적 거래 — 3-Agent 동적 게임 | **W15 TPA** · W10 |
-| [`FamaFrench_Model_ZeroOne.pdf`](3_%ED%8C%A9%ED%84%B0_W12/FamaFrench_Model_ZeroOne.pdf) | 29 | Fama-French 3요인 모델 — 이상현상에서 팩터로, 25 포트폴리오 구성법 | **W12 팩터투자** |
-| [`TPA_Framework_Brief_Deck_v01.pdf`](4_TPA_W15/TPA_Framework_Brief_Deck_v01.pdf) | 28 | TPA 설계 프레임 v0.1 — 밖의 자산·부채 → 헤지 가능성 R² → 딜 심사 → 거버넌스 세 조건, 5단계 절차와 명제 7개 | **W15 TPA** · W07 LDI |
-| [`0. Stylized Facts and SDF.pdf`](1_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/0.%20Stylized%20Facts%20and%20SDF.pdf) | 21 | 수익률의 세 가지 정형화된 사실과 확률할인요인(SDF) | 과정 시작 전 · W02 |
-| [`Barberis_PE_Habit_Extrapolation_deck.pdf`](1_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/Barberis_PE_Habit_Extrapolation_deck.pdf) | 18 | 시장 P/E는 왜 한 세기 동안 출렁였는가 — Habit Formation과 과잉 외삽 | W06 동적포트폴리오와장기투자 |
-| [`Direct_Lending_Course_bj.pdf`](8_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90_W14/02_Courses/Direct_Lending_Course_bj.pdf) | 43 | Direct Lending 종합 과정 — 미들마켓 직접대출, 자본구조와 권리, 가격결정, 운용사 투자 관점 | W14 대체투자와비유동성 |
-| [`Residential_Credit_ABS_Course_bj.pdf`](8_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90_W14/02_Courses/Residential_Credit_ABS_Course_bj.pdf) | 52 | Residential Credit와 ABS 투자 — 주거용 신용, 대출 심사, RMBS·ABS 구조 (8주 과정) | W14 대체투자와비유동성 |
-| [`Risk_Based_Allocation_Main_VIII.pdf`](6_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Main_VIII.pdf) | 61 | 리스크 패리티와 최대 분산을 하나의 3자산 예제로 통합 비교 — MVO·EW·역변동성·GMV·ERC·리스크 버짓·MDP | **W05 리스크패리티와HRP** |
-| [`Risk_Based_Allocation_Main_VIII_bj.pdf`](6_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Main_VIII_bj.pdf) | 61 | 본편 VIII와 같은 내용을 bj덱 디자인(크림·네이비)으로 만든 판 | **W05 리스크패리티와HRP** |
-| [`Risk_Based_Allocation_Special_Session_IV.pdf`](6_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Special_Session_IV.pdf) | 29 | 본편 결론을 뒷받침하는 도출·증명·알고리즘 — 예산 제약 ERC 해법, MDP 증명, ERC 계산 알고리즘, 4개 ETF 백테스트 | **W05 리스크패리티와HRP** |
-| [`Risk_Based_Allocation_Workbook_III.pdf`](6_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Workbook_III.pdf) | 33 | 본편·특별 세션에서 결과만 쓴 숫자를 한 단계씩 손계산으로 따라가는 워크북 | **W05 리스크패리티와HRP** |
-| [`BL_Expected_Return_Update_bj.pdf`](7_%EB%B8%94%EB%9E%99%EB%A6%AC%ED%84%B0%EB%A7%A8_W04/BL_Expected_Return_Update_bj.pdf) | 25 | Black–Litterman 수치 예제 — 5종목·가치/모멘텀 뷰로 균형 기대수익 Π에서 BL 기대수익까지 2단계 계산, 부록 Grinold 알파 공식 | **W04 MVO와블랙리터맨** |
-| [`HRP_NCO_JJ_Brief_II.pdf`](9_HRP%EC%99%80NCO_W05/HRP_NCO_JJ_Brief_II.pdf) | 62 | HRP와 NCO — 공분산 역행렬의 불안정을 다루는 두 방법. HRP 3단계, RMT 디노이징, ONC 군집화, NCO 손계산과 비교 | **W05 리스크패리티와HRP** |
+| [`quant_investing_motivation.pdf`](01_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/quant_investing_motivation.pdf) | 50 | 퀀트 인베스팅 전반 — 정의 · 팩터 · 포트폴리오 구축 · FLAM · 주요 운용사 | 과정 시작 전 · W10 · W12 |
+| [`W03_BuildingBlock_CMA_ZeroOne.pdf`](02_CMA_W03/W03_BuildingBlock_CMA_ZeroOne.pdf) | 45 | Building Block CMA — 28개 자산군의 수익률을 여덟 개 블록으로 분해한다 | **W03 연기금모델과CMA** |
+| [`BlackRock_Boracay_LongTerm_CMA.pdf`](02_CMA_W03/BlackRock_Boracay_LongTerm_CMA.pdf) | 42 | 장기 자본시장가정(CMA) — 미국 ERP, 주식·채권 기대수익 추정 (BlackRock Boracay Phase 1 · Topic 5) | **W03 연기금모델과CMA** |
+| [`W03_Macro_First_CMA_ZeroOne.pdf`](02_CMA_W03/W03_Macro_First_CMA_ZeroOne.pdf) | 42 | Macro-first Building Block — GDP·인플레이션에서 시작해 모든 자산군으로 내려온다 | **W03 연기금모델과CMA** |
+| [`stock-data-architecture-review.pdf`](05_%EB%8D%B0%EC%9D%B4%ED%84%B0/stock-data-architecture-review.pdf) | 40 | 주식 데이터 아키텍처 검토와 제안 — CRSP·Compustat·WRDS 구독 범위, 회사-종목 연결, PIT 재무, 상장폐지 처리 | W10 주식퀀트모델 · XS · [실습 데이터 가이드](../_%EA%B3%BC%EC%A0%95%EC%9A%B4%EC%98%81/) |
+| [`Moskowitz_Quality_Defensive_Investing.pdf`](03_%ED%8C%A9%ED%84%B0_W12/Moskowitz_Quality_Defensive_Investing.pdf) | 36 | Quality·Defensive 투자 — 좋은 기업을 합리적 가격에, 안전한 자산에 레버리지를 (Yale SOM Master Class) | **W12 팩터투자** |
+| [`13F_Predatory_Trading_3Agent_MBA_Deck.pdf`](04_TPA_W15/13F_Predatory_Trading_3Agent_MBA_Deck.pdf) | 36 | 13F 전략적 공시와 포식적 거래 — 3-Agent 동적 게임 | **W15 TPA** · W10 |
+| [`FamaFrench_Model_ZeroOne.pdf`](03_%ED%8C%A9%ED%84%B0_W12/FamaFrench_Model_ZeroOne.pdf) | 29 | Fama-French 3요인 모델 — 이상현상에서 팩터로, 25 포트폴리오 구성법 | **W12 팩터투자** |
+| [`TPA_Framework_Brief_Deck_v01.pdf`](04_TPA_W15/TPA_Framework_Brief_Deck_v01.pdf) | 28 | TPA 설계 프레임 v0.1 — 밖의 자산·부채 → 헤지 가능성 R² → 딜 심사 → 거버넌스 세 조건, 5단계 절차와 명제 7개 | **W15 TPA** · W07 LDI |
+| [`0. Stylized Facts and SDF.pdf`](01_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/0.%20Stylized%20Facts%20and%20SDF.pdf) | 21 | 수익률의 세 가지 정형화된 사실과 확률할인요인(SDF) | 과정 시작 전 · W02 |
+| [`Barberis_PE_Habit_Extrapolation_deck.pdf`](01_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/Barberis_PE_Habit_Extrapolation_deck.pdf) | 18 | 시장 P/E는 왜 한 세기 동안 출렁였는가 — Habit Formation과 과잉 외삽 | W06 동적포트폴리오와장기투자 |
+| [`Direct_Lending_Course_bj.pdf`](08_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90_W14/02_Courses/Direct_Lending_Course_bj.pdf) | 43 | Direct Lending 종합 과정 — 미들마켓 직접대출, 자본구조와 권리, 가격결정, 운용사 투자 관점 | W14 대체투자와비유동성 |
+| [`Residential_Credit_ABS_Course_bj.pdf`](08_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90_W14/02_Courses/Residential_Credit_ABS_Course_bj.pdf) | 52 | Residential Credit와 ABS 투자 — 주거용 신용, 대출 심사, RMBS·ABS 구조 (8주 과정) | W14 대체투자와비유동성 |
+| [`Risk_Based_Allocation_Main_VIII.pdf`](06_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Main_VIII.pdf) | 61 | 리스크 패리티와 최대 분산을 하나의 3자산 예제로 통합 비교 — MVO·EW·역변동성·GMV·ERC·리스크 버짓·MDP | **W05 리스크패리티와HRP** |
+| [`Risk_Based_Allocation_Main_VIII_bj.pdf`](06_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Main_VIII_bj.pdf) | 61 | 본편 VIII와 같은 내용을 bj덱 디자인(크림·네이비)으로 만든 판 | **W05 리스크패리티와HRP** |
+| [`Risk_Based_Allocation_Special_Session_IV.pdf`](06_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Special_Session_IV.pdf) | 29 | 본편 결론을 뒷받침하는 도출·증명·알고리즘 — 예산 제약 ERC 해법, MDP 증명, ERC 계산 알고리즘, 4개 ETF 백테스트 | **W05 리스크패리티와HRP** |
+| [`Risk_Based_Allocation_Workbook_III.pdf`](06_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Workbook_III.pdf) | 33 | 본편·특별 세션에서 결과만 쓴 숫자를 한 단계씩 손계산으로 따라가는 워크북 | **W05 리스크패리티와HRP** |
+| [`BL_Expected_Return_Update_bj.pdf`](07_%EB%B8%94%EB%9E%99%EB%A6%AC%ED%84%B0%EB%A7%A8_W04/BL_Expected_Return_Update_bj.pdf) | 25 | Black–Litterman 수치 예제 — 5종목·가치/모멘텀 뷰로 균형 기대수익 Π에서 BL 기대수익까지 2단계 계산, 부록 Grinold 알파 공식 | **W04 MVO와블랙리터맨** |
+| [`HRP_NCO_JJ_Brief_II.pdf`](09_HRP%EC%99%80NCO_W05/HRP_NCO_JJ_Brief_II.pdf) | 62 | HRP와 NCO — 공분산 역행렬의 불안정을 다루는 두 방법. HRP 3단계, RMT 디노이징, ONC 군집화, NCO 손계산과 비교 | **W05 리스크패리티와HRP** |
 | [`RMT_Covariance_Filter_JJ.pdf`](10_RMT%ED%95%84%ED%84%B0_W04/RMT_Covariance_Filter_JJ.pdf) | 32 | 랜덤행렬이론 공분산 필터링 — Marchenko–Pastur로 잡음 고유값을 골라 평탄화하고, 표본·RMT·Ledoit–Wolf 공분산을 out-of-sample로 비교한다. 실습 노트북 [`rmt_covariance_filter_lab.ipynb`](10_RMT%ED%95%84%ED%84%B0_W04/rmt_covariance_filter_lab.ipynb) 동봉 | **W04 MVO와블랙리터맨** (M4 공분산 추정) |
 
 20개 · 785쪽. CMA만 세 편이라 W03은 따로 묶어 본다.
@@ -74,15 +74,15 @@
 
 | 폴더 | 무엇이 들었나 |
 |---|---|
-| `1_입문_퀀트와자산가격/` | 퀀트 인베스팅 전반 · 정형화된 사실과 SDF · 시장 P/E (과정 시작 전) |
-| `2_CMA_W03/` | CMA 세 편 — Macro-first → Building Block → BlackRock Boracay |
-| `3_팩터_W12/` | Fama-French 3요인 · Quality·Defensive |
-| `4_TPA_W15/` | TPA 설계 프레임 · 13F 포식적 거래 |
-| `5_데이터/` | 주식 데이터 아키텍처 검토 |
-| `6_위험기반배분_W05/` | 위험 기반 자산배분 3덱 — 본편 VIII(일반판·bj판) · 특별 세션 IV · 워크북 III |
-| `7_블랙리터맨_W04/` | BL 기대수익률 업데이트 수치 예제 |
-| `8_대체투자_W14/02_Courses/` | 사모신용 과정 두 편 — Direct Lending · Residential Credit·ABS |
-| `9_HRP와NCO_W05/` | HRP와 NCO 설명자료 — RMT 디노이징 · ONC 군집화 |
+| `01_입문_퀀트와자산가격/` | 퀀트 인베스팅 전반 · 정형화된 사실과 SDF · 시장 P/E (과정 시작 전) |
+| `02_CMA_W03/` | CMA 세 편 — Macro-first → Building Block → BlackRock Boracay |
+| `03_팩터_W12/` | Fama-French 3요인 · Quality·Defensive |
+| `04_TPA_W15/` | TPA 설계 프레임 · 13F 포식적 거래 |
+| `05_데이터/` | 주식 데이터 아키텍처 검토 |
+| `06_위험기반배분_W05/` | 위험 기반 자산배분 3덱 — 본편 VIII(일반판·bj판) · 특별 세션 IV · 워크북 III |
+| `07_블랙리터맨_W04/` | BL 기대수익률 업데이트 수치 예제 |
+| `08_대체투자_W14/02_Courses/` | 사모신용 과정 두 편 — Direct Lending · Residential Credit·ABS |
+| `09_HRP와NCO_W05/` | HRP와 NCO 설명자료 — RMT 디노이징 · ONC 군집화 |
 | `10_RMT필터_W04/` | RMT 공분산 필터 덱 + 실습 노트북(yfinance로 데이터를 직접 받는다) + `SandP500_wiki.csv`(Wikipedia 접속이 안 될 때 쓰는 S&P 500 종목·섹터 목록, 2026-09-28 기준 503종목) |
 | `11_매크로전략_W13/` | 글로벌 매크로·국제금융·캐리·추세추종·인플레이션 헤지 강의덱 11편 + 외부 참고자료 11편 |
 
