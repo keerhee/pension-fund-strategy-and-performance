@@ -48,7 +48,7 @@
 | `7_블랙리터맨_W04/` | BL 기대수익률 업데이트 수치 예제 |
 | `8_대체투자_W14/02_Courses/` | 사모신용 과정 두 편 — Direct Lending · Residential Credit·ABS |
 | `9_HRP와NCO_W05/` | HRP와 NCO 설명자료 — RMT 디노이징 · ONC 군집화 |
-| `10_RMT필터_W05/` | RMT 공분산 필터 덱 + 실습 노트북(yfinance로 데이터를 직접 받는다) + `SandP500_wiki.csv`(Wikipedia 접속이 안 될 때 쓰는 S&P 500 종목·섹터 목록, 2026-09-28 기준 503종목) |
+| `10_RMT필터_W05/` | RMT 공분산 필터 덱 + 실습 노트북(yfinance로 데이터를 직접 받는다) + `SandP500_wiki.csv`(Wikipedia 접속이 안 될 때 쓰는 S&P 500 종목·섹터 목록, 2026-09-28 기준 503종목) + `SandP500_wiki_2015_원본.csv`(원자료 steve98654/PyTalk의 2015년 목록, 참고용 — 194종목이 이후 편출돼 덱 수치 재현에는 쓰지 않는다) |
 
 ---
 
