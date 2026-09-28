@@ -30,8 +30,9 @@
 | [`Risk_Based_Allocation_Special_Session_IV.pdf`](6_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Special_Session_IV.pdf) | 29 | 본편 결론을 뒷받침하는 도출·증명·알고리즘 — 예산 제약 ERC 해법, MDP 증명, ERC 계산 알고리즘, 4개 ETF 백테스트 | **W05 리스크패리티와HRP** |
 | [`Risk_Based_Allocation_Workbook_III.pdf`](6_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Workbook_III.pdf) | 33 | 본편·특별 세션에서 결과만 쓴 숫자를 한 단계씩 손계산으로 따라가는 워크북 | **W05 리스크패리티와HRP** |
 | [`BL_Expected_Return_Update_bj.pdf`](7_%EB%B8%94%EB%9E%99%EB%A6%AC%ED%84%B0%EB%A7%A8_W04/BL_Expected_Return_Update_bj.pdf) | 25 | Black–Litterman 수치 예제 — 5종목·가치/모멘텀 뷰로 균형 기대수익 Π에서 BL 기대수익까지 2단계 계산, 부록 Grinold 알파 공식 | **W04 MVO와블랙리터맨** |
+| [`HRP_NCO_JJ_Brief_II.pdf`](9_HRP%EC%99%80NCO_W05/HRP_NCO_JJ_Brief_II.pdf) | 62 | HRP와 NCO — 공분산 역행렬의 불안정을 다루는 두 방법. HRP 3단계, RMT 디노이징, ONC 군집화, NCO 손계산과 비교 | **W05 리스크패리티와HRP** |
 
-18개 · 691쪽. CMA만 세 편이라 W03은 따로 묶어 본다.
+19개 · 753쪽. CMA만 세 편이라 W03은 따로 묶어 본다.
 
 ## 폴더
 
@@ -45,6 +46,7 @@
 | `6_위험기반배분_W05/` | 위험 기반 자산배분 3덱 — 본편 VIII(일반판·bj판) · 특별 세션 IV · 워크북 III |
 | `7_블랙리터맨_W04/` | BL 기대수익률 업데이트 수치 예제 |
 | `8_Cerberus_사모신용_W14/02_Courses/` | 사모신용 과정 두 편 — Direct Lending · Residential Credit·ABS |
+| `9_HRP와NCO_W05/` | HRP와 NCO 설명자료 — RMT 디노이징 · ONC 군집화 |
 
 ---
 
