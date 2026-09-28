@@ -23,8 +23,8 @@
 | [`TPA_Framework_Brief_Deck_v01.pdf`](4_TPA_W15/TPA_Framework_Brief_Deck_v01.pdf) | 28 | TPA 설계 프레임 v0.1 — 밖의 자산·부채 → 헤지 가능성 R² → 딜 심사 → 거버넌스 세 조건, 5단계 절차와 명제 7개 | **W15 TPA** · W07 LDI |
 | [`0. Stylized Facts and SDF.pdf`](1_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/0.%20Stylized%20Facts%20and%20SDF.pdf) | 21 | 수익률의 세 가지 정형화된 사실과 확률할인요인(SDF) | 과정 시작 전 · W02 |
 | [`Barberis_PE_Habit_Extrapolation_deck.pdf`](1_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/Barberis_PE_Habit_Extrapolation_deck.pdf) | 18 | 시장 P/E는 왜 한 세기 동안 출렁였는가 — Habit Formation과 과잉 외삽 | W06 동적포트폴리오와장기투자 |
-| [`Direct_Lending_Course_bj.pdf`](8_Cerberus_%EC%82%AC%EB%AA%A8%EC%8B%A0%EC%9A%A9_W14/02_Courses/Direct_Lending_Course_bj.pdf) | 43 | Direct Lending 종합 과정 — 미들마켓 직접대출, 자본구조와 권리, 가격결정, 운용사 투자 관점 | W14 대체투자와비유동성 |
-| [`Residential_Credit_ABS_Course_bj.pdf`](8_Cerberus_%EC%82%AC%EB%AA%A8%EC%8B%A0%EC%9A%A9_W14/02_Courses/Residential_Credit_ABS_Course_bj.pdf) | 52 | Residential Credit와 ABS 투자 — 주거용 신용, 대출 심사, RMBS·ABS 구조 (8주 과정) | W14 대체투자와비유동성 |
+| [`Direct_Lending_Course_bj.pdf`](8_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90_W14/02_Courses/Direct_Lending_Course_bj.pdf) | 43 | Direct Lending 종합 과정 — 미들마켓 직접대출, 자본구조와 권리, 가격결정, 운용사 투자 관점 | W14 대체투자와비유동성 |
+| [`Residential_Credit_ABS_Course_bj.pdf`](8_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90_W14/02_Courses/Residential_Credit_ABS_Course_bj.pdf) | 52 | Residential Credit와 ABS 투자 — 주거용 신용, 대출 심사, RMBS·ABS 구조 (8주 과정) | W14 대체투자와비유동성 |
 | [`Risk_Based_Allocation_Main_VIII.pdf`](6_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Main_VIII.pdf) | 61 | 리스크 패리티와 최대 분산을 하나의 3자산 예제로 통합 비교 — MVO·EW·역변동성·GMV·ERC·리스크 버짓·MDP | **W05 리스크패리티와HRP** |
 | [`Risk_Based_Allocation_Main_VIII_bj.pdf`](6_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Main_VIII_bj.pdf) | 61 | 본편 VIII와 같은 내용을 bj덱 디자인(크림·네이비)으로 만든 판 | **W05 리스크패리티와HRP** |
 | [`Risk_Based_Allocation_Special_Session_IV.pdf`](6_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Special_Session_IV.pdf) | 29 | 본편 결론을 뒷받침하는 도출·증명·알고리즘 — 예산 제약 ERC 해법, MDP 증명, ERC 계산 알고리즘, 4개 ETF 백테스트 | **W05 리스크패리티와HRP** |
@@ -46,7 +46,7 @@
 | `5_데이터/` | 주식 데이터 아키텍처 검토 |
 | `6_위험기반배분_W05/` | 위험 기반 자산배분 3덱 — 본편 VIII(일반판·bj판) · 특별 세션 IV · 워크북 III |
 | `7_블랙리터맨_W04/` | BL 기대수익률 업데이트 수치 예제 |
-| `8_Cerberus_사모신용_W14/02_Courses/` | 사모신용 과정 두 편 — Direct Lending · Residential Credit·ABS |
+| `8_대체투자_W14/02_Courses/` | 사모신용 과정 두 편 — Direct Lending · Residential Credit·ABS |
 | `9_HRP와NCO_W05/` | HRP와 NCO 설명자료 — RMT 디노이징 · ONC 군집화 |
 | `10_RMT필터_W05/` | RMT 공분산 필터 덱 + 실습 노트북(yfinance로 데이터를 직접 받는다) |
 
