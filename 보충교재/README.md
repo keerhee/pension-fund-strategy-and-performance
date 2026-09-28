@@ -12,19 +12,32 @@
 
 | 자료 | 쪽 | 무엇을 다루나 | 함께 보면 좋은 주차 |
 |---|---:|---|---|
-| [`quant_investing_motivation.pdf`](quant_investing_motivation.pdf) | 50 | 퀀트 인베스팅 전반 — 정의 · 팩터 · 포트폴리오 구축 · FLAM · 주요 운용사 | 과정 시작 전 · W10 · W12 |
-| [`W03_BuildingBlock_CMA_ZeroOne.pdf`](W03_BuildingBlock_CMA_ZeroOne.pdf) | 45 | Building Block CMA — 28개 자산군의 수익률을 여덟 개 블록으로 분해한다 | **W03 연기금모델과CMA** |
-| [`BlackRock_Boracay_LongTerm_CMA.pdf`](BlackRock_Boracay_LongTerm_CMA.pdf) | 42 | 장기 자본시장가정(CMA) — 미국 ERP, 주식·채권 기대수익 추정 (BlackRock Boracay Phase 1 · Topic 5) | **W03 연기금모델과CMA** |
-| [`W03_Macro_First_CMA_ZeroOne.pdf`](W03_Macro_First_CMA_ZeroOne.pdf) | 42 | Macro-first Building Block — GDP·인플레이션에서 시작해 모든 자산군으로 내려온다 | **W03 연기금모델과CMA** |
-| [`stock-data-architecture-review.pdf`](stock-data-architecture-review.pdf) | 40 | 주식 데이터 아키텍처 검토와 제안 — CRSP·Compustat·WRDS 구독 범위, 회사-종목 연결, PIT 재무, 상장폐지 처리 | W10 주식퀀트모델 · XS · [실습 데이터 가이드](../_%EA%B3%BC%EC%A0%95%EC%9A%B4%EC%98%81/) |
-| [`Moskowitz_Quality_Defensive_Investing.pdf`](Moskowitz_Quality_Defensive_Investing.pdf) | 36 | Quality·Defensive 투자 — 좋은 기업을 합리적 가격에, 안전한 자산에 레버리지를 (Yale SOM Master Class) | **W12 팩터투자** |
-| [`13F_Predatory_Trading_3Agent_MBA_Deck.pdf`](13F_Predatory_Trading_3Agent_MBA_Deck.pdf) | 36 | 13F 전략적 공시와 포식적 거래 — 3-Agent 동적 게임 | **W15 TPA** · W10 |
-| [`FamaFrench_Model_ZeroOne.pdf`](FamaFrench_Model_ZeroOne.pdf) | 29 | Fama-French 3요인 모델 — 이상현상에서 팩터로, 25 포트폴리오 구성법 | **W12 팩터투자** |
-| [`TPA_Framework_Brief_Deck_v01.pdf`](TPA_Framework_Brief_Deck_v01.pdf) | 28 | TPA 설계 프레임 v0.1 — 밖의 자산·부채 → 헤지 가능성 R² → 딜 심사 → 거버넌스 세 조건, 5단계 절차와 명제 7개 | **W15 TPA** · W07 LDI |
-| [`0. Stylized Facts and SDF.pdf`](0.%20Stylized%20Facts%20and%20SDF.pdf) | 21 | 수익률의 세 가지 정형화된 사실과 확률할인요인(SDF) | 과정 시작 전 · W02 |
-| [`Barberis_PE_Habit_Extrapolation_deck.pdf`](Barberis_PE_Habit_Extrapolation_deck.pdf) | 18 | 시장 P/E는 왜 한 세기 동안 출렁였는가 — Habit Formation과 과잉 외삽 | W06 동적포트폴리오와장기투자 |
+| [`quant_investing_motivation.pdf`](1_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/quant_investing_motivation.pdf) | 50 | 퀀트 인베스팅 전반 — 정의 · 팩터 · 포트폴리오 구축 · FLAM · 주요 운용사 | 과정 시작 전 · W10 · W12 |
+| [`W03_BuildingBlock_CMA_ZeroOne.pdf`](2_CMA_W03/W03_BuildingBlock_CMA_ZeroOne.pdf) | 45 | Building Block CMA — 28개 자산군의 수익률을 여덟 개 블록으로 분해한다 | **W03 연기금모델과CMA** |
+| [`BlackRock_Boracay_LongTerm_CMA.pdf`](2_CMA_W03/BlackRock_Boracay_LongTerm_CMA.pdf) | 42 | 장기 자본시장가정(CMA) — 미국 ERP, 주식·채권 기대수익 추정 (BlackRock Boracay Phase 1 · Topic 5) | **W03 연기금모델과CMA** |
+| [`W03_Macro_First_CMA_ZeroOne.pdf`](2_CMA_W03/W03_Macro_First_CMA_ZeroOne.pdf) | 42 | Macro-first Building Block — GDP·인플레이션에서 시작해 모든 자산군으로 내려온다 | **W03 연기금모델과CMA** |
+| [`stock-data-architecture-review.pdf`](5_%EB%8D%B0%EC%9D%B4%ED%84%B0/stock-data-architecture-review.pdf) | 40 | 주식 데이터 아키텍처 검토와 제안 — CRSP·Compustat·WRDS 구독 범위, 회사-종목 연결, PIT 재무, 상장폐지 처리 | W10 주식퀀트모델 · XS · [실습 데이터 가이드](../_%EA%B3%BC%EC%A0%95%EC%9A%B4%EC%98%81/) |
+| [`Moskowitz_Quality_Defensive_Investing.pdf`](3_%ED%8C%A9%ED%84%B0_W12/Moskowitz_Quality_Defensive_Investing.pdf) | 36 | Quality·Defensive 투자 — 좋은 기업을 합리적 가격에, 안전한 자산에 레버리지를 (Yale SOM Master Class) | **W12 팩터투자** |
+| [`13F_Predatory_Trading_3Agent_MBA_Deck.pdf`](4_TPA_W15/13F_Predatory_Trading_3Agent_MBA_Deck.pdf) | 36 | 13F 전략적 공시와 포식적 거래 — 3-Agent 동적 게임 | **W15 TPA** · W10 |
+| [`FamaFrench_Model_ZeroOne.pdf`](3_%ED%8C%A9%ED%84%B0_W12/FamaFrench_Model_ZeroOne.pdf) | 29 | Fama-French 3요인 모델 — 이상현상에서 팩터로, 25 포트폴리오 구성법 | **W12 팩터투자** |
+| [`TPA_Framework_Brief_Deck_v01.pdf`](4_TPA_W15/TPA_Framework_Brief_Deck_v01.pdf) | 28 | TPA 설계 프레임 v0.1 — 밖의 자산·부채 → 헤지 가능성 R² → 딜 심사 → 거버넌스 세 조건, 5단계 절차와 명제 7개 | **W15 TPA** · W07 LDI |
+| [`0. Stylized Facts and SDF.pdf`](1_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/0.%20Stylized%20Facts%20and%20SDF.pdf) | 21 | 수익률의 세 가지 정형화된 사실과 확률할인요인(SDF) | 과정 시작 전 · W02 |
+| [`Barberis_PE_Habit_Extrapolation_deck.pdf`](1_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/Barberis_PE_Habit_Extrapolation_deck.pdf) | 18 | 시장 P/E는 왜 한 세기 동안 출렁였는가 — Habit Formation과 과잉 외삽 | W06 동적포트폴리오와장기투자 |
+| [`Direct_Lending_Course_bj.pdf`](8_Cerberus_%EC%82%AC%EB%AA%A8%EC%8B%A0%EC%9A%A9_W14/02_Courses/Direct_Lending_Course_bj.pdf) | 43 | Direct Lending 종합 과정 — 미들마켓 직접대출, 자본구조와 권리, 가격결정, 운용사 투자 관점 | W14 대체투자와비유동성 |
+| [`Residential_Credit_ABS_Course_bj.pdf`](8_Cerberus_%EC%82%AC%EB%AA%A8%EC%8B%A0%EC%9A%A9_W14/02_Courses/Residential_Credit_ABS_Course_bj.pdf) | 52 | Residential Credit와 ABS 투자 — 주거용 신용, 대출 심사, RMBS·ABS 구조 (8주 과정) | W14 대체투자와비유동성 |
 
-11개 · 387쪽. CMA만 세 편이라 W03은 따로 묶어 본다.
+13개 · 482쪽. CMA만 세 편이라 W03은 따로 묶어 본다.
+
+## 폴더
+
+| 폴더 | 무엇이 들었나 |
+|---|---|
+| `1_입문_퀀트와자산가격/` | 퀀트 인베스팅 전반 · 정형화된 사실과 SDF · 시장 P/E (과정 시작 전) |
+| `2_CMA_W03/` | CMA 세 편 — Macro-first → Building Block → BlackRock Boracay |
+| `3_팩터_W12/` | Fama-French 3요인 · Quality·Defensive |
+| `4_TPA_W15/` | TPA 설계 프레임 · 13F 포식적 거래 |
+| `5_데이터/` | 주식 데이터 아키텍처 검토 |
+| `8_Cerberus_사모신용_W14/02_Courses/` | 사모신용 과정 두 편 — Direct Lending · Residential Credit·ABS |
 
 ---
 

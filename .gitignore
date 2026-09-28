@@ -48,3 +48,9 @@ _구판/
 # 주차 폴더에 덱과 같은 이름으로 두고, 배포는 별도 경로로 한다.
 *.mp4
 *.mov
+
+# 보충교재 — 덱 빌드 소스(스크립트·중간 그림)는 올리지 않는다
+보충교재/4_TPA_W15/TPA_Brief_Deck_Source_v01/
+# Cerberus 자료는 과정 덱(02_Courses)의 PDF만 공개한다 — 펀드 덱·확장판·대시보드·README는 제외
+보충교재/8_Cerberus_사모신용_W14/*
+!보충교재/8_Cerberus_사모신용_W14/02_Courses/
