@@ -81,6 +81,12 @@
 | [`Predatory_Trading_Part4_Research_Defense.pdf`](12_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98_W15/Predatory_Trading_Part4_Research_Defense.pdf) | 31 | 3-Agent AFFD · Financial Resonance · 조기경보 대시보드(PredScore) · forced seller가 되지 않는 방어 · 실험 설계 |
 | [`Predatory_Trading_Workbook.pdf`](12_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98_W15/Predatory_Trading_Workbook.pdf) | 21 | B&P forced seller 예제 · gamma hedge · ETF 리셋·레버리지 · AMM sandwich · 연습문제 |
 
+### 13_자율주행자산운용 — 자율운행 자산운용 운영체계 기안 (XS 자율주행 포트폴리오와 함께)
+
+| 자료 | 쪽 | 무엇을 다루나 |
+|---|---:|---|
+| [`Self_Driving_AM_Course_Based_Proposal_ZeroOne.pdf`](13_%EC%9E%90%EC%9C%A8%EC%A3%BC%ED%96%89%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9/Self_Driving_AM_Course_Based_Proposal_ZeroOne.pdf) | 32 | Ang·Azimbayev·Kim(2026) *The Self-Driving Portfolio*의 감독형 운영체계를 이 과정의 16주 자산(강의 · 실습데이터 · IC · XS MVP)으로 조립하는 기안. 8개 구성요소 ↔ 주차 지도, IPS 자동 검증과 수치 사례, Reviewer·CIO Agent와 IC 절차, TPA 매핑, 되돌림 규칙과 RUN ID 감사 기록, 90일 일정과 신규 개발 3건 |
+
 ## 폴더
 
 | 폴더 | 무엇이 들었나 |
@@ -97,6 +103,7 @@
 | `10_RMT필터_W04/` | RMT 공분산 필터 덱 + 실습 노트북(yfinance로 데이터를 직접 받는다) + `SandP500_wiki.csv`(Wikipedia 접속이 안 될 때 쓰는 S&P 500 종목·섹터 목록, 2026-09-28 기준 503종목) |
 | `11_매크로전략_W13/` | 글로벌 매크로·국제금융·캐리·추세추종·인플레이션 헤지 강의덱 11편 + 외부 참고자료 11편 |
 | `12_포식적거래_W15/` | 포식적 거래 본편 4부(이론 · 기계적 forced flow · 시장구조 · 연구와 방어) + 손계산 워크북 |
+| `13_자율주행자산운용/` | 자율운행 자산운용 운영체계 기안 — 과정 자산으로 감독형 에이전트 운영체계를 조립하는 계획 |
 
 ---
 
@@ -124,6 +131,9 @@
 강의본을 본 뒤 프레임 → 13F 순서로 읽는다.
 포식적 거래를 더 파고들려면 `12_포식적거래_W15/`의 4부작을 Part 1 → 4 순서로 읽고, 계산은 워크북에서 손으로 따라간다.
 연기금이 forced seller가 되는 조건(담보 spiral·UK LDI 2022)은 W07 LDI와도 이어진다.
+
+**XS 자율주행 포트폴리오를 마친 뒤** — `13_자율주행자산운용`의 기안은 XS MVP를 출발 코드로 삼아 기관용 운영체계로 넓히는 계획이다.
+16주 동안 배운 IPS · CMA · 최적화 · IC · TPA가 각각 어느 에이전트와 엔진의 명세가 되는지 한 장씩 짚는다. 과정 전체를 되짚는 정리로도 쓸 수 있다.
 
 **실습 데이터를 직접 만들 때** — `stock-data-architecture-review`는 백테스트·라이브트레이딩용
 주가·재무 DB를 어떻게 쌓았고 무엇이 막혔는지 검토한 자료다. CRSP·Compustat·TAQ가 어디까지
