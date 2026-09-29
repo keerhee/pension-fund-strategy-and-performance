@@ -69,17 +69,17 @@
 | [`The Empirical Foundations of the Arbitrage Pricing Theory I`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/Lehmann_Modest_1985_Empirical_Foundations_of_APT_NBER_w1725.pdf) | 64 | Lehmann·Modest, NBER Working Paper 1725 (1985) |
 | [`Factor Investing Handbook`](11_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5_W13/%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C/UBS_MSCI_2015_Factor_Investing_Handbook.pdf) | 385 | UBS·MSCI (2015) |
 
-### 12_포식적거래_W15 — 포식적 거래와 forced flow (W15 TPA · `04_TPA_W15/13F_Predatory_Trading`과 함께)
+### 12_포식적거래 — 포식적 거래와 forced flow (W15 TPA · `04_TPA_W15/13F_Predatory_Trading`과 함께)
 
 **본편 4부 + 워크북** (5편 · 133쪽) — 상대의 다음 주문이 선택이 아니라 제약일 때 생기는 전략 게임을 정의 → 기계적 흐름 → 시장구조 → 모형과 방어 순으로 따라간다. 2026년 9월 기준 공개 자료를 반영했다.
 
 | 자료 | 쪽 | 무엇을 다루나 |
 |---|---:|---|
-| [`Predatory_Trading_Part1_Theory.pdf`](12_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98_W15/Predatory_Trading_Part1_Theory.pdf) | 29 | 용어 구분(predatory·forced·anticipatory) · Brunnermeier–Pedersen 모형 · 포식이 성립하는 구조적 조건 · 레버리지가 만드는 비선형성 |
-| [`Predatory_Trading_Part2_Forced_Flow.pdf`](12_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98_W15/Predatory_Trading_Part2_Forced_Flow.pdf) | 28 | 옵션 gamma 헤지 · 레버리지·인버스 ETF 리셋 · short squeeze · Archegos · 담보 spiral(UK LDI 2022) |
-| [`Predatory_Trading_Part3_Market_Structure.pdf`](12_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98_W15/Predatory_Trading_Part3_Market_Structure.pdf) | 24 | NBFI 레버리지와 repo(FSB 2025·2026) · 최근 스트레스 사례 · 13F·Form SHO 공시와 가시성 · MEV sandwich |
-| [`Predatory_Trading_Part4_Research_Defense.pdf`](12_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98_W15/Predatory_Trading_Part4_Research_Defense.pdf) | 31 | 3-Agent AFFD · Financial Resonance · 조기경보 대시보드(PredScore) · forced seller가 되지 않는 방어 · 실험 설계 |
-| [`Predatory_Trading_Workbook.pdf`](12_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98_W15/Predatory_Trading_Workbook.pdf) | 21 | B&P forced seller 예제 · gamma hedge · ETF 리셋·레버리지 · AMM sandwich · 연습문제 |
+| [`Predatory_Trading_Part1_Theory.pdf`](12_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98/Predatory_Trading_Part1_Theory.pdf) | 29 | 용어 구분(predatory·forced·anticipatory) · Brunnermeier–Pedersen 모형 · 포식이 성립하는 구조적 조건 · 레버리지가 만드는 비선형성 |
+| [`Predatory_Trading_Part2_Forced_Flow.pdf`](12_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98/Predatory_Trading_Part2_Forced_Flow.pdf) | 28 | 옵션 gamma 헤지 · 레버리지·인버스 ETF 리셋 · short squeeze · Archegos · 담보 spiral(UK LDI 2022) |
+| [`Predatory_Trading_Part3_Market_Structure.pdf`](12_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98/Predatory_Trading_Part3_Market_Structure.pdf) | 24 | NBFI 레버리지와 repo(FSB 2025·2026) · 최근 스트레스 사례 · 13F·Form SHO 공시와 가시성 · MEV sandwich |
+| [`Predatory_Trading_Part4_Research_Defense.pdf`](12_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98/Predatory_Trading_Part4_Research_Defense.pdf) | 31 | 3-Agent AFFD · Financial Resonance · 조기경보 대시보드(PredScore) · forced seller가 되지 않는 방어 · 실험 설계 |
+| [`Predatory_Trading_Workbook.pdf`](12_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98/Predatory_Trading_Workbook.pdf) | 21 | B&P forced seller 예제 · gamma hedge · ETF 리셋·레버리지 · AMM sandwich · 연습문제 |
 
 ### 13_자율주행자산운용 — 자율운행 자산운용 운영체계 기안 (XS 자율주행 포트폴리오와 함께)
 
@@ -102,7 +102,7 @@
 | `09_HRP와NCO_W05/` | HRP와 NCO 설명자료 — RMT 디노이징 · ONC 군집화 |
 | `10_RMT필터_W04/` | RMT 공분산 필터 덱 + 실습 노트북(yfinance로 데이터를 직접 받는다) + `SandP500_wiki.csv`(Wikipedia 접속이 안 될 때 쓰는 S&P 500 종목·섹터 목록, 2026-09-28 기준 503종목) |
 | `11_매크로전략_W13/` | 글로벌 매크로·국제금융·캐리·추세추종·인플레이션 헤지 강의덱 11편 + 외부 참고자료 11편 |
-| `12_포식적거래_W15/` | 포식적 거래 본편 4부(이론 · 기계적 forced flow · 시장구조 · 연구와 방어) + 손계산 워크북 |
+| `12_포식적거래/` | 포식적 거래 본편 4부(이론 · 기계적 forced flow · 시장구조 · 연구와 방어) + 손계산 워크북 |
 | `13_자율주행자산운용/` | 자율운행 자산운용 운영체계 기안 — 과정 자산으로 감독형 에이전트 운영체계를 조립하는 계획 |
 
 ---
@@ -129,7 +129,7 @@
 "어느 기능에 얼마짜리 가치가 있는지"를 재는 5단계 절차를 세우고(리밸런싱 0~6bp 대 딜 심사
 227bp), `13F_Predatory_Trading`이 그 심사 결과가 공시로 새어 나갈 때의 문제를 다룬다.
 강의본을 본 뒤 프레임 → 13F 순서로 읽는다.
-포식적 거래를 더 파고들려면 `12_포식적거래_W15/`의 4부작을 Part 1 → 4 순서로 읽고, 계산은 워크북에서 손으로 따라간다.
+포식적 거래를 더 파고들려면 `12_포식적거래/`의 4부작을 Part 1 → 4 순서로 읽고, 계산은 워크북에서 손으로 따라간다.
 연기금이 forced seller가 되는 조건(담보 spiral·UK LDI 2022)은 W07 LDI와도 이어진다.
 
 **XS 자율주행 포트폴리오를 마친 뒤** — `13_자율주행자산운용`의 기안은 XS MVP를 출발 코드로 삼아 기관용 운영체계로 넓히는 계획이다.
