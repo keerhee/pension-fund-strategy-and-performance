@@ -68,7 +68,8 @@ kit.table(s, 60, 194, 1161, [
     ["Φ", "표준정규분포에서 그 값보다 작을 확률", "Φ(0) = 50% · Φ(1.645) = 95%"],
     ["max · s.t.", "최대화하라 · 다음 조건을 지키면서", "—"]],
     [1.0, 4.2, 2.0], rowh=33, pt=14, align="cll")
-kit.bottom(s, "w⊤R = 비중 × 수익률을 자산마다 곱해 더한 값, 즉 포트폴리오 수익률", y=600)
+kit.formula(s, r"\mathbf{w}^{\top}\mathbf{R}\ =\ \sum_i w_i\,R_i", x=250, y=592, pt=20)
+kit.label(s, 470, 600, 760, 30, "= 비중 × 수익률을 자산마다 곱해 더한 값, 즉 포트폴리오 수익률 (⊤ = 두 목록을 짝지어 곱해 더하라)", pt=14, color="3b4252")
 new.append((s, 11))
 
 # ── T2 세 숫자 (s12 뒤) ──
@@ -129,16 +130,11 @@ kit.panel(s, L, 196, 520, 330, "b", "위로 갈수록 오래 간다", [
     "② Strategic — 6개 자산군 · 4개 지역, 총 위험은 기준과 같게",
     "③ Target Exposures — 올해의 팩터 노출 · 레버리지",
     "④ Active + Balancing — 부서의 투자 + 노출을 맞추는 유동자산"], pt=15)
-kit.table(s, 604, 196, 616, [
-    ["기금 100", "기준", "실제", "주식 환산", "채권 환산"],
-    ["상장주식", "85", "67", "67", "0"],
-    ["채권", "15", "13", "0", "13"],
-    ["사모주식", "0", "10", "13", "−3"],
-    ["부동산", "0", "10", "5", "5"],
-    ["*합계", "*100", "*100", "*85", "*15"]],
-    [1.5, 0.8, 0.8, 1.1, 1.1], rowh=40, pt=15, align="lcccc")
-kit.label(s, 604, 446, 616, 80, "사모 10 = 상장주 13 매도 + 채권 3 매수 · 부동산 10 = 상장주 5 + 채권 5 매도\n겉보기 상장주식은 67%뿐이지만 위험은 기준과 정확히 같다", pt=13, color="3b4252")
-kit.formula(s, r"\sigma(R_{SP})=\sigma(R_{RP}),\qquad e_j(\mathbf{w})=\sum_i w_i\,x_{ij}=e_j(\mathbf{b})", cx=640, y=540, pt=20)
+import subprocess as _sp
+_sp.run([sys.executable, os.path.join(HERE, "cppib_bars.py")], check=True, capture_output=True)
+s.shapes.add_picture(os.path.join(HERE, "_art", "cppib_bars.png"), int(596 * 9525), int(190 * 9525), width=int(630 * 9525))
+kit.label(s, 604, 520, 616, 22, "기금 100 · 사모 10 = 상장주 13 매도 + 채권 3 매수 · 부동산 10 = 상장주 5 + 채권 5 매도", pt=11, color="6b7280")
+kit.formula(s, r"\sigma(R_{SP})=\sigma(R_{RP}),\qquad e_j(\mathbf{w})=\sum_i w_i\,x_{ij}=e_j(\mathbf{b})", cx=640, y=546, pt=20)
 kit.bottom(s, "같은 위험을 더 잘 나눠서 더 번다 · 100 기금 손계산과 성과 분해는 부록 B-4 · B-5", y=604)
 new.append((s, 18))
 
@@ -176,6 +172,25 @@ kit.panel(s, RX, 270, PW, 220, "g", "사일로가 못 보는 위험", [
 kit.banner(s, 508, "식 ⑨ — 독립 아이디어 둘(IR 0.5씩)이면 최대 IR 0.71: 같은 예산 1.5%로 기대 초과성과 0.75 → 1.06%p", h=52, pt=16)
 kit.bottom(s, "Σ⁻¹는 ‘겹치는 부분을 빼 주는 계산’ — 덜 겹치는 아이디어에 더 준다", y=590)
 new.append((s, 39))
+
+# ── One Fund 보상식 읽기 (원래 36장 뒤) ──
+s = kit.new(T, "3교시 · One Fund 보상", "부서가 아니라 기금 전체로 번다 — 보상식 읽기",
+            "개념식: 개인 보상 = 기금 전체 성과에 연동된 몫 − 기금 전체에 해로운 위험을 진 만큼의 차감")
+kit.formula(s, r"\mathrm{Comp}_{\mathrm{Individual}}\ =\ \alpha_{\mathrm{Total\ Fund}}\ -\ \beta\cdot\mathrm{Sub\text{-}Optimal\ Risk}", cx=640, y=190, pt=20)
+kit.table(s, 60, 250, 1161, [
+    ["항", "뜻", "예"],
+    ["α (Total Fund)", "자기 부서가 아니라 기금 전체의 부가가치(기준 대비 초과성과)에 연동된 몫", "기금 전체 +0.5%p"],
+    ["Sub-Optimal Risk", "기금 전체로 보면 비효율인 위험 — 부서 간 겹치는 베팅(교차항) · 예산 초과", "신용 중복으로 교차항 +0.3%p"],
+    ["β", "그 위험을 얼마나 무겁게 깎을지 — 보상위원회가 미리 정하는 강도", "β = 1"]],
+    [1.3, 3.9, 1.8], rowh=40, pt=14, align="lll")
+kit.panel(s, L, 432, PW, 158, "b", "개념 예시 — 주식 부서장", [
+    "사일로식: 자기 벤치마크 대비 +3%p → 보상 ∝ 3",
+    "One Fund식: 0.5 − 1 × 0.3 = 0.2 → 겹친 베팅이 보상을 깎는다"], pt=14)
+kit.panel(s, RX, 432, PW, 158, "g", "CPP의 실제 — 연차보고서 2025", [
+    "성과 보상을 기금 전체의 수익 · 부가가치에 연동",
+    "이연 보상을 기금 전체에 명목 투자 — 직원이 기금과 같은 배를 탄다"], pt=14)
+kit.bottom(s, "자기 부서만 올리려 남과 같은 위험에 베팅하면 손해, 남을 돕는 양보는 이득 — 그래서 사일로가 무너진다", pt=15, y=602)
+new.append((s, 36))
 
 place(prs, new)
 
@@ -321,14 +336,14 @@ kit.table(s39b, 60, 196, 700, [
     [1.2, 2.4, 1.6], rowh=50, pt=13, align="lll")
 kit.formula(s39b, r"\mathrm{WACI}\ =\ \sum_i w_i\,\frac{E_i}{S_i}", x=800, y=200, pt=24)
 kit.label(s39b, 790, 276, 430, 124, "가중평균 탄소집약도 — E: 배출량(tCO₂e) · S: 매출(백만 달러)\n기금 전체 = 종목별 탄소집약도를 비중대로 더한 값 — 37장 팩터 렌즈와 같은 구조\n석유회사는 판 연료가 타며 내는 배출(Scope 3)이 대부분", pt=13, color="3b4252")
-kit.panel(s39b, L, 410, PW, 170, "b", "공시 표준의 흐름", [
-    "TCFD 권고(2017) — 지배구조 · 전략 · 위험관리 · 지표의 네 축",
-    "ISSB IFRS S2(2023)가 이를 흡수, TCFD는 2023년 해산",
-    "한국은 KSSB 공시 기준 도입을 논의 중"], pt=14)
-kit.panel(s39b, RX, 410, PW, 170, "g", "왜 표준이 필요한가", [
+kit.panel(s39b, L, 404, PW, 196, "b", "공시 표준 — 누가 만드나", [
+    "TCFD — 금융안정위원회(FSB)가 만든 기후 공시 태스크포스. 2017 권고: 지배구조 · 전략 · 위험관리 · 지표",
+    "ISSB — IFRS 재단의 국제지속가능성기준위원회. IFRS S2(기후, 2023)로 TCFD를 흡수, TCFD는 2023년 해산",
+    "KSSB — 한국회계기준원 산하 지속가능성기준위원회. 국내 기준 제정, 2026.7 정부 의무 공시 최종안 발표"], pt=12)
+kit.panel(s39b, RX, 404, PW, 196, "g", "왜 표준이 필요한가", [
     "같은 자로 재야 기업 · 기관을 비교하고 한도(C7)를 건다",
     "W13에서 인플레이션을 팩터로 재서 헤지했듯, 기후도 재야 관리한다"], pt=14)
-kit.bottom(s39b, "신용등급이 부도 위험을 표준화해 가격에 넣었듯 — 기후 측정 표준이 기후 위험을 가격에 넣는다", pt=15, y=598)
+kit.bottom(s39b, "신용등급이 부도 위험을 표준화해 가격에 넣었듯 — 기후 측정 표준이 기후 위험을 가격에 넣는다", pt=15, y=610)
 # 새 장을 모두 만든 뒤에 옛 장을 지운다 (먼저 지우면 python-pptx가 slideN.xml 이름을 중복으로 붙인다)
 replace_slide(prs, old37, s37)
 replace_slide(prs, old39, s39)
@@ -348,8 +363,8 @@ assert replace_all(prs, "TAI +1.8%", "TAI +1.3%") == 2
 print("제1부 아래첨자 run", sub_runs(prs))
 renumber(prs)
 assert len(scan_codes(prs)) == codes0, scan_codes(prs)
-assert len(prs.slides) == 73, len(prs.slides)
-prs.save(f"{W}/{name}.pptx"); to_pdf(f"{W}/{name}.pptx"); print("제1부 73장 저장")
+assert len(prs.slides) == 74, len(prs.slides)
+prs.save(f"{W}/{name}.pptx"); to_pdf(f"{W}/{name}.pptx"); print("제1부 74장 저장")
 
 # ═════════════════════════════ 제2부 ═════════════════════════════
 name = "W15_TPA_제2부_MeasuringWhatMatters_성과평가"; backup(name)
