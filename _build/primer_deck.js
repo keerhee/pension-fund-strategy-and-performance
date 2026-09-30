@@ -61,7 +61,7 @@ function build(spec) {
     const cy = T.head(s, { title: it.title, page });
 
     if (it.type === "fig") {
-      T.figImg(s, ART(it.file), ratioOf(ART(it.file)), { y: cy + 0.06, bottom: 5.86 });
+      T.figImg(s, ART(it.file), ratioOf(ART(it.file)), { y: cy + 0.06, bottom: it.figBottom || 5.86 });
 
     } else if (it.type === "eq") {
       // 한 줄짜리 납작한 식은 넓은 카드에서 높이에 눌려 작아진다.
