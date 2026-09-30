@@ -25,6 +25,13 @@ DECKS = {
         (23, [73], "부록 B-4", "부록 B-4"),
         (23, [74], "B-5", "부록 B-5"),
         (47, [70], "부록 B-2", "부록 B-2"),
+        # 본문에 '부록 B-1'·'용어집' 표기는 없다 — 식 번호를 쓰는 장과 개념을 모아 보는 장에서 건다
+        (12, [69], None, "부록 B-1"),
+        (14, [69], "식 ①", "부록 B-1"),
+        (47, [69], "식 ④", "부록 B-1"),
+        (48, [69], "식 ⑦", "부록 B-1"),
+        (2, [66], None, "용어집"),
+        (63, [66], None, "용어집"),
     ]),
     "W07_LDI와GBI/W07_M9_GBI_목표기반투자_강의본": dict(refs=[
         (16, [67], "부록 B-1", "부록 B-1"),
@@ -212,8 +219,8 @@ def build(deck, cfg):
             if src not in [b for b, _ in back[d]]:
                 back[d].append((src, S[src - 1]))
 
-    for src, items in fwd.items():
-        pills(S[src - 1], items)
+    for src, items in fwd.items():                                # 부록 쪽 순서대로 늘어놓는다
+        pills(S[src - 1], sorted(items, key=lambda it: int(re.search(r"(\d+)쪽", it[0]).group(1))))
     for d, srcs in back.items():
         pills(S[d - 1], [(f"◀ 본문 {src}쪽으로", t) for src, t in srcs])
 
