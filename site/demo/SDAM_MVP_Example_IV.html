@@ -106,6 +106,13 @@
   .page .minority { border-left: 4px solid var(--red); padding: 6px 10px; background: #fff5f5; }
   .page .sign { border: 2px solid var(--ink); border-radius: 6px; padding: 10px 12px; }
   .page .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+  .page .actions.top { position: sticky; top: -24px; margin: -32px -36px 14px; padding: 10px 36px; background: var(--white); border-bottom: 1px solid var(--line); z-index: 1; }
+  .page pre { font-size: 14px; }
+  /* ② 근거 파일 머리 — 제목 + 인쇄 · 닫기 */
+  .phead { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+  .phead h2 { margin: 0 !important; }
+  .ftools { display: flex; gap: 6px; flex-shrink: 0; }
+  button.sm { font-size: 13px; padding: 5px 9px; border-width: 1.5px; }
   @media print {
     @page { margin: 18mm; }
     body { background: #fff; }
@@ -158,7 +165,10 @@
   </section>
 
   <section class="panel">
-    <h2 id="fileTitle">② 근거 파일</h2>
+    <div class="phead">
+      <h2 id="fileTitle">② 근거 파일</h2>
+      <span class="ftools"><button class="sm" id="btnFilePrint" disabled>🖨 인쇄</button><button class="sm" id="btnFileClose" disabled>✕ 닫기</button></span>
+    </div>
     <pre id="fileBody">▶ 라이브 실행을 누르면 시작한다.
 돌발 과제는 md 파일을 올린 뒤 ◆ 돌발 과제 투입을 누른다.</pre>
     <p class="hint">화면은 runs/ 폴더의 파일을 그대로 읽어 보여 준다</p>
@@ -527,7 +537,7 @@ function showReport(r) {
       ? `<div class="verdict"><span class="chip ${so.결정 === "승인" ? "final" : "no"}">${so.결정 === "승인" ? "승인 — 집행" : "반려 — 직전 배분 유지"}</span></div>
          <div style="margin-top:6px">서명 ${so.서명자} · ${so.시각}<br>사유: ${so.사유}</div>`
       : "승인 대기 — 서명 전에는 집행하지 않는다"}</div>`;
-  $("page").innerHTML = `
+  $("page").innerHTML = `${docActions("top")}
     <h3>IC 보고서 · CIO 결정${HUMAN_CIO ? " · 사람 승인" : ""}</h3>
     <div class="meta">run_id ${r.run_id} · 실행 ${r.mode} · 시나리오 ${r.scenario} · 국면 ${r.regime.regime} · 모델 ${r.regime.model}</div>
     <h4>안건</h4><div>${m.안건}</div>
@@ -543,10 +553,7 @@ function showReport(r) {
     ${sign}
     <h4>⑧ 메타 점검 — 다음 주기로</h4>
     <div>경보: ${r.meta.경보.join(", ")} · ${r.meta.분류}</div>
-    <div class="actions">
-      <button onclick="window.print()">인쇄 · PDF 저장</button>
-      <button class="main" onclick="$('overlay').classList.remove('show')">닫기</button>
-    </div>`;
+    ${docActions("")}`;
   $("overlay").classList.add("show");
 }
 
@@ -581,6 +588,35 @@ $("sample").onchange = (e) => {
 };
 
 // ─────────────────────────────────────────────────────────────
+// 보고서 공용 — 모든 보고서(1쪽 보고서 · 근거 파일)에 인쇄 · 닫기를 위아래로 단다
+// ─────────────────────────────────────────────────────────────
+function docActions(pos) {
+  return `<div class="actions ${pos}">
+      <button onclick="window.print()">🖨 인쇄 · PDF 저장</button>
+      <button class="main" onclick="closeDoc()">✕ 닫기</button>
+    </div>`;
+}
+function closeDoc() { $("overlay").classList.remove("show"); }
+const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+
+// 지금 ② 칸에 열린 파일을 한 쪽짜리 보고서로 띄운다 — 파일 내용을 그대로 옮기기만 한다
+function showFileReport() {
+  const title = $("fileTitle").textContent.replace(/^② 근거 파일 · /, "");
+  const r = current;
+  $("page").innerHTML = `${docActions("top")}
+    <h3>${esc(title)}</h3>
+    <div class="meta">${r ? `run_id ${r.run_id} · 실행 ${r.mode} · 시나리오 ${esc(r.scenario)}` : "실행 전"} · 근거 파일</div>
+    <pre>${esc($("fileBody").textContent)}</pre>
+    ${docActions("")}`;
+  $("overlay").classList.add("show");
+}
+// ② 칸의 내용이 바뀔 때마다 인쇄 · 닫기를 켠다
+new MutationObserver(() => {
+  const on = $("fileTitle").textContent !== "② 근거 파일";
+  $("btnFilePrint").disabled = !on; $("btnFileClose").disabled = !on;
+}).observe($("fileBody"), { childList: true, characterData: true, subtree: true });
+
+// ─────────────────────────────────────────────────────────────
 // 9. 버튼 연결
 // ─────────────────────────────────────────────────────────────
 $("btnLive").onclick   = () => run("live");
@@ -588,7 +624,14 @@ $("btnReplay").onclick = () => run("replay");
 $("btnShock").onclick  = () => run("live", shockMd);
 $("btnCompare").onclick = compare;
 $("btnReport").onclick  = () => current && showReport(current);
-$("overlay").onclick   = (e) => { if (e.target.id === "overlay") $("overlay").classList.remove("show"); };
+$("overlay").onclick   = (e) => { if (e.target.id === "overlay") closeDoc(); };
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDoc(); });
+$("btnFilePrint").onclick = showFileReport;
+$("btnFileClose").onclick = () => {
+  $("fileTitle").textContent = "② 근거 파일";
+  $("fileBody").textContent = "파일을 닫았다 — 끝난 단계를 누르면 다시 열린다.";
+  document.querySelectorAll(".steps li").forEach((li) => li.classList.remove("sel"));
+};
 $("btnApprove").onclick = () => {
   log("✓ 승인", approveFor);
   if (waiting) { waiting("approve"); waiting = null; } else $("btnApprove").disabled = true;
