@@ -17,22 +17,60 @@ from pptx.util import Inches, Pt
 
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# 덱 → [(본문 쪽, 부록 쪽들, 본문에 적힌 부록 이름)]  — 쪽은 1부터
+# 덱 → 참조 목록 [(본문 쪽, 부록 쪽들, 본문에서 링크할 글자 또는 None, 버튼 이름)]  — 쪽은 1부터
+#   부록 쪽들의 첫 쪽으로 가고, 부록 쪽마다 그 본문으로 돌아오는 버튼이 붙는다.
 DECKS = {
-    "W15_TPA/W15_TPA_제1부_사일로해체와설계_강의본": [
-        (21, [71, 72], "부록 B-3"),
-        (23, [73], "부록 B-4"),
-        (23, [74], "B-5"),
-        (47, [70], "부록 B-2"),
-    ],
+    "W15_TPA/W15_TPA_제1부_사일로해체와설계_강의본": dict(refs=[
+        (21, [71, 72], "부록 B-3", "부록 B-3"),
+        (23, [73], "부록 B-4", "부록 B-4"),
+        (23, [74], "B-5", "부록 B-5"),
+        (47, [70], "부록 B-2", "부록 B-2"),
+    ]),
+    "W07_LDI와GBI/W07_M9_GBI_목표기반투자_강의본": dict(refs=[
+        (16, [67], "부록 B-1", "부록 B-1"),
+        (18, [68], "부록 B-2", "부록 B-2"),
+        (18, [69], "B-3", "부록 B-3"),
+        (18, [70], "B-4", "부록 B-4"),
+        (19, [71, 72], "부록 B-5", "부록 B-5"),
+        (34, [73], "부록 B-6", "부록 B-6"),
+        (35, [74], "부록 B-7", "부록 B-7"),
+    ]),
+    "W05_리스크패리티와HRP/W05_리스크패리티와HRP_강의본": dict(
+        # NCO 심화 부록은 57쪽(간지)부터다 — 본문의 옛 쪽 표기 54p를 바로잡는다
+        fixes=[("(54p~)", "(57p~)")],
+        refs=[
+            (8, list(range(57, 69)), "부록", "부록"),
+            (26, list(range(57, 69)), None, "부록"),      # 남색 띠 위라 글자 링크는 안 보인다 — 버튼만
+        ]),
+    "W11_채권투자/W11_보강1_채권트레이딩4전략과투자게임": dict(refs=[
+        (25, [37, 38, 39, 40, 41], "(37–41p)", "부록"),
+        (31, [38, 39, 40], "(38–40p)", "부록"),
+    ]),
+    "보충교재/07_블랙리터맨_W04/BL_Expected_Return_Update_bj": dict(
+        geom=dict(y=7.035, h=0.28, right=12.42, fs=11, font="맑은 고딕", ink="1B2A41"),
+        pdf_font=("맑은 고딕", "Pretendard"),                 # 이 덱의 PDF는 Pretendard로 바꿔 찍어 왔다
+        refs=[(10, [21, 22, 23, 24, 25], "부록 A", "부록 A")]),
+    "보충교재/09_HRP와NCO_W05/HRP_NCO_JJ_Brief_II": dict(
+        geom=dict(y=0.10, h=0.30, right=8.32, fs=11, font="맑은 고딕", ink="1E4E8C"),   # 맨 위 띠, 쪽번호(8.40~) 앞
+        pdf_font=("맑은 고딕", "Pretendard"),
+        refs=[(9, list(range(53, 63)), "부록 A", "부록 A")]),
 }
 
-NAVY, TINT, FONT = RGBColor(0x1B, 0x2C, 0x5E), RGBColor(0xE8, 0xEE, 0xF8), "Noto Sans CJK KR"
-Y, H, RIGHT, GAP = 7.10, 0.30, 11.55, 0.12      # 꼬리 줄: 워드마크(0.62~8.62)와 쪽번호(11.71~) 사이
+# 기본 자리: 강의본 꼬리 줄 — 워드마크(0.62~)와 쪽번호(11.71~) 사이
+GEOM = dict(y=7.10, h=0.30, right=11.55, fs=12, font="Noto Sans CJK KR", ink="1B2C5E")
+TINT, GAP = RGBColor(0xE8, 0xEE, 0xF8), 0.12
+G = dict(GEOM)                                         # 지금 덱의 자리 (build가 바꾼다)
+
+
+def width(text):
+    """버튼 폭 — 한글 1자 ≈ 글자크기, 숫자·기호 ≈ 0.55배, 좌우 여백 0.30in."""
+    em = sum(1.0 if ord(c) > 0x2E80 else 0.58 for c in text)
+    return round(em * G["fs"] / 72 + 0.34, 2)
 
 
 def pill(slide, x, w, text, target, tag):
-    sh = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(x), Inches(Y), Inches(w), Inches(H))
+    NAVY = RGBColor.from_string(G["ink"])
+    sh = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(x), Inches(G["y"]), Inches(w), Inches(G["h"]))
     sh.name = "NAV_" + tag
     sh.adjustments[0] = 0.5
     # PDF에서는 링크 글자가 테마의 링크 색으로 칠해진다 — 그래서 바탕은 밝게, 링크 색은 남색으로 맞춘다(theme_link_color)
@@ -44,7 +82,7 @@ def pill(slide, x, w, text, target, tag):
     tf.vertical_anchor = MSO_ANCHOR.MIDDLE; tf.word_wrap = False
     p = tf.paragraphs[0]; p.alignment = PP_ALIGN.CENTER
     r = p.add_run(); r.text = text
-    r.font.size = Pt(12); r.font.bold = True; r.font.name = FONT; r.font.color.rgb = NAVY
+    r.font.size = Pt(G["fs"]); r.font.bold = True; r.font.name = G["font"]; r.font.color.rgb = NAVY
     sh.click_action.target_slide = target                         # PowerPoint·Keynote: 도형 어디를 눌러도
     rPr = r._r.get_or_add_rPr()                                   # PDF: LibreOffice는 도형 클릭을 안 옮기고 글자 링크만 옮긴다
     rId = slide.part.relate_to(target.part, RT.SLIDE)
@@ -68,9 +106,10 @@ def theme_link_color(prs, rgb="1B2C5E"):
 
 
 def pills(slide, items):
-    """items = [(글자, 목표 슬라이드, 폭)] — 오른쪽 끝(쪽번호 앞)에서부터 왼쪽으로 늘어놓는다."""
-    x = RIGHT
-    for text, target, w in reversed(items):
+    """items = [(글자, 목표 슬라이드)] — 오른쪽 끝(쪽번호 앞)에서부터 왼쪽으로 늘어놓는다."""
+    x = G["right"]
+    for text, target in reversed(items):
+        w = width(text)
         x -= w
         pill(slide, x, w, text, target, re.sub(r"\W", "", text))
         x -= GAP
@@ -85,8 +124,6 @@ def link_text(slide, needle, target):
             for r in p.runs:
                 if needle not in r.text:
                     continue
-                if r._r.find(qn("a:rPr")) is not None and r._r.find(qn("a:rPr")).find(qn("a:hlinkClick")) is not None:
-                    return True                                  # 이미 링크
                 pre, post = r.text.split(needle, 1)
                 runs = []
                 for t in (pre, needle, post):
@@ -108,15 +145,47 @@ def link_text(slide, needle, target):
     return False
 
 
-def to_pdf(pptx):
+def replace_text(prs, a, b):
+    n = 0
+    for s in prs.slides:
+        for sh in s.shapes:
+            if sh.has_text_frame:
+                for r in (r for p in sh.text_frame.paragraphs for r in p.runs):
+                    if a in r.text:
+                        r.text = r.text.replace(a, b); n += 1
+    return n
+
+
+def grep_text(prs, t):
+    return any(sh.has_text_frame and t in sh.text_frame.text for s in prs.slides for sh in s.shapes)
+
+
+def to_pdf(pptx, font_map=None):
+    """PDF 변환. font_map=(원래 글꼴, PDF용 글꼴)이면 글꼴만 바꾼 임시 사본을 변환한다 (원본 pptx는 그대로)."""
+    import shutil, tempfile
     names = zipfile.ZipFile(pptx).namelist()
     assert len(names) == len(set(names)), "zip 안에 중복 파일"
-    r = subprocess.run(["soffice", "--headless", "--convert-to", "pdf", "--outdir", os.path.dirname(pptx), pptx],
+    src, tmp = pptx, None
+    if font_map:
+        tmp = tempfile.mkdtemp()
+        src = os.path.join(tmp, os.path.basename(pptx))
+        a, b = (f'typeface="{f}"'.encode() for f in font_map)
+        with zipfile.ZipFile(pptx) as zi, zipfile.ZipFile(src, "w", zipfile.ZIP_DEFLATED) as zo:
+            for it in zi.infolist():
+                data = zi.read(it)
+                if it.filename.endswith(".xml"):
+                    data = data.replace(a, b)
+                zo.writestr(it, data)
+    r = subprocess.run(["soffice", "--headless", "--convert-to", "pdf", "--outdir", os.path.dirname(src), src],
                        check=True, capture_output=True, text=True)
     assert "Error" not in (r.stdout + r.stderr), r.stdout + r.stderr
+    if tmp:
+        shutil.move(src[:-5] + ".pdf", pptx[:-5] + ".pdf"); shutil.rmtree(tmp)
 
 
-def build(deck, refs):
+def build(deck, cfg):
+    G.clear(); G.update(GEOM, **cfg.get("geom", {}))
+    refs = cfg["refs"]
     path = os.path.join(ROOT, deck + ".pptx")
     prs = Presentation(path)
     S = prs.slides
@@ -124,12 +193,20 @@ def build(deck, refs):
         for sh in [x for x in s.shapes if x.name.startswith("NAV_")]:
             sh._element.getparent().remove(sh._element)
 
-    theme_link_color(prs)
+    for s in S:                                                   # 전에 건 슬라이드 이동 글자 링크 걷기
+        for h in list(s._element.iter(qn("a:hlinkClick"))):
+            if h.get("action") == "ppaction://hlinksldjump":
+                rPr = h.getparent(); rPr.remove(h)
+                if rPr.get("u") == "sng": del rPr.attrib["u"]
+    for a, b in cfg.get("fixes", []):
+        n = replace_text(prs, a, b)
+        assert n or grep_text(prs, b), a
+    theme_link_color(prs, G["ink"])
     fwd, back = {}, {}
-    for src, dsts, label in refs:
-        name = label if label.startswith("부록") else "부록 " + label
-        fwd.setdefault(src, []).append((f"▶ {name} · {dsts[0]}쪽", S[dsts[0] - 1], 1.78 if len(name) <= 7 else 2.0))
-        assert link_text(S[src - 1], label, S[dsts[0] - 1]), (src, label)
+    for src, dsts, label, name in refs:
+        fwd.setdefault(src, []).append((f"▶ {name} · {dsts[0]}쪽", S[dsts[0] - 1]))
+        if label:
+            assert link_text(S[src - 1], label, S[dsts[0] - 1]), (src, label)
         for d in dsts:
             back.setdefault(d, [])
             if src not in [b for b, _ in back[d]]:
@@ -138,13 +215,13 @@ def build(deck, refs):
     for src, items in fwd.items():
         pills(S[src - 1], items)
     for d, srcs in back.items():
-        pills(S[d - 1], [(f"◀ 본문 {src}쪽으로", t, 1.62) for src, t in srcs])
+        pills(S[d - 1], [(f"◀ 본문 {src}쪽으로", t) for src, t in srcs])
 
-    prs.save(path); to_pdf(path)
+    prs.save(path); to_pdf(path, cfg.get("pdf_font"))
     print(deck, "→", {k: [i[0] for i in v] for k, v in fwd.items()}, "| 돌아오기", {k: [s for s, _ in v] for k, v in back.items()})
 
 
 if __name__ == "__main__":
-    for deck, refs in DECKS.items():
+    for deck, cfg in DECKS.items():
         if len(sys.argv) < 2 or sys.argv[1] in deck:
-            build(deck, refs)
+            build(deck, cfg)
