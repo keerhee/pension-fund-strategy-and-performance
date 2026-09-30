@@ -257,3 +257,50 @@ def place(prs, new_slides_after):
         pos = list(lst).index(anchor) + 1
         for k, sid in enumerate(groups[after]):
             lst.insert(pos + k, sid)
+
+
+_SUB = None
+def sub_runs(prs, skip=("fml_", ".csv")):
+    """run 안의 ‘X_y’ · ‘X_{abc}’ 표기를 진짜 아래첨자(baseline −25%)로 바꾼다. 첨자는 영문·숫자 연속 구간.
+    파일명·열 이름(skip)이 든 run 은 건드리지 않는다. 바꾼 run 수를 돌려준다."""
+    import re
+    global _SUB
+    _SUB = _SUB or re.compile(r"(?<=[A-Za-zα-ωΑ-Ωℓūσμκβλρ\)\]])_(\{[^}]+\}|[A-Za-z0-9]+)")
+    n = 0
+    def tfs(sh):
+        if sh.has_text_frame:
+            yield sh.text_frame
+        if getattr(sh, "has_table", False) and sh.has_table:
+            for r in sh.table.rows:
+                for c in r.cells:
+                    yield c.text_frame
+        if sh.shape_type == 6:
+            for s2 in sh.shapes:
+                yield from tfs(s2)
+    for s in prs.slides:
+        for sh in s.shapes:
+            for tf in tfs(sh):
+                for p in tf.paragraphs:
+                    for r in list(p.runs):
+                        t = r.text
+                        if not _SUB.search(t) or any(k in t for k in skip):
+                            continue
+                        parts, pos = [], 0
+                        for m in _SUB.finditer(t):
+                            parts.append((t[pos:m.start()], False))
+                            parts.append((m.group(1).strip("{}"), True))
+                            pos = m.end()
+                        parts.append((t[pos:], False))
+                        anchor = r._r
+                        for txt, is_sub in parts:
+                            if not txt:
+                                continue
+                            nr = copy.deepcopy(r._r)
+                            nr.find("{http://schemas.openxmlformats.org/drawingml/2006/main}t").text = txt
+                            rpr = nr.find("{http://schemas.openxmlformats.org/drawingml/2006/main}rPr")
+                            if is_sub and rpr is not None:
+                                rpr.set("baseline", "-25000")
+                            anchor.addnext(nr); anchor = nr
+                        r._r.getparent().remove(r._r)
+                        n += 1
+    return n

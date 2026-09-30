@@ -10,7 +10,7 @@ CPPIB 수치 외의 숫자는 강의용 예시 가정.
 import os, shutil, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 from lecfix import *
-from slidekit import Kit, place
+from slidekit import Kit, place, sub_runs
 
 R = os.path.dirname(os.path.dirname(HERE))
 W = f"{R}/W15_TPA"
@@ -68,18 +68,19 @@ new.append((s, 11))
 
 # ── T2 세 숫자 (s12 뒤) ──
 s = kit.new(T, "1교시 · 숫자로 읽기", "AV · AR · IR — 세 숫자를 숫자로 읽는다",
-            "식 ① AV = R_P − R_RP · AR = σ(R_P − R_RP) · IR = AV / AR ≈ IC × √BR")
-kit.table(s, 60, 200, 1161, [
+            "식 ① — 기준보다 더 번 몫, 그 흔들림, 위험 한 단위당 초과성과")
+kit.formula(s, r"AV=R_P-R_{RP},\qquad AR=\sigma(R_P-R_{RP}),\qquad IR=\frac{AV}{AR}\approx IC\sqrt{BR}", cx=640, y=190, pt=22)
+kit.table(s, 60, 262, 1161, [
     ["숫자", "무엇을 말하나", "CPPIB · 예시"],
     ["AV (Added Value)", "기준보다 얼마나 더 벌었나", "8.8% − 7.4% = 1.4%p (10년 평균)"],
     ["AR (Active Risk)", "그 차이가 해마다 얼마나 흔들리나 — 기준에서 떨어진 거리", "약 1% (가정)"],
     ["IR (정보비율)", "위험 한 단위당 얼마나 더 벌었나 = AV ÷ AR", "1.4 ÷ 1 ≈ 1.4"],
     ["IC × √BR", "맞히는 실력 × √서로 독립적인 아이디어 수", "0.05 × √100 = 0.5"]],
     [1.6, 3.4, 2.2], rowh=40, pt=15, align="lll")
-kit.panel(s, L, 420, PW, 150, "b", "실력이 같아도", [
+kit.panel(s, L, 474, PW, 140, "b", "실력이 같아도", [
     "간신히 더 잘 맞히는 실력(IC 0.05)도",
     "독립 아이디어가 100개면 IR 0.5가 된다"], pt=16)
-kit.panel(s, RX, 420, PW, 150, "g", "사일로를 허물면", [
+kit.panel(s, RX, 474, PW, 140, "g", "사일로를 허물면", [
     "팀 칸막이가 사라져 서로 다른 아이디어가 한 저울에 오른다",
     "→ BR(아이디어 수)이 늘어난다"], pt=16)
 new.append((s, 12))
@@ -198,7 +199,7 @@ kit.table(s, 60, 196, 1161, [
     ["C1 예산 · 레버리지", "1⊤w = 1 · Σ|w_i| ≤ 1 + ℓ_max", "비중 합 100%, 차입은 한도 이내", "차입 ≤ 10%"],
     ["C2 총 액티브 위험", "a⊤Σa ≤ AR*²", "기준에서 벗어나는 흔들림은 예산 이내", "1.5%"],
     ["C3 전략별 예산", "RC_s ≤ κ_s AR*² · Σκ_s = 1", "각 전략의 위험기여는 배정분 이내", "팩터 · 사모 · 매크로 · ESG · 기타"],
-    ["C4 팩터 한도", "β_하 ≤ B⊤a ≤ β_상", "의도하지 않은 팩터 베팅을 묶는다", "신용 노출 상한"],
+    ["C4 팩터 한도", "β_{하} ≤ B⊤a ≤ β_{상}", "의도하지 않은 팩터 베팅을 묶는다", "신용 노출 상한"],
     ["C5 하방 위험", "CVaR95(−R_w) ≤ c*", "최악 5% 평균 손실 15% 이내", "CVaR ≤ 15%"],
     ["C6 유동성", "Σ비유동 ≤ u · (1−h)·유동자산 ≥ 지급 + 출자", "위기에도 연금과 출자를 현금으로", "연 지급 30조"],
     ["C7 탄소", "c⊤w ≤ (1 − δ)·c⊤b", "탄소 집약도를 기준보다 δ만큼 낮게", "—"],
@@ -247,6 +248,13 @@ kit.table(s, 60, 276, 1161, [
 kit.banner(s, 452, "검산 7.78 − 7.4 = 0.38%p — 기금 전체의 초과성과가 자산별 부가가치의 합과 딱 맞는다", h=52, pt=17)
 kit.bottom(s, "사모 12% vs 상장주 8%로 보면 4%p — 그중 1.2%p는 빚(레버리지)의 몫, 실력은 2.8%p", y=530)
 
+# FF 약자 풀기 · Future Fund는 호주 기금
+for a, b in [("에피소드 · FF 2022", "에피소드 · Future Fund 2022"),
+             ("CPPIB·FF(Active)", "CPPIB·Future Fund(Active)"),
+             ("하이브리드 B(FF)", "하이브리드 B(호주 Future Fund)")]:
+    assert replace_all(prs, a, b) == 1, a
+set_text(find(prs.slides[28], "Future Fund — 하이브리드의 길"), "호주 Future Fund — 하이브리드의 길")
+print("제1부 아래첨자 run", sub_runs(prs))
 renumber(prs)
 assert len(scan_codes(prs)) == codes0, scan_codes(prs)
 assert len(prs.slides) == 71, len(prs.slides)
@@ -287,6 +295,19 @@ assert rows[2][0] == "거짓 음성"
 rows[2][2] = "진짜 알파가 양(+)인데도 벤치마크에 뒤져 보이는 경우 — 평가의 오류"
 rows.insert(4, ["부가가치", "Dollar Value-Added (DVA)", "기준 포트폴리오 대비 더 번 금액 — 손계산에선 수익률(bp)로 환산"])
 set_table(tb, rows)
+print("제2부 아래첨자 run", sub_runs(prs))
 renumber(prs)
 assert len(prs.slides) == 26, len(prs.slides)
 prs.save(f"{W}/{name}.pptx"); to_pdf(f"{W}/{name}.pptx"); print("제2부 26장 저장")
+
+# ═════════════════════════════ 케이스 덱 ═════════════════════════════
+name = "W15_케이스_KFP_TPA전환과평가체계_IC"; backup(name)
+prs = Presentation(f"{W}/{name}.pptx")
+for a, b in [("하이브리드 B(FF형)", "하이브리드 B(Future Fund형)"),
+             ("CPPIB·GIC·FF — Active 극단", "CPPIB·GIC·Future Fund — Active 극단"),
+             ("B는 FF 하이브리드", "B는 호주 Future Fund식 하이브리드")]:
+    assert replace_all(prs, a, b) == 1, a
+assert replace_all(prs, "Norway · CPPIB · GIC · Future Fund · NZ Super", "Norway · CPPIB · GIC · 호주 Future Fund · NZ Super") == 1
+print("케이스 아래첨자 run", sub_runs(prs))
+assert not grep(prs, r"(?<![A-Za-z])FF(?![A-Za-z])")
+prs.save(f"{W}/{name}.pptx"); to_pdf(f"{W}/{name}.pptx"); print("케이스 저장")
