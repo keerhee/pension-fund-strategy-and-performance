@@ -9,7 +9,7 @@
 import os, shutil, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 from lecfix import *
-from slidekit import Kit, place
+from slidekit import Kit, place, sub_runs
 
 R = os.path.dirname(os.path.dirname(HERE))
 W = f"{R}/W07_LDI와GBI"
@@ -148,9 +148,9 @@ kit.panel(s, L, 290, PW, 268, "b", "Floor = 필수 목표를 사는 값", [
     "실질금리 2.5%면 4.42억 — 금리가 오르면 Floor가 내려가 쿠션이 는다",
     "LDI에서 부채를 재는 할인율과 같은 원리"], pt=16)
 kit.panel(s, RX, 290, PW, 268, "g", "m = 두 상한 중 작은 값", [
-    "급락 L 한 번에 쿠션은 m·L 줄어든다 → m ≤ 1/L",
-    "−25% 급락 → m ≤ 4 (쿠션 공식 장의 m = 4)",
-    "효용 기준 m* ≈ 2.5 (초과수익 4% · σ 18% · γ 0.5)"], pt=16)
+    "앞 식 (μ − r)/(γσ²) — Merton 최적 비중을 쿠션에 적용: 쿠션 1원당 위험자산 배수 (예: 2.5)",
+    "L — 다음 리밸런싱 전에 위험자산이 한 번에 떨어질 수 있는 폭 (−25%면 L = 0.25)",
+    "쿠션 손실 m·L이 쿠션을 넘지 않게 → m·L ≤ 1 → m ≤ 1/L = 4"], pt=15)
 kit.bottom(s, "m 후보마다 몬테카를로 → Safety ≥ 95% · Market ≥ 70%를 함께 지키는 가장 큰 m · 상세는 부록 B-6", y=590)
 new.append((s, 27))
 
@@ -159,18 +159,20 @@ s = kit.new(T, "2교시 · Flexicure 동적 조정", "Floor를 매년 다시 정
             "Flexicure(EDHEC 2018) — 매년 초 F = 0.8 × A, 나이에 따라 m = TDF 주식 비중 ÷ 0.2")
 kit.formula(s, r"F_t\ =\ 0.8\,A_t,\qquad m_t\ =\ \frac{w^{TDF}_t}{1-0.8},\qquad w_{PSP}\ =\ m\cdot\frac{A-F}{A}",
             cx=640, y=194, pt=22)
-kit.table(s, 60, 268, 1161, [
-    ["1년 뒤 (시작 A = 10 · F = 8 · m = 3 → PSP 60%)", "재설정한 Floor", "재설정 후 PSP 비중", "재설정 안 하면"],
-    ["벌었을 때  A = 11.5", "9.2 — 이익의 80%를 잠금", "*60%", "91%"],
-    ["잃었을 때  A = 8.5", "6.8", "*60%", "18% — Cash Trap 근접"]],
-    [2.6, 1.6, 1.3, 1.5], rowh=38, pt=15, align="lccc")
-kit.panel(s, L, 400, PW, 176, "b", "나이에 따라 m을 바꾼다", [
-    "45세 — TDF 주식 60% → m = 3",
-    "65세 — TDF 주식 20% → m = 1"], pt=16)
-kit.panel(s, RX, 400, PW, 176, "g", "잃었을 때 — IC가 정할 선택", [
+kit.label(s, 60, 258, 1161, 24, "시작: 자산 A = 10 · Floor F = 8 · m = 3 → PSP 비중 3 × (10 − 8) / 10 = 60%", pt=14, color="3b4252", align="c")
+kit.table(s, 60, 288, 1161, [
+    ["1년 뒤", "재설정한 Floor", "재설정 후 PSP 비중", "재설정 안 하면 PSP 비중"],
+    ["벌었을 때 (A = 11.5)", "9.2 — 이익의 80%를 잠금", "*60%", "91%"],
+    ["잃었을 때 (A = 8.5)", "6.8", "*60%", "18% — Cash Trap 근접"]],
+    [1.6, 1.9, 1.5, 1.9], rowh=38, pt=15, align="cccc")
+kit.panel(s, L, 418, PW, 176, "b", "0.8과 분모 1 − 0.8의 뜻", [
+    "0.8 — ‘한 해 손실은 20%까지’라는 설계값(원 논문)",
+    "재설정 직후 쿠션 = A − 0.8A = 0.2A → 비중 = m × 0.2",
+    "그래서 m = TDF 주식 비중 ÷ 0.2 — 45세 60% → 3 · 65세 20% → 1"], pt=15)
+kit.panel(s, RX, 418, PW, 176, "g", "잃었을 때 — IC가 정할 선택", [
     "Floor 유지(ratchet) — 필수 목표 보호 우선",
     "Floor 재설정 — 위험자산 참여 지속 우선"], pt=16)
-kit.bottom(s, "보호하는 것은 절대 금액이 아니라 ‘한 해 손실 ≤ 20%’ — 이익 잠금 · 상한 · 확정 장치는 부록 B-7", y=600)
+kit.bottom(s, "보호하는 것은 절대 금액이 아니라 ‘한 해 손실 ≤ 20%’ — 이익 잠금 · 상한 · 확정 장치는 부록 B-7", y=610)
 new.append((s, 27))
 
 place(prs, new)
@@ -334,6 +336,14 @@ kit.panel(s, RX, 440, PW, 150, "g", "잃으면 타이트하게?", [
     "m을 낮추면 Cash Trap에 더 빨리 빠진다",
     "Floor 유지(보호) vs 재설정(참여) — IC가 정할 일"], pt=14)
 
+# 1교시 체크포인트(원래 15장) — BPT 식을 LaTeX 그림으로
+cp = next(sl for sl in prs.slides if find(sl, "U = Σw_k·U_k"))
+sh = find(cp, "U = Σw_k·U_k")
+x, y, w, h = px(sh)
+fw, fh = kit.formula(cp, r"U=\sum_k w_k\,U_k,\qquad P(W_k<G_k)\leq\alpha_k", x=x, y=y + 4, pt=19)
+sh.left = int((x + fw + 14) * 9525); sh.width = int((w - fw - 14) * 9525)
+set_text(sh, "— “비효율”이 아니라 인간 행동의 정확한 모형")
+print("M9 첨자 run", sub_runs(prs))
 renumber(prs)
 assert not scan_codes(prs), scan_codes(prs)
 assert len(prs.slides) == 71, len(prs.slides)

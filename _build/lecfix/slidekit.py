@@ -261,11 +261,13 @@ def place(prs, new_slides_after):
 
 _SUB = None
 def sub_runs(prs, skip=("fml_", ".csv")):
-    """run 안의 ‘X_y’ · ‘X_{abc}’ 표기를 진짜 아래첨자(baseline −25%)로 바꾼다. 첨자는 영문·숫자 연속 구간.
-    파일명·열 이름(skip)이 든 run 은 건드리지 않는다. 바꾼 run 수를 돌려준다."""
+    """run 안의 ‘X_y’ · ‘X_{abc}’(아래첨자)와 ‘X^y’ · ‘X^(abc)’ · ‘X^{abc}’(위첨자)를 진짜 첨자로 바꾼다.
+    아래첨자는 영문·숫자 연속 구간, 위첨자는 부호·영문·숫자·소수점·한글 구간. 파일명·열 이름(skip)이 든 run 은 건드리지 않는다."""
     import re
     global _SUB
-    _SUB = _SUB or re.compile(r"(?<=[A-Za-zα-ωΑ-Ωℓūσμκβλρ\)\]])_(\{[^}]+\}|[A-Za-z0-9]+)")
+    _SUB = _SUB or re.compile(
+        r"(?<=[A-Za-z0-9α-ωΑ-Ωℓūσμκβλρ\)\]])"
+        r"(?:_(?P<sub>\{[^}]+\}|[A-Za-z0-9]+)|\^(?P<sup>\{[^}]+\}|\([^)]+\)|[−\-+]?[A-Za-z0-9.가-힣]+))")
     n = 0
     def tfs(sh):
         if sh.has_text_frame:
@@ -277,6 +279,7 @@ def sub_runs(prs, skip=("fml_", ".csv")):
         if sh.shape_type == 6:
             for s2 in sh.shapes:
                 yield from tfs(s2)
+    A = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
     for s in prs.slides:
         for sh in s.shapes:
             for tf in tfs(sh):
@@ -287,19 +290,25 @@ def sub_runs(prs, skip=("fml_", ".csv")):
                             continue
                         parts, pos = [], 0
                         for m in _SUB.finditer(t):
-                            parts.append((t[pos:m.start()], False))
-                            parts.append((m.group(1).strip("{}"), True))
+                            parts.append((t[pos:m.start()], 0))
+                            if m.group("sub") is not None:
+                                parts.append((m.group("sub").strip("{}"), -25000))
+                            else:
+                                g = m.group("sup")
+                                if g[0] in "{(":
+                                    g = g[1:-1]
+                                parts.append((g, 30000))
                             pos = m.end()
-                        parts.append((t[pos:], False))
+                        parts.append((t[pos:], 0))
                         anchor = r._r
-                        for txt, is_sub in parts:
+                        for txt, base in parts:
                             if not txt:
                                 continue
                             nr = copy.deepcopy(r._r)
-                            nr.find("{http://schemas.openxmlformats.org/drawingml/2006/main}t").text = txt
-                            rpr = nr.find("{http://schemas.openxmlformats.org/drawingml/2006/main}rPr")
-                            if is_sub and rpr is not None:
-                                rpr.set("baseline", "-25000")
+                            nr.find(A + "t").text = txt
+                            rpr = nr.find(A + "rPr")
+                            if base and rpr is not None:
+                                rpr.set("baseline", str(base))
                             anchor.addnext(nr); anchor = nr
                         r._r.getparent().remove(r._r)
                         n += 1
