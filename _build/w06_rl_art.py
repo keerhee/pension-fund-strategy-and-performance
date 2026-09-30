@@ -383,7 +383,7 @@ def actor_critic():
     b += text(800, 354, "놀람 = 실제 − 예상 (TD 오차)", 36, RED, bold=True)
     b += text(800, 440, "놀람이 +이면 그 행동을 더 자주, −이면 덜 한다", 32, INK)
     b += text(800, 486, "예상이라는 기준이 있어 점수 잡음이 줄고 더 빨리 배운다", 32, INK)
-    b += text(800, 546, "PPO · SAC · DDPG가 모두 이 구조다 (강의본 3교시 33쪽 DDPG 루프)", 28, MUTED)
+    b += text(800, 546, "PPO · SAC · DDPG가 모두 이 구조다 (강의본 3교시 38쪽 DDPG 루프)", 28, MUTED)
     return svg("actor_critic.png", b, h=572)
 
 
@@ -467,7 +467,7 @@ def hybrid():
     b += text((cx2 + cx5) / 2, 302, "학습은 과거 데이터 시뮬레이터 안에서만 — 실제 계좌로 ‘탐색’하지 않는다", 29, INK, bold=True)
     b += f'<path d="M{cx5},318 L{cx5},410 L{cx1},410 L{cx1},242" fill="none" stroke="{MUTED}" stroke-width="4" marker-end="url(#aM)"/>'
     b += text((cx1 + cx5) / 2, 394, "연 1회 검토: RL이 기준선(단순 규칙)을 못 이기면 끈다", 29, MUTED, bold=True)
-    b += text(800, 490, "강의본 36쪽 ‘RL을 혼자 두지 마라’ · 46쪽 Two Sigma의 가드레일 방식", 29, INK)
+    b += text(800, 490, "강의본 43쪽 ‘RL을 혼자 두지 마라’ · 53쪽 Two Sigma의 가드레일 방식", 29, INK)
     return svg("hybrid.png", b, h=520)
 
 
