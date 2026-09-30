@@ -336,3 +336,20 @@ def flam_fix(prs):
     for a, b in FLAM_RULES:
         n += replace_all(prs, a, b)
     return n
+
+
+ATTRIB_RULES = [
+    # attribution analysis — ‘귀인’은 어색하다 → ‘성과요인분석’ (2026-09-30 사용자 지시)
+    ("귀인분석", "성과요인분석"),
+    ("성과 귀인", "성과요인분석"),
+    ("성과·귀인", "성과·요인분석"),
+    ("귀인 불명", "성과 요인 불명확"),
+    ("귀인", "성과요인분석"),
+]
+
+
+def attrib_fix(prs):
+    n = 0
+    for a, b in ATTRIB_RULES:
+        n += replace_all(prs, a, b)
+    return n

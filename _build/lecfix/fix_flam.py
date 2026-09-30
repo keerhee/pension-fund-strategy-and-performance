@@ -8,7 +8,7 @@ W15는 fix_qa_w15.py 가 같은 규칙(slidekit.flam_fix)으로 처리한다.
 import os, shutil, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 from lecfix import *
-from slidekit import flam_fix, sub_runs, Kit
+from slidekit import flam_fix, sub_runs, Kit, attrib_fix
 
 R = os.path.dirname(os.path.dirname(HERE))
 OLD = f"{R}/_구판/FLAM정정_구판_2026-09-30"; os.makedirs(OLD, exist_ok=True)
@@ -129,6 +129,7 @@ for rel in DECKS:
                        ("VaR는 위기를 못 담는다", "VaR·CVaR는 위기를 못 담는다")]:
             assert replace_all(prs, x_, y_) == 1, x_
     n += sub_runs(prs)   # σ_down 등 남은 첨자 표기
+    n += attrib_fix(prs)   # 귀인 → 성과요인분석
     left = grep(prs, "FLAM")
     prs.save(f"{R}/{rel}.pptx")
     subprocess.run(["soffice", "--headless", "--convert-to", "pdf", "--outdir", os.path.dirname(f"{R}/{rel}.pptx"), f"{R}/{rel}.pptx"],

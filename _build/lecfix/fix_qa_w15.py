@@ -10,7 +10,7 @@ CPPIB 수치 외의 숫자는 강의용 예시 가정.
 import os, shutil, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 from lecfix import *
-from slidekit import Kit, place, sub_runs, flam_fix, render_eq
+from slidekit import Kit, place, sub_runs, flam_fix, render_eq, attrib_fix
 
 R = os.path.dirname(os.path.dirname(HERE))
 W = f"{R}/W15_TPA"
@@ -361,6 +361,7 @@ set_text(find(vf, "SAA 대비 +1.8%/년 (TAI)"),
 set_text(find(vf, "IC에서 인용할 수 있는 숫자는"), "IC에서 인용할 숫자는 TAI +1.3%/년과 CPPIB +1.4%p — 그 이상의 주장은 과대 추정을 의심하라")
 assert replace_all(prs, "TAI +1.8%", "TAI +1.3%") == 2
 print("제1부 아래첨자 run", sub_runs(prs))
+print("제1부 성과요인분석", attrib_fix(prs))
 renumber(prs)
 assert len(scan_codes(prs)) == codes0, scan_codes(prs)
 assert len(prs.slides) == 74, len(prs.slides)
@@ -510,5 +511,6 @@ for a, b in [("SAA 대비 +1.8%/년 (TAI)", "SAA 대비 +1.3%/년 (TAI)"),
              ("“TAI 근거 +1.8%p, 잠식 후 Net +0.9%p”", "“TAI 근거 +1.3%p, 잠식 후 Net +0.6%p”")]:
     assert replace_all(prs, a, b) == 1, a
 print("케이스 아래첨자 run", sub_runs(prs))
+print("케이스 성과요인분석", attrib_fix(prs))
 assert not grep(prs, r"(?<![A-Za-z])FF(?![A-Za-z])")
 prs.save(f"{W}/{name}.pptx"); to_pdf(f"{W}/{name}.pptx"); print("케이스 저장")

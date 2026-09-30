@@ -142,11 +142,11 @@ GitHub는 PDF를 브라우저에서 바로 렌더하므로, 열람용은 이 폴
 
 ### 3.1 Week 9 — 위험관리와 성과평가
 
-3교시 구성: 위험 척도 → 성과 지표 → 귀인·현실.
+3교시 구성: 위험 척도 → 성과 지표 → 성과요인분석·현실.
 
 - **1교시** — 위험의 네 정의(σ·VaR·CVaR·MDD), Artzner(1999)의 Coherent 공리, VaR의 부분가법성 위반 반례, VaR 추정 3법과 스트레스 테스트, MDD·Calmar.
 - **2교시** — Sharpe·Sortino·IR·Treynor·Jensen α의 분자·분모·용도 비교, 같은 포트폴리오가 지표에 따라 갈리는 실험, Grinold 기본법칙 $\mathrm{IR} = \mathrm{IC}\sqrt{\mathrm{BR}}$과 그 세 한계.
-- **3교시** — Brinson(1986) 배분·선택·교차 귀인과 초과수익 +3.2%p 분해, FLAM 팩터 통합, 자산군 분산 뒤에 숨은 팩터 집중, SPIVA, KIC의 2022\~2025 궤적.
+- **3교시** — Brinson(1986) 배분·선택·교차 성과요인분석과 초과수익 +3.2%p 분해, FLAM 팩터 통합, 자산군 분산 뒤에 숨은 팩터 집중, SPIVA, KIC의 2022\~2025 궤적.
 - **에피소드** — LTCM의 VaR 신화 붕괴(1998), Artzner 혁명, Grinold(1989), SPIVA 충격, 한국 기관 평가체계의 진화.
 - **케이스 2건** — ① 국부펀드 2022년 −8.6%(복합 BM −9.2%) 평가 ② 대체투자 PME 채택과 3페르소나 지표 매트릭스.
 
@@ -217,7 +217,7 @@ GitHub는 PDF를 브라우저에서 바로 렌더하므로, 열람용은 이 폴
 
 - 1교시: 월요일 아침 세 회의실, 사일로의 네 한계, 팩터 중복의 해부, TPA 3원칙(기준 하나·예산 하나·언어 하나), Active Risk와 Added Value의 산수, TPA vs 전통 SAA 여덟 차이, 30년의 진화.
 - 2교시: 4대 기관의 네 경로 — CPPIB(전환의 교과서) · NZ Super(백지에서) · GIC(보이지 않는 손) · Future Fund(하이브리드), GPFG라는 반대 극단, 한국의 현주소, 도입 4대 장애물.
-- 3교시: 팩터 렌즈, ESG를 리스크 팩터로, Climate Risk 세 얼굴, DB vs DC, One Fund 보상 정렬, KFP의 IPS와 6단계 설계(RP 70/30 · Active Risk 1.5%), Brinson을 넘어선 TPA 귀인, 한국 기관별 권고.
+- 3교시: 팩터 렌즈, ESG를 리스크 팩터로, Climate Risk 세 얼굴, DB vs DC, One Fund 보상 정렬, KFP의 IPS와 6단계 설계(RP 70/30 · Active Risk 1.5%), Brinson을 넘어선 TPA 성과요인분석, 한국 기관별 권고.
 - 최종 과제는 캡스톤 — TPA 전환 5년 로드맵의 뼈대.
 
 **제2부 (25장) — Measuring What Matters.** 1부가 "전환하느냐"를 물었다면, 2부는 "작동했는가를 무엇으로 판정하느냐"를 묻는다. CPP Investments Insights Institute 리포트(2026.7)의 리뷰다.

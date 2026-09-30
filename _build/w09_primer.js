@@ -93,7 +93,7 @@ module.exports = {
              ["나쁠 때의 평균 손실", "CVaR · 기대손실", "expected shortfall"],
              ["변동성 한 단위당 번 몫", "샤프비율", "Sharpe ratio"],
              ["견줄 잣대", "벤치마크", "benchmark"],
-             ["어디서 갈렸나", "성과 귀인", "performance attribution"]],
+             ["어디서 갈렸나", "성과요인분석", "performance attribution"]],
       widths: [4.30, 3.60, 3.89], emph: 2,
       banner: "강의본은 가운데 말을 씁니다. 이 표가 둘 사이의 다리입니다." },
 
