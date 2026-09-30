@@ -134,8 +134,8 @@ import subprocess as _sp
 _sp.run([sys.executable, os.path.join(HERE, "cppib_bars.py")], check=True, capture_output=True)
 s.shapes.add_picture(os.path.join(HERE, "_art", "cppib_bars.png"), int(596 * 9525), int(190 * 9525), width=int(630 * 9525))
 kit.label(s, 604, 520, 616, 22, "기금 100 · 사모 10 = 상장주 13 매도 + 채권 3 매수 · 부동산 10 = 상장주 5 + 채권 5 매도", pt=11, color="6b7280")
-kit.formula(s, r"\sigma(R_{SP})=\sigma(R_{RP}),\qquad e_j(\mathbf{w})=\sum_i w_i\,x_{ij}=e_j(\mathbf{b})", cx=640, y=546, pt=20)
-kit.bottom(s, "같은 위험을 더 잘 나눠서 더 번다 · 100 기금 손계산과 성과 분해는 부록 B-4 · B-5", y=604)
+kit.formula(s, r"\sigma(R_{SP})=\sigma(R_{RP}),\qquad e_j(\mathbf{w})=\sum_i w_i\,x_{ij}=e_j(\mathbf{b})", cx=640, y=548, pt=18)
+kit.bottom(s, "같은 위험을 더 잘 나눠서 더 번다 · 100 기금 손계산과 성과 분해는 부록 B-4 · B-5", y=620)   # 수식(~613)과 겹치지 않게
 new.append((s, 18))
 
 # ── T4a 두 단계 최적화 (s39 뒤) ──
