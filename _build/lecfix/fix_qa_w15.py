@@ -10,7 +10,7 @@ CPPIB 수치 외의 숫자는 강의용 예시 가정.
 import os, shutil, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 from lecfix import *
-from slidekit import Kit, place, sub_runs
+from slidekit import Kit, place, sub_runs, flam_fix, render_eq
 
 R = os.path.dirname(os.path.dirname(HERE))
 W = f"{R}/W15_TPA"
@@ -25,8 +25,12 @@ def backup(name):
 
 
 def to_pdf(pptx):
-    subprocess.run(["soffice", "--headless", "--convert-to", "pdf", "--outdir", os.path.dirname(pptx), pptx],
-                   check=True, capture_output=True)
+    import zipfile
+    names = zipfile.ZipFile(pptx).namelist()
+    assert len(names) == len(set(names)), "zip 안에 중복 파일 — LibreOffice가 열지 못한다"
+    r = subprocess.run(["soffice", "--headless", "--convert-to", "pdf", "--outdir", os.path.dirname(pptx), pptx],
+                       check=True, capture_output=True, text=True)
+    assert "Error" not in (r.stdout + r.stderr), r.stdout + r.stderr
 
 
 L, RX, PW = 60, 652, 568
@@ -36,6 +40,7 @@ name = "W15_TPA_제1부_사일로해체와설계_강의본"; backup(name)
 prs = Presentation(f"{W}/{name}.pptx")
 assert len(prs.slides) == 59
 codes0 = len(scan_codes(prs))   # 점검 질문 장표의 Q1~Q4는 원래 있던 것
+print("제1부 FLAM 정정", flam_fix(prs))   # 새 장(FLAM의 올바른 뜻을 적은 설명)을 만들기 전에 돌린다
 kit = Kit(prs, panel_idx=[17], table_idx=38, bottom_idx=11)   # s18 패널·배너 · s39 표 · s12 하단 줄
 T = prs.slides[17]
 new = []
@@ -121,7 +126,7 @@ s = kit.new(T, "2교시 · CPPIB 4개 층", "사모를 늘려도 주식·채권 
             "기준 → 전략(5년) → 목표 노출(매년) → 액티브 + 밸런싱 = 실제 포트폴리오")
 kit.panel(s, L, 196, 520, 330, "b", "위로 갈수록 오래 간다", [
     "① Reference — 주식 85 + 캐나다 국채 15 (이사회)",
-    "② Strategic — 6개 자산군 · 3개 지역, 총 위험은 기준과 같게",
+    "② Strategic — 6개 자산군 · 4개 지역, 총 위험은 기준과 같게",
     "③ Target Exposures — 올해의 팩터 노출 · 레버리지",
     "④ Active + Balancing — 부서의 투자 + 노출을 맞추는 유동자산"], pt=15)
 kit.table(s, 604, 196, 616, [
@@ -222,7 +227,7 @@ kit.table(s, 652, 196, 568, [
     ["코어 부동산", "채권 비중이 더 큼", "장기 임대차"],
     ["개발형 부동산", "주식 비중이 더 큼", "개발 위험 · 레버리지"]],
     [1.4, 1.5, 1.4], rowh=40, pt=14, align="lll")
-kit.label(s, 652, 406, 568, 60, "인도의 공항에 투자하면 신흥국 주식을 팔아 자금을 마련한다\n부동산 · 코어 · 개발형 숫자는 이해를 위한 예시", pt=13, color="3b4252")
+kit.label(s, 652, 406, 568, 60, "신흥국 인프라 투자 → 신흥국 인프라 지수(중국 제외)와 비교 — CPP 2025 벤치마크\n부동산 · 코어 · 개발형 숫자는 이해를 위한 예시", pt=13, color="3b4252")
 
 s = kit.new(T, "부록 B-3 · CPPIB 실제 벤치마크", "CPPIB의 실제 대리 묶음 — 업종 · 지역을 지수로 맞춘다",
             "2025년부터 성과 기준 = 전략별 공개시장 지수 묶음 ‘벤치마크 포트폴리오’ (기본 CPP · 연차보고서 2025)")
@@ -266,12 +271,69 @@ for a, b in [("에피소드 · FF 2022", "에피소드 · Future Fund 2022"),
              ("하이브리드 B(FF)", "하이브리드 B(호주 Future Fund)")]:
     assert replace_all(prs, a, b) == 1, a
 set_text(find(prs.slides[28], "Future Fund — 하이브리드의 길"), "호주 Future Fund — 하이브리드의 길")
-# 37장 팩터 렌즈 — 시장 β 0.65 → 0.75 (표 안 계산과 맞춤) · FLAM의 역할
-fl = next(sl for sl in prs.slides if find(sl, "팩터 렌즈 — 자산군을 투과"))
-c = find_table(fl).table.cell(1, 2); assert c.text == "시장 β 0.65"
-set_tf(c.text_frame, "시장 β 0.75 (0.60 + 0.10 + 0.05)")
-set_text(find(fl, "FLAM(W9)이 TPA의 눈이 된다"),
-         "FLAM(W9) — 자산별 팩터 노출을 비중대로 더한다 · TPA는 이 합계로 목표 노출과 위험예산을 정한다")
+# ── 37장 팩터 렌즈 · 39장 기후 위험 다시 쓰기 + 측정 표준 신설 ──
+def replace_slide(prs, old, new):
+    lst = list(prs.slides); i_old = lst.index(old); i_new = lst.index(new)
+    move_slide(prs, i_new, i_old + 1); delete_slide(prs, i_old)
+
+old37 = next(sl for sl in prs.slides if find(sl, "팩터 렌즈 — 자산군을 투과"))
+s = kit.new(T, "3교시 · 팩터 렌즈", "팩터 렌즈 — 라벨이 아니라 노출로 다시 더한다",
+            "주식 · 채권 · 대체라는 라벨 대신 ‘무엇에 돈을 걸었나’(시장 · 신용 · 금리)로 기금 전체를 다시 합산한다 (W9)")
+kit.formula(s, r"\beta_P^{(f)}\ =\ \sum_i w_i\,\beta_i^{(f)}", x=70, y=192, pt=24)
+kit.label(s, 360, 194, 860, 56, "팩터 f에 대한 기금 전체 노출 = 자산마다 (비중 × 그 자산의 노출)을 더한 값\n※ ‘FLAM’은 Grinold 법칙(IR = IC × √BR, 14장)의 이름 — 이 장의 도구는 ‘팩터 렌즈’", pt=13, color="3b4252")
+kit.table(s, 60, 258, 1161, [
+    ["팩터", "어디서 오나", "계산 (비중 × 노출)", "기금 전체"],
+    ["시장 (주식 위험)", "주식 60 · 하이일드 20 · 인프라 10", "0.6 × 1.0 + 0.2 × 0.5 + 0.1 × 0.5", "*0.75 — 라벨로는 주식 60%"],
+    ["신용", "하이일드 20", "0.2 × 0.8", "*0.16"],
+    ["금리 (듀레이션)", "국채 10 · 인프라 10", "0.1 × 5년 + 0.1 × 3년", "*0.8년"]],
+    [1.3, 2.0, 2.3, 1.8], rowh=38, pt=14, align="llll")
+kit.label(s, 60, 412, 1161, 22, "예시 기금: 주식 60 · 하이일드 20 · 국채 10 · 인프라 10 — 자산별 노출(하이일드 시장 0.5 · 신용 0.8 등)은 가정", pt=12, color="6b7280")
+kit.panel(s, L, 440, PW, 136, "b", "라벨로 보면 놓치는 것", [
+    "하이일드 채권의 절반은 주식처럼 움직인다",
+    "인프라에는 주식 위험과 금리 위험이 함께 숨어 있다"], pt=14)
+kit.panel(s, RX, 440, PW, 136, "g", "TPA는 이 합계를 어디에 쓰나", [
+    "목표 노출 · 팩터별 위험예산을 정하고(CPPIB 3층)",
+    "모자란 노출은 밸런싱으로 채운다(4층)"], pt=14)
+kit.banner(s, 588, "TPA의 질문 — “시장 0.75 · 신용 0.16 · 금리 0.8년이 우리의 의도인가?” 보이게 만들면 결정할 수 있다", h=50, pt=16)
+s37 = s
+
+old39 = next(sl for sl in prs.slides if find(sl, "Climate Risk의 세 얼굴"))
+s39 = kit.new(T, "3교시 · Climate", "기후 위험의 세 경로 — 어떻게 가격에 닿나",
+              "전환 · 물리적 · 배상 위험 — 같은 업종 안에서도 노출이 정반대로 갈린다")
+kit.table(s39, 60, 196, 1161, [
+    ["위험", "무슨 일이 일어나나", "가격에 닿는 경로", "대비되는 두 예 — 왜 다른가"],
+    ["전환 위험", "탄소 규제 · 탄소가격 · 재생에너지 원가 하락 · 소비자 선호 변화", "탄소 비용↑ → 이익↓ · 매장량이 팔 수 없는 ‘좌초자산’이 된다", "엑슨모빌(매출 대부분이 화석연료 → 타격) vs 넥스트에라(재생에너지 발전 → 수혜)"],
+    ["물리적 위험", "폭염 · 홍수 · 허리케인 · 해수면 상승", "자산 파손 · 보험료 급등 · 가동 중단 → 자산 가치↓", "플로리다 해안 부동산(침수 · 허리케인 노출 큼) vs 내륙 고지대 물류센터(노출 작음)"],
+    ["배상 · 법률 위험", "기후 피해 소송 · 허위 친환경 공시(그린워싱) 제재", "배상금 · 벌금 · 평판 손실", "기후 영향을 알고도 숨긴 기업(소송 표적) vs 배출을 공시하고 줄이는 기업"]],
+    [1.0, 2.1, 2.1, 2.7], rowh=66, pt=13, align="llll")
+kit.panel(s39, L, 468, 1161, 120, "g", "TPA에서는 — 기후도 팩터처럼 노출로 재서 더한다", [
+    "자산마다 기후 노출(예: 탄소집약도)을 재고 비중대로 더하면 기금 전체 노출 — 37장과 같은 Σ w × 노출",
+    "노출이 보여야 한도(제약 C7)와 위험예산을 걸 수 있다 — 그 ‘자’가 다음 장의 측정 표준"], pt=14)
+kit.bottom(s39, "같은 ‘에너지 업종’이라도 기후 노출은 정반대일 수 있다 — 업종 라벨이 아니라 노출을 본다", pt=15, y=602)
+
+s39b = kit.new(T, "3교시 · 측정 표준", "기후 노출을 숫자로 — Scope 1 · 2 · 3",
+               "무엇을 세는지(배출 범위)와 어떻게 공시하는지(표준)가 같아야 기업 · 기관 사이를 비교할 수 있다")
+kit.table(s39b, 60, 196, 700, [
+    ["범위", "무엇을 세나", "자동차 회사라면"],
+    ["Scope 1 · 직접", "회사가 직접 태운 연료 — 공장 굴뚝 · 회사 차량", "도장 공장의 가스 연소"],
+    ["Scope 2 · 전력", "사 온 전기 · 열을 만들 때 나온 배출", "공장이 쓰는 전기"],
+    ["Scope 3 · 가치사슬", "원료 공급부터 제품 사용 · 폐기까지 — 대개 가장 크다", "판매한 차가 달리며 내는 배출"]],
+    [1.2, 2.4, 1.6], rowh=50, pt=13, align="lll")
+kit.formula(s39b, r"\mathrm{WACI}\ =\ \sum_i w_i\,\frac{E_i}{S_i}", x=800, y=200, pt=24)
+kit.label(s39b, 790, 276, 430, 124, "가중평균 탄소집약도 — E: 배출량(tCO₂e) · S: 매출(백만 달러)\n기금 전체 = 종목별 탄소집약도를 비중대로 더한 값 — 37장 팩터 렌즈와 같은 구조\n석유회사는 판 연료가 타며 내는 배출(Scope 3)이 대부분", pt=13, color="3b4252")
+kit.panel(s39b, L, 410, PW, 170, "b", "공시 표준의 흐름", [
+    "TCFD 권고(2017) — 지배구조 · 전략 · 위험관리 · 지표의 네 축",
+    "ISSB IFRS S2(2023)가 이를 흡수, TCFD는 2023년 해산",
+    "한국은 KSSB 공시 기준 도입을 논의 중"], pt=14)
+kit.panel(s39b, RX, 410, PW, 170, "g", "왜 표준이 필요한가", [
+    "같은 자로 재야 기업 · 기관을 비교하고 한도(C7)를 건다",
+    "W13에서 인플레이션을 팩터로 재서 헤지했듯, 기후도 재야 관리한다"], pt=14)
+kit.bottom(s39b, "신용등급이 부도 위험을 표준화해 가격에 넣었듯 — 기후 측정 표준이 기후 위험을 가격에 넣는다", pt=15, y=598)
+# 새 장을 모두 만든 뒤에 옛 장을 지운다 (먼저 지우면 python-pptx가 slideN.xml 이름을 중복으로 붙인다)
+replace_slide(prs, old37, s37)
+replace_slide(prs, old39, s39)
+move_slide(prs, list(prs.slides).index(s39b), list(prs.slides).index(s39) + 1)
+
 # 41장 — TAI 수치 정정(+1.8 → +1.3, 피어 스터디 26개 기금 10년) · 보상식은 개념식
 vf = next(sl for sl in prs.slides if find(sl, "정량 검증과 One Fund"))
 set_text(find(vf, "Thinking Ahead Institute 2024"), "Thinking Ahead Institute 피어 스터디 — 26개 기금 10년 비교")
@@ -286,8 +348,8 @@ assert replace_all(prs, "TAI +1.8%", "TAI +1.3%") == 2
 print("제1부 아래첨자 run", sub_runs(prs))
 renumber(prs)
 assert len(scan_codes(prs)) == codes0, scan_codes(prs)
-assert len(prs.slides) == 72, len(prs.slides)
-prs.save(f"{W}/{name}.pptx"); to_pdf(f"{W}/{name}.pptx"); print("제1부 72장 저장")
+assert len(prs.slides) == 73, len(prs.slides)
+prs.save(f"{W}/{name}.pptx"); to_pdf(f"{W}/{name}.pptx"); print("제1부 73장 저장")
 
 # ═════════════════════════════ 제2부 ═════════════════════════════
 name = "W15_TPA_제2부_MeasuringWhatMatters_성과평가"; backup(name)
@@ -356,7 +418,7 @@ kit.table(sW2, 60, 194, 1161, [
     ["유형 (예)", "소유자의 목적", "결정 1의 자 — 투자 몫", "떼어 낼 투자 외 원인"],
     ["저축 · 세대 간형 (노르웨이 GPFG)", "자원 수입을 미래 세대의 구매력으로", "재정준칙(기대 실질수익 3%) 인출 가능액의 증가 — MCR과 대칭", "유가 · 신규 입금 · 인출 · 환율"],
     ["외환보유액 운용형 (KIC · GIC)", "외환보유액의 기회비용보다 더 번다", "위탁원이 직접 운용했을 때 대비 늘어난 외화자산(달러) + 위기 손실 한도 준수", "경상수지 · 외환 개입 · 위탁 추가·회수 · 환율"],
-    ["연금 준비형 (NZ Super · 호주 Future Fund)", "미래 연금 · 재정 부담 경감", "장기 목표수익률 초과 (NZ: 단기 국채 + 2.5%p · FF: CPI + 4~5%)", "정부 출연 · 인출 일정"],
+    ["연금 준비형 (NZ Super · 호주 Future Fund)", "미래 연금 · 재정 부담 경감", "장기 목표수익률 초과 (NZ: 정부 차입 비용 + 3.8%p · FF: CPI + 4~5%)", "정부 출연 · 인출 일정"],
     ["안정화형 (칠레 ESSF 등)", "원자재 급락 때 재정 보전", "필요할 때 손실 없이 꺼냈나 — 최대 낙폭 · 유동성", "인출 시점은 재정이 정한다"],
     ["전략 · 개발형 (테마섹 · 무바달라)", "산업 육성 · 장기 부", "장기 주주총수익(TSR) — 정책 투자와 나눠 본다", "정책 목적 투자"]],
     [1.9, 1.7, 2.8, 1.8], rowh=46, pt=12, align="llll")

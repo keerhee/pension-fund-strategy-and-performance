@@ -313,3 +313,26 @@ def sub_runs(prs, skip=("fml_", ".csv")):
                         r._r.getparent().remove(r._r)
                         n += 1
     return n
+
+
+FLAM_RULES = [
+    # 팩터 노출 통합(β_P = Σ w_i β_i)에 잘못 붙은 ‘FLAM’ → ‘팩터 렌즈’. FLAM은 Grinold의 IR = IC√BR 을 가리킨다.
+    ("FLAM — 팩터 기반 위험 통합", "팩터 렌즈 — 팩터 기반 위험 통합"),
+    ("3교시 · FLAM", "3교시 · 팩터 렌즈"),
+    ("FLAM 팩터 통합", "팩터 렌즈(팩터 노출 통합)"),
+    ("팩터 기반 통합(FLAM류)", "팩터 기반 통합(팩터 렌즈)"),
+    ("FLAM 팩터 렌즈", "팩터 렌즈"),
+    ("FLAM의 렌즈", "팩터 렌즈"),
+    ("FLAM의 팩터 좌표", "팩터 렌즈의 좌표"),
+    ("FLAM 팩터", "팩터 렌즈"),
+    ("FLAM이", "팩터 렌즈가"), ("FLAM을", "팩터 렌즈를"), ("FLAM은", "팩터 렌즈는"),
+    ("FLAM과", "팩터 렌즈와"), ("FLAM으로", "팩터 렌즈로"), ("FLAM의", "팩터 렌즈의"),
+    ("FLAM", "팩터 렌즈"),
+]
+
+
+def flam_fix(prs):
+    n = 0
+    for a, b in FLAM_RULES:
+        n += replace_all(prs, a, b)
+    return n
