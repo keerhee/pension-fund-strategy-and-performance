@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """W07 강의본 보강 — Q&A 통합본(2026-09-30) Part A 반영.
-  M9 GBI 강의본 56 → 73장: 본문 9장(한계와 쏠림 비판 · VaR 방식 Floor 포함, 확률 목표 · 필요 자본 · 입력과 출력 · 손계산 핵심 · w* · Floor와 m · Flexicure 재설정)
+  M9 GBI 강의본 56 → 74장: 본문 10장(RB 현금흐름 · 한계와 쏠림 비판 · VaR 방식 Floor 포함, 확률 목표 · 필요 자본 · 입력과 출력 · 손계산 핵심 · w* · Floor와 m · Flexicure 재설정)
                          + 부록 B 8장(유도 · 손계산 전 과정 · 최적성 · 변동성의 두 얼굴 · Floor·m 상세 · 동적 장치)
   M8 LDI 강의본 41장 발표 노트에 할인율 → Floor 연결 문장.
 실행: .venv/bin/python _build/lecfix/fix_qa_w07.py   (재실행 가능 — _구판/QA보강_구판_2026-09-30/ 에서 원본 복원)
@@ -216,6 +216,20 @@ kit.panel(s, RX, 382, PW, 200, "g", "주의", [
 kit.bottom(s, "권고: 필수 목표는 고정 Floor(GHP)로 지키고, VaR 예산은 위험 계좌 안에서만 — σ 대신 스트레스 손실 · CVaR", pt=15, y=598)
 new.append((s, 29))
 
+# ── N9 RB 현금흐름 타임라인 (원래 18장 ‘RB의 가격’ 뒤) ──
+import subprocess as _sp
+_sp.run([sys.executable, os.path.join(HERE, "rb_timeline.py")], check=True, capture_output=True)
+s = kit.new(T, "2교시 · RB 현금흐름", "RB는 은퇴일부터 ‘소득’만 준다",
+            "45세에 2.64억으로 사면 65세부터 20년간 실질 연 2,400만 원 — 쿠폰도 원금 상환도 없다 (r = 2%)")
+s.shapes.add_picture(os.path.join(HERE, "_art", "rb_timeline.png"), int(60 * 9525), int(190 * 9525), width=int(1161 * 9525))
+kit.panel(s, L, 496, PW, 130, "b", "왜 일반 국채로는 안 되나", [
+    "같은 돈의 국채는 쿠폰 · 원금이 은퇴 전에 끝난다",
+    "은퇴 때 목돈을 다시 굴려야 — 금리 · 장수 위험"], pt=14)
+kit.panel(s, RX, 496, PW, 130, "g", "Merton의 원래 아이디어", [
+    "목표는 ‘잔고’가 아니라 ‘평생 소득’",
+    "SeLFIES(2017) → 브라질 RendA+(2023) 첫 발행"], pt=14)
+new.append((s, 18))
+
 place(prs, new)
 
 # ═════════ 부록 B (맨 뒤) ═════════
@@ -377,6 +391,77 @@ kit.panel(s, RX, 440, PW, 150, "g", "잃으면 타이트하게?", [
     "m을 낮추면 Cash Trap에 더 빨리 빠진다",
     "Floor 유지(보호) vs 재설정(참여) — IC가 정할 일"], pt=14)
 
+# 1교시 · 3계층 버킷(원래 13장) — 그림을 도형으로 다시 그린다 (Aspirational 칸 넘침)
+from pptx.enum.shapes import MSO_SHAPE
+from pptx.dml.color import RGBColor as _RGB
+from pptx.util import Pt as _Pt
+from pptx.enum.text import PP_ALIGN as _AL, MSO_ANCHOR as _AN
+bk = next(sl for sl in prs.slides if find(sl, "3계층 버킷 전략"))
+for pic in pictures(bk):
+    pic._element.getparent().remove(pic._element)
+E_ = lambda v: int(v * 9525)
+def box(x, y, w, h, fill, line):
+    sh = bk.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, E_(x), E_(y), E_(w), E_(h))
+    sh.adjustments[0] = 0.06
+    sh.fill.solid(); sh.fill.fore_color.rgb = _RGB.from_string(fill)
+    sh.line.color.rgb = _RGB.from_string(line); sh.line.width = _Pt(1.25)
+    sh.shadow.inherit = False
+    return sh
+def tri(cx, y):
+    sh = bk.shapes.add_shape(MSO_SHAPE.ISOSCELES_TRIANGLE, E_(cx - 14), E_(y), E_(28), E_(20))
+    sh.fill.solid(); sh.fill.fore_color.rgb = _RGB.from_string("6B7280"); sh.line.fill.background()
+def txt(x, y, w, h, lines):
+    tb = bk.shapes.add_textbox(E_(x), E_(y), E_(w), E_(h)); tf = tb.text_frame; tf.word_wrap = True
+    tf.vertical_anchor = _AN.MIDDLE
+    for i, (t, pt, color, bold) in enumerate(lines):
+        p = tf.paragraphs[0] if i == 0 else tf.add_paragraph(); p.alignment = _AL.CENTER
+        r = p.add_run(); r.text = t; r.font.size = _Pt(pt); r.font.bold = bold; r.font.name = "Noto Sans CJK KR"
+        r.font.color.rgb = _RGB.from_string(color)
+        rPr = r._r.get_or_add_rPr()
+        rPr.append(rPr.makeelement("{http://schemas.openxmlformats.org/drawingml/2006/main}ea", {"typeface": "Noto Sans CJK KR"}))
+txt(60, 196, 1161, 30, [("3계층 버킷 — Safety가 확보되어야 Market, Market이 확보되어야 Aspirational", 16, "1B2C5E", True)])
+box(100, 262, 262, 330, "F7F8FA", "9AA3AF")
+txt(110, 272, 242, 310, [("위계의 원칙", 16, "1B2C5E", True), ("", 8, "3b4252", False),
+    ("아래층이 채워져야", 13, "3b4252", False), ("위층에 자본 배분", 13, "3b4252", False), ("", 8, "3b4252", False),
+    ("각 계층은 독립 운용", 13, "3b4252", False), ("(통합 MVO가 아님)", 12, "6B7280", False), ("", 8, "3b4252", False),
+    ("위험 = 변동성이 아니라", 13, "3b4252", False), ("목표 미달 확률", 13, "C0392B", True)])
+box(918, 262, 262, 330, "F7F8FA", "9AA3AF")
+txt(928, 272, 242, 310, [("이론적 뿌리", 16, "1B2C5E", True), ("", 8, "3b4252", False),
+    ("Thaler (1985)", 13, "3b4252", False), ("Mental Accounting", 12, "6B7280", False), ("", 8, "3b4252", False),
+    ("Shefrin–Statman (2000)", 13, "3b4252", False), ("BPT — 계정별 효용", 12, "6B7280", False), ("", 8, "3b4252", False),
+    ("Chhabra (2005)", 13, "3b4252", False), ("Beyond Markowitz 3계층", 12, "6B7280", False)])
+tiers = [(262, 420, "FDECEC", "C0392B", "③ Aspirational — 운 좋으면 (≥30%)", "유산 · 기부 — 주식 · 대체 집중 · P(W < G_A) < 70%"),
+         (378, 440, "EAF1FB", "2F5AA8", "② Market — 평균이면 달성 (≥70%)", "여행 · 취미 등 생활 향상 — 60/40 분산 · P(W < G_M) < 30%"),
+         (494, 470, "E6F5F0", "2E9E6B", "① Safety — 반드시 달성 (≥95%)", "기본 생활비 — 무위험 · RB/GHP 중심 · P(W < G_S) < 5%")]
+for y, w, fill, line, t1, t2 in tiers:
+    x = 640 - w / 2
+    box(x, y, w, 86, fill, line)
+    txt(x + 8, y + 4, w - 16, 78, [(t1, 16, line, True), (t2, 12, "3b4252", False)])
+tri(640, 353); tri(640, 469)
+txt(60, 604, 1161, 30, [("“비효율”적이지만 인간 행동을 더 정확히 반영한다 — 그리고 실패해도 무엇이 실패했는지 안다", 15, "1B2C5E", True)])
+
+# 22장 RB — 발행 사례 정정 (브라질 RendA+, 2023)
+rb = next(sl for sl in prs.slides if find(sl, "Retirement Bond — 개인의"))
+assert replace_all(prs, "현재 발행 국가 없음 → EDHEC식 복제(GHP)", "브라질 RendA+(2023)가 첫 발행 — 한국엔 없어 EDHEC식 복제(GHP)") == 1
+assert replace_all(prs, "“왜 아무 정부도 발행하지 않는가” — 케이스와 발표 질문에서 다룬다", "“왜 대부분의 정부는 발행하지 않는가” — 케이스와 발표 질문에서 다룬다") == 1
+# 23장 RB 가격 — 45세 가격 반올림 정정 (3.924억 ÷ 1.02^20 = 2.641억)
+assert replace_all(prs, "45세 가입(20년 후 시작) 약 2.63억 원", "45세 가입(20년 후 시작) 약 2.64억 원") == 1
+_pr = next(sl for sl in prs.slides if find(sl, "Retirement Bond의 가격"))
+_p45 = sorted(pictures(_pr), key=lambda p: p.top)[1]
+from slidekit import render_eq
+replace_picture(_p45, render_eq(r"P_{45}\ =\ \frac{P_{65}}{(1.02)^{20}}\ \approx\ \frac{3.92}{1.486}\ \approx\ 2.64"))
+# 한국 로보 — IRP 행
+rk = next(sl for sl in prs.slides if find(sl, "한국 로보의 GBI 도전"))
+tb = find_table(rk); rows = [[c.text for c in r.cells] for r in tb.table.rows]
+rows.append(["IRP란", "개인형 퇴직연금 — 퇴직금 · 추가 적립을 담는 계좌. 일임이 허용돼 로보가 규칙(쿠션 비례 · Floor 재설정)을 승인 없이 실행한다"])
+set_table(tb, rows)
+# 한국 DC — 디폴트옵션 설명 (덫 ③)
+dc = next(sl for sl in prs.slides if find(sl, "한국 DC의 현실"))
+sh = find(dc, "TDF·펀드·ETF 수백 개")
+set_text(sh, "TDF·펀드·ETF 수백 개 — 비교 불능이 원리금 회귀를 낳는다. 디폴트옵션(사전지정운용, 2023.7): 지시가 없으면 미리 정한 상품으로 자동 운용 — ‘고르지 않는 사람’에게도 규칙을 적용하는 첫 제도, 로보 일임과 같은 원칙.")
+for p in sh.text_frame.paragraphs:
+    for r in p.runs: r.font.size = _Pt(14)
+
 # 1교시 체크포인트(원래 15장) — BPT 식을 LaTeX 그림으로
 cp = next(sl for sl in prs.slides if find(sl, "U = Σw_k·U_k"))
 sh = find(cp, "U = Σw_k·U_k")
@@ -387,8 +472,8 @@ set_text(sh, "— “비효율”이 아니라 인간 행동의 정확한 모형
 print("M9 첨자 run", sub_runs(prs))
 renumber(prs)
 assert not scan_codes(prs), scan_codes(prs)
-assert len(prs.slides) == 73, len(prs.slides)
-prs.save(f"{W}/{name}.pptx"); to_pdf(f"{W}/{name}.pptx"); print("M9 강의본 73장 저장")
+assert len(prs.slides) == 74, len(prs.slides)
+prs.save(f"{W}/{name}.pptx"); to_pdf(f"{W}/{name}.pptx"); print("M9 강의본 74장 저장")
 
 # ═════════════════════════════ M8 41장 발표 노트 ═════════════════════════════
 name = "W07_M8_LDI_부채연계투자_강의본"; backup(name)
