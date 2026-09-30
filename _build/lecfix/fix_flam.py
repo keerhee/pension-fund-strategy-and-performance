@@ -88,7 +88,46 @@ for rel in DECKS:
         move_slide(prs, lst.index(g), 22)
         lst = list(prs.slides)
         move_slide(prs, lst.index(g2), 23)
+        # ── VaR와 함께 CVaR ──
+        s5 = prs.slides[4]
+        assert replace_all(prs, "무기 — VaR·Sharpe·Brinson·팩터 렌즈", "무기 — VaR·CVaR·Sharpe·Brinson·팩터 렌즈") == 1
+        s13 = next(sl for sl in prs.slides if find(sl, "VaR 추정 3법과 스트레스 테스트"))
+        set_text(find(s13, "VaR 추정 3법과 스트레스 테스트"), "VaR · CVaR 추정 3법과 스트레스 테스트")
+        set_text(find(s13, "같은 VaR도 추정법에 따라 다르다"), "같은 VaR · CVaR도 추정법에 따라 다르다 — 그리고 모델 밖 시나리오를 본다")
+        old = find_table(s13); x, y, w, h = px(old); old._element.getparent().remove(old._element)
+        kit.table(s13, x, y, w, [
+            ["추정법", "VaR — 경계선", "CVaR — 경계 너머 손실의 평균", "한계"],
+            ["모수적 (정규)", "zσ − μ (95%: 1.645σ − μ)", "σ·φ(z)/(1 − α) − μ (95%: 2.063σ − μ)", "두꺼운 꼬리 과소평가"],
+            ["역사적", "과거 손실의 하위 5% 경계값", "그 경계를 넘은 손실들의 평균", "희귀 사건 미반영"],
+            ["Monte Carlo", "수천 회 시뮬레이션의 분위점", "분위점 너머 시뮬레이션 손실의 평균", "계산 비용 · 모델 가정"]],
+            [1.2, 2.2, 2.8, 1.6], rowh=56, pt=13, align="llll")
+        cv = kit.new(T, "1교시 · VaR와 CVaR 손계산", "손으로 구하는 VaR와 CVaR — 100개월 예",
+                     "월 수익률 100개를 나쁜 순으로 줄 세운다 — 95% 기준이면 최악 5개월이 ‘꼬리’다")
+        kit.table(cv, 60, 196, 1161, [
+            ["최악 순위", "1", "2", "3", "4", "5", "6"],
+            ["손실 (%)", "12", "9", "8", "7", "*6", "5"]],
+            [1.6, 1, 1, 1, 1, 1, 1], rowh=40, pt=15, align="lcccccc")
+        kit.panel(cv, 60, 296, 568, 176, "b", "역사적 방식", [
+            "VaR(95%) = 최악 5개월의 경계 = 6% — 20번 중 19번은 이보다 덜 잃는다",
+            "CVaR(95%) = 최악 5개월의 평균 = (12 + 9 + 8 + 7 + 6) / 5 = 8.4% — 나머지 1번이 오면 평균 이만큼"], pt=14)
+        kit.panel(cv, 652, 296, 568, 176, "g", "정규분포로 재면 (μ 0.5% · σ 4%)", [
+            "VaR = 1.645 × 4 − 0.5 = 6.1% — 역사적 VaR와 비슷",
+            "CVaR = 2.063 × 4 − 0.5 = 7.8% — 역사적 8.4%보다 작다 → 꼬리가 정규보다 두껍다는 신호"], pt=14)
+        kit.panel(cv, 60, 486, 1161, 118, "b", "주의", [
+            "CVaR도 같은 데이터 · 같은 분포 가정이면 같이 틀린다 — 평온기 데이터로는 2022를 못 담는다 → 스트레스 테스트",
+            "Basel(FRTB)은 99% VaR 대신 97.5% ES를 쓴다 — 정규분포면 거의 같은 값(2.326σ vs 2.338σ)이지만 꼬리가 두꺼우면 ES가 더 크다"], pt=13)
+        lst = list(prs.slides); move_slide(prs, lst.index(cv), lst.index(s13) + 1)
+        lt = next(sl for sl in prs.slides if find(sl, "LTCM의 VaR 신화 붕괴"))
+        sh = find(lt, "평온기(1994–98) 백테스트의 함정이 남긴 영원한 교재")
+        set_text(sh, "평온기(1994–98) 백테스트의 함정 — CVaR였어도 같은 정규 가정이면 같이 틀렸다 ★IC①")
         renumber(prs)
+    if rel.endswith("W09_케이스1_국부펀드2022성과평가_IC"):
+        for x_, y_ in [("VaR·Sharpe·Brinson·팩터 렌즈가", "VaR·CVaR·Sharpe·Brinson·팩터 렌즈가"),
+                       ("VaR는 “평시”의 척도 — 위기 속도 못 담음", "VaR·CVaR는 “평시” 데이터의 척도 — 위기 속도 못 담음"),
+                       ("위험 재평가 — VaR가 2022 담았나", "위험 재평가 — VaR·CVaR가 2022를 담았나"),
+                       ("“VaR는 2022 못 담았다 — 스트레스 필요”", "“VaR·CVaR 모두 2022를 못 담았다 — 스트레스 필요”"),
+                       ("VaR는 위기를 못 담는다", "VaR·CVaR는 위기를 못 담는다")]:
+            assert replace_all(prs, x_, y_) == 1, x_
     n += sub_runs(prs)   # σ_down 등 남은 첨자 표기
     left = grep(prs, "FLAM")
     prs.save(f"{R}/{rel}.pptx")
