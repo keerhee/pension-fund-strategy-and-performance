@@ -98,7 +98,7 @@ kit.table(s, 60, 262, 1161, [
 kit.panel(s, L, 446, 1161, 128, "b", "읽는 법", [
     "사모주식 1 = ‘소형주 1.3을 사되 그중 0.3은 빌려서 산 것’과 위험이 같다 — 바이아웃 기업이 빚을 더 지기 때문",
     "계수의 합은 늘 1 (1.3 − 0.3 = 1 · 0.5 + 0.5 = 1) — 같은 1원을 다르게 담았을 뿐이다"], pt=15)
-kit.bottom(s, "CPPIB는 세계를 10개 업종 × 7개 지역 = 70칸으로 나눠 맞춘다 · 방법별 상세는 부록 B-3", y=596)
+kit.bottom(s, "CPPIB 실제 예(2025): 사모주식 20% ↔ 선진국 주식 21 + 아태 신흥 3 + 아태 선진 2 − 단기국채 4 → 주식 26 ÷ 20 = 1.3배 · 부록 B-3", pt=14, y=598)
 new.append((s, 18))
 
 # ── T3b 네 가지 쓰임 ──
@@ -108,12 +108,12 @@ kit.formula(s, r"VA_i\ =\ R_i-\sum_j x_{ij}\,R_j,\qquad AV_{total}\ =\ \sum_i w_
 kit.table(s, 60, 258, 1161, [
     ["쓰임", "무엇을", "숫자 예"],
     ["① 자금 조달 규칙", "사모 10을 사면 상장주 13을 팔고 10은 사모, 3은 채권", "기금 전체 위험이 변하지 않는다"],
-    ["② 성과의 기준", "실제 수익 − 대리 묶음 수익", "12 − 10.5 = 1.5%p (착각 3%p)"],
+    ["② 성과의 기준", "실제 수익 − 대리 묶음 수익", "사모 12% − 묶음 10.5% = 1.5%p (착각 3%p)"],
     ["③ 위험예산의 몫", "대리 묶음 위험은 이미 기준에 있다 → VA의 흔들림만 차감", "사모 33%로도 예산 1~2% 유지"],
     ["④ 노출 집계", "모든 자산을 주식 · 채권으로 환산해 더하면 기준과 같아야", "85 / 15"]],
     [1.5, 3.3, 2.4], rowh=40, pt=14, align="lll")
 kit.banner(s, 480, "투자 허들 = 대리 묶음의 기대수익 + 유동성을 포기한 대가 + 운영비용 — 기회비용이 곧 허들", h=52, pt=17)
-kit.bottom(s, "대리 묶음 = 1.3 × 9 − 0.3 × 4 = 10.5% — 3%p 중 1.5%p는 빚을 더 쓴 대가, 실력은 1.5%p", y=560)
+kit.bottom(s, "가상 수익률 — 사모주식 실현 12% · 같은 업종 상장 소형주 9% · 채권 4% → 대리 묶음 1.3 × 9 − 0.3 × 4 = 10.5%\n12 − 9 = 3%p 중 1.5%p는 빚을 더 쓴 대가, 실력은 12 − 10.5 = 1.5%p", pt=14, y=548)
 new.append((s, 18))
 
 # ── T3c CPPIB 4개 층 ──
@@ -224,6 +224,18 @@ kit.table(s, 652, 196, 568, [
     [1.4, 1.5, 1.4], rowh=40, pt=14, align="lll")
 kit.label(s, 652, 406, 568, 60, "인도의 공항에 투자하면 신흥국 주식을 팔아 자금을 마련한다\n부동산 · 코어 · 개발형 숫자는 이해를 위한 예시", pt=13, color="3b4252")
 
+s = kit.new(T, "부록 B-3 · CPPIB 실제 벤치마크", "CPPIB의 실제 대리 묶음 — 업종 · 지역을 지수로 맞춘다",
+            "2025년부터 성과 기준 = 전략별 공개시장 지수 묶음 ‘벤치마크 포트폴리오’ (기본 CPP · 연차보고서 2025)")
+kit.table(s, 60, 196, 1161, [
+    ["부서 (펀드 비중)", "벤치마크를 이루는 공개시장 지수 (기본 CPP 비중)", "읽는 법"],
+    ["사모주식 (20%)", "S&P 선진국 대·중형주 21% · 아태 신흥 3% · 아태 선진 2% · 미국 3개월 국채 −4%", "주식 26 ÷ 20 = 1.3배, 음수 국채 = 차입 — ‘1.3 × 주식’의 실제 모습"],
+    ["실물자산 (24%)", "글로벌 리츠 8% · 글로벌 인프라(석유·가스 저장운송 제외) 6% · 신흥국 인프라(중국 제외) 3% · 선진국 재생전력 3% · 선진국 에너지 2% 등", "부동산은 상장 리츠, 인프라는 상장 인프라 · 업종 지수로 — 같은 위험의 상장 대안"],
+    ["크레딧 (13%)", "미국 레버리지론 8% · 글로벌 하이일드 4% · 글로벌 투자등급 회사채 2% · 신흥국 회사채 2% · 미국 금융주 1% · 미국 3개월 국채 −4%", "대출 · 채권 성격에 맞춘 지수 + 차입"]],
+    [1.3, 3.6, 2.5], rowh=62, pt=13, align="lll")
+kit.panel(s, L, 454, 1161, 140, "b", "이 표가 말하는 것", [
+    "사모 · 실물 · 크레딧마다 ‘안 했다면 들고 있었을 상장 지수 묶음’을 지역 · 업종까지 맞춰 짠다 — 부가가치는 이 묶음 대비로 잰다",
+    "85 / 15는 목표 위험 수준(시장위험 목표)으로 남고, 성과 비교는 이 벤치마크 포트폴리오로 한다 · 일부 지수는 반올림 · 생략(원문 주석)"], pt=13)
+
 s = kit.new(T, "부록 B-4 · CPPIB ①", "기금 100에서 따라가 보기 — 기준 85 / 15",
             "1단계 사모주식 10 매수(대리 1.3 / −0.3) → 2단계 부동산 10 매수(대리 0.5 / 0.5) → 밸런싱")
 kit.panel(s, L, 196, PW, 200, "b", "1단계 — 사모주식 10", [
@@ -254,11 +266,28 @@ for a, b in [("에피소드 · FF 2022", "에피소드 · Future Fund 2022"),
              ("하이브리드 B(FF)", "하이브리드 B(호주 Future Fund)")]:
     assert replace_all(prs, a, b) == 1, a
 set_text(find(prs.slides[28], "Future Fund — 하이브리드의 길"), "호주 Future Fund — 하이브리드의 길")
+# 37장 팩터 렌즈 — 시장 β 0.65 → 0.75 (표 안 계산과 맞춤) · FLAM의 역할
+fl = next(sl for sl in prs.slides if find(sl, "팩터 렌즈 — 자산군을 투과"))
+c = find_table(fl).table.cell(1, 2); assert c.text == "시장 β 0.65"
+set_tf(c.text_frame, "시장 β 0.75 (0.60 + 0.10 + 0.05)")
+set_text(find(fl, "FLAM(W9)이 TPA의 눈이 된다"),
+         "FLAM(W9) — 자산별 팩터 노출을 비중대로 더한다 · TPA는 이 합계로 목표 노출과 위험예산을 정한다")
+# 41장 — TAI 수치 정정(+1.8 → +1.3, 피어 스터디 26개 기금 10년) · 보상식은 개념식
+vf = next(sl for sl in prs.slides if find(sl, "정량 검증과 One Fund"))
+set_text(find(vf, "Thinking Ahead Institute 2024"), "Thinking Ahead Institute 피어 스터디 — 26개 기금 10년 비교")
+set_text(find(vf, "One Fund Culture"), "One Fund Culture — 보상 정렬 (원리를 보인 개념식)")
+from slidekit import render_eq
+_pics = sorted(pictures(vf), key=lambda p: p.top)
+replace_picture(_pics[0], render_eq(r"\Delta r_{\mathrm{TPA\ vs\ SAA}}\ =\ +1.3\%/\mathrm{yr}\qquad(10\ \mathrm{yr},\ 26\ \mathrm{funds})"))
+set_text(find(vf, "SAA 대비 +1.8%/년 (TAI)"),
+         "SAA 대비 +1.3%/년 (TAI) — 26개 기금의 평균 차이: 상관이지 인과가 아니다\n부서장 보상을 전체 펀드 성과에 연결하면 사일로가 해체된다 — 위 식은 그 원리를 적은 것")
+set_text(find(vf, "IC에서 인용할 수 있는 숫자는"), "IC에서 인용할 숫자는 TAI +1.3%/년과 CPPIB +1.4%p — 그 이상의 주장은 과대 추정을 의심하라")
+assert replace_all(prs, "TAI +1.8%", "TAI +1.3%") == 2
 print("제1부 아래첨자 run", sub_runs(prs))
 renumber(prs)
 assert len(scan_codes(prs)) == codes0, scan_codes(prs)
-assert len(prs.slides) == 71, len(prs.slides)
-prs.save(f"{W}/{name}.pptx"); to_pdf(f"{W}/{name}.pptx"); print("제1부 71장 저장")
+assert len(prs.slides) == 72, len(prs.slides)
+prs.save(f"{W}/{name}.pptx"); to_pdf(f"{W}/{name}.pptx"); print("제1부 72장 저장")
 
 # ═════════════════════════════ 제2부 ═════════════════════════════
 name = "W15_TPA_제2부_MeasuringWhatMatters_성과평가"; backup(name)
@@ -355,7 +384,7 @@ sA = kit.new(T, "DECISION 3 · 대리 묶음", "대리 묶음 — 투자마다 �
              "위험 성격(시장 민감도 · 업종 · 지역 · 레버리지)이 같게 짠 상장자산 조합 — 이 투자를 안 했다면 들고 있었을 것")
 kit.table(sA, 60, 200, 1161, [
     ["투자", "대리 묶음 (예시)", "왜 이렇게 짜나"],
-    ["미국 테크 바이아웃 사모주식", "미국 테크 상장주 1.3 − 채권 0.3", "빚이 많아 시장보다 1.3배 움직인다 (CPPIB가 드는 예)"],
+    ["미국 테크 바이아웃 사모주식", "미국 테크 상장주 1.3 − 채권 0.3", "빚이 많아 시장보다 1.3배 움직인다 (CPPIB 사모 벤치마크도 1.3배)"],
     ["인도 공항 인프라", "신흥국 주식 0.6 + 채권 0.4", "통행료는 채권처럼, 성장은 신흥국 주식처럼 움직인다"],
     ["캐나다 코어 오피스 부동산", "주식 0.4 + 채권 0.6", "장기 임대료가 채권 이자와 비슷하다"],
     ["직접대출 (프라이빗 크레딧)", "하이일드 채권 지수 1.0", "같은 신용위험을 지는 상장 채권"],
@@ -399,6 +428,10 @@ for a, b in [("하이브리드 B(FF형)", "하이브리드 B(Future Fund형)"),
              ("B는 FF 하이브리드", "B는 호주 Future Fund식 하이브리드")]:
     assert replace_all(prs, a, b) == 1, a
 assert replace_all(prs, "Norway · CPPIB · GIC · Future Fund · NZ Super", "Norway · CPPIB · GIC · 호주 Future Fund · NZ Super") == 1
+for a, b in [("SAA 대비 +1.8%/년 (TAI)", "SAA 대비 +1.3%/년 (TAI)"),
+             ("TAI 2024 — SAA 대비 +1.8%/년 (26개 기관 10년)", "TAI 피어 스터디 — SAA 대비 +1.3%/년 (26개 기금 10년)"),
+             ("“TAI 근거 +1.8%p, 잠식 후 Net +0.9%p”", "“TAI 근거 +1.3%p, 잠식 후 Net +0.6%p”")]:
+    assert replace_all(prs, a, b) == 1, a
 print("케이스 아래첨자 run", sub_runs(prs))
 assert not grep(prs, r"(?<![A-Za-z])FF(?![A-Za-z])")
 prs.save(f"{W}/{name}.pptx"); to_pdf(f"{W}/{name}.pptx"); print("케이스 저장")
