@@ -41,6 +41,12 @@ DECKS = {
     "W13_글로벌매크로와CTA/W13_글로벌매크로와CTA_강의본": dict(refs=[(2, [50], None, "용어집"), (48, [50], None, "용어집")]),
     "W14_대체투자와비유동성/W14_대체투자와비유동성_강의본": dict(refs=[(2, [55], None, "용어집"), (53, [55], None, "용어집")]),
     "W15_TPA/W15_TPA_제2부_MeasuringWhatMatters_성과평가": dict(refs=[(2, [28], None, "용어집")]),
+    # 앞쪽 '먼저 읽는 용어' 장 — 교시 체크포인트 · IC 쟁점 매핑 · 부록 A 한 장 요약에서 건다
+    "W04_MVO와블랙리터맨/W04_M4_MVO와공분산추정_강의본": dict(refs=[(x, [2, 3], None, "먼저 읽는 용어") for x in (12, 23, 33, 50)]),
+    "W04_MVO와블랙리터맨/W04_M5_블랙리터맨_균형과뷰_강의본": dict(refs=[(x, [2, 3], None, "먼저 읽는 용어") for x in (15, 24, 34, 51)]),
+    "W06_동적포트폴리오와장기투자/W06_동적포트폴리오와장기투자_강의본": dict(refs=[(x, [2, 3], None, "먼저 읽는 용어") for x in (16, 26, 39, 54)]),
+    "W06_동적포트폴리오와장기투자/W06_특별세션_SS2_재균형프리미엄_강의본": dict(refs=[(x, [2], None, "먼저 읽는 용어") for x in (3, 22)]),
+    "W07_LDI와GBI/W07_M8_LDI_부채연계투자_강의본": dict(refs=[(x, [2, 3], None, "먼저 읽는 용어") for x in (18, 31, 44, 53, 56)]),
     "W07_LDI와GBI/W07_M9_GBI_목표기반투자_강의본": dict(refs=[
         (16, [67], "부록 B-1", "부록 B-1"),
         (18, [68], "부록 B-2", "부록 B-2"),
@@ -56,7 +62,7 @@ DECKS = {
         refs=[
             (8, list(range(57, 69)), "부록", "부록"),
             (26, list(range(57, 69)), None, "부록"),      # 남색 띠 위라 글자 링크는 안 보인다 — 버튼만
-        ]),
+        ] + [(x, [2, 3], None, "먼저 읽는 용어") for x in (16, 27, 39, 54)]),
     "W11_채권투자/W11_보강1_채권트레이딩4전략과투자게임": dict(refs=[
         (25, [37, 38, 39, 40, 41], "(37–41p)", "부록"),
         (31, [38, 39, 40], "(38–40p)", "부록"),
@@ -230,7 +236,8 @@ def build(deck, cfg):
     for src, items in fwd.items():                                # 부록 쪽 순서대로 늘어놓는다
         pills(S[src - 1], sorted(items, key=lambda it: int(re.search(r"(\d+)쪽", it[0]).group(1))))
     for d, srcs in back.items():
-        pills(S[d - 1], [(f"◀ 본문 {src}쪽으로", t) for src, t in srcs])
+        short = len(srcs) > 2                                     # 돌아올 곳이 많으면 '◀ 12쪽'으로 줄인다
+        pills(S[d - 1], [(f"◀ {src}쪽" if short else f"◀ 본문 {src}쪽으로", t) for src, t in sorted(srcs)])
 
     prs.save(path); to_pdf(path, cfg.get("pdf_font"))
     print(deck, "→", {k: [i[0] for i in v] for k, v in fwd.items()}, "| 돌아오기", {k: [s for s, _ in v] for k, v in back.items()})
