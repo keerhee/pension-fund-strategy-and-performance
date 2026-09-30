@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""‘FLAM’ 용어 정정 — W09 강의본 · W09 케이스1 · W12 강의본 · W12 케이스 (2026-09-30).
+"""‘FLAM’ 용어 정정 + W09 30장 배너 식 정리 · 첨자 표기 — W09 강의본 · W09 케이스1 · W12 강의본 · W12 케이스 (2026-09-30).
 덱은 팩터 노출 통합(β_P = Σ w_i β_i)을 ‘FLAM’이라 불렀지만, FLAM은 Grinold의 Fundamental Law of Active Management
 (IR = IC × √BR)를 가리킨다. 팩터 노출 통합은 ‘팩터 렌즈’로 바꾸고, W09 Grinold 장에 FLAM의 올바른 뜻을 적는다.
 W15는 fix_qa_w15.py 가 같은 규칙(slidekit.flam_fix)으로 처리한다.
@@ -8,7 +8,7 @@ W15는 fix_qa_w15.py 가 같은 규칙(slidekit.flam_fix)으로 처리한다.
 import os, shutil, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
 from lecfix import *
-from slidekit import flam_fix
+from slidekit import flam_fix, sub_runs
 
 R = os.path.dirname(os.path.dirname(HERE))
 OLD = f"{R}/_구판/FLAM정정_구판_2026-09-30"; os.makedirs(OLD, exist_ok=True)
@@ -31,6 +31,21 @@ for rel in DECKS:
         assert replace_all(prs, "Grinold의 근본법칙 (1989)", "Grinold의 근본법칙 (1989) — FLAM") == 1
         assert replace_all(prs, "Grinold의 Fundamental Law (1989)", "Grinold의 Fundamental Law (1989) — 줄여서 FLAM") == 1
         assert replace_all(prs, "IR = IC√BR, 그리고 팩터 렌즈의 좌표", "IR = IC√BR(FLAM), 그리고 팩터 렌즈의 좌표") == 1
+        # 30장 배너 — 위 LaTeX 식과 겹치는 일반 글자 식을 빼고 식을 가리킨다
+        assert replace_all(prs, "각 자산을 팩터 노출로 분해 · 포트폴리오 노출 β_p = Σ w_i β_i — 숨은 집중을 드러낸다",
+                           "각 자산을 팩터 노출로 분해해 비중대로 더한다 — 자산군 분산 뒤의 숨은 집중을 드러낸다") == 1
+        from pptx.util import Pt
+        from pptx.dml.color import RGBColor
+        from pptx.enum.text import PP_ALIGN
+        s30 = prs.slides[29]
+        for (x, w, t) in ((100, 580, "각 자산의 수익 = 고유 몫 α + Σ(팩터 민감도 β × 팩터 수익 F) + 잡음 ε"),
+                          (690, 500, "기금의 팩터 노출 = 자산별 노출 β를 비중 w로 가중해 더한 값")):
+            tb = s30.shapes.add_textbox(int(x * 9525), int(356 * 9525), int(w * 9525), int(60 * 9525))
+            tf = tb.text_frame; tf.word_wrap = True
+            p0 = tf.paragraphs[0]; p0.alignment = PP_ALIGN.CENTER
+            r = p0.add_run(); r.text = t; r.font.size = Pt(14); r.font.name = "Noto Sans CJK KR"
+            r.font.color.rgb = RGBColor(0x3B, 0x42, 0x52)
+    n += sub_runs(prs)   # σ_down 등 남은 첨자 표기
     left = grep(prs, "FLAM")
     prs.save(f"{R}/{rel}.pptx")
     subprocess.run(["soffice", "--headless", "--convert-to", "pdf", "--outdir", os.path.dirname(f"{R}/{rel}.pptx"), f"{R}/{rel}.pptx"],
