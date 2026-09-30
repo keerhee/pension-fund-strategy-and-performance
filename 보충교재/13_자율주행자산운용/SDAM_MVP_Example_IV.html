@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>자율운행 포트폴리오 MVP 예시 IV</title>
+<!--
+  ─────────────────────────────────────────────────────────────
+  발표용 HTML MVP 예시 IV (HTML + CSS + JS, 파일 하나)
+    · 돌발 과제를 목록에서 고르지 않고 md 파일로 올린다 (발표 당일 받는 입력 파일 그대로)
+    · CIO 에이전트 결론이 곧 최종이다 — 사람 CIO 승인판은 예시 V (HUMAN_CIO = true)
+
+  구조 — 화면과 엔진을 나눈다
+    · 화면(이 파일): 버튼을 누르면 엔진을 부르고, 엔진이 남긴 파일을 "읽어서" 보여 준다.
+    · 엔진(run_all.py): 에이전트를 돌리고 runs/<실행번호>/ 에 파일을 저장한다.
+      돌발 md는 엔진에 그대로 넘기고, 엔진이 runs/<실행번호>/shock.md 로 보관한다.
+
+  이 예시는 엔진 없이도 열리도록 callEngine() 안에 "예시 실행 결과"를 넣어 두었다.
+  실제 팀 프로젝트에서는 callEngine() 한 곳만 서버 호출(fetch)로 바꾸면 된다.
+
+  화면 규칙 3가지
+    1) 화면은 숫자를 계산하지 않는다 — 파일에 적힌 값을 그대로 보여 준다.
+    2) 실행 번호(run_id)를 항상 보여 준다.
+    3) 사람이 누른 버튼(승인·반려·정지)은 개입 기록에 남긴다.
+  ─────────────────────────────────────────────────────────────
+-->
+<style>
+  :root {
+    --ink: #071A1D; --paper: #F7F5F0; --lime: #B7F34A; --teal: #0B6B68;
+    --red: #C00000; --muted: #64757D; --line: #DDE3E2; --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Noto Sans KR", system-ui, sans-serif; background: var(--paper); color: #102027; }
+  header { background: var(--ink); color: var(--white); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  header h1 { margin: 0; font-size: 20px; }
+  header .run { font-family: monospace; color: var(--lime); font-size: 14px; }
+
+  /* 버튼 줄 */
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 20px 6px; align-items: center; }
+  button, .filebtn { font: inherit; font-weight: 700; font-size: 15px; padding: 10px 14px; border-radius: 8px;
+           border: 2px solid var(--teal); background: var(--white); color: var(--teal); cursor: pointer; }
+  button:disabled { opacity: .35; cursor: not-allowed; }
+  button.main { background: var(--lime); border-color: var(--lime); color: #102027; }
+  button.human { background: var(--ink); border-color: var(--ink); color: var(--lime); }
+  button.stop, button.reject { border-color: var(--red); color: var(--red); }
+  select { font: inherit; padding: 9px; border-radius: 8px; border: 2px solid var(--teal); background: var(--white); }
+  .sep { width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
+
+  /* 돌발 md 올리는 줄 */
+  .shockbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 6px 20px 14px; }
+  .drop { flex: 1 1 320px; border: 2px dashed var(--teal); border-radius: 8px; padding: 9px 12px; color: var(--muted); font-size: 14px; background: var(--white); }
+  .drop.over { background: #eefbd9; border-color: var(--lime); }
+  .drop b { color: #102027; }
+
+  /* 세 칸 화면 */
+  main { display: grid; grid-template-columns: 260px 1fr 300px; gap: 14px; padding: 0 20px 20px; }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+  .panel { background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 16px; min-height: 360px; }
+  .panel.dark { background: var(--ink); color: var(--white); border: 0; }
+  .panel h2 { margin: 0 0 12px; font-size: 16px; color: var(--teal); }
+  .panel.dark h2 { color: var(--lime); }
+
+  /* ① 진행 단계 */
+  .steps { list-style: none; margin: 0; padding: 0; }
+  .steps li { padding: 7px 8px; border-radius: 6px; cursor: pointer; color: #9FB0B2; }
+  .steps li.done { color: var(--white); }
+  .steps li.done::before { content: "✓ "; color: var(--lime); }
+  .steps li.now { background: var(--lime); color: #102027; font-weight: 700; }
+  .steps li.now::before { content: "● "; }
+  .steps li.wait { background: #3a2a00; color: #FFD27A; font-weight: 700; }
+  .steps li.human { border-left: 3px solid #FFD27A; }
+  .steps li.sel { outline: 2px solid var(--lime); }
+
+  /* ② 근거 파일 */
+  pre { background: var(--paper); border-radius: 8px; padding: 12px; white-space: pre-wrap; font-size: 14px; line-height: 1.55; margin: 0; }
+  .hint { color: var(--muted); font-size: 13px; margin-top: 10px; }
+
+  /* ③ 결과 요약 */
+  .w { display: grid; grid-template-columns: 50px 1fr 52px; align-items: center; gap: 6px; margin: 6px 0; font-size: 14px; }
+  .w .b { height: 16px; background: var(--teal); border-radius: 3px; transition: width .6s; }
+  .kv { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding: 7px 0; font-size: 14px; }
+  .kv b.ok { color: var(--teal); } .kv b.bad { color: var(--red); }
+  .banner { padding: 8px 10px; border-radius: 6px; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .banner.ok { background: var(--lime); } .banner.bad { background: #fde8e8; color: var(--red); }
+  .banner.wait { background: #fff3d6; color: #7a5200; }
+
+  /* 아래 줄: 비교표 · 개입 기록 */
+  .bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 20px 24px; }
+  @media (max-width: 900px) { .bottom { grid-template-columns: 1fr; } }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 6px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 400; }
+  .log { font-family: monospace; font-size: 13px; max-height: 180px; overflow: auto; }
+
+  /* 1쪽 보고서 (IC 보고서 + CIO 결정 + 사람 CIO 승인) */
+  .overlay { position: fixed; inset: 0; background: rgba(7,26,29,.6); display: none; overflow: auto; padding: 24px 12px; }
+  .overlay.show { display: block; }
+  .page { background: var(--white); max-width: 760px; margin: 0 auto; padding: 32px 36px; border-radius: 6px; font-size: 14px; line-height: 1.6; }
+  .page h3 { margin: 0; font-size: 22px; }
+  .page .meta { color: var(--muted); font-size: 12px; margin: 4px 0 14px; border-bottom: 3px solid var(--ink); padding-bottom: 8px; }
+  .page h4 { margin: 16px 0 6px; font-size: 15px; color: var(--teal); }
+  .page .verdict { display: flex; gap: 10px; flex-wrap: wrap; }
+  .page .chip { padding: 6px 12px; border-radius: 6px; background: var(--paper); font-weight: 700; }
+  .page .chip.final { background: var(--lime); }
+  .page .chip.no { background: #fde8e8; color: var(--red); }
+  .page .minority { border-left: 4px solid var(--red); padding: 6px 10px; background: #fff5f5; }
+  .page .sign { border: 2px solid var(--ink); border-radius: 6px; padding: 10px 12px; }
+  .page .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+  @media print {
+    @page { margin: 18mm; }
+    body { background: #fff; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body > *:not(.overlay) { display: none !important; }
+    .overlay { position: static; background: none; padding: 0; display: block; }
+    .page { max-width: none; padding: 0; }
+    .page .actions { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="appTitle">자율운행 포트폴리오 · 시연 화면 (예시 IV · md 돌발)</h1>
+  <span class="run" id="runLabel">run_id: —</span>
+</header>
+
+<!-- 버튼 줄: 버튼마다 README에 같은 일을 하는 명령이 있어야 한다 -->
+<div class="bar">
+  <button class="main" id="btnLive">▶ 라이브 실행</button>
+  <button id="btnReplay">▷ 재생 실행</button>
+  <button id="btnCompare">⇄ 두 실행 비교</button>
+  <span class="sep"></span>
+  <button class="human" id="btnApprove" disabled>✓ 사람 승인</button>
+  <button class="reject" id="btnReject" disabled hidden>✕ 반려</button>
+  <button class="stop" id="btnStop" disabled>■ 긴급 정지</button>
+  <button id="btnReport" disabled>📄 1쪽 보고서</button>
+</div>
+
+<!-- 돌발 과제: 발표 당일 받은 md 파일을 올린다 (끌어다 놓아도 된다) -->
+<div class="shockbar">
+  <label class="filebtn" for="shockFile">📄 돌발 과제 md 올리기</label>
+  <input type="file" id="shockFile" accept=".md,.markdown,.txt" hidden>
+  <div class="drop" id="drop">여기에 <b>.md</b> 파일을 끌어다 놓아도 된다 — <span id="shockName">선택된 파일 없음</span></div>
+  <button id="btnShock" disabled>◆ 돌발 과제 투입</button>
+  <select id="sample" title="연습용 돌발 md를 내려받는다">
+    <option value="">예시 md 내려받기…</option>
+    <option value="A">A · 위험 한도 강화 (IPS 변경)</option>
+    <option value="B">B · 침체 신호 (시장 신호)</option>
+    <option value="C">C · LLM 교체 (모델 교체)</option>
+  </select>
+</div>
+
+<main>
+  <section class="panel dark">
+    <h2>① 진행 단계</h2>
+    <ul class="steps" id="steps"></ul>
+    <p class="hint" style="color:#9FB0B2">끝난 단계를 누르면 그 단계의 파일이 열린다</p>
+  </section>
+
+  <section class="panel">
+    <h2 id="fileTitle">② 근거 파일</h2>
+    <pre id="fileBody">▶ 라이브 실행을 누르면 시작한다.
+돌발 과제는 md 파일을 올린 뒤 ◆ 돌발 과제 투입을 누른다.</pre>
+    <p class="hint">화면은 runs/ 폴더의 파일을 그대로 읽어 보여 준다</p>
+  </section>
+
+  <section class="panel">
+    <h2>③ 결과 요약</h2>
+    <div id="summary"><p class="hint">아직 결과가 없다</p></div>
+  </section>
+</main>
+
+<div class="bottom">
+  <section class="panel" style="min-height:auto">
+    <h2>⇄ 실행 비교</h2>
+    <div id="compare"><p class="hint">실행을 두 번 이상 하면 비교할 수 있다</p></div>
+  </section>
+  <section class="panel" style="min-height:auto">
+    <h2>사람 개입 기록 (intervention_log)</h2>
+    <div class="log" id="log">기록 없음</div>
+  </section>
+</div>
+
+<!-- 실행이 끝나면 뜨는 1쪽 보고서 (인쇄하면 이 부분만 나온다) -->
+<div class="overlay" id="overlay"><div class="page" id="page"></div></div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// 0. 설정 — 사람 CIO 최종 승인을 켜고 끈다
+//    true : ⑦ CIO 에이전트 결론 뒤에 사람 CIO가 승인·반려해야 집행된다 (예시 V)
+//    false: CIO 에이전트 결론이 곧 최종 (이 파일 — 예시 IV)
+// ─────────────────────────────────────────────────────────────
+const HUMAN_CIO = false;
+const SIGNER = "CIO (사람)";   // 실제로는 로그인한 CIO 이름
+
+// ─────────────────────────────────────────────────────────────
+// 1. 단계 목록 — 참고 설계의 리서치 + ①~⑧
+//    돌발 md가 있으면 맨 앞에 "돌발 입력"이, HUMAN_CIO면 ⑦ 뒤에 "사람 CIO 승인"이 붙는다
+// ─────────────────────────────────────────────────────────────
+const BASE_STEPS = [
+  { id: "research", name: "리서치 브리프",   file: "research_brief.md" },
+  { id: "regime",   name: "① 국면 판단",     file: "regime.json" },
+  { id: "cma",      name: "② CMA · ③ 공분산", file: "cma.json" },
+  { id: "build",    name: "④ 후보 구성 · CRO", file: "proposals.json" },
+  { id: "vote",     name: "⑤ 검토 · 투표",    file: "votes.json" },
+  { id: "ic",       name: "⑥ IC 심의",       file: "ic_report.md" },
+  { id: "cio",      name: "⑦ CIO 에이전트 결론", file: "final_alloc.json" },
+  { id: "meta",     name: "⑧ 메타 점검",     file: "meta_report.json" },
+];
+function stepsFor(r) {
+  const s = [];
+  if (r && r.shock) s.push({ id: "shock", name: "◆ 돌발 입력", file: "shock.md" });
+  BASE_STEPS.forEach((x) => {
+    s.push(x);
+    if (x.id === "cio" && HUMAN_CIO) s.push({ id: "signoff", name: "⑦+ 사람 CIO 승인", file: "cio_signoff.json", human: true });
+  });
+  return s;
+}
+let STEPS = stepsFor(null);
+
+// ─────────────────────────────────────────────────────────────
+// 2. 돌발 과제 md 형식 — 발표 당일 이 모양의 파일 하나가 주어진다
+//    엔진이 읽는 줄은 "유형:" 과 "## 변경 내용" 아래의 "- 항목: 값" 이다
+// ─────────────────────────────────────────────────────────────
+const SAMPLE_MD = {
+  A: `# 돌발 과제 A — 위험 한도 강화
+유형: IPS 변경
+발표일: 2026-12-01
+
+## 변경 내용
+- 추적오차 한도: 6% → 4%
+
+## 팀이 할 일
+- 코드는 고치지 않는다. 입력(IPS)과 설정만 바꿔 다시 실행한다.
+- IPS 새 버전은 사람이 서명해야 반영된다.
+`,
+  B: `# 돌발 과제 B — 침체 신호
+유형: 시장 신호
+발표일: 2026-12-01
+
+## 변경 내용
+- 실업수당 청구: 4주 연속 급증
+- 장단기 금리차: 역전 심화
+- 근거 등급: A
+
+## 팀이 할 일
+- 리서치 브리프에 이 신호를 넣고 ①부터 다시 판단한다.
+`,
+  C: `# 돌발 과제 C — LLM 교체
+유형: 모델 교체
+발표일: 2026-12-01
+
+## 변경 내용
+- 판단 모델: llm-y-2026
+
+## 팀이 할 일
+- 모델만 바꿔 다시 실행하고, 결론이 얼마나 달라지는지 비교표로 보인다.
+`,
+};
+
+// ─────────────────────────────────────────────────────────────
+// 3. 엔진 호출 — 화면에서 바꿔야 할 곳은 여기 하나뿐
+//    실제 프로젝트:  return (await fetch("/api/run", {method:"POST",
+//                    body: JSON.stringify({mode, shock_md: shockMd})})).json();
+//    엔진(LLM)이 md를 읽고 판단한다. 아래 예시 엔진은 "유형:" 줄과 몇몇 값만 읽어
+//    미리 넣어 둔 "예시 실행 결과"를 고른다 (숫자는 설명용).
+// ─────────────────────────────────────────────────────────────
+async function callEngine(mode, shockMd) {
+  const base = {
+    research: "# 리서치 브리프 (기준일 2026-11-30)\n- 물가 둔화, 금리 동결 전망\n- 근거 등급 B · 출처 2건",
+    regime:   { regime: "경기 후기", confidence: 0.62, model: "llm-x-2026" },
+    cma:      { 주식: "6.8%", 채권: "4.1%", 실물: "5.5%", 현금: "3.0%" },
+    build:    { 후보: 8, 탈락: 2, 탈락사유: "추적오차 초과 2건" },
+    vote:     { "1위": "최대 분산 (96점)", "2위": "블랙-리터만 (76점)", 계열수: 4 },
+    ic:       "# IC 보고서\n표결 3 : 1 · 승인\n- 수익 위원 찬성\n- 위험 위원 찬성\n- IPS 위원 찬성\n- 반대 위원 반대: 채권 금리 위험",
+    cio:      { 조합법: "최대 분산", 비중: { 주식: 44.9, 채권: 35.1, 실물: 15.0, 현금: 5.0 },
+                추적오차: 2.4, 한도: 6.0, 유효종목수: 9.8, IPS위반: 0 },
+    meta:     { 경보: ["CMA 오차 기준선보다 나쁨"], 개선안: 1, 분류: "큰 수정 → 사람 ③ 승인 대기" },
+    // 1쪽 보고서(report.json) — 엔진이 IC 보고서와 CIO 결정을 묶어 쓴 파일
+    memo: { 안건: "2026년 12월 전략적 자산배분안",
+            표결: "3 : 1", 권고: "승인",
+            위원: [["수익 위원", "찬성", "CMA 근거가 충분하다"],
+                   ["위험 위원", "찬성", "예상 낙폭이 IPS 범위 안이다"],
+                   ["IPS 위원", "찬성", "모든 한도를 지킨다"],
+                   ["반대 위원", "반대", "채권 비중이 금리 상승에 취약하다"]],
+            소수의견: "금리가 0.5%p 오르면 채권 손실이 커진다 — 다음 주기 점검 요청",
+            CIO결정: "IC 권고대로 승인", CIO이유: "권고와 같음 — 반대 의견은 ⑧ 메타 점검 항목으로 넘김" },
+  };
+
+  let extra = {};
+  if (shockMd) {
+    const title = (shockMd.match(/^#\s+(.+)$/m) || [, "돌발 과제"])[1].trim();
+    const kind  = ((shockMd.match(/^유형\s*[:：]\s*(.+)$/m) || [, ""])[1]).trim();
+    const item  = (key) => { const m = shockMd.match(new RegExp("^-\\s*" + key + "\\s*[:：]\\s*(.+)$", "m")); return m ? m[1].trim() : null; };
+
+    if (kind.includes("IPS")) {
+      // 새 한도는 "6% → 4%"처럼 적혀 있다 — 줄의 마지막 숫자를 새 값으로 읽는다
+      const nums = ((item("추적오차 한도") || "4%").match(/\d+(?:\.\d+)?/g) || ["4"]);
+      const lim = parseFloat(nums[nums.length - 1]);
+      extra = { needsSign: true, ipsText: `IPS v2 — 추적오차 한도 ${item("추적오차 한도") || lim + "%"}`,
+        research: base.research + `\n- IPS v2: 추적오차 한도 ${lim}%`,
+        ic: `# IC 보고서\n표결 2 : 2 · 조건부 승인\n- IPS 위원: 새 한도 ${lim}% 안에서만 승인\n- 반대 위원: 주식 축소 폭이 과하다`,
+        memo: { 안건: `IPS v2(추적오차 한도 ${lim}%) 반영 배분안`, 표결: "2 : 2", 권고: "조건부 승인",
+                위원: [["수익 위원", "반대", "주식 축소로 기대수익이 낮아진다"],
+                       ["위험 위원", "찬성", "새 한도에 여유가 있다"],
+                       ["IPS 위원", "찬성", "IPS v2 한도를 모두 지킨다"],
+                       ["반대 위원", "반대", "주식 축소 폭이 과하다"]],
+                소수의견: "현금 8%는 과하다 — 다음 주기에 채권으로 옮길 것",
+                CIO결정: "조건부 승인 → 승인으로 확정", CIO이유: "표결 동수 — IPS 준수를 우선해 확정, 현금 비중은 다음 주기 재검토" },
+        cio: { 조합법: "위험 균형", 비중: { 주식: 38.0, 채권: 40.0, 실물: 14.0, 현금: 8.0 },
+               추적오차: 1.9, 한도: lim, 유효종목수: 10.6, IPS위반: 0 } };
+    } else if (kind.includes("시장")) {
+      const lines = shockMd.split("\n").filter((l) => /^-\s/.test(l)).slice(0, 3).join("\n");
+      extra = { research: `# 리서치 브리프 (${title})\n${lines}`,
+        regime: { regime: "침체 진입", confidence: 0.71, model: "llm-x-2026" },
+        ic: "# IC 보고서\n표결 4 : 0 · 승인\n- 위험 위원: 방어 자산 비중 확대 지지",
+        memo: { 안건: `침체 신호(${title}) 반영 배분안`, 표결: "4 : 0", 권고: "승인",
+                위원: [["수익 위원", "찬성", "기대수익 하락을 감수할 만하다"],
+                       ["위험 위원", "찬성", "방어 자산 비중 확대를 지지한다"],
+                       ["IPS 위원", "찬성", "모든 한도를 지킨다"],
+                       ["반대 위원", "찬성", "침체 신호의 근거 등급이 A다"]],
+                소수의견: "없음",
+                CIO결정: "IC 권고대로 승인", CIO이유: "권고와 같음 — 근거 등급 A 리서치 반영" },
+        cio: { 조합법: "최소 분산", 비중: { 주식: 32.0, 채권: 46.0, 실물: 10.0, 현금: 12.0 },
+               추적오차: 3.6, 한도: 6.0, 유효종목수: 8.9, IPS위반: 0 } };
+    } else if (kind.includes("모델")) {
+      const model = item("판단 모델") || "새 모델";
+      extra = { regime: { regime: "경기 후기", confidence: 0.55, model: model + " (교체)" },
+        ic: "# IC 보고서\n표결 3 : 1 · 승인\n- 판단 문장은 달라졌으나 결론 동일",
+        memo: { 안건: `LLM 교체(${model}) 후 재실행 배분안`, 표결: "3 : 1", 권고: "승인",
+                위원: [["수익 위원", "찬성", "CMA 근거 문장이 달라졌으나 결론 동일"],
+                       ["위험 위원", "찬성", "낙폭 범위 안"],
+                       ["IPS 위원", "찬성", "한도 준수"],
+                       ["반대 위원", "반대", "새 모델의 국면 확신도가 낮다"]],
+                소수의견: "국면 확신도 0.62 → 0.55 — 모델 차이 기록 필요",
+                CIO결정: "IC 권고대로 승인", CIO이유: "결정론 계산 결과가 이전 실행과 거의 같음" },
+        cio: { ...base.cio, 비중: { 주식: 45.3, 채권: 34.7, 실물: 15.0, 현금: 5.0 }, 추적오차: 2.5 } };
+    } else {
+      // 예시 엔진이 모르는 유형 — 실제 엔진(LLM)은 md 내용을 읽고 판단한다
+      extra = { research: base.research + `\n- 돌발 입력: ${title} (유형 "${kind || "없음"}")`,
+        meta: { ...base.meta, 경보: [...base.meta.경보, `예시 엔진이 모르는 돌발 유형: ${kind || "없음"} — 실제 엔진에서 판단`] } };
+    }
+    extra.shock = shockMd;
+    extra.scenario = title;
+  }
+
+  const out = { ...base, ...extra };
+  out.run_id = "2026-12-01_" + String(++runCount).padStart(2, "0");
+  out.mode = mode; out.scenario = out.scenario || "기본";
+  return out;
+}
+
+// ─────────────────────────────────────────────────────────────
+// 4. 화면 상태
+// ─────────────────────────────────────────────────────────────
+let runCount = 0, runs = [], current = null, stopped = false, waiting = null;
+let approveFor = null;   // 지금 ✓ 버튼이 무엇을 승인하는지
+let shockMd = null, shockFileName = null;
+const $ = (id) => document.getElementById(id);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const idx = (id) => STEPS.findIndex((s) => s.id === id);
+
+function drawSteps(doneUpTo, nowIdx, waitIdx, waitLabel) {
+  $("steps").innerHTML = STEPS.map((s, i) => {
+    let cls = i < doneUpTo ? "done" : "";
+    if (i === nowIdx) cls = "now";
+    if (i === waitIdx) cls = "wait";
+    if (s.human) cls += " human";
+    return `<li class="${cls}" data-i="${i}">${s.name}${i === waitIdx ? " — " + (waitLabel || "서명 대기") : ""}</li>`;
+  }).join("");
+}
+
+function showFile(i) {
+  if (!current) return;
+  const s = STEPS[i];
+  let data = current[s.id];
+  if (s.id === "shock") data = current.shock;
+  if (s.id === "signoff") data = current.signoff || "사람 CIO 승인 대기 중";
+  $("fileTitle").textContent = "② 근거 파일 · " + s.file;
+  $("fileBody").textContent = typeof data === "string" ? data : JSON.stringify(data, null, 2);
+  document.querySelectorAll(".steps li").forEach((li) => li.classList.toggle("sel", +li.dataset.i === i));
+}
+
+function showSummary(r) {
+  const c = r.cio;  // 파일(final_alloc.json)의 값을 그대로 쓴다 — 여기서 계산하지 않는다
+  let banner = "";
+  if (HUMAN_CIO) {
+    const so = r.signoff;
+    if (!so) banner = `<div class="banner wait">사람 CIO 승인 대기 — 아직 집행하지 않는다</div>`;
+    else if (so.결정 === "승인") banner = `<div class="banner ok">사람 CIO 승인 — 이 배분을 집행한다</div>`;
+    else banner = `<div class="banner bad">사람 CIO 반려 — 집행하지 않고 직전 배분을 유지한다</div>`;
+  }
+  const bars = Object.entries(c.비중).map(([k, v]) =>
+    `<div class="w"><span>${k}</span><div class="b" style="width:${v * 2}%"></div><span>${v}%</span></div>`).join("");
+  $("summary").innerHTML = banner + bars +
+    `<div class="kv"><span>조합법</span><b>${c.조합법}</b></div>
+     <div class="kv"><span>추적오차 (한도)</span><b>${c.추적오차}% (≤ ${c.한도}%)</b></div>
+     <div class="kv"><span>유효 종목 수</span><b>${c.유효종목수}</b></div>
+     <div class="kv"><span>IPS 위반</span><b class="${c.IPS위반 ? "bad" : "ok"}">${c.IPS위반}건</b></div>
+     <div class="kv"><span>실행 방식</span><b>${r.mode} · ${r.scenario}</b></div>`;
+}
+
+function log(action, reason) {
+  const t = new Date().toLocaleTimeString("ko-KR");
+  const who = (action + reason).includes("CIO") ? SIGNER : "발표자";  // 실제로는 로그인한 사람 이름
+  const line = `${t} · ${who} · ${action} · ${reason} · run ${current ? current.run_id : "-"}`;
+  $("log").innerHTML = ($("log").textContent === "기록 없음" ? "" : $("log").innerHTML + "<br>") + line;
+}
+
+function setBusy(busy) {
+  ["btnLive", "btnReplay", "btnCompare"].forEach((id) => ($(id).disabled = busy));
+  $("btnShock").disabled = busy || !shockMd;
+  $("btnStop").disabled = !busy;
+}
+
+// 사람 결정을 기다린다 — 승인(✓)·반려(✕)·긴급 정지(■) 중 하나가 눌릴 때까지
+function waitHuman(what, allowReject) {
+  approveFor = what;
+  $("btnApprove").disabled = false;
+  $("btnReject").hidden = !allowReject; $("btnReject").disabled = !allowReject;
+  return new Promise((resolve) => (waiting = resolve)).then((v) => {
+    $("btnApprove").disabled = true; $("btnReject").disabled = true; $("btnReject").hidden = true;
+    return v;
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+// 5. 실행 — 라이브는 단계별로 천천히, 재생은 바로 보여 준다
+// ─────────────────────────────────────────────────────────────
+async function run(mode, md) {
+  stopped = false; $("btnApprove").disabled = true;
+  if (mode === "replay") {
+    // 재생: 새 실행이 아니라 마지막 실행의 저장 파일을 다시 읽는다 (같은 run_id · 같은 숫자 · 같은 서명)
+    if (!runs.length) { $("fileBody").textContent = "재생할 실행이 없다 — 먼저 ▶ 라이브 실행을 누른다."; return; }
+    current = { ...runs[runs.length - 1], mode: "replay" };
+  } else {
+    current = await callEngine(mode, md);
+    if (md) log("◆ 돌발 투입", shockFileName);
+  }
+  STEPS = stepsFor(current);
+  setBusy(true);
+  $("runLabel").textContent = "run_id: " + current.run_id;
+  const delay = mode === "live" ? 700 : 80;
+  const halt = (i) => { drawSteps(i, -1, -1); setBusy(false); };
+
+  for (let i = 0; i < STEPS.length; i++) {
+    const s = STEPS[i];
+    if (stopped) return halt(i);
+
+    // 돌발 IPS 변경: IPS 새 버전은 사람이 서명해야 ①부터 진행된다
+    if (s.id === "regime" && current.needsSign && mode === "live") {
+      drawSteps(i, -1, i, "IPS 서명 대기");
+      $("fileTitle").textContent = "② 근거 파일 · ips_v2.yaml";
+      $("fileBody").textContent = current.ipsText + "\n\n✓ 사람 승인 버튼으로 서명해야 다음 단계로 간다.";
+      const v = await waitHuman("IPS v2 서명", false);
+      if (stopped || v !== "approve") return halt(i);
+    }
+
+    // 사람 CIO 최종 승인: CIO 에이전트 결론(final_alloc.json)을 보고 승인하거나 반려한다
+    if (s.id === "signoff") {
+      if (mode === "live") {
+        drawSteps(i, -1, i, "승인 대기");
+        showSummary(current);
+        $("fileTitle").textContent = "② 근거 파일 · final_alloc.json (사람 CIO 검토)";
+        $("fileBody").textContent = JSON.stringify(current.cio, null, 2) +
+          `\n\nIC 권고: ${current.memo.권고} (표결 ${current.memo.표결})\nCIO 에이전트: ${current.memo.CIO결정}` +
+          "\n\n✓ 사람 승인 → 집행 · ✕ 반려 → 사유를 남기고 직전 배분 유지";
+        const v = await waitHuman("CIO 최종 승인", true);
+        if (stopped) return halt(i);
+        if (v === "approve") {
+          current.signoff = { 결정: "승인", 서명자: SIGNER, 시각: new Date().toLocaleString("ko-KR"), 사유: "CIO 에이전트 결론과 같음" };
+        } else {
+          const why = (window.prompt("반려 사유를 적는다 (개입 기록과 ⑧ 메타 점검으로 넘어간다)", "") || "").trim() || "사유 미기재";
+          current.signoff = { 결정: "반려", 서명자: SIGNER, 시각: new Date().toLocaleString("ko-KR"), 사유: why };
+          log("✕ CIO 반려", why);
+          current.meta = { ...current.meta, 경보: [...current.meta.경보, "사람 CIO 반려: " + why] };
+        }
+      }
+      showSummary(current);
+    }
+
+    drawSteps(i, i, -1); showFile(i);
+    await sleep(delay);
+  }
+  drawSteps(STEPS.length, -1, -1);
+  showFile(idx("ic"));       // 끝나면 IC 보고서를 먼저 연다
+  showSummary(current);
+  if (mode === "live") runs.push(current);
+  setBusy(false);
+  $("btnReport").disabled = false;
+  // 사람 ③: 메타 에이전트의 큰 수정안은 사람이 승인해야 다음 주기에 반영된다
+  if (mode === "live" && current.meta.분류.includes("승인 대기")) {
+    approveFor = "메타 개선안 승인 (다음 주기 반영)"; $("btnApprove").disabled = false;
+  }
+  showReport(current);       // 마지막 산출물 — IC 권고 · CIO 결정 · 사람 승인을 한 쪽으로
+}
+
+// ─────────────────────────────────────────────────────────────
+// 6. 비교표 — 두 실행의 파일 값을 나란히 놓기만 한다
+// ─────────────────────────────────────────────────────────────
+function compare() {
+  if (runs.length < 2) { $("compare").innerHTML = '<p class="hint">실행이 두 번 이상 필요하다</p>'; return; }
+  const [a, b] = runs.slice(-2);
+  const row = (k, f) => `<tr><td>${k}</td><td>${f(a)}</td><td>${f(b)}</td></tr>`;
+  $("compare").innerHTML = `<table>
+    <tr><th>항목</th><th>${a.run_id} (${a.scenario})</th><th>${b.run_id} (${b.scenario})</th></tr>
+    ${row("국면", (r) => r.regime.regime)}
+    ${row("주식 비중", (r) => r.cio.비중.주식 + "%")}
+    ${row("추적오차 (한도)", (r) => `${r.cio.추적오차}% (≤ ${r.cio.한도}%)`)}
+    ${row("IC 표결", (r) => r.memo.표결 + " · " + r.memo.권고)}
+    ${row("CIO 조합법", (r) => r.cio.조합법)}
+    ${HUMAN_CIO ? row("사람 CIO", (r) => (r.signoff ? r.signoff.결정 : "—")) : ""}
+  </table>`;
+}
+
+// ─────────────────────────────────────────────────────────────
+// 7. 1쪽 보고서 — report.json · final_alloc.json · cio_signoff.json의 값을 배치만 한다
+// ─────────────────────────────────────────────────────────────
+function showReport(r) {
+  const m = r.memo, c = r.cio, so = r.signoff;
+  const members = m.위원.map(([who, vote, why]) =>
+    `<tr><td>${who}</td><td><b style="color:${vote === "찬성" ? "var(--teal)" : "var(--red)"}">${vote}</b></td><td>${why}</td></tr>`).join("");
+  const weights = Object.entries(c.비중).map(([k, v]) => `<td>${k} <b>${v}%</b></td>`).join("");
+  const sign = !HUMAN_CIO ? "" : `
+    <h4>⑦+ 사람 CIO 최종 승인</h4>
+    <div class="sign">${so
+      ? `<div class="verdict"><span class="chip ${so.결정 === "승인" ? "final" : "no"}">${so.결정 === "승인" ? "승인 — 집행" : "반려 — 직전 배분 유지"}</span></div>
+         <div style="margin-top:6px">서명 ${so.서명자} · ${so.시각}<br>사유: ${so.사유}</div>`
+      : "승인 대기 — 서명 전에는 집행하지 않는다"}</div>`;
+  $("page").innerHTML = `
+    <h3>IC 보고서 · CIO 결정${HUMAN_CIO ? " · 사람 승인" : ""}</h3>
+    <div class="meta">run_id ${r.run_id} · 실행 ${r.mode} · 시나리오 ${r.scenario} · 국면 ${r.regime.regime} · 모델 ${r.regime.model}</div>
+    <h4>안건</h4><div>${m.안건}</div>
+    <h4>⑥ IC 심의 — 권고</h4>
+    <div class="verdict"><span class="chip">표결 ${m.표결}</span><span class="chip">IC 권고: ${m.권고}</span></div>
+    <table style="margin-top:8px">${members}</table>
+    <h4>소수의견</h4><div class="minority">${m.소수의견}</div>
+    <h4>⑦ CIO 에이전트 결론</h4>
+    <div class="verdict"><span class="chip ${HUMAN_CIO ? "" : "final"}">${m.CIO결정}</span><span class="chip">조합법: ${c.조합법}</span></div>
+    <div style="margin-top:6px">사유: ${m.CIO이유}</div>
+    <table style="margin-top:8px"><tr>${weights}</tr></table>
+    <table><tr><td>추적오차 ${c.추적오차}% (한도 ${c.한도}%)</td><td>유효 종목 수 ${c.유효종목수}</td><td>IPS 위반 ${c.IPS위반}건</td></tr></table>
+    ${sign}
+    <h4>⑧ 메타 점검 — 다음 주기로</h4>
+    <div>경보: ${r.meta.경보.join(", ")} · ${r.meta.분류}</div>
+    <div class="actions">
+      <button onclick="window.print()">인쇄 · PDF 저장</button>
+      <button class="main" onclick="$('overlay').classList.remove('show')">닫기</button>
+    </div>`;
+  $("overlay").classList.add("show");
+}
+
+// ─────────────────────────────────────────────────────────────
+// 8. 돌발 md 읽기 — 파일 선택 · 끌어다 놓기 · 예시 내려받기
+// ─────────────────────────────────────────────────────────────
+function loadShock(file) {
+  if (!file) return;
+  if (!/\.(md|markdown|txt)$/i.test(file.name)) { $("shockName").textContent = "md 파일만 올릴 수 있다 — " + file.name; return; }
+  const rd = new FileReader();
+  rd.onload = () => {
+    shockMd = String(rd.result); shockFileName = file.name;
+    $("shockName").innerHTML = `<b>${file.name}</b> 읽음 — ◆ 돌발 과제 투입을 누른다`;
+    $("btnShock").disabled = false;
+    $("fileTitle").textContent = "② 근거 파일 · " + file.name + " (투입 전 미리보기)";
+    $("fileBody").textContent = shockMd;
+  };
+  rd.readAsText(file, "utf-8");
+}
+$("shockFile").onchange = (e) => { loadShock(e.target.files[0]); e.target.value = ""; };
+const drop = $("drop");
+["dragenter", "dragover"].forEach((t) => document.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+document.addEventListener("dragleave", (e) => { if (!e.relatedTarget) drop.classList.remove("over"); });
+document.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); });
+document.addEventListener("drop", (e) => loadShock(e.dataTransfer.files[0]));
+$("sample").onchange = (e) => {
+  const k = e.target.value; if (!k) return;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([SAMPLE_MD[k]], { type: "text/markdown" }));
+  a.download = `shock_${k}.md`; a.click(); URL.revokeObjectURL(a.href);
+  e.target.value = "";
+};
+
+// ─────────────────────────────────────────────────────────────
+// 9. 버튼 연결
+// ─────────────────────────────────────────────────────────────
+$("btnLive").onclick   = () => run("live");
+$("btnReplay").onclick = () => run("replay");
+$("btnShock").onclick  = () => run("live", shockMd);
+$("btnCompare").onclick = compare;
+$("btnReport").onclick  = () => current && showReport(current);
+$("overlay").onclick   = (e) => { if (e.target.id === "overlay") $("overlay").classList.remove("show"); };
+$("btnApprove").onclick = () => {
+  log("✓ 승인", approveFor);
+  if (waiting) { waiting("approve"); waiting = null; } else $("btnApprove").disabled = true;
+};
+$("btnReject").onclick = () => { if (waiting) { waiting("reject"); waiting = null; } };
+$("btnStop").onclick   = () => { stopped = true; log("■ 긴급 정지", "발표자 판단"); if (waiting) { waiting("stop"); waiting = null; } };
+$("steps").onclick = (e) => { const li = e.target.closest("li.done"); if (li) showFile(+li.dataset.i); };
+
+drawSteps(0, -1, -1);
+</script>
+</body>
+</html>
