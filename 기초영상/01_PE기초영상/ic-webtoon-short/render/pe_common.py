@@ -72,3 +72,21 @@ def relief_cut(t, q, a, sfx, chip_txt, q_size=52, a_size=46, chip_size=33, mood=
     if t > 3.6:
         s.append(punch(sfx, 330, 740, sfx_size, fill="#fff", scale=back(prog(t, 3.6, .4)), rot=-10))
     return s
+
+
+def vbar(t, a0, x, v, k, base, c, top, bottom=(), w=200, top_size=40, inside=None):
+    """세로 막대(EP.26~): 값 v × k px. top은 막대 위 라벨, bottom은 기준선 아래 줄들, inside는 막대 안 흰 글자."""
+    g = ease_out(prog(t, a0, .5))
+    if g <= 0: return ""
+    h = v * k * g
+    o = [f'<rect x="{x-w/2}" y="{base-h:.0f}" width="{w}" height="{h:.0f}" fill="{c}" rx="6"/>']
+    if g > .9:
+        if top: o.append(label(top, x, base - h - 28, top_size, c, 900))
+        if inside: o.append(label(inside, x, base - h / 2, 34, "#fff", 900))
+        for i, line in enumerate(bottom):
+            o.append(label(line, x, base + 40 + 36 * i, 32 if i == 0 else 28, NAVY, 900 if i == 0 else 800))
+    return "".join(o)
+
+
+def baseline(t, y, x1=100, x2=980):
+    return f'<line x1="{x1}" y1="{y}" x2="{x2}" y2="{y}" stroke="{NAVY}" stroke-width="5" opacity="{ease_out(prog(t, .4, .4)):.2f}"/>'
