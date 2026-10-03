@@ -1,0 +1,18 @@
+{
+  "episode": "EP.12",
+  "title": "NAV 론",
+  "concept": "NAV Facility(NAV 론) — 투자기간이 끝난 펀드가 포트폴리오 NAV를 담보로 펀드 차원에서 빌리는 대출. LP 조기 분배에 쓰면 IRR·DPI는 오르지만 이자만큼 총 회수(MOIC)는 줄어든다 — EP.05 Subscription Line과 같은 구조",
+  "cuts": [
+    {"n":1,"sec":[0,4],"type":"title","text":["연기금 IC","일기","EP.12 · NAV 론"]},
+    {"n":2,"sec":[4,10.5],"type":"problem","notice":"Distribution Notice · 7년차 · 매각 딜 없음 · LP 분배 20 · 재원 NAV Facility","bubble":["팔린 회사도 없는데 분배금이!","펀드가 대박 났나 봐요!"],"sfx":"대박?!"},
+    {"n":3,"sec":[10.5,17],"type":"twist","bubble":["그건 수익이 아니라 빚이야.","포트폴리오를 담보로 빌려서 먼저 준 거지."],"sfx":"NAV Loan!"},
+    {"n":4,"sec":[17,30],"type":"explainer","assume":{"NAV":100,"LTV":0.2,"rate":0.10,"years":2,"exit":130},
+     "no_loan":{"IRR":"14.0%","total":130},"loan":{"t0_LP":20,"repay":24,"t2_LP":106,"IRR":"15.1%","total":126},
+     "latex":["\\text{Loan} = 20\\% \\times 100 = 20","\\text{LP}_{2} = 130 - 20 - 20 \\times 10\\% \\times 2 = 106","\\text{IRR}:\\ \\sqrt{\\frac{130}{100}}-1 = 14.0\\% \\ \\rightarrow\\ \\sqrt{\\frac{106}{80}}-1 = 15.1\\%"],
+     "summary":"IRR은 오르고, 손에 쥐는 돈은 4 줄었다",
+     "bubble":["시계를 앞당긴 값이","이자 4야. EP.05와 같은 구조지."]},
+    {"n":5,"sec":[30,37],"type":"relief","bubbles":[["그럼 NAV 론은","나쁜 거예요?"],["후속투자·방어 자금엔 쓸모 있어.","분배용이면 용도와 비용부터 따져야지."]],"sfx":"용도가 핵심!","chip":"체크: 용도 · LTV · 금리 · LPA 차입 한도 · LP 통지"},
+    {"n":6,"sec":[37,40.5],"type":"next","text":["다음 화","GP Stakes","운용사 자체에 투자한다?"]}
+  ],
+  "fact-check": "단순화: 단리 10%·2년 만기 일시상환, 수수료·약정(covenant)·담보 교차(cross-collateralization) 생략. IRR은 7년차 NAV 100을 LP의 출발 가치로 본 2년 구간 IRR. 실무 NAV 론 LTV는 대체로 낮은 한 자릿수~20%대, 금리는 기준금리+스프레드로 Subscription Line보다 높다 — 수준은 기억 기반 일반 설명. ILPA가 2024년 NAV 론 가이던스에서 분배 목적 사용 시 LP 공시·동의를 권고한 것도 기억 기반."
+}
