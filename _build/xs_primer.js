@@ -4,7 +4,7 @@ const { build, C } = require("./primer_deck.js");
 
 module.exports = {
   art: "xs",
-  out: "특강/XS_자율주행포트폴리오/XS_0_프라이머_멀티에이전트자율주행이란무엇인가.pptx",
+  out: "특강/특강I_자율주행포트폴리오/XS_0_프라이머_멀티에이전트자율주행이란무엇인가.pptx",
   eyebrow: "연기금 운용전략과 성과평가 · XS 사전학습",
   coverTitle: "멀티 에이전트\n자율주행이란 무엇인가",
   coverSub: "XS 사전학습 · 독립세션 · 에이전트 아키텍처 (Ang et al. 2026)",

@@ -31,7 +31,7 @@ __pycache__/
 *.pyc
 
 # 제3자 스킬 사본 — 원 저장소에서 받는다 (설치 명령은 XS 강의본 23쪽)
-특강/XS_자율주행포트폴리오/self-driving-mvp/.claude/skills/harness/
+특강/특강I_자율주행포트폴리오/self-driving-mvp/.claude/skills/harness/
 
 # 작업 부산물
 _구판/
