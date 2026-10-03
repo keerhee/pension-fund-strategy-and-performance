@@ -17,3 +17,14 @@ EDHEC(Martellini · Milhau) 학파의 목표기반투자(Goal-Based Investing)�
 | 10 | `GBI10_종합_그리고한국.pdf` | 종합 — 그리고 한국 (종강) |
 | — | `GBI_실습과제.pdf` | 강별 2과제 · 전 20과제 |
 | — | `GBI_참고문헌.pdf` | 강별 핵심 문헌과 읽기 경로 |
+
+## 해설과요약/
+
+덱 12종을 글로 다시 정리한 문서 두 편. 공개본은 PDF(Pretendard · A4)이고, md는 옵시디언용 원문이다(수식은 `$$` 블록).
+
+| 파일 | 내용 |
+|---|---|
+| `01_Martellini_GBI_Summary.pdf` · `.md` | 핵심 요약 — 한 장 요약, Part I~IV(1~10강), GHP 뉴메레르 예제, 핵심 수식, 실습과제·참고문헌·용어 |
+| `02_Martellini_GBI_Formula_Derivations.pdf` · `.md` | 수식 도출 — LDI · Sharpe-Tint · CPPI · 안전우선 · GBI · β · 인출기 · LTC 식의 단계별 풀이와 수치 예시 |
+
+수치 예시는 원리를 보이려고 단순화한 가상 예시(stylized example)다.
