@@ -1,0 +1,116 @@
+{
+ "episode": "EP.31",
+ "title": "PE 벤치마크",
+ "concept": "PE 벤치마크 — 같은 IRR도 어떤 표(데이터원·빈티지·전략·지역)로 재느냐에 따라 사분위 등수가 달라진다. 'Top Quartile' 주장은 기준표부터 확인하고, EP.06 PME로 시장 대비 성과도 함께 본다",
+ "cuts": [
+  {
+   "n": 1,
+   "sec": [
+    0,
+    4
+   ],
+   "type": "title",
+   "text": [
+    "연기금 IC",
+    "일기",
+    "EP.31 · PE 벤치마크"
+   ]
+  },
+  {
+   "n": 2,
+   "sec": [
+    4,
+    10.5
+   ],
+   "type": "problem",
+   "notice": "GP 마케팅 자료 · 펀드 3호 · 2018 빈티지 · 바이아웃 · IRR 14% · 등수 Top 25% · 기준표 ?",
+   "bubble": [
+    "상위 25%래요!",
+    "다음 펀드도 무조건 가죠!"
+   ],
+   "sfx": "무조건!"
+  },
+  {
+   "n": 3,
+   "sec": [
+    10.5,
+    17
+   ],
+   "type": "twist",
+   "bubble": [
+    "누구 표로 쟀는지부터 봐.",
+    "같은 빈티지 · 같은 전략끼리 비교해야 해."
+   ],
+   "sfx": "어느 표 기준?"
+  },
+  {
+   "n": 4,
+   "sec": [
+    17,
+    30
+   ],
+   "type": "explainer",
+   "assume": {
+    "ours": 0.14,
+    "bench_A": {
+     "bottom": 0.07,
+     "median": 0.13,
+     "top": 0.2
+    },
+    "bench_B": {
+     "bottom": 0.08,
+     "median": 0.15,
+     "top": 0.22
+    }
+   },
+   "result": {
+    "vs_A": "+1%p (중간 위)",
+    "vs_B": "−1%p (중간 아래)"
+   },
+   "latex": [
+    "\\text{Ours} = 14\\%",
+    "\\text{Bench A median} = 13\\% \\ \\Rightarrow\\ +1\\%\\mathrm{p}",
+    "\\text{Bench B median} = 15\\% \\ \\Rightarrow\\ -1\\%\\mathrm{p}"
+   ],
+   "summary": "등수는 표가 정한다 — PME로 시장과도 비교",
+   "bubble": [
+    "EP.06 PME까지 같이 보면",
+    "등수의 착시가 줄지."
+   ]
+  },
+  {
+   "n": 5,
+   "sec": [
+    30,
+    37
+   ],
+   "type": "relief",
+   "bubbles": [
+    [
+     "그럼 뭘로",
+     "비교해요?"
+    ],
+    [
+     "빈티지·전략이 같은 표로 등수를 보고,",
+     "EP.06 PME로 시장과도 견주지."
+    ]
+   ],
+   "sfx": "두 개로!",
+   "chip": "체크: 빈티지 · 전략 · 지역 · 데이터원 · PME 병행"
+  },
+  {
+   "n": 6,
+   "sec": [
+    37,
+    40.5
+   ],
+   "type": "next",
+   "text": [
+    "다음 화",
+    "First Close",
+    "먼저 들어가면 뭐가 좋아?"
+   ]
+  }
+ ],
+ "fact-check": "벤치마크 A·B의 사분위 숫자는 가상(실제 Cambridge Associates·MSCI Burgiss·Preqin 값이 아님). 데이터원마다 표본(GP 보고 vs LP 보고)과 산식이 달라 등수가 갈린다는 점은 일반 설명 — 기억 기반."
+}
