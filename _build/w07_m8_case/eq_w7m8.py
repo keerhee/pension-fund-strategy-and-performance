@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""W07 M8 케이스 v3 수식 PNG — matplotlib mathtext(cm), 카드 배경색 #F4F5F9. 출력 img/eq_*.png (비율은 charts_w7m8.py 가 img_ratios.json 에 모은다)"""
+"""W07 M8 케이스 v3 수식 PNG — matplotlib mathtext(cm), 카드 배경색 #F4F5F9. 출력 img/eq_*.png (비율은 charts_w6m7.py 가 img_ratios.json 에 모은다)"""
 import json, os
 import matplotlib; matplotlib.use("Agg")
 import matplotlib.pyplot as plt

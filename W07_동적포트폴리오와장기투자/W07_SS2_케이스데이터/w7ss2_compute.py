@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""W7 SS2 IC 케이스 — 판정 조건 계산 (w6ss2_build.py 의 CSV → w6ss2_results.json · compute_log.txt)
+"""W7 SS2 IC 케이스 — 판정 조건 계산 (w7ss2_build.py 의 CSV → w7ss2_results.json · compute_log.txt)
 
 제1호 (기금운용위) 국민연금 기금의 리밸런싱 규칙 — 안 A 캘린더 분기 전량 복원(현물) · 안 B 지침 밴드(국내주식 ±3) 월 점검 +
        총 위험자산 밴드 ±2 선물 오버레이 · 안 C 한시 밴드(±6) 상시화 · 분기 점검 · 현물 월 25bp 한도
@@ -15,12 +15,12 @@ import json, math, os
 import numpy as np, pandas as pd
 
 D = os.path.dirname(os.path.abspath(__file__))
-P = pd.read_csv(f"{D}/fml_w6ss2_params.csv").set_index("key").value
+P = pd.read_csv(f"{D}/fml_w7ss2_params.csv").set_index("key").value
 f = lambda k: float(P[k])
-A = pd.read_csv(f"{D}/fml_w6ss2_assets.csv").set_index("code")
-PN = pd.read_csv(f"{D}/fml_w6ss2_panel_daily_sim.csv")
-SNAP = pd.read_csv(f"{D}/fml_w6ss2_nps_snapshot.csv").set_index("nps_class")
-INST = pd.read_csv(f"{D}/fml_w6ss2_institutions.csv").set_index("code")
+A = pd.read_csv(f"{D}/fml_w7ss2_assets.csv").set_index("code")
+PN = pd.read_csv(f"{D}/fml_w7ss2_panel_daily_sim.csv")
+SNAP = pd.read_csv(f"{D}/fml_w7ss2_nps_snapshot.csv").set_index("nps_class")
+INST = pd.read_csv(f"{D}/fml_w7ss2_institutions.csv").set_index("code")
 codes = A.index.tolist(); RET = PN[[f"{c}_ret" for c in codes]].values; T, NA = RET.shape
 W = A.w_nps.values; RISK = A.is_risk.values.astype(bool)
 AUM = f("fund_2026h1_trn"); ETA = f("impact_eta"); PART_CASH = f("part_cash"); PART_FUT = f("part_fut")
@@ -291,6 +291,6 @@ res = {"asof": P["asof"], "agenda1": {"cond1": cond1, "rules": rules, "best_nps"
                                      "cond3": cond3, "cond3_meta": {"gap_pp": round(gap_target, 1), "adv_2026": adv_now, "adv_2025": adv_2025, "cap_per_day_trn": round(cap_per_day, 2), "adv_fut": ADV_FUT},
                                      "cond4": cond4, "options": opts, "sens_band": sens, "risk_target_liquid": round(RISK_TARGET * 100, 1)},
        "agenda2": res2}
-json.dump(res, open(f"{D}/w6ss2_results.json", "w"), ensure_ascii=False, indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
+json.dump(res, open(f"{D}/w7ss2_results.json", "w"), ensure_ascii=False, indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
 open(f"{D}/compute_log.txt", "w").write("\n".join(log) + "\n")
-print("→ w6ss2_results.json · compute_log.txt")
+print("→ w7ss2_results.json · compute_log.txt")

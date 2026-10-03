@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""W06 케이스 v3 그림 — w6_results.json · CSV 에서 그린다 (matplotlib, Noto Sans CJK KR). 출력 img/*.png"""
+"""W06 케이스 v3 그림 — w7m9_results.json · CSV 에서 그린다 (matplotlib, Noto Sans CJK KR). 출력 img/*.png"""
 import json, os, sys
 import numpy as np, pandas as pd
 import matplotlib; matplotlib.use("Agg")
@@ -13,9 +13,9 @@ fm.fontManager.addfont(os.path.expanduser("~/Library/Fonts/NotoSansCJK.ttc"))
 plt.rcParams.update({"font.family": "Noto Sans CJK KR", "font.size": 15, "axes.titlesize": 17, "axes.labelsize": 15,
                      "axes.spines.top": False, "axes.spines.right": False, "axes.edgecolor": "#6B7280", "axes.unicode_minus": False})
 NAVY, BLUE, GREEN, ORANGE, GRAY, BODY, MUTED, HAIR = "#1B2C5E", "#2E5BAA", "#3FA36F", "#E65100", "#F4F5F9", "#3B4252", "#6B7280", "#D6D6DB"
-R = json.load(open(f"{D}/w6_results.json"))
-cf = pd.read_csv(f"{D}/fml_w6_cashflow.csv"); gp = pd.read_csv(f"{D}/fml_w6_glidepaths.csv")
-cma = pd.read_csv(f"{D}/fml_w6_cma.csv").set_index("asset"); P = pd.read_csv(f"{D}/fml_w6_params.csv").set_index("key").value
+R = json.load(open(f"{D}/w7m9_results.json"))
+cf = pd.read_csv(f"{D}/fml_w7m9_cashflow.csv"); gp = pd.read_csv(f"{D}/fml_w7m9_glidepaths.csv")
+cma = pd.read_csv(f"{D}/fml_w7m9_cma.csv").set_index("asset"); P = pd.read_csv(f"{D}/fml_w7m9_params.csv").set_index("key").value
 MU_R, MU_S, SG_R, SG_S, RHO = cma.mu_pct["risk"], cma.mu_pct["safe"], cma.sigma_pct["risk"], cma.sigma_pct["safe"], float(P["rho"])
 F0 = float(P["fund_2025_trn"])
 a1 = R["agenda1"]; paths = {p["path"]: p for p in a1["paths"]}

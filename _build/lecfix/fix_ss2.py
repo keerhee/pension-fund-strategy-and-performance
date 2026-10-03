@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """W06 SS2 강의본(21→22장)을 케이스 1·2 v3(국민연금 리밸런싱 규칙 · 네 기관 차등)에 맞춰 보수.
-실행: .venv/bin/python _build/lecfix/fix_ss2.py  (재실행 가능). 숫자는 W06_SS2_케이스데이터/w6ss2_results.json.
+실행: .venv/bin/python _build/lecfix/fix_ss2.py  (재실행 가능). 숫자는 W06_SS2_케이스데이터/w7ss2_results.json.
 """
 import os, shutil, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
@@ -53,10 +53,10 @@ set_text(find(S(14), "평균회귀가 강해야 리밸런싱 효과"), "평균�
 replace_picture(pictures(S(14))[0], f"{IMG}/fig_ar1.png")
 set_text(find(S(14), "EM·REIT은 강한 평균회귀"), "신흥주식 · 상장 부동산 φ −0.21(t −3.3) 강한 회귀 · 선진주식은 랜덤워크 · 국고채는 추세(+0.16)")
 # s18 실습
-set_text(find(S(18), "① 5종 빈도별 DR 계산"), "① 케이스 데이터 재현(w6ss2) — 빈도별 DR · 비용 · 순 프리미엄\n② 자산군별 AR(1) φ 검증\n③ 밴드 폭 ±2~±6 · 25bp 한도의 순 프리미엄")
+set_text(find(S(18), "① 5종 빈도별 DR 계산"), "① 케이스 데이터 재현(w7ss2) — 빈도별 DR · 비용 · 순 프리미엄\n② 자산군별 AR(1) φ 검증\n③ 밴드 폭 ±2~±6 · 25bp 한도의 순 프리미엄")
 set_text(find(S(18), "Quarterly가 Net으로 최적인가?"), "월간~분기가 최적 구간인가(2bp 차)?\n일간도 플러스인가(+39bp)?\n신흥 · 부동산 φ 가 가장 음인가?")
 sh = find(S(18), "너는 리밸런싱 분석가다")
-set_text(sh, "너는 리밸런싱 분석가다. 리밸런싱\n프리미엄 엔진을 python으로:\n1) 케이스 데이터 fml_w6ss2_panel_daily_sim\n   (7자산 20년 일간)을 읽어\n2) DR = g_port − Σ w·g_asset 계산\n3) 6종 빈도(일간~연간) DR 비교\n4) 자산별 거래비용 차감 순 프리미엄\n5) 자산군별 AR(1) phi로 평균회귀\n6) 밴드 ±2~±6 · 월 25bp 한도 비교\n각 단계 검증·표 저장·한국어 해석 포함.")
+set_text(sh, "너는 리밸런싱 분석가다. 리밸런싱\n프리미엄 엔진을 python으로:\n1) 케이스 데이터 fml_w7ss2_panel_daily_sim\n   (7자산 20년 일간)을 읽어\n2) DR = g_port − Σ w·g_asset 계산\n3) 6종 빈도(일간~연간) DR 비교\n4) 자산별 거래비용 차감 순 프리미엄\n5) 자산군별 AR(1) phi로 평균회귀\n6) 밴드 ±2~±6 · 월 25bp 한도 비교\n각 단계 검증·표 저장·한국어 해석 포함.")
 rep1(prs, "Case 2에서 4기관으로 확장", "케이스 2에서 네 기관으로 확장")
 # s19 결과 읽기
 rep1(prs, "빈도별 Net Alpha를 표로 보여주고, 왜 Quarterly가 최적인지 설명해줘.", "빈도별 순 프리미엄을 표로 보여주고, 왜 월간~분기가 최적 구간인지 설명해줘.")

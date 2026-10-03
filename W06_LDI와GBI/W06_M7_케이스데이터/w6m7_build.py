@@ -6,18 +6,18 @@
       안 A 현행(헤지 추가 없음 · 부채 지표 없음) · 안 B 시장 상한형(현물 초장기 국채, 5년) · 안 C 오버레이형(IRS 레버리지, 헤지 비율 30%)
 
 공시 수치(is_assumed=0)와 교육용 가정(is_assumed=1)을 열로 구분한다. 교육용 가정은 이 파일 상단 상수를
-바꾸면 되고, 바꾸면 w7m8_compute.py 의 판정 결과가 달라진다 — 그것이 실습의 일부다.
-급여·보험료 현금흐름 추계는 W07 케이스데이터(fml_w6_cashflow.csv)와 같은 가정을 쓴다(주차 간 정합).
+바꾸면 되고, 바꾸면 w6m7_compute.py 의 판정 결과가 달라진다 — 그것이 실습의 일부다.
+급여·보험료 현금흐름 추계는 W07 케이스데이터(fml_w7m9_cashflow.csv)와 같은 가정을 쓴다(주차 간 정합).
 
 생성 파일
-  fml_w7m8_params.csv     판정 임계 · 기준일 · 공시/가정 파라미터
-  fml_w7m8_cashflow.csv   2026~2095 연도별 보험료 수입 · 급여 지출 · 순유출 (교육용 추계, 2025 재정추계 정점·소진에 맞춤)
-  fml_w7m8_curve.csv      원화 국고채 수익률 곡선(2026-09-18 공시 4점 + 교육용 보간)과 충격 시나리오
-  fml_w7m8_assets.csv     기금 자산 구성(2026.6 말 공시)과 원화 금리 듀레이션(교육용 가정)
-  fml_w7m8_market.csv     시장 수용 규모 — 국고채 잔액·2025 만기별 발행·초장기물 잔액 추정·원화 IRS 거래규모
-  fml_w7m8_options.csv    안 A·B·C 의 설계 변수(헤지 비율 목표 · 수단 · 프로그램 기간 · 버퍼)
-  fml_w7m8_scenarios.csv  금리 충격 시나리오(평행 −100bp · 3일 +200bp · 2022 영국형)
-  fml_w7m8_peers.csv      영국 · 네덜란드 · 한국의 부채 대 시장 규모 비교(공시 + 추정)
+  fml_w6m7_params.csv     판정 임계 · 기준일 · 공시/가정 파라미터
+  fml_w6m7_cashflow.csv   2026~2095 연도별 보험료 수입 · 급여 지출 · 순유출 (교육용 추계, 2025 재정추계 정점·소진에 맞춤)
+  fml_w6m7_curve.csv      원화 국고채 수익률 곡선(2026-09-18 공시 4점 + 교육용 보간)과 충격 시나리오
+  fml_w6m7_assets.csv     기금 자산 구성(2026.6 말 공시)과 원화 금리 듀레이션(교육용 가정)
+  fml_w6m7_market.csv     시장 수용 규모 — 국고채 잔액·2025 만기별 발행·초장기물 잔액 추정·원화 IRS 거래규모
+  fml_w6m7_options.csv    안 A·B·C 의 설계 변수(헤지 비율 목표 · 수단 · 프로그램 기간 · 버퍼)
+  fml_w6m7_scenarios.csv  금리 충격 시나리오(평행 −100bp · 3일 +200bp · 2022 영국형)
+  fml_w6m7_peers.csv      영국 · 네덜란드 · 한국의 부채 대 시장 규모 비교(공시 + 추정)
 """
 import os
 import numpy as np, pandas as pd
@@ -98,13 +98,13 @@ cf = cashflows()
 cf["in_liability_window"] = (cf.year <= LIAB_END_YEAR).astype(int)
 cf["is_assumed"] = 1; cf["asof"] = ASOF
 cf["source"] = "교육용 추계 — W07 케이스데이터와 동일 가정(2025 재정추계 정점 2053·3,659조 · 소진 2064에 맞춤)"
-cf.round(2).to_csv(f"{OUT}/fml_w7m8_cashflow.csv", index=False)
+cf.round(2).to_csv(f"{OUT}/fml_w6m7_cashflow.csv", index=False)
 
 # ── 곡선 ────────────────────────────────────────────────────────────────────
 curve = [(m, r, 0, "국고채 최종호가 수익률 2026-09-18") for m, r in CURVE_OFFICIAL.items()] + \
         [(m, r, 1, "교육용 보간") for m, r in CURVE_INTERP.items()]
 curve = pd.DataFrame(sorted(curve), columns=["maturity_y", "yield_pct", "is_assumed", "source"]); curve["asof"] = ASOF
-curve.to_csv(f"{OUT}/fml_w7m8_curve.csv", index=False)
+curve.to_csv(f"{OUT}/fml_w6m7_curve.csv", index=False)
 
 # ── 자산 ────────────────────────────────────────────────────────────────────
 names = {"eq_dom": "국내주식", "eq_for": "해외주식", "bond_dom": "국내채권", "bond_for": "해외채권", "alt": "대체투자", "cash": "단기자금"}
@@ -115,7 +115,7 @@ assets = pd.DataFrame(rows, columns=["asset", "name", "amount_trn_krw", "weight_
 assets["gov_bond_trn_krw"] = np.where(assets.asset == "bond_dom", round(ASSETS_2026H1["bond_dom"] * BOND_DOM_GOV_SHARE, 1), 0.0)
 assets["asof"] = "2026-06-30"; assets["source"] = "기금운용본부 포트폴리오 현황(금액·비중, 공시) · 듀레이션·μ 는 교육용 가정"
 assets["is_assumed_duration_mu"] = 1
-assets.to_csv(f"{OUT}/fml_w7m8_assets.csv", index=False)
+assets.to_csv(f"{OUT}/fml_w6m7_assets.csv", index=False)
 
 # ── 시장 규모 ───────────────────────────────────────────────────────────────
 long_issue_2025 = KTB_ISSUE_2025["20y"] + KTB_ISSUE_2025["30y"] + KTB_ISSUE_2025["50y"]
@@ -140,7 +140,7 @@ market = pd.DataFrame([
     ("unfunded_nabo_trn", UNFUNDED_NABO, "미적립부채 추정(70년 기준)", 0, "국회예산정책처"),
     ("unfunded_npsri_2021_trn", UNFUNDED_NPSRI, "미적립부채 추정(2021)", 0, "국민연금연구원"),
 ], columns=["key", "value", "meaning", "is_assumed", "source"]); market["asof"] = ASOF
-market.to_csv(f"{OUT}/fml_w7m8_market.csv", index=False)
+market.to_csv(f"{OUT}/fml_w6m7_market.csv", index=False)
 
 # ── 안 A·B·C ───────────────────────────────────────────────────────────────
 options = pd.DataFrame([
@@ -149,7 +149,7 @@ options = pd.DataFrame([
     ("C", f"오버레이형 — IRS 30년 오버레이로 헤지 비율 {HEDGE_TARGET_C:.0%}, 버퍼 {BUFFER_BP}bp · 부채 벤치마크 공시", "irs_30y", HEDGE_TARGET_C, 1, BUFFER_BP, 1),
 ], columns=["option", "description", "instrument", "hedge_ratio_target", "program_years", "buffer_bp", "lbp_disclosure"])
 options["is_assumed"] = 1; options["asof"] = ASOF
-options.to_csv(f"{OUT}/fml_w7m8_options.csv", index=False)
+options.to_csv(f"{OUT}/fml_w6m7_options.csv", index=False)
 
 # ── 시나리오 ────────────────────────────────────────────────────────────────
 pd.DataFrame([
@@ -157,14 +157,14 @@ pd.DataFrame([
     ("parallel_up_100", 100, 250, "평행 +100bp 영구 — 대칭 확인", 1),
     ("spike_up_200_3d", SHOCK_BP_3D, 3, "3영업일 +200bp 급등 — 조건 ③ 증거금(2022 영국 30년 길트 4일 +140bp 참고)", 1),
     ("uk_2022", 140, 4, "2022.9 영국 — 30년 길트 3.7 → 5.1%, BoE 650억 파운드 한도 · 실매입 193억", 0),
-], columns=["scenario", "shock_bp", "horizon_days", "meaning", "is_assumed"]).assign(asof=ASOF).to_csv(f"{OUT}/fml_w7m8_scenarios.csv", index=False)
+], columns=["scenario", "shock_bp", "horizon_days", "meaning", "is_assumed"]).assign(asof=ASOF).to_csv(f"{OUT}/fml_w6m7_scenarios.csv", index=False)
 
 # ── 해외 비교 ────────────────────────────────────────────────────────────────
 pd.DataFrame([
     ("UK", "영국 DB(2022)", UK["db_liab_bn_gbp"], UK["gilt_market_bn_gbp"], UK["ldi_exposure_bn_gbp"], 0.65, "십억 파운드", 0, "PPF · DMO · BoE — 부채·길트 잔액은 근사(±10%)"),
     ("NL", "네덜란드 DB(전환 전)", NL["assets_bn_eur"], np.nan, np.nan, NL["hedge_ratio_pre_wtp"], "십억 유로", 0, "DNB · 업계 추정(유로 스왑 시장이 헤지 수단이라 국채 잔액 비교 생략)"),
-    ("KR", "국민연금(2026)", np.nan, KTB_OUTSTANDING_2025, round(ktb30_out_2025 + KTB_50Y_OUT_2025, 1), np.nan, "조원", 1, "부채·헤지 비율은 w7m8_compute.py 가 채운다(교육용)"),
-], columns=["code", "name", "liability", "gov_bond_market", "long_market_or_ldi", "hedge_ratio", "unit", "is_assumed", "note"]).assign(asof=ASOF).to_csv(f"{OUT}/fml_w7m8_peers.csv", index=False)
+    ("KR", "국민연금(2026)", np.nan, KTB_OUTSTANDING_2025, round(ktb30_out_2025 + KTB_50Y_OUT_2025, 1), np.nan, "조원", 1, "부채·헤지 비율은 w6m7_compute.py 가 채운다(교육용)"),
+], columns=["code", "name", "liability", "gov_bond_market", "long_market_or_ldi", "hedge_ratio", "unit", "is_assumed", "note"]).assign(asof=ASOF).to_csv(f"{OUT}/fml_w6m7_peers.csv", index=False)
 
 # ── 파라미터 ────────────────────────────────────────────────────────────────
 params = [
@@ -189,5 +189,5 @@ params = [
     ("nl_hedge_ratio", NL["hedge_ratio_pre_wtp"], "네덜란드 부채 헤지 비율(전환 전, 업계 추정)", 0), ("nl_wtp_deadline", NL["wtp_deadline"], "네덜란드 새 연금계약 전환 기한", 0),
     ("unfunded_nabo_trn", UNFUNDED_NABO, "미적립부채(국회예산정책처, 70년)", 0),
 ]
-pd.DataFrame(params, columns=["key", "value", "meaning", "is_assumed"]).to_csv(f"{OUT}/fml_w7m8_params.csv", index=False)
-print("→ fml_w7m8_*.csv 8개 생성 (", OUT, ")")
+pd.DataFrame(params, columns=["key", "value", "meaning", "is_assumed"]).to_csv(f"{OUT}/fml_w6m7_params.csv", index=False)
+print("→ fml_w6m7_*.csv 8개 생성 (", OUT, ")")

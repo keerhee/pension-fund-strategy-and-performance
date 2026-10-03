@@ -3,7 +3,7 @@
 
 실행: .venv/bin/python _build/lecfix/fix_w06.py
   - 구판은 _구판/강의본_구판_2026-09-21/ 로 옮기고, 주차 폴더에 같은 이름으로 저장한 뒤 PDF 를 다시 만든다.
-숫자는 W06_케이스데이터/w6_results.json (2026-09-20) 과 같다.
+숫자는 W06_케이스데이터/w7m9_results.json (2026-09-20) 과 같다.
 """
 import os, shutil, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
@@ -161,11 +161,11 @@ set_text(find(S(2), "•  글라이드패스가 정말"), "•  기금의 H/F �
 # 케이스 재현 장표 (W05 s03 복제)
 c = clone_slide(src, 2, prs)
 set_text(find(c, "먼저 케이스 데이터로 재현한다"), "먼저 케이스 데이터로 재현한다 — 그다음 공개 데이터로 확장")
-set_text(find(c, "숫자는 언제나 재현 가능해야"), "숫자는 언제나 재현 가능해야 한다 — python w6_build.py → python w6_compute.py")
+set_text(find(c, "숫자는 언제나 재현 가능해야"), "숫자는 언제나 재현 가능해야 한다 — python w7m9_build.py → python w7m9_compute.py")
 set_text(find(c, "케이스 재현 — 5자산"), "케이스 재현 — 기금 경로 · 10분")
-set_text(find(c, "•  fml_w5_saa"), "•  fml_w6_cashflow · cma · glidepaths · fund_history · params · scenarios\n•  H/F 트리거 연도(2042) · 세 안의 정점 · 소진 · 손실비 · 버퍼\n•  w_h = (5.5 − μ_s)/(μ_r − μ_s) → 종점 50% (교육용 CMA 8.0 / 3.0)")
+set_text(find(c, "•  fml_w5_saa"), "•  fml_w7m9_cashflow · cma · glidepaths · fund_history · params · scenarios\n•  H/F 트리거 연도(2042) · 세 안의 정점 · 소진 · 손실비 · 버퍼\n•  w_h = (5.5 − μ_s)/(μ_r − μ_s) → 종점 50% (교육용 CMA 8.0 / 3.0)")
 set_text(find(c, "ETF 확장 — 25자산"), "KIC 헤징 수요 — 20분")
-set_text(find(c, "•  M4 실습의 fml_w4_panel.csv"), "•  fml_w6_kic_panel_sim(480개월) · kic_hedge — 수단별 β · t · h · 캐리\n•  10년 지평 예측 회귀 t(Newey–West) · h = (1−1/γ)·β·σx/σa, γ = 5\n•  FRED DGS10 · T10YIE · VIXCLS 와 TLT · TIP 로 바꿔 다시 돌린다(데이터 사전)")
+set_text(find(c, "•  M4 실습의 fml_w4_panel.csv"), "•  fml_w7m9_kic_panel_sim(480개월) · kic_hedge — 수단별 β · t · h · 캐리\n•  10년 지평 예측 회귀 t(Newey–West) · h = (1−1/γ)·β·σx/σa, γ = 5\n•  FRED DGS10 · T10YIE · VIXCLS 와 TLT · TIP 로 바꿔 다시 돌린다(데이터 사전)")
 set_text(find(c, "판정 조건 ② · ③ —"), "판정 — 제1호 안 B 만 ①~⑤ 통과 · 제2호 장기채 · TIPS 채택 · 변동성 기각 (compute_log)")
 move_slide(prs, len(prs.slides) - 1, 2)
 # 이어지는 지시 (원 s08 → 이제 s09)

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""W6 M8 IC 케이스 — 판정 조건 계산 (w7m9_build.py 의 CSV → w7m9_results.json · compute_log.txt)
+"""W6 M8 IC 케이스 — 판정 조건 계산 (w6m8_build.py 의 CSV → w6m8_results.json · compute_log.txt)
 
 케이스 1 (K퇴직연금 사업자 상품심의위원회) Flexicure형 디폴트옵션 — Floor x · 승수 m · 수수료 c
   조건 ① 목표 미달 확률   P(W_T < G_S) ≤ 5%  (Safety 버킷 — 강의 1교시)
@@ -19,14 +19,14 @@ import json, os
 import numpy as np, pandas as pd
 
 D = os.path.dirname(os.path.abspath(__file__))
-P = pd.read_csv(f"{D}/fml_w7m9_params.csv").set_index("key").value
+P = pd.read_csv(f"{D}/fml_w6m8_params.csv").set_index("key").value
 f = lambda k: float(P[k])
-panel = pd.read_csv(f"{D}/fml_w7m9_panel_sim.csv")
-grid = pd.read_csv(f"{D}/fml_w7m9_cppi_grid.csv")
-cma = pd.read_csv(f"{D}/fml_w7m9_cma.csv").set_index("asset")
-alloc = pd.read_csv(f"{D}/fml_w7m9_endow_alloc.csv").set_index("illiq_cap_pct")
-cfl = pd.read_csv(f"{D}/fml_w7m9_endow_cashflow.csv")
-sc = pd.read_csv(f"{D}/fml_w7m9_scenarios.csv").set_index("scenario")
+panel = pd.read_csv(f"{D}/fml_w6m8_panel_sim.csv")
+grid = pd.read_csv(f"{D}/fml_w6m8_cppi_grid.csv")
+cma = pd.read_csv(f"{D}/fml_w6m8_cma.csv").set_index("asset")
+alloc = pd.read_csv(f"{D}/fml_w6m8_endow_alloc.csv").set_index("illiq_cap_pct")
+cfl = pd.read_csv(f"{D}/fml_w6m8_endow_cashflow.csv")
+sc = pd.read_csv(f"{D}/fml_w6m8_scenarios.csv").set_index("scenario")
 log = []
 def L(s): log.append(s); print(s)
 res = {"asof": P["asof"], "case1": {}, "case2": {}}
@@ -276,6 +276,6 @@ if ok2:
     x2 = max(s["illiq_cap_pct"] for s in ok2); z2 = max([s for s in ok2 if s["illiq_cap_pct"] == x2][0]["z_feasible"])
     res["case2"]["default"] = {"x": x2, "y": y_star, "z": z2}
     L(f"[기본 답] 비유동 대체 상한 {x2}%(펀드오브펀드·세컨더리) · 안전 유동자산 하한 {y_star}% · 지출률 {z2}%(80/20 평활, 고정 지출 3.5% Floor) — 조건부 승인")
-json.dump(res, open(f"{D}/w7m9_results.json", "w"), ensure_ascii=False, indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
+json.dump(res, open(f"{D}/w6m8_results.json", "w"), ensure_ascii=False, indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
 open(f"{D}/compute_log.txt", "w").write("\n".join(log) + "\n")
-print("→ w7m9_results.json · compute_log.txt")
+print("→ w6m8_results.json · compute_log.txt")

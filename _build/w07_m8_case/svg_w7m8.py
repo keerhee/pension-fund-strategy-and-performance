@@ -3,7 +3,7 @@
 """W07 M8 케이스 v3 도해 — 결정 트리 · 대차대조표 · 부채 벤치마크(LBP) · 오전 개념→오후 조건. SVG 1600×640 → PNG(cairosvg). 본문 글자 30px 이상(보조 26px)."""
 import json, os, cairosvg
 HERE = os.path.dirname(os.path.abspath(__file__)); W = os.path.dirname(HERE); IMG = f"{W}/img"; os.makedirs(IMG, exist_ok=True)
-R = json.load(open(f"{W}/data/w7m8_results.json")); LI, AS, MK = R["liability"], R["assets"], R["market"]; OPT = {o["option"]: o for o in R["options"]}
+R = json.load(open(f"{W}/data/w6m7_results.json")); LI, AS, MK = R["liability"], R["assets"], R["market"]; OPT = {o["option"]: o for o in R["options"]}
 NAVY, BLUE, GREEN, GRAY, BODY, MUTED, HAIR, RED, AMBER = "#1B2C5E", "#2E5BAA", "#3FA36F", "#F4F5F9", "#3B4252", "#6B7280", "#D6D6DB", "#B23A48", "#C77700"
 F = "font-family='Noto Sans CJK KR, Apple SD Gothic Neo, sans-serif'"
 

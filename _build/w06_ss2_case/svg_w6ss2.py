@@ -3,7 +3,7 @@
 """W6 SS2 케이스 v3 도해 — 결정 트리 2개 + 규칙의 해부 + 2026 타임라인. SVG 1600×640 → PNG(cairosvg). 본문 글자 30px 이상(주석 26px)."""
 import json, os, cairosvg
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE); IMG = f"{ROOT}/img"; os.makedirs(IMG, exist_ok=True)
-R = json.load(open(f"{ROOT}/data/w6ss2_results.json")); A1, A2 = R["agenda1"], R["agenda2"]; OPT = A1["options"]; C3 = A1["cond3"]; C4 = A1["cond4"]
+R = json.load(open(f"{ROOT}/data/w7ss2_results.json")); A1, A2 = R["agenda1"], R["agenda2"]; OPT = A1["options"]; C3 = A1["cond3"]; C4 = A1["cond4"]
 NAVY, BLUE, GREEN, GRAY, BODY, MUTED, HAIR, RED, ORANGE = "#1B2C5E", "#2E5BAA", "#3FA36F", "#F4F5F9", "#3B4252", "#6B7280", "#D6D6DB", "#B23A48", "#C77700"
 F = "font-family='Noto Sans CJK KR, Apple SD Gothic Neo, sans-serif'"
 

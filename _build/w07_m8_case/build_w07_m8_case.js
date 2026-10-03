@@ -1,6 +1,6 @@
 /* W07 M8 IC 케이스 v3 — 국민연금 기금의 LDI: 부채 벤치마크와 헤지 비율
  * report-navy-deck template.js (field 20pt). 실행: NODE_PATH=/Users/keerhee/Project/node_modules node build_w07_m8_case.js
- * 입력: ../data/w7m8_results.json · ../img/*.png (charts_w7m8.py · eq_w7m8.py · svg_w7m8.py 가 만든다)
+ * 입력: ../data/w6m7_results.json · ../img/*.png (charts_w6m7.py · eq_w6m7.py · svg_w6m7.py 가 만든다)
  */
 const path = require("path");
 const fs = require("fs");
@@ -10,7 +10,7 @@ const { p, C, S, LX, CW, setSubject, rect, hline, head, cover, divider, msgRows,
 const IMG = path.join(__dirname, "..", "img");
 const RATIO = JSON.parse(fs.readFileSync(path.join(IMG, "img_ratios.json"), "utf8"));
 const im = (n) => path.join(IMG, n + ".png");
-const R = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "w7m8_results.json"), "utf8"));
+const R = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "w6m7_results.json"), "utf8"));
 const LI = R.liability, AS = R.assets, MK = R.market, IN = R.instruments;
 const O = Object.fromEntries(R.options.map(x => [x.option, x]));
 const G = Object.fromEntries(R.grid.map(x => [Math.round(x.hedge_ratio * 100), x]));
@@ -255,7 +255,7 @@ const two = (s, y, h, lt, ll, rt, rl, opt) => {
 }
 // 28 산수 — 비교표 -----------------------------------------------------------------
 { const [s, n] = S_();
-  const y = head(s, "제1호 · 산수", 1.9, "산수 — 세 안을 같은 자로 잰다", "통과 = 조건 ①~⑤ 전부 · 숫자는 첨부 w7m8_results.json 의 options", n);
+  const y = head(s, "제1호 · 산수", 1.9, "산수 — 세 안을 같은 자로 잰다", "통과 = 조건 ①~⑤ 전부 · 숫자는 첨부 w6m7_results.json 의 options", n);
   const ok = b => b ? "통과" : "탈락";
   tbl(s, [["안", "30년물 · IRS", "헤지 비율", "갭", "−100bp FR_g", "매입/상한 · IRS/상한", "3일 증거금", "μ", "① ② ③ ④ ⑤"],
     ...["A", "B", "C"].map(k => { const r = O[k]; return [`안 ${k}`, `${n0(r.buy_bond_trn)}조 · ${n0(r.irs_notional_trn)}조`, pct(r.hedge_ratio, 1), `${r.gap_years}년`, `${pct(r.fr_g_down100)} (${r.dfr_down100_pp}%p)`, `${r.buy_vs_cap.toFixed(2)} · ${r.irs_vs_cap.toFixed(2)}`, `${n0(r.vm_3d_trn)}조`, `${r.mu_after_pct}%`, [r.cond1_ok, r.cond2_ok, r.cond3_ok, r.cond4_ok, r.cond5_ok].map(ok).join(" ")]; })],
@@ -329,12 +329,12 @@ const two = (s, y, h, lt, ll, rt, rl, opt) => {
 }
 // 37 들고 올 숫자 ------------------------------------------------------------------
 { const [s, n] = S_();
-  const y = head(s, "준비 · 데이터", 2.0, "들고 올 숫자 — 첨부 데이터로 30분 안에 만든다", "python w7m8_build.py → python w7m8_compute.py — compute_log.txt 의 줄을 그대로 읽는다", n);
+  const y = head(s, "준비 · 데이터", 2.0, "들고 올 숫자 — 첨부 데이터로 30분 안에 만든다", "python w6m7_build.py → python w6m7_compute.py — compute_log.txt 의 줄을 그대로 읽는다", n);
   tbl(s, [["팀", "만들 숫자", "파일 · 위치"],
-    ["운용전략", `순부채 ${n0(LI.L_gov_trn)}조 · FR_g ${FRg} · 헤지 비율 ${pct(AS.hedge_ratio_0)} → 안 B ${hB} · 매입 ${buyB}조`, "w7m8_results.json → liability · assets · options"],
-    ["리스크관리", `안 C 증거금 ${n0(O.C.vm_3d_trn)}조 · 버퍼 ${n0(O.C.buffer_req_trn)}조 · 유동자산 ${AS.liquid_trn.toFixed(0)}조 · 부채 창 2064 로 바꿨을 때`, "options · grid · w7m8_build.py LIAB_END_YEAR"],
+    ["운용전략", `순부채 ${n0(LI.L_gov_trn)}조 · FR_g ${FRg} · 헤지 비율 ${pct(AS.hedge_ratio_0)} → 안 B ${hB} · 매입 ${buyB}조`, "w6m7_results.json → liability · assets · options"],
+    ["리스크관리", `안 C 증거금 ${n0(O.C.vm_3d_trn)}조 · 버퍼 ${n0(O.C.buffer_req_trn)}조 · 유동자산 ${AS.liquid_trn.toFixed(0)}조 · 부채 창 2064 로 바꿨을 때`, "options · grid · w6m7_build.py LIAB_END_YEAR"],
     ["재정 · 거버넌스", `μ_SAA ${AS.mu_saa_pct}% → B ${O.B.mu_after_pct}% · 현물 30% 면 ${G[30].mu_bond_pct}% · 국내채권 ${O.B.bond_dom_pct_after}% vs 28.8%`, "grid.mu_bond_pct · options.bond_dom_pct_after"],
-    ["글로벌자문", `부채/국고채 ${MK.liab_to_ktb} · 30%의 현물 ${n0(G[30].bond_buy_trn)}조 = 장기물 발행 ${G[30].bond_years_of_long_issue}년치 · IRS ${pct(G[30].irs_vs_turnover)}`, "market · grid · fml_w7m8_peers.csv"]],
+    ["글로벌자문", `부채/국고채 ${MK.liab_to_ktb} · 30%의 현물 ${n0(G[30].bond_buy_trn)}조 = 장기물 발행 ${G[30].bond_years_of_long_issue}년치 · IRS ${pct(G[30].irs_vs_turnover)}`, "market · grid · fml_w6m7_peers.csv"]],
     y, [2.0, 6.6, 3.49], 0.8, 16);
   note(s, "교육용 가정(is_assumed = 1)을 바꾸면 FR_g · 갭 · 헤지 비율 · 증거금이 움직인다 — 그것이 실습이다", 6.5);
 }

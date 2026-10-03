@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""W6 SS2 케이스 v3 그림 — w6ss2_results.json · CSV 에서 그린다 (matplotlib, Noto Sans CJK KR). 출력 img/*.png + img/img_ratios.json"""
+"""W6 SS2 케이스 v3 그림 — w7ss2_results.json · CSV 에서 그린다 (matplotlib, Noto Sans CJK KR). 출력 img/*.png + img/img_ratios.json"""
 import json, os, math
 import numpy as np, pandas as pd
 import matplotlib; matplotlib.use("Agg")
@@ -14,9 +14,9 @@ fm.fontManager.addfont(os.path.expanduser("~/Library/Fonts/NotoSansCJK.ttc"))
 plt.rcParams.update({"font.family": "Noto Sans CJK KR", "font.size": 15, "axes.titlesize": 17, "axes.labelsize": 15,
                      "axes.spines.top": False, "axes.spines.right": False, "axes.edgecolor": "#6B7280", "axes.unicode_minus": False})
 NAVY, BLUE, GREEN, ORANGE, GRAY, BODY, MUTED, HAIR, RED = "#1B2C5E", "#2E5BAA", "#3FA36F", "#E65100", "#F4F5F9", "#3B4252", "#6B7280", "#D6D6DB", "#B23A48"
-R = json.load(open(f"{D}/w6ss2_results.json")); A1, A2 = R["agenda1"], R["agenda2"]
-kospi = pd.read_csv(f"{D}/fml_w6ss2_kospi_2026.csv"); snap = pd.read_csv(f"{D}/fml_w6ss2_nps_snapshot.csv").set_index("nps_class")
-inst = pd.read_csv(f"{D}/fml_w6ss2_institutions.csv")
+R = json.load(open(f"{D}/w7ss2_results.json")); A1, A2 = R["agenda1"], R["agenda2"]
+kospi = pd.read_csv(f"{D}/fml_w7ss2_kospi_2026.csv"); snap = pd.read_csv(f"{D}/fml_w7ss2_nps_snapshot.csv").set_index("nps_class")
+inst = pd.read_csv(f"{D}/fml_w7ss2_institutions.csv")
 RU = A1["rules"]; OPT = A1["options"]
 
 

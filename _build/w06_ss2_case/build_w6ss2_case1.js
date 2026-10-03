@@ -1,5 +1,5 @@
 /* W06 특별세션 SS2 케이스 1 v3 — 국민연금 기금의 리밸런싱 규칙: 밴드 폭 · 점검 주기 · 실행 한도 · 수단
- * report-navy-deck template.js (field 20pt). 실행: NODE_PATH=/Users/keerhee/Project/node_modules node build_w6ss2_case1.js
+ * report-navy-deck template.js (field 20pt). 실행: NODE_PATH=/Users/keerhee/Project/node_modules node build_w7ss2_case1.js
  */
 const path = require("path");
 const fs = require("fs");
@@ -9,7 +9,7 @@ const { p, C, S, LX, CW, setSubject, rect, hline, head, cover, divider, msgRows,
 const IMG = path.join(__dirname, "..", "img");
 const RATIO = JSON.parse(fs.readFileSync(path.join(IMG, "img_ratios.json"), "utf8"));
 const im = (n) => path.join(IMG, n + ".png");
-const R = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "w6ss2_results.json"), "utf8"));
+const R = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "w7ss2_results.json"), "utf8"));
 const A = R.agenda1, RU = A.rules, OPT = A.options, C3 = A.cond3, C4 = A.cond4, M3 = A.cond3_meta;
 const c1 = Object.fromEntries(A.cond1.map(x => [x.code, x]));
 const f0 = v => (v >= 0 ? "+" : "") + Math.round(v);
@@ -277,11 +277,11 @@ const two = (s, y, h, lt, ll, rt, rl, opt) => {
 }
 // 32 들고 올 숫자 ------------------------------------------------------------------
 { const [s, n] = S_();
-  const y = head(s, "준비 · 데이터", 2.0, "들고 올 숫자 — 첨부 데이터로 30분 안에 만든다", "python w6ss2_build.py → python w6ss2_compute.py — compute_log.txt 의 줄을 그대로 읽는다", n);
+  const y = head(s, "준비 · 데이터", 2.0, "들고 올 숫자 — 첨부 데이터로 30분 안에 만든다", "python w7ss2_build.py → python w7ss2_compute.py — compute_log.txt 의 줄을 그대로 읽는다", n);
   tbl(s, [["팀", "만들 숫자", "파일 · 위치"],
-    ["운용전략", `규칙별 DR · 비용 · 순(월 ${f0(RU.cal_m.net_bp)} · 분기 ${f0(RU.cal_q.net_bp)} · B ${f0(OPT.B.net_bp)}) · 밴드 폭 민감도`, "w6ss2_results.json → agenda1.rules · sens_band"],
+    ["운용전략", `규칙별 DR · 비용 · 순(월 ${f0(RU.cal_m.net_bp)} · 분기 ${f0(RU.cal_q.net_bp)} · B ${f0(OPT.B.net_bp)}) · 밴드 폭 민감도`, "w7ss2_results.json → agenda1.rules · sens_band"],
     ["리스크관리", `실행일수 5행(목표 ${Math.round(C3[0].days_cash5pct_2026)}일 · 총 밴드 ${Math.round(C3[4].days_fut20pct)}일) · CVaR 상한 ${C4.w_max_pct}% · 드리프트 분포`, "agenda1.cond3 · cond4"],
-    ["재정 · 거버넌스", "참여율을 3%로, CMA를 7.0/3.0으로 바꿨을 때의 실행일수와 w_max", "w6ss2_build.py 상단 상수 → 재실행"],
+    ["재정 · 거버넌스", "참여율을 3%로, CMA를 7.0/3.0으로 바꿨을 때의 실행일수와 w_max", "w7ss2_build.py 상단 상수 → 재실행"],
     ["글로벌자문", `자산군 φ · t · VR(12) 7행 (신흥 ${c1.eq_em.t} · 부동산 ${c1.reit.t} · 국고채 ${f1(c1.bond_ktb.t)})`, "agenda1.cond1"]],
     y, [2.0, 6.6, 3.49], 0.8, 16);
   note(s, "교육용 가정(is_assumed = 1)을 바꾸면 순 프리미엄 · 실행일수 · 상한이 움직인다 — 그것이 실습이다", 6.5);
@@ -345,7 +345,7 @@ const two = (s, y, h, lt, ll, rt, rl, opt) => {
     ["국민연금기금운용지침(2025.1.1 시행) 제6조의2 · 제11조 · 별표 1", "CVaR95 −15% · SAA/TAA 허용범위 · 경계 복원 원칙(조건 ④·⑤)"],
     ["기금운용위원회 2026.1.26 · 5.28 의결 · 기금운용본부 월별 포트폴리오(2026.3 · 5 · 6)", "유예 · 목표 20.8% · 밴드 확대 · 실제 비중 · 실행 한도"],
     ["KRX 거래대금 통계 · 2026.5 언론(일평균 48조 · 야간선물 16.7조)", "조건 ③ 실행일수의 분모"],
-    ["첨부 데이터(w6ss2_build · compute) · 교육용 가정(is_assumed = 1)", "순 프리미엄 · 드리프트 · 실행일수 재계산"]],
+    ["첨부 데이터(w7ss2_build · compute) · 교육용 가정(is_assumed = 1)", "순 프리미엄 · 드리프트 · 실행일수 재계산"]],
     y, [6.4, 5.69], 0.66, 16);
   note(s, "인용 형식 — 수치는 \"자료명 + 시점\" · 한시 밴드 ±6은 \"언론 추정\" · 교육용 가정은 \"교육용 가정\"이라고 말한다", 6.4);
 }

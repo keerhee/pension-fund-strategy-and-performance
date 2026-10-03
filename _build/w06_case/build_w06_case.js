@@ -9,7 +9,7 @@ const { p, C, S, LX, CW, setSubject, rect, hline, head, cover, divider, msgRows,
 const IMG = path.join(__dirname, "..", "img");
 const RATIO = JSON.parse(fs.readFileSync(path.join(IMG, "img_ratios.json"), "utf8"));
 const im = (n) => path.join(IMG, n + ".png");
-const R = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "w6_results.json"), "utf8"));
+const R = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "w7m9_results.json"), "utf8"));
 const A = R.agenda1, B = R.agenda2;
 const PA = Object.fromEntries(A.paths.map(x => [x.path, x]));
 const INS = Object.fromEntries(B.instruments.map(x => [x.instrument, x]));
@@ -361,11 +361,11 @@ const two = (s, y, h, lt, ll, rt, rl, opt) => {
 }
 // 42 들고 올 숫자 ------------------------------------------------------------------
 { const [s, n] = S_();
-  const y = head(s, "준비 · 데이터", 2.0, "들고 올 숫자 — 첨부 데이터로 30분 안에 만든다", "python w6_build.py → python w6_compute.py — compute_log.txt 의 줄을 그대로 읽는다", n);
+  const y = head(s, "준비 · 데이터", 2.0, "들고 올 숫자 — 첨부 데이터로 30분 안에 만든다", "python w7m9_build.py → python w7m9_compute.py — compute_log.txt 의 줄을 그대로 읽는다", n);
   tbl(s, [["팀", "만들 숫자", "파일 · 위치"],
-    ["운용전략", `H/F 트리거 연도(${trig}) · w_h(50%) · 안 B 정점 ${PA.B.peak_year} · 소진 ${PA.B.deplete_year}`, "w6_results.json → agenda1.cond1 · paths"],
+    ["운용전략", `H/F 트리거 연도(${trig}) · w_h(50%) · 안 B 정점 ${PA.B.peak_year} · 소진 ${PA.B.deplete_year}`, "w7m9_results.json → agenda1.cond1 · paths"],
     ["리스크관리", `손실비 최대(A ${PA.A.loss_ratio_max} · B ${PA.B.loss_ratio_max}) · 버퍼 최소(A ${PA.A.buffer_min_years} · B ${PA.B.buffer_min_years}) · 2008형 앞당김`, "agenda1.paths · sensitivity_B"],
-    ["재정 · 거버넌스", "CMA 를 7.0/3.0 으로 바꿨을 때의 w_h · 허들을 6.25% 로 잡았을 때의 결과", "w6_build.py 상단 상수 → 재실행"],
+    ["재정 · 거버넌스", "CMA 를 7.0/3.0 으로 바꿨을 때의 w_h · 허들을 6.25% 로 잡았을 때의 결과", "w7m9_build.py 상단 상수 → 재실행"],
     ["글로벌자문", `수단별 t · h · bp (${INS.bond_long.t} · ${INS.bond_long.hedge_pp} · 5 / ${INS.tips.t} · ${INS.tips.hedge_pp} · 15 / ${INS.vol_hedge.t} · ${INS.vol_hedge.hedge_pp} · 140)`, "agenda2.instruments · bond_horizon"]],
     y, [2.0, 6.6, 3.49], 0.8, 16);
   note(s, "교육용 가정(is_assumed = 1)을 바꾸면 트리거 · 종점 · 헤징 수요가 움직인다 — 그것이 실습이다", 6.5);

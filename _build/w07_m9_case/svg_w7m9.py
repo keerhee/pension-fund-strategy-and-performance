@@ -3,7 +3,7 @@
 """W7 M9 케이스 v3 도해 — 결정 트리 2개 + 버킷→조건 + Floor 정의 + Yale/H대 대비. SVG 1600×640 → PNG(cairosvg). 본문 글자 30px 이상."""
 import json, os, cairosvg
 HERE = os.path.dirname(os.path.abspath(__file__)); W = os.path.dirname(HERE); IMG = f"{W}/img"; D = f"{W}/data"
-R = json.load(open(f"{D}/w7m9_results.json")); d1 = R["case1"]["default"]; d2 = R["case2"]["default"]
+R = json.load(open(f"{D}/w6m8_results.json")); d1 = R["case1"]["default"]; d2 = R["case2"]["default"]
 NAVY, BLUE, GREEN, GRAY, BODY, MUTED, HAIR, RED, AMB = "#1B2C5E", "#2E5BAA", "#3FA36F", "#F4F5F9", "#3B4252", "#6B7280", "#D6D6DB", "#B23A48", "#C77700"
 F = "font-family='Noto Sans CJK KR, Apple SD Gothic Neo, sans-serif'"
 

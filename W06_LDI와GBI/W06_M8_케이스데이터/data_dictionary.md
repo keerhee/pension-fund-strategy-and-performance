@@ -1,15 +1,15 @@
 # W6 M8 IC 케이스 데이터 사전 (기준일 2026-09-21)
 
-케이스 문서·덱·이 데이터만으로 심의가 끝나도록 만든 교육용 데이터셋이다. 공시 수치와 교육용 가정은 모든 표에서 `is_assumed` 열(0 = 공시·의결·통계 수치, 1 = 교육용 가정)로 구분한다. 교육용 가정은 학생이 `w7m9_build.py` 상단 상수에서 바꾸어 판정 결과가 어떻게 달라지는지 확인하는 것이 실습의 일부다. 실습 덱이 쓰는 `fml_w9_goals.csv`·`fml_w9_person.csv`·`fml_w7_market`·`fml_w9_public` 은 그대로 두고, 케이스는 이 폴더의 `fml_w7m9_*.csv` 만 쓴다.
+케이스 문서·덱·이 데이터만으로 심의가 끝나도록 만든 교육용 데이터셋이다. 공시 수치와 교육용 가정은 모든 표에서 `is_assumed` 열(0 = 공시·의결·통계 수치, 1 = 교육용 가정)로 구분한다. 교육용 가정은 학생이 `w6m8_build.py` 상단 상수에서 바꾸어 판정 결과가 어떻게 달라지는지 확인하는 것이 실습의 일부다. 실습 덱이 쓰는 `fml_w8_goals.csv`·`fml_w8_person.csv`·`fml_w7_market`·`fml_w8_public` 은 그대로 두고, 케이스는 이 폴더의 `fml_w6m8_*.csv` 만 쓴다.
 
 ## 실행 순서
 
 ```
-python w7m9_build.py      # CSV 9개 생성 (모의 시장 패널 · 표결 격자 · 공시 횡단면 · 기금 시나리오)
-python w7m9_compute.py    # 케이스 1 조건 ①~④ · 케이스 2 조건 ①~④ 계산 → w7m9_results.json, compute_log.txt
+python w6m8_build.py      # CSV 9개 생성 (모의 시장 패널 · 표결 격자 · 공시 횡단면 · 기금 시나리오)
+python w6m8_compute.py    # 케이스 1 조건 ①~④ · 케이스 2 조건 ①~④ 계산 → w6m8_results.json, compute_log.txt
 ```
 
-필요 패키지: numpy, pandas. 실제 시계열로 다시 돌리려면 아래처럼 받아 `fml_w7m9_panel_sim.csv` 와 같은 열 이름으로 넣는다(주식 URTH 또는 KOSPI ETF, 국채 IEF, 10년 금리 FRED `DGS10`, 물가 `CPIAUCSL`). 비유동 대체는 상장 대리지표(PSP · 리츠)로 근사한다.
+필요 패키지: numpy, pandas. 실제 시계열로 다시 돌리려면 아래처럼 받아 `fml_w6m8_panel_sim.csv` 와 같은 열 이름으로 넣는다(주식 URTH 또는 KOSPI ETF, 국채 IEF, 10년 금리 FRED `DGS10`, 물가 `CPIAUCSL`). 비유동 대체는 상장 대리지표(PSP · 리츠)로 근사한다.
 
 ```
 import yfinance as yf, pandas_datareader.data as web
@@ -19,7 +19,7 @@ st = web.DataReader(["DGS10", "CPIAUCSL"], "fred", "2000-01-01").resample("ME").
 
 ## 파일과 열
 
-### fml_w7m9_params.csv — 파라미터 (공시/가정 구분)
+### fml_w6m8_params.csv — 파라미터 (공시/가정 구분)
 
 | 열 | 정의 |
 |---|---|
@@ -30,7 +30,7 @@ st = web.DataReader(["DGS10", "CPIAUCSL"], "fred", "2000-01-01").resample("ME").
 
 공시 값: 원리금보장 상품 평균 수익률 3.09%(2025, 금감원 퇴직연금 투자백서) — 케이스 1 Market 목표의 기준. Yale 목표 지출률 5.25% · 비유동 상한 50%(참고).
 
-### fml_w7m9_public_facts.csv — 공시 수치 횡단면
+### fml_w6m8_public_facts.csv — 공시 수치 횡단면
 
 | 열 | 정의 |
 |---|---|
@@ -40,7 +40,7 @@ st = web.DataReader(["DGS10", "CPIAUCSL"], "fred", "2000-01-01").resample("ME").
 
 퇴직연금 적립금 501.4조(2025 말) · 원리금보장 75.4% · 원리금보장 수익률 3.09% · 전체 6.47%. 디폴트옵션 53.3조 · 안정형 85.4% · 지정 가입자 734만. TDF 순자산 16.6조(2024 말) · 설정액 20.2조(2026.7) · 총보수 0.59%. GPFG 21,268십억 NOK(2025 말, 약 2.39조 달러 2026.6) · 주식 71.3% · 1998~2025 연 6.6% · 벤치마크 대비 +0.24%p · 비용 4bp. Yale 441억 달러 · FY2025 11.1% · 10년 9.4% · 지출률 5.25% · 2025 PE 세컨더리 매각 25억 달러. 사립대 274교 적립금 11.56조(2024) · 사립학교법 32조의2 증권 취득 한도 1/2.
 
-### fml_w7m9_tdf_2022.csv — 2022년 TDF 실적표 (공시)
+### fml_w6m8_tdf_2022.csv — 2022년 TDF 실적표 (공시)
 
 | 열 | 정의 |
 |---|---|
@@ -52,7 +52,7 @@ st = web.DataReader(["DGS10", "CPIAUCSL"], "fred", "2000-01-01").resample("ME").
 
 Vanguard Target Retirement 2025 −15.55 · Fidelity Freedom 2025 −16.6 · T. Rowe Price Retirement 2025 −15.7 · 국내 TDF2025 평균 −14.0 · TDF2045 −16.8 · KOSPI −24.1 · MSCI −19.8 · TIAA Traditional 보증 최저 +3.0.
 
-### fml_w7m9_panel_sim.csv — 교육용 월간 모의 시장 패널 (480개월)
+### fml_w6m8_panel_sim.csv — 교육용 월간 모의 시장 패널 (480개월)
 
 | 열 | 정의 | 단위 |
 |---|---|---|
@@ -68,7 +68,7 @@ Vanguard Target Retirement 2025 −15.55 · Fidelity Freedom 2025 −16.6 · T. 
 
 설계 범위 — 주식 연 μ 8~9% · σ 13.5~16.5% · 최악 연 −25~−40% · 금리 1.5~6.5%. 난수 시드는 `panel_seed`(설계 범위에 드는 첫 시드)로 고정한다. 케이스 1 은 이 패널의 12개월 블록을, 케이스 2 는 연 수익률을 부트스트랩한다. 1987년 10월형 한 달 −22% 갭은 절단 때문에 패널에 없으므로 `gap_shock` 으로 따로 잰다.
 
-### fml_w7m9_cppi_grid.csv — 케이스 1 표결 격자
+### fml_w6m8_cppi_grid.csv — 케이스 1 표결 격자
 
 | 열 | 정의 |
 |---|---|
@@ -78,7 +78,7 @@ Vanguard Target Retirement 2025 −15.55 · Fidelity Freedom 2025 −16.6 · T. 
 
 표준 가입자(교육용): 55세 → 65세(지평 10년), 초기 적립금 1.00, Safety 목표 G_S = 1.10(명목 원금 + 연 1%), Market 목표 G_M = 1.0309^10 = 1.356(원리금보장 3.09%, 공시). GHP = 만기 매칭 무이표채, 출발 금리 3.0%. 리밸런싱 분기(`rebal_months` = 3). Floor 는 수수료를 그로스업한다: F_t = x·G_S·P(t,T)·(1−c/12)^−(T−t).
 
-### fml_w7m9_cma.csv — 케이스 2 자산군 CMA (교육용, 패널 연 실현치)
+### fml_w6m8_cma.csv — 케이스 2 자산군 CMA (교육용, 패널 연 실현치)
 
 | asset | name | mu_pct | sigma_pct | is_liquid |
 |---|---|---|---|---|
@@ -90,7 +90,7 @@ Vanguard Target Retirement 2025 −15.55 · Fidelity Freedom 2025 −16.6 · T. 
 
 μ·σ 는 패널의 연 실현치라 산수(조건 ② 결정론 점검)와 MC 가 같은 숫자를 쓴다. 물가 2.0%.
 
-### fml_w7m9_endow_alloc.csv — 비유동 대체 상한별 배분안 (교육용)
+### fml_w6m8_endow_alloc.csv — 비유동 대체 상한별 배분안 (교육용)
 
 | illiq_cap_pct | w_eq | w_bond_gov | w_cash | w_alt_pe |
 |---|---|---|---|---|
@@ -101,7 +101,7 @@ Vanguard Target Retirement 2025 −15.55 · Fidelity Freedom 2025 −16.6 · T. 
 | 40 | 40 | 15 | 5 | 40 |
 | 60 | 25 | 10 | 5 | 60 |
 
-### fml_w7m9_endow_cashflow.csv — H대 지출·인출 시나리오 (교육용)
+### fml_w6m8_endow_cashflow.csv — H대 지출·인출 시나리오 (교육용)
 
 | 열 | 정의 | 단위 |
 |---|---|---|
@@ -112,16 +112,16 @@ Vanguard Target Retirement 2025 −15.55 · Fidelity Freedom 2025 −16.6 · T. 
 
 캐피탈콜: 미납 약정 = 비유동 목표의 40%, 4년에 걸쳐 납입, 분배는 6년차부터(스트레스 시 0). H대 대체 전담 인력 1명(가상), 직접 PE·VC 요건 = 전담 ≥ 3명 · 매니저 15개 분산(최소 출자 100억 × 15 = 1,500억 = 기금의 30%).
 
-### fml_w7m9_scenarios.csv — 충격 시나리오 (교육용)
+### fml_w6m8_scenarios.csv — 충격 시나리오 (교육용)
 
 | scenario | eq | bond_gov | cash | alt_pe 보고 | alt_pe 실제 | 10년 금리 |
 |---|---|---|---|---|---|---|
 | 2022형 | −20 | −15 | +2 | −5 | −20 | +300bp |
 | 2008형 | −40 | +8 | +3 | −10 | −35 | −150bp |
 
-## w7m9_compute.py 가 계산하는 것
+## w6m8_compute.py 가 계산하는 것
 
 - 케이스 1 (x, m, c) 90개 조합 × 4,000 경로 — 조건 ① P(W_T < G_S) ≤ 5%, 조건 ② Cash Trap(쿠션/W < 1% 발생) ≤ 10%, 조건 ③ 수수료 차감 후 P(W_T ≥ G_M) ≥ 70%, 조건 ④ 2022형(주식 −20% · 금리 +300bp) Floor 위반율 ≤ 1%(GHP 연동 Floor 와 고정 명목 Floor 둘 다). 참고로 고정 배분(TDF 형) 비교, 한 달 −22% 갭 스트레스, 수수료 30년 잠식률. 기본 답은 사전 규칙 — 통과하는 x 중 가장 높은 Floor → 그 x 에서 통과하는 최대 m → 최대 수수료.
 - 케이스 2 (x, y, z) — 조건 ① 2022형 + 목돈 + 캐피탈콜 아래 매도 없이 버티는 연수 ≥ 락업 10년, 조건 ② 30년 후 실질가치 ≥ 현재 확률 ≥ 50%(세대 간 중립) 이면서 z ≥ 현행 4.0%, 조건 ③ 직접 PE·VC 요건(인력 · 매니저 수), 조건 ④ 충격 후 3년 강제매도 없이 고정 지출 유지 확률 ≥ 95% 인 최소 y. 기본 답은 통과하는 최대 x → 그 x 의 최대 z → 최소 y.
 
-결과는 `w7m9_results.json`(구조화)과 `compute_log.txt`(읽는 용)에 남는다.
+결과는 `w6m8_results.json`(구조화)과 `compute_log.txt`(읽는 용)에 남는다.

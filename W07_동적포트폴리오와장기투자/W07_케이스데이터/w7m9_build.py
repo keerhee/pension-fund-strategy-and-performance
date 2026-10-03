@@ -6,17 +6,17 @@
 제2호  KIC 헤징 수요 프로그램 — 어느 상태변수에, 얼마나
 
 공시 수치(is_assumed=0)와 교육용 가정(is_assumed=1)을 열로 구분한다. 교육용 가정은 이 파일의
-상단 상수를 바꾸면 되고, 바꾸면 w6_compute.py 의 판정 결과가 달라진다 — 그것이 실습의 일부다.
+상단 상수를 바꾸면 되고, 바꾸면 w7m9_compute.py 의 판정 결과가 달라진다 — 그것이 실습의 일부다.
 
 생성 파일
-  fml_w6_params.csv        판정 임계·CMA·기준일 등 파라미터(공시/가정 구분)
-  fml_w6_fund_history.csv  기금 적립금·누적 조성·지출(공시)
-  fml_w6_cashflow.csv      2026~2095 연도별 보험료 수입·급여 지출·보험료율 (교육용 추계, 2025 재정추계 정점·소진에 맞춤)
-  fml_w6_glidepaths.csv    안 A·B·C 의 연도별 위험자산 비중
-  fml_w6_cma.csv           위험자산·안전자산 CMA (교육용)
-  fml_w6_scenarios.csv     충격 시나리오(2022형·2008형) 자산군 수익률
-  fml_w6_kic_panel_sim.csv KIC 제2호 — 월간 모의 패널(상태변수 · 자산 수익률), 480개월
-  fml_w6_kic_hedge.csv     KIC 제2호 — 헤지 수단별 비용·유동성(교육용)
+  fml_w7m9_params.csv        판정 임계·CMA·기준일 등 파라미터(공시/가정 구분)
+  fml_w7m9_fund_history.csv  기금 적립금·누적 조성·지출(공시)
+  fml_w7m9_cashflow.csv      2026~2095 연도별 보험료 수입·급여 지출·보험료율 (교육용 추계, 2025 재정추계 정점·소진에 맞춤)
+  fml_w7m9_glidepaths.csv    안 A·B·C 의 연도별 위험자산 비중
+  fml_w7m9_cma.csv           위험자산·안전자산 CMA (교육용)
+  fml_w7m9_scenarios.csv     충격 시나리오(2022형·2008형) 자산군 수익률
+  fml_w7m9_kic_panel_sim.csv KIC 제2호 — 월간 모의 패널(상태변수 · 자산 수익률), 480개월
+  fml_w7m9_kic_hedge.csv     KIC 제2호 — 헤지 수단별 비용·유동성(교육용)
 """
 import json, os
 import numpy as np, pandas as pd
@@ -121,7 +121,7 @@ _, G_B_EARLY, G_B_LATE, pk_y, pk_f, dep45 = best
 cf = cashflows(G_B_EARLY, G_B_LATE)
 pk55 = peak_and_deplete(project(cf, 5.5))
 cf["is_assumed"] = 1; cf["asof"] = ASOF; cf["source"] = "교육용 추계 — 2025 재정추계 정점(2053·3,659조)·소진(2064)에 맞춤"
-cf.round(2).to_csv(f"{OUT}/fml_w6_cashflow.csv", index=False)
+cf.round(2).to_csv(f"{OUT}/fml_w7m9_cashflow.csv", index=False)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 3. 글라이드패스 안 A·B·C
@@ -155,20 +155,20 @@ paths = {
 }
 gp = pd.DataFrame({"year": YEARS, **{f"w_risk_{k}": v[1] for k, v in paths.items()}})
 gp["is_assumed"] = 1; gp["asof"] = ASOF
-gp.round(4).to_csv(f"{OUT}/fml_w6_glidepaths.csv", index=False)
+gp.round(4).to_csv(f"{OUT}/fml_w7m9_glidepaths.csv", index=False)
 
 pd.DataFrame([
     ("risk", "위험자산(주식+대체)", MU_RISK, SIG_RISK, 1, ASOF),
     ("safe", "안전자산(채권)", MU_SAFE, SIG_SAFE, 1, ASOF),
-], columns=["asset", "name", "mu_pct", "sigma_pct", "is_assumed", "asof"]).to_csv(f"{OUT}/fml_w6_cma.csv", index=False)
+], columns=["asset", "name", "mu_pct", "sigma_pct", "is_assumed", "asof"]).to_csv(f"{OUT}/fml_w7m9_cma.csv", index=False)
 pd.DataFrame([(k, v[0], v[1], 1, ASOF) for k, v in SHOCK.items()],
-             columns=["scenario", "risk_ret_pct", "safe_ret_pct", "is_assumed", "asof"]).to_csv(f"{OUT}/fml_w6_scenarios.csv", index=False)
+             columns=["scenario", "risk_ret_pct", "safe_ret_pct", "is_assumed", "asof"]).to_csv(f"{OUT}/fml_w7m9_scenarios.csv", index=False)
 
 pd.DataFrame([
     (2023, 1035.8, None, None, 0), (2024, FUND_2024, CUM_CONTRIB_2024, CUM_BENEFIT_2024, 0),
     (2025, FUND_2025, None, None, 0), (2026.5, 1865.6, None, None, 0),
 ], columns=["year", "fund_trn_krw", "cum_contrib_trn", "cum_benefit_trn", "is_assumed"]).assign(
-    asof=ASOF, source="보건복지부 기금적립금 현황 · 국민연금 통계(2026.6)").to_csv(f"{OUT}/fml_w6_fund_history.csv", index=False)
+    asof=ASOF, source="보건복지부 기금적립금 현황 · 국민연금 통계(2026.6)").to_csv(f"{OUT}/fml_w7m9_fund_history.csv", index=False)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 4. KIC 제2호 — 상태변수 모의 패널 (교육용, 파라미터를 알고 만든 데이터)
@@ -181,7 +181,7 @@ GAMMA_KIC_, HZ_ = 5.0, 10
 
 
 def predictive(x, ret, hz):
-    """상태변수 x(t) → 이후 hz년 연환산 수익(%) 회귀의 (β, Newey–West t) — w6_compute.py 와 같은 정의"""
+    """상태변수 x(t) → 이후 hz년 연환산 수익(%) 회귀의 (β, Newey–West t) — w7m9_compute.py 와 같은 정의"""
     fwd = np.array([ret[i + 1:i + 1 + 12 * hz].mean() * 12 for i in range(len(ret) - 12 * hz)]); xs = x[: len(fwd)]
     X = np.c_[np.ones(len(xs)), xs]; beta, *_ = np.linalg.lstsq(X, fwd, rcond=None); resid = fwd - X @ beta
     lag = 12 * hz - 1; u = resid[:, None] * X; S = u.T @ u
@@ -226,13 +226,13 @@ dates = pd.date_range("1986-12-31", periods=N, freq="ME")
 panel = pd.DataFrame({"date": dates.strftime("%Y-%m-%d"), "yield10": yld.round(3), "infl_exp": inf.round(3), "vix": vix.round(2),
                       "bond_long_ret": (bond_long / 100).round(5), "tips_ret": (tips / 100).round(5),
                       "eq_ret": (eq / 100).round(5), "vol_hedge_ret": (vol_hedge / 100).round(5)})
-panel.to_csv(f"{OUT}/fml_w6_kic_panel_sim.csv", index=False)
+panel.to_csv(f"{OUT}/fml_w7m9_kic_panel_sim.csv", index=False)
 
 pd.DataFrame([
     ("bond_long", "장기 국채 오버레이", "yield10", "금리 하락(재투자 수익 악화)", 5, 90, 1),
     ("tips", "물가연동채 · 실물자산", "infl_exp", "인플레 상승(실질가치 하락)", 15, 60, 1),
     ("vol_hedge", "변동성 헤지(옵션 · VIX 상품)", "vix", "변동성 상승(투자 기회 악화)", 140, 40, 1),
-], columns=["instrument", "name", "state_var", "bad_state", "carry_cost_bp", "liquidity_score", "is_assumed"]).assign(asof=ASOF).to_csv(f"{OUT}/fml_w6_kic_hedge.csv", index=False)
+], columns=["instrument", "name", "state_var", "bad_state", "carry_cost_bp", "liquidity_score", "is_assumed"]).assign(asof=ASOF).to_csv(f"{OUT}/fml_w7m9_kic_hedge.csv", index=False)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 5. 파라미터 표
@@ -255,7 +255,7 @@ params = [
     ("t_min", 2.0, "제2호 조건 ① 예측력 t값 하한", 1), ("hedge_min_pp", 5.0, "제2호 조건 ② 헤징 수요 하한(%p)", 1),
     ("cost_max_bp", 30.0, "제2호 조건 ③ 연 캐리 비용 상한(bp)", 1),
 ]
-pd.DataFrame(params, columns=["key", "value", "meaning", "is_assumed"]).to_csv(f"{OUT}/fml_w6_params.csv", index=False)
+pd.DataFrame(params, columns=["key", "value", "meaning", "is_assumed"]).to_csv(f"{OUT}/fml_w7m9_params.csv", index=False)
 
 print(f"급여 증가율 맞춤: ~2050 {G_B_EARLY:.4f} · 2051~ {G_B_LATE:.4f} → 4.5% 정점 {pk_y}년 {pk_f:,.0f}조 · 소진 {dep45} / 5.5% 정점 {pk55[0]}년 {pk55[1]:,.0f}조 · 소진 {pk55[2]}")
 print(f"H/F 트리거({HF_TRIGGER}) 도달 연도: {trigger_year}")

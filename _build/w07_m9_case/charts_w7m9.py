@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""W7 M9 케이스 v3 그림 — w7m9_results.json · CSV 에서 그린다 (matplotlib, Noto Sans CJK KR). 출력 img/*.png"""
+"""W7 M9 케이스 v3 그림 — w6m8_results.json · CSV 에서 그린다 (matplotlib, Noto Sans CJK KR). 출력 img/*.png"""
 import json, os
 import numpy as np, pandas as pd
 import matplotlib; matplotlib.use("Agg")
@@ -13,10 +13,10 @@ fm.fontManager.addfont(os.path.expanduser("~/Library/Fonts/NotoSansCJK.ttc"))
 plt.rcParams.update({"font.family": "Noto Sans CJK KR", "font.size": 15, "axes.titlesize": 17, "axes.labelsize": 15,
                      "axes.spines.top": False, "axes.spines.right": False, "axes.edgecolor": "#6B7280", "axes.unicode_minus": False})
 NAVY, BLUE, GREEN, ORANGE, GRAY, BODY, MUTED, HAIR, RED = "#1B2C5E", "#2E5BAA", "#3FA36F", "#E65100", "#F4F5F9", "#3B4252", "#6B7280", "#D6D6DB", "#B23A48"
-R = json.load(open(f"{D}/w7m9_results.json"))
-P = pd.read_csv(f"{D}/fml_w7m9_params.csv").set_index("key").value
+R = json.load(open(f"{D}/w6m8_results.json"))
+P = pd.read_csv(f"{D}/fml_w6m8_params.csv").set_index("key").value
 G = pd.DataFrame(R["case1"]["grid"]); C1 = R["case1"]; C2 = R["case2"]
-tdf = pd.read_csv(f"{D}/fml_w7m9_tdf_2022.csv"); alloc = pd.read_csv(f"{D}/fml_w7m9_endow_alloc.csv")
+tdf = pd.read_csv(f"{D}/fml_w6m8_tdf_2022.csv"); alloc = pd.read_csv(f"{D}/fml_w6m8_endow_alloc.csv")
 d1 = C1["default"]; d2 = C2["default"]
 
 

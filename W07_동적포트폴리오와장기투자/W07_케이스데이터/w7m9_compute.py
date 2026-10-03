@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""W7 IC 케이스 — 판정 조건 계산 (w6_build.py 의 CSV → w6_results.json · compute_log.txt)
+"""W7 IC 케이스 — 판정 조건 계산 (w7m9_build.py 의 CSV → w7m9_results.json · compute_log.txt)
 
 제1호 (기금운용위) 기관형 글라이드패스 — 감축 시작 트리거와 종점 (안 A·B·C)
   조건 ① 인적자본 비율   H/F = 향후 30년 보험료 수입 PV / 기금.  H/F ≥ 0.625(총부 기준 위험자산 비중 40%) 인 동안은
@@ -19,12 +19,12 @@ import json, os
 import numpy as np, pandas as pd
 
 D = os.path.dirname(os.path.abspath(__file__))
-P = pd.read_csv(f"{D}/fml_w6_params.csv").set_index("key").value
+P = pd.read_csv(f"{D}/fml_w7m9_params.csv").set_index("key").value
 f = lambda k: float(P[k])
-cf = pd.read_csv(f"{D}/fml_w6_cashflow.csv")
-gp = pd.read_csv(f"{D}/fml_w6_glidepaths.csv")
-cma = pd.read_csv(f"{D}/fml_w6_cma.csv").set_index("asset")
-sc = pd.read_csv(f"{D}/fml_w6_scenarios.csv").set_index("scenario")
+cf = pd.read_csv(f"{D}/fml_w7m9_cashflow.csv")
+gp = pd.read_csv(f"{D}/fml_w7m9_glidepaths.csv")
+cma = pd.read_csv(f"{D}/fml_w7m9_cma.csv").set_index("asset")
+sc = pd.read_csv(f"{D}/fml_w7m9_scenarios.csv").set_index("scenario")
 MU_R, MU_S, SG_R, SG_S, RHO = cma.mu_pct["risk"], cma.mu_pct["safe"], cma.sigma_pct["risk"], cma.sigma_pct["safe"], f("rho")
 F0 = f("fund_2025_trn"); HURDLE = f("hurdle_pct"); DISC = f("disc"); DEP_MIN = f("deplete_55_official")
 log = []
@@ -142,8 +142,8 @@ L("[시간분산] 65:35 σ {:.1f}% → T=30 연환산 {:.1f}% · 누적 {:.0f}%"
 
 # ── 제2호 KIC ──────────────────────────────────────────────────────────────
 L("\n=== 제2호 — KIC 헤징 수요 프로그램 ===")
-pn = pd.read_csv(f"{D}/fml_w6_kic_panel_sim.csv")
-hedge = pd.read_csv(f"{D}/fml_w6_kic_hedge.csv").set_index("instrument")
+pn = pd.read_csv(f"{D}/fml_w7m9_kic_panel_sim.csv")
+hedge = pd.read_csv(f"{D}/fml_w7m9_kic_hedge.csv").set_index("instrument")
 gamma, Hz = f("gamma_kic"), int(f("horizon_kic"))
 
 
@@ -184,6 +184,6 @@ L("[지평] 장기채 예측 t값: " + " · ".join(f"{h['horizon']}년 {h['t']:.
 res["agenda2"]["gamma_sens"] = [{"gamma": g, "bond_pp": round((1 - 1 / g) / (1 - 1 / gamma) * a2[0]["hedge_pp"], 1)} for g in [1, 2, 5, 10]]
 L("[γ 민감도] 장기채 헤징 수요: " + " · ".join(f"γ={s['gamma']} {s['bond_pp']:+.1f}%p" for s in res["agenda2"]["gamma_sens"]))
 
-json.dump(res, open(f"{D}/w6_results.json", "w"), ensure_ascii=False, indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
+json.dump(res, open(f"{D}/w7m9_results.json", "w"), ensure_ascii=False, indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
 open(f"{D}/compute_log.txt", "w").write("\n".join(log) + "\n")
-print("→ w6_results.json · compute_log.txt")
+print("→ w7m9_results.json · compute_log.txt")

@@ -6,18 +6,18 @@
 케이스 2  H대학교 발전기금(5,000억, 가상) 'Yale 모델' — 비유동 대체 상한 x · 안전 유동자산 하한 y · 지출률 z 를 표결
 
 공시 수치(is_assumed=0)와 교육용 가정(is_assumed=1)을 열로 구분한다. 교육용 가정은 이 파일 상단 상수를
-바꾸면 되고, 바꾸면 w7m9_compute.py 의 판정 결과가 달라진다 — 그것이 실습의 일부다.
+바꾸면 되고, 바꾸면 w6m8_compute.py 의 판정 결과가 달라진다 — 그것이 실습의 일부다.
 
 생성 파일
-  fml_w7m9_params.csv          판정 임계·프로필·시뮬레이션 파라미터(공시/가정 구분)
-  fml_w7m9_public_facts.csv    공시 수치 횡단면 — 퇴직연금·디폴트옵션·TDF·GPFG·Yale·사립대 적립금 (asof·source)
-  fml_w7m9_tdf_2022.csv        2022년 TDF 실적표(공시) — 미국 3사 2025 빈티지 · 국내 TDF2025/2045 평균 · 지수
-  fml_w7m9_panel_sim.csv       교육용 월간 모의 시장 패널 480개월 — 주식·국채·10년 금리·비유동 대체·현금·물가
-  fml_w7m9_cppi_grid.csv       케이스 1 표결 격자 — Floor x · 승수 m · 수수료 c 조합
-  fml_w7m9_cma.csv             케이스 2 자산군 CMA(교육용)
-  fml_w7m9_endow_alloc.csv     케이스 2 비유동 대체 상한별 배분안(교육용)
-  fml_w7m9_endow_cashflow.csv  케이스 2 지출·인출·캐피탈콜 시나리오(교육용)
-  fml_w7m9_scenarios.csv       충격 시나리오 — 2022형·2008형 자산군 수익률(교육용)
+  fml_w6m8_params.csv          판정 임계·프로필·시뮬레이션 파라미터(공시/가정 구분)
+  fml_w6m8_public_facts.csv    공시 수치 횡단면 — 퇴직연금·디폴트옵션·TDF·GPFG·Yale·사립대 적립금 (asof·source)
+  fml_w6m8_tdf_2022.csv        2022년 TDF 실적표(공시) — 미국 3사 2025 빈티지 · 국내 TDF2025/2045 평균 · 지수
+  fml_w6m8_panel_sim.csv       교육용 월간 모의 시장 패널 480개월 — 주식·국채·10년 금리·비유동 대체·현금·물가
+  fml_w6m8_cppi_grid.csv       케이스 1 표결 격자 — Floor x · 승수 m · 수수료 c 조합
+  fml_w6m8_cma.csv             케이스 2 자산군 CMA(교육용)
+  fml_w6m8_endow_alloc.csv     케이스 2 비유동 대체 상한별 배분안(교육용)
+  fml_w6m8_endow_cashflow.csv  케이스 2 지출·인출·캐피탈콜 시나리오(교육용)
+  fml_w6m8_scenarios.csv       충격 시나리오 — 2022형·2008형 자산군 수익률(교육용)
 """
 import os
 import numpy as np, pandas as pd
@@ -26,7 +26,7 @@ ASOF = "2026-09-21"
 OUT = os.path.dirname(os.path.abspath(__file__))
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 0. 공시 수치 (is_assumed = 0) — 출처는 fml_w7m9_public_facts.csv 의 source 열
+# 0. 공시 수치 (is_assumed = 0) — 출처는 fml_w6m8_public_facts.csv 의 source 열
 # ─────────────────────────────────────────────────────────────────────────────
 DC_TOTAL_TRN = 501.4          # 퇴직연금 적립금 2025년 말(조 원) — 금감원 2025 퇴직연금 투자백서
 DC_GUAR_SHARE = 0.754         # 원리금보장 비중 75.4% (378.1조)
@@ -160,13 +160,13 @@ dates = pd.date_range("1986-12-31", periods=N_PANEL, freq="ME")
 panel = pd.DataFrame({"date": dates.strftime("%Y-%m-%d"), "regime": reg, "eq_ret": eq.round(5), "yield10": y10.round(3),
                       "bond_gov_ret": bond.round(5), "rf": cash.round(5), "alt_pe_ret": pe_t.round(5),
                       "alt_pe_rep_ret": pe_r.round(5), "cpi": cpi.round(5)})
-panel.to_csv(f"{OUT}/fml_w7m9_panel_sim.csv", index=False)
+panel.to_csv(f"{OUT}/fml_w6m8_panel_sim.csv", index=False)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 3. 케이스 1 표결 격자 · 케이스 2 배분안·현금흐름·CMA·충격
 # ─────────────────────────────────────────────────────────────────────────────
 grid = [(x, mm, c) for x in FLOOR_X for mm in M_LIST for c in FEE_LIST]
-pd.DataFrame(grid, columns=["floor_x", "m", "fee_pct"]).assign(is_assumed=1, asof=ASOF).to_csv(f"{OUT}/fml_w7m9_cppi_grid.csv", index=False)
+pd.DataFrame(grid, columns=["floor_x", "m", "fee_pct"]).assign(is_assumed=1, asof=ASOF).to_csv(f"{OUT}/fml_w6m8_cppi_grid.csv", index=False)
 
 def _ann(x): a = (1 + x[: (len(x)//12)*12].reshape(-1, 12)).prod(1) - 1; return round(a.mean()*100, 2), round(a.std()*100, 2)
 _st = {"eq": _ann(eq), "bond_gov": _ann(bond), "cash": _ann(cash), "alt_pe": _ann(pe_t)}
@@ -174,16 +174,16 @@ _st["alt_pe_direct"] = (round(_st["alt_pe"][0] + 2.0, 2), _st["alt_pe"][1])   # 
 CMA = {k: (v[0], _st[k][0], _st[k][1], v[3]) for k, v in CMA.items()}          # μ·σ 는 패널의 연 실현치로 맞춘다(산수와 MC 의 정합)
 print("CMA(패널 연 실현치) — " + " · ".join(f"{k} {v[1]:.1f}/{v[2]:.1f}" for k, v in CMA.items()))
 pd.DataFrame([(k, v[0], v[1], v[2], v[3], 1, ASOF) for k, v in CMA.items()],
-             columns=["asset", "name", "mu_pct", "sigma_pct", "is_liquid", "is_assumed", "asof"]).to_csv(f"{OUT}/fml_w7m9_cma.csv", index=False)
+             columns=["asset", "name", "mu_pct", "sigma_pct", "is_liquid", "is_assumed", "asof"]).to_csv(f"{OUT}/fml_w6m8_cma.csv", index=False)
 pd.DataFrame([(x, *v, 1, ASOF) for x, v in ALLOC.items()],
-             columns=["illiq_cap_pct", "w_eq", "w_bond_gov", "w_cash", "w_alt_pe", "is_assumed", "asof"]).to_csv(f"{OUT}/fml_w7m9_endow_alloc.csv", index=False)
+             columns=["illiq_cap_pct", "w_eq", "w_bond_gov", "w_cash", "w_alt_pe", "is_assumed", "asof"]).to_csv(f"{OUT}/fml_w6m8_endow_alloc.csv", index=False)
 rows = []
 for t in range(1, HORIZON_ENDOW + 1):
     rows.append((t, FIXED_SPEND_BN * (1 + INFL / 100) ** (t - 1), CURRENT_SPEND_BN * (1 + INFL / 100) ** (t - 1),
                  LUMP_BN if t == LUMP_YEAR else 0.0))
-pd.DataFrame(rows, columns=["year", "fixed_spend_bn_krw", "current_spend_bn_krw", "lump_withdrawal_bn_krw"]).assign(is_assumed=1, asof=ASOF).round(1).to_csv(f"{OUT}/fml_w7m9_endow_cashflow.csv", index=False)
+pd.DataFrame(rows, columns=["year", "fixed_spend_bn_krw", "current_spend_bn_krw", "lump_withdrawal_bn_krw"]).assign(is_assumed=1, asof=ASOF).round(1).to_csv(f"{OUT}/fml_w6m8_endow_cashflow.csv", index=False)
 pd.DataFrame([(k, *v, 1, ASOF) for k, v in SHOCK.items()],
-             columns=["scenario", "eq_ret_pct", "bond_gov_ret_pct", "cash_ret_pct", "alt_pe_rep_ret_pct", "alt_pe_true_ret_pct", "yield10_chg_bp", "is_assumed", "asof"]).to_csv(f"{OUT}/fml_w7m9_scenarios.csv", index=False)
+             columns=["scenario", "eq_ret_pct", "bond_gov_ret_pct", "cash_ret_pct", "alt_pe_rep_ret_pct", "alt_pe_true_ret_pct", "yield10_chg_bp", "is_assumed", "asof"]).to_csv(f"{OUT}/fml_w6m8_scenarios.csv", index=False)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 4. 공시 수치 횡단면 · 2022 TDF 실적표
@@ -215,7 +215,7 @@ facts = [
     ("KR_UNIV", "reserve_securities_cap", PRIV_UNIV_SEC_CAP, "사립학교법 32조의2 — 적립금의 1/2 한도 증권 취득(벤처 1/10)", "2026-02-15", "국가법령정보센터"),
     ("KR_UNIV", "univ_fin_invest_loss_2021_bn", 183, "2021년 사립대 금융상품 투자 손실(억) — 교육부 국정감사 자료", "2021-12-31", "연합뉴스 2022.9.26"),
 ]
-pd.DataFrame(facts, columns=["entity", "key", "value", "meaning", "asof", "source"]).assign(is_assumed=0).to_csv(f"{OUT}/fml_w7m9_public_facts.csv", index=False)
+pd.DataFrame(facts, columns=["entity", "key", "value", "meaning", "asof", "source"]).assign(is_assumed=0).to_csv(f"{OUT}/fml_w6m8_public_facts.csv", index=False)
 
 tdf = [
     ("VTTVX", "Vanguard Target Retirement 2025", "US", -15.55, 0.08, "없음 — 정적 글라이드패스", "Vanguard 팩트시트 2026.6"),
@@ -227,7 +227,7 @@ tdf = [
     ("MSCI", "MSCI 지수 2022", "US", -19.8, None, "지수", "자본시장연구원 이슈보고서 26-08"),
     ("TIAA_TRAD", "TIAA Traditional(RA 계약) 보증 최저", "US", 3.0, None, "보증 3% + 추가 적립이율", "TIAA 계약 안내"),
 ]
-pd.DataFrame(tdf, columns=["code", "name", "market", "ret_2022_pct", "fee_pct", "floor_device", "source"]).assign(asof="2022-12-31", is_assumed=0).to_csv(f"{OUT}/fml_w7m9_tdf_2022.csv", index=False)
+pd.DataFrame(tdf, columns=["code", "name", "market", "ret_2022_pct", "fee_pct", "floor_device", "source"]).assign(asof="2022-12-31", is_assumed=0).to_csv(f"{OUT}/fml_w6m8_tdf_2022.csv", index=False)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 5. 파라미터 표
@@ -251,5 +251,5 @@ params = [
     ("n_path_endow", N_PATH_ENDOW, "기금 경로 수", 1), ("z_list", "|".join(str(z) for z in Z_LIST), "지출률 후보", 1), ("y_list", "|".join(str(y) for y in Y_LIST), "안전 유동자산 하한 후보", 1), ("horizon_endow", HORIZON_ENDOW, "기금 지평(년)", 1),
     ("yale_illiq_cap", YALE_ILLIQ_CAP, "Yale 정책 비유동 상한(참고)", 0), ("yale_spend_target", YALE_SPEND_TARGET, "Yale 목표 지출률(참고)", 0),
 ]
-pd.DataFrame(params, columns=["key", "value", "meaning", "is_assumed"]).to_csv(f"{OUT}/fml_w7m9_params.csv", index=False)
+pd.DataFrame(params, columns=["key", "value", "meaning", "is_assumed"]).to_csv(f"{OUT}/fml_w6m8_params.csv", index=False)
 print("CSV 9개 생성")

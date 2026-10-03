@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""W07 M8 케이스 v3 그림 — w7m8_results.json · CSV 에서 그린다 (matplotlib, Noto Sans CJK KR). 출력 img/*.png + img/img_ratios.json 갱신"""
+"""W07 M8 케이스 v3 그림 — w6m7_results.json · CSV 에서 그린다 (matplotlib, Noto Sans CJK KR). 출력 img/*.png + img/img_ratios.json 갱신"""
 import json, os
 import numpy as np, pandas as pd
 import matplotlib; matplotlib.use("Agg")
@@ -14,8 +14,8 @@ fm.fontManager.addfont(os.path.expanduser("~/Library/Fonts/NotoSansCJK.ttc"))
 plt.rcParams.update({"font.family": "Noto Sans CJK KR", "font.size": 15, "axes.titlesize": 17, "axes.labelsize": 15,
                      "axes.spines.top": False, "axes.spines.right": False, "axes.edgecolor": "#6B7280", "axes.unicode_minus": False})
 NAVY, BLUE, GREEN, ORANGE, GRAY, BODY, MUTED, HAIR, RED = "#1B2C5E", "#2E5BAA", "#3FA36F", "#E65100", "#F4F5F9", "#3B4252", "#6B7280", "#D6D6DB", "#B23A48"
-R = json.load(open(f"{D}/w7m8_results.json"))
-cf = pd.read_csv(f"{D}/fml_w7m8_cashflow.csv"); P = pd.read_csv(f"{D}/fml_w7m8_params.csv").set_index("key").value
+R = json.load(open(f"{D}/w6m7_results.json"))
+cf = pd.read_csv(f"{D}/fml_w6m7_cashflow.csv"); P = pd.read_csv(f"{D}/fml_w6m7_params.csv").set_index("key").value
 LI, AS, MK, IN = R["liability"], R["assets"], R["market"], R["instruments"]
 OPT = {o["option"]: o for o in R["options"]}; grid = pd.DataFrame(R["grid"])
 
@@ -86,7 +86,7 @@ save(fig, "fig_hedge_grid")
 
 # 5. 평행 이동에 따른 국채 기준 적립비율 — 세 안 -------------------------------------------
 shifts = np.arange(-200, 201, 25)
-mats = pd.read_csv(f"{D}/fml_w7m8_curve.csv"); m_, y_ = mats.maturity_y.values.astype(float), mats.yield_pct.values
+mats = pd.read_csv(f"{D}/fml_w6m7_curve.csv"); m_, y_ = mats.maturity_y.values.astype(float), mats.yield_pct.values
 net, yrs = w.net_outflow_trn_krw.values, w.year.values
 def pv(shift):
     t = yrs - 2025; r = np.interp(t, m_, y_) + shift / 100; return float(np.sum(net / (1 + r / 100) ** t))

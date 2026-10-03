@@ -6,15 +6,15 @@
 제2호  빈도·밴드의 기관별 차등 — 규모 · 유동성 · 현금흐름 · 부채 구조가 다른 4기관에 같은 규칙을 쓸 것인가
 
 공시 수치(is_assumed=0)와 교육용 가정(is_assumed=1)을 열로 구분한다. 교육용 가정은 이 파일의
-상단 상수를 바꾸면 되고, 바꾸면 w6ss2_compute.py 의 판정 결과가 달라진다 — 그것이 실습의 일부다.
+상단 상수를 바꾸면 되고, 바꾸면 w7ss2_compute.py 의 판정 결과가 달라진다 — 그것이 실습의 일부다.
 
 생성 파일
-  fml_w6ss2_params.csv          판정 임계 · CMA · 참여율 · 기준일 (공시/가정 구분)
-  fml_w6ss2_panel_daily_sim.csv 7자산 일간 모의 패널 20년(5,040일) — 월간 AR(1) φ · 상관 · σ 를 설계해 만든 교육용 패널
-  fml_w6ss2_assets.csv          자산코드 · 이름 · 설계 μ·σ·φ · 거래비용(스프레드) · 시장 일평균 거래대금 · NPS 자산군 매핑
-  fml_w6ss2_nps_snapshot.csv    국민연금 2026 — 목표비중 · 실제비중 · 허용범위 · 실행 한도 · 거래대금 (공시)
-  fml_w6ss2_kospi_2026.csv      코스피 주요 시점 종가와 국민연금 국내주식 비중 (공시)
-  fml_w6ss2_institutions.csv    제2호 4기관 프로파일 — 규모 · 배분 · 거래대금 · 현금흐름 · 비유동 비중 · 위험한도
+  fml_w7ss2_params.csv          판정 임계 · CMA · 참여율 · 기준일 (공시/가정 구분)
+  fml_w7ss2_panel_daily_sim.csv 7자산 일간 모의 패널 20년(5,040일) — 월간 AR(1) φ · 상관 · σ 를 설계해 만든 교육용 패널
+  fml_w7ss2_assets.csv          자산코드 · 이름 · 설계 μ·σ·φ · 거래비용(스프레드) · 시장 일평균 거래대금 · NPS 자산군 매핑
+  fml_w7ss2_nps_snapshot.csv    국민연금 2026 — 목표비중 · 실제비중 · 허용범위 · 실행 한도 · 거래대금 (공시)
+  fml_w7ss2_kospi_2026.csv      코스피 주요 시점 종가와 국민연금 국내주식 비중 (공시)
+  fml_w7ss2_institutions.csv    제2호 4기관 프로파일 — 규모 · 배분 · 거래대금 · 현금흐름 · 비유동 비중 · 위험한도
 
 실제 자료로 바꾸려면 data_dictionary.md 의 yfinance · FRED 코드로 같은 열 이름의 일간 패널을 만들어 넣는다.
 """
@@ -161,11 +161,11 @@ for t in range(N_M):
     D[t * DAYS_PER_MONTH:(t + 1) * DAYS_PER_MONTH] = R[t] / DAYS_PER_MONTH + noise
 panel = pd.DataFrame(D, columns=[f"{c}_ret" for c in codes]); panel.insert(0, "date", dates.strftime("%Y-%m-%d"))
 panel["month_id"] = np.repeat(np.arange(N_M), DAYS_PER_MONTH)
-panel.round(7).to_csv(f"{OUT}/fml_w6ss2_panel_daily_sim.csv", index=False)
+panel.round(7).to_csv(f"{OUT}/fml_w7ss2_panel_daily_sim.csv", index=False)
 
 A = ASSETS.copy(); A["w_nps"] = A.code.map(W_NPS); A["is_risk"] = A.code.isin(RISK_ASSETS).astype(int)
 A["is_assumed"] = 1; A["asof"] = ASOF; A["source"] = "교육용 설계값(μ·σ·φ·스프레드·일변동성) · 거래대금은 2026.5 코스피 48조 공시 외 교육용 가정"
-A.to_csv(f"{OUT}/fml_w6ss2_assets.csv", index=False)
+A.to_csv(f"{OUT}/fml_w7ss2_assets.csv", index=False)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 3. 파라미터 · 공시 스냅샷 · 코스피 · 기관
@@ -191,7 +191,7 @@ params = [
     ("n_years", N_YEARS, "모의 패널 길이(년)", 1), ("seed", seed, "패널 난수 시드(설계 범위에 드는 첫 시드)", 1),
     ("nps_net_flow_pct", NPS_NET_FLOW_PCT, "NPS 연간 순현금흐름/적립금 % (W7 교육용 추계)", 1),
 ]
-pd.DataFrame(params, columns=["key", "value", "meaning", "is_assumed"]).to_csv(f"{OUT}/fml_w6ss2_params.csv", index=False)
+pd.DataFrame(params, columns=["key", "value", "meaning", "is_assumed"]).to_csv(f"{OUT}/fml_w7ss2_params.csv", index=False)
 
 snap = [
     ("eq_kr", "국내주식", TARGET_2026_OLD["eq_kr"], TARGET_2026["eq_kr"], KR_EQ_2025[1], KR_EQ_2026_03[1], KR_EQ_2026_05[1], KR_EQ_2026_06[1], KR_EQ_2026_06[0], SAA_BAND["eq_kr"], SAA_BAND_KR_TEMP, TAA_BAND["eq_kr"], TARGET_2027["eq_kr"]),
@@ -202,7 +202,7 @@ snap = [
 ]
 pd.DataFrame(snap, columns=["nps_class", "name", "target_2026_jan_pct", "target_2026_pct", "actual_2025_12_pct", "actual_2026_03_pct", "actual_2026_05_pct",
                             "actual_2026_06_pct", "actual_2026_06_trn", "saa_band_pp", "saa_band_temp_pp", "taa_band_pp", "target_2027_pct"]).assign(
-    is_assumed=0, asof=ASOF, source="기금운용위 2026.1.26 · 5.28 의결 · 기금운용본부 월별 포트폴리오 · 기금운용지침 별표 1(2024.5.31)").to_csv(f"{OUT}/fml_w6ss2_nps_snapshot.csv", index=False)
+    is_assumed=0, asof=ASOF, source="기금운용위 2026.1.26 · 5.28 의결 · 기금운용본부 월별 포트폴리오 · 기금운용지침 별표 1(2024.5.31)").to_csv(f"{OUT}/fml_w7ss2_nps_snapshot.csv", index=False)
 
 kospi = pd.DataFrame(KOSPI, columns=["date", "kospi_close"])
 kospi["note"] = ["2024 말", "2025 말(+75.6%)", "2026.3 말 · NPS 국내주식 21.0%", "거래대금 48조 기록", "5월 말 종가 · NPS 29.4%",
@@ -210,7 +210,7 @@ kospi["note"] = ["2024 말", "2025 말(+75.6%)", "2026.3 말 · NPS 국내주식
 kospi["nps_kr_eq_pct"] = [None, KR_EQ_2025[1], KR_EQ_2026_03[1], None, KR_EQ_2026_05[1], None, 23.5, None]
 kospi["is_assumed"] = [0, 0, 0, 0, 0, 0, 1, 0]   # 7.7 비중은 언론 추정
 kospi["asof"] = ASOF; kospi["source"] = "KRX · 기금운용본부 · 언론(2026.6~8)"
-kospi.to_csv(f"{OUT}/fml_w6ss2_kospi_2026.csv", index=False)
+kospi.to_csv(f"{OUT}/fml_w7ss2_kospi_2026.csv", index=False)
 
 inst = pd.DataFrame(INSTITUTIONS, columns=["code", "name", "aum_trn_krw", "liquid_market", "adv_trn_krw", "w_eq", "w_bond", "w_alt", "illiquid_share",
                                            "net_flow_pct", "risk_limit", "deriv_access", "is_assumed"])
@@ -219,5 +219,5 @@ inst["source"] = ["기금운용본부 2026.6 말(국내주식 29.1 + 해외주�
                   "KIC 2025년 말 2,320억 달러(전통 78.1 · 대체 21.9 공시) — 주식/채권 분할과 거래대금은 교육용 가정 · 환율 1,435원",
                   "2026.7.31 정부 발표(20조+α · 공공기관 주식 16조 · 물납주식 4조 · 2027 가동 계획) — 배분·비유동 비중은 교육용 가정",
                   "W6 M8 케이스 2 의 가상 기관(5,000억) — 배분 · 지출률 5% · 기부 2% 는 교육용 가정"]
-inst.to_csv(f"{OUT}/fml_w6ss2_institutions.csv", index=False)
-print("→ CSV 6개 생성:", ", ".join(sorted(f for f in os.listdir(OUT) if f.startswith("fml_w6ss2_"))))
+inst.to_csv(f"{OUT}/fml_w7ss2_institutions.csv", index=False)
+print("→ CSV 6개 생성:", ", ".join(sorted(f for f in os.listdir(OUT) if f.startswith("fml_w7ss2_"))))

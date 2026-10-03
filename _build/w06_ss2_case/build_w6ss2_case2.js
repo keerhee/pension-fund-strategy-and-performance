@@ -1,5 +1,5 @@
 /* W06 특별세션 SS2 케이스 2 v3 — 빈도·밴드의 기관별 차등: 국민연금 · KIC · 전략형 국부펀드 · 대학발전기금
- * report-navy-deck template.js (field 20pt). 실행: NODE_PATH=/Users/keerhee/Project/node_modules node build_w6ss2_case2.js
+ * report-navy-deck template.js (field 20pt). 실행: NODE_PATH=/Users/keerhee/Project/node_modules node build_w7ss2_case2.js
  */
 const path = require("path");
 const fs = require("fs");
@@ -9,7 +9,7 @@ const { p, C, S, LX, CW, setSubject, rect, hline, head, cover, divider, msgRows,
 const IMG = path.join(__dirname, "..", "img");
 const RATIO = JSON.parse(fs.readFileSync(path.join(IMG, "img_ratios.json"), "utf8"));
 const im = (n) => path.join(IMG, n + ".png");
-const R = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "w6ss2_results.json"), "utf8"));
+const R = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "w7ss2_results.json"), "utf8"));
 const A1 = R.agenda1, A2 = R.agenda2, OPT = A1.options, C3 = A1.cond3, C4 = A1.cond4, RU = A1.rules;
 const I = Object.fromEntries(A2.institutions.map(x => [x.code, x]));
 const cand = (code, rule) => I[code].cands.find(c => c.rule === rule);
@@ -133,7 +133,7 @@ const two = (s, y, h, lt, ll, rt, rl, opt) => {
 }
 // 12 네 기관 프로파일 ------------------------------------------------------------
 { const [s, n] = S_();
-  const y = head(s, "브리핑 · 2", 1.7, "네 기관의 프로파일 — 공시와 교육용 가정을 나눠 읽는다", "규모 · 시장 · 거래대금 · 현금흐름 · 비유동 · 위험한도 · 오버레이 접근 — 첨부 fml_w6ss2_institutions.csv", n);
+  const y = head(s, "브리핑 · 2", 1.7, "네 기관의 프로파일 — 공시와 교육용 가정을 나눠 읽는다", "규모 · 시장 · 거래대금 · 현금흐름 · 비유동 · 위험한도 · 오버레이 접근 — 첨부 fml_w7ss2_institutions.csv", n);
   tbl(s, [["기관", "자산", "리밸런싱이 닿는 시장(일평균 거래대금)", "순현금흐름/년", "비유동", "위험한도", "선물 접근"],
     ["국민연금기금", "1,866조 (2026.6)", "코스피 (48조, 2026.5)", "+0.75% (추계)", "14%", "CVaR95 −15% (지침)", "있음"],
     ["KIC (외환보유액 위탁)", "2,320억 달러 ≈ 333조", "글로벌 주식·채권 (1,200조, 가정)", "0", "22% (공시)", "위험예산 (교육용)", "있음"],
@@ -191,7 +191,7 @@ const two = (s, y, h, lt, ll, rt, rl, opt) => {
   const y = head(s, "제2호 · 판정 조건", 2.3, "제2호 판정 조건 ①~⑤ — 기관마다 대입한다", "번호는 케이스 1과 같고, 변형은 ′로 표시한다 — 임계는 사전에 준다", n);
   tbl(s, [["조건", "관측 지표", "판정 기준(임계)", "근거"],
     ["조건 ① 평균회귀", "그 기관 자산군의 월간 AR(1) φ의 t", "|t| ≥ 2 → 밴드 좁게/넓게 · 비상장은 측정 불가", "첨부 패널 · 케이스 1"],
-    ["조건 ② 순 프리미엄", "자기 규모 비용으로 후보 규칙의 DR − 비용", "> 0 · 실행 가능한 규칙 중 최대", "w6ss2_compute agenda2"],
+    ["조건 ② 순 프리미엄", "자기 규모 비용으로 후보 규칙의 DR − 비용", "> 0 · 실행 가능한 규칙 중 최대", "w7ss2_compute agenda2"],
     ["조건 ③ 시장충격 · ③′ 비유동", "3%p 복원 거래일 · 비유동 비중", "≤ 20일 → 현물 · > 20일 → 오버레이 · 비유동 ≥ 80% → 밴드 부적용", "거래대금 · 프로파일"],
     ["조건 ④ 위험 이탈 · ④′ 현금흐름", "드리프트 → CVaR · |순현금흐름| ÷ 자산", `CVaR 초과일 0 · 흐름 ≥ ${(0.5 * sd).toFixed(1)}%면 흐름 우선`, "교육용 CMA · 프로파일"],
     ["조건 ⑤ 거버넌스", "위험한도와 규칙의 소재(문서)", "명문화 없으면 조건부 · 미정이면 출범 전 설계", "지침 · 투자정책서 · 운영위"]],
@@ -293,12 +293,12 @@ const two = (s, y, h, lt, ll, rt, rl, opt) => {
 }
 // 31 들고 올 숫자 ------------------------------------------------------------------
 { const [s, n] = S_();
-  const y = head(s, "준비 · 데이터", 2.0, "들고 올 숫자 — 첨부 데이터로 30분 안에 만든다", "python w6ss2_build.py → python w6ss2_compute.py — compute_log.txt 의 '제2호' 블록을 그대로 읽는다", n);
+  const y = head(s, "준비 · 데이터", 2.0, "들고 올 숫자 — 첨부 데이터로 30분 안에 만든다", "python w7ss2_build.py → python w7ss2_compute.py — compute_log.txt 의 '제2호' 블록을 그대로 읽는다", n);
   tbl(s, [["팀", "만들 숫자", "파일 · 위치"],
-    ["운용전략", `기관 × 후보 규칙 순 프리미엄(KIC 월 복원 ${f0(I.KIC.rule_best_net)} · 규칙 B ${f0(I.KIC.rule_nps_net)} · H대 ${f0(I.UNIV.rule_best_net)})`, "w6ss2_results.json → agenda2.institutions[].cands"],
+    ["운용전략", `기관 × 후보 규칙 순 프리미엄(KIC 월 복원 ${f0(I.KIC.rule_best_net)} · 규칙 B ${f0(I.KIC.rule_nps_net)} · H대 ${f0(I.UNIV.rule_best_net)})`, "w7ss2_results.json → agenda2.institutions[].cands"],
     ["리스크관리", `실행일수(1%p · 3%p) · CVaR 초과일 · 드리프트 σ ${sd}`, "agenda2.institutions[].days_1pp · cands · drift_12m_sd"],
-    ["재정 · 거버넌스", "KIC 거래대금을 600조로, H대 지출률을 4%로 바꿨을 때의 규칙표", "w6ss2_build.py INSTITUTIONS → 재실행"],
-    ["글로벌자문", "비유동 임계를 60%로 낮췄을 때 국부펀드 판정이 바뀌는가 · KIC 대체 22%를 밴드 산정에 넣으면", "w6ss2_compute.py illiq · INST_W"]],
+    ["재정 · 거버넌스", "KIC 거래대금을 600조로, H대 지출률을 4%로 바꿨을 때의 규칙표", "w7ss2_build.py INSTITUTIONS → 재실행"],
+    ["글로벌자문", "비유동 임계를 60%로 낮췄을 때 국부펀드 판정이 바뀌는가 · KIC 대체 22%를 밴드 산정에 넣으면", "w7ss2_compute.py illiq · INST_W"]],
     y, [2.0, 6.6, 3.49], 0.8, 16);
   note(s, "교육용 가정(is_assumed = 1)을 바꾸면 규칙표가 움직인다 — 그것이 실습이다", 6.5);
 }

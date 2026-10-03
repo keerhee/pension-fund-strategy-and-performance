@@ -9,7 +9,7 @@ const { p, C, S, LX, CW, setSubject, rect, hline, head, cover, divider, msgRows,
 const IMG = path.join(__dirname, "..", "img");
 const RATIO = JSON.parse(fs.readFileSync(path.join(IMG, "img_ratios.json"), "utf8"));
 const im = (n) => path.join(IMG, n + ".png");
-const R = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "w7m9_results.json"), "utf8"));
+const R = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "w6m8_results.json"), "utf8"));
 const A = R.case1, D = A.default;
 const G = (x, m, c) => A.grid.find(r => r.floor_x === x && r.m === m && r.fee_pct === c);
 const pc = (v, d = 0) => (v * 100).toFixed(d) + "%";
@@ -280,12 +280,12 @@ const two = (s, y, h, lt, ll, rt, rl, opt) => {
 }
 // 33 들고 올 숫자 ------------------------------------------------------------------
 { const [s, n] = S_();
-  const y = head(s, "준비 · 데이터", 2.0, "들고 올 숫자 — 첨부 데이터로 30분 안에 만든다", "python w7m9_build.py → python w7m9_compute.py — compute_log.txt 의 줄을 그대로 읽는다", n);
+  const y = head(s, "준비 · 데이터", 2.0, "들고 올 숫자 — 첨부 데이터로 30분 안에 만든다", "python w6m8_build.py → python w6m8_compute.py — compute_log.txt 의 줄을 그대로 읽는다", n);
   tbl(s, [["팀", "만들 숫자", "파일 · 위치"],
-    ["운용전략", `x 별 초기 쿠션(34.8 / 26.7 / 18.5%) · (0.90, 2, 0.5) 의 ① ${pc(best.p_safety_fail, 1)} · ③ ${pc(best.p_market)} · 중위 ${best.median_W.toFixed(2)}`, "w7m9_results.json → case1.grid · default"],
+    ["운용전략", `x 별 초기 쿠션(34.8 / 26.7 / 18.5%) · (0.90, 2, 0.5) 의 ① ${pc(best.p_safety_fail, 1)} · ③ ${pc(best.p_market)} · 중위 ${best.median_W.toFixed(2)}`, "w6m8_results.json → case1.grid · default"],
     ["리스크관리", `m 별 Cash Trap(2 ${pc(best.p_cash_trap, 1)} → 6 ${pc(G(0.9, 6, 0.5).p_cash_trap)}) · 2022형 위반(GHP/고정) · 갭 −22% 위반(m 3 ${pc(gap[3].breach)} · m 4 ${pc(gap[4].breach)})`, "case1.grid → shock_breach_* · gap_stress"],
-    ["가입자보호 · 거버넌스", "수수료별 Market(0.5 → 1.5%) · 30년 잠식률 · G_S 를 1.22 로 바꿨을 때의 x", "fee_erosion · w7m9_build.py 상단 상수 → 재실행"],
-    ["글로벌자문", "2022년 실적표(공시) · 고정 60/40 의 Safety 미달(2022형 시 " + pc(bh.shock_p_safety_fail, 1) + ") · TIAA 보증 3%", "fml_w7m9_tdf_2022.csv · case1.buyhold"]],
+    ["가입자보호 · 거버넌스", "수수료별 Market(0.5 → 1.5%) · 30년 잠식률 · G_S 를 1.22 로 바꿨을 때의 x", "fee_erosion · w6m8_build.py 상단 상수 → 재실행"],
+    ["글로벌자문", "2022년 실적표(공시) · 고정 60/40 의 Safety 미달(2022형 시 " + pc(bh.shock_p_safety_fail, 1) + ") · TIAA 보증 3%", "fml_w6m8_tdf_2022.csv · case1.buyhold"]],
     y, [2.2, 6.4, 3.49], 0.8, 16);
   note(s, "교육용 가정(is_assumed = 1)을 바꾸면 x · m · c 가 움직인다 — 리밸런싱 주기를 1개월로 바꿔 보라", 6.5);
 }

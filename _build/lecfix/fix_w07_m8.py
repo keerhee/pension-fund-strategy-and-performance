@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """W07 M8 강의본(56→58장) · M8 실습(9→10장) 을 케이스 v3(LBP · 헤지 비율 안 A·B·C, 조건 ①~⑤)에 맞춰 보수.
 실행: .venv/bin/python _build/lecfix/fix_w07_m8.py   (재실행 가능 — _구판/강의본_구판_2026-09-21/ 에서 원본 복원)
-숫자는 W07_M8_케이스데이터/w7m8_results.json (2026-09-21) 과 같다.
+숫자는 W07_M8_케이스데이터/w6m7_results.json (2026-09-21) 과 같다.
 """
 import os, shutil, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, HERE)
@@ -137,15 +137,15 @@ set_text(find(S(2), "•  부채 현금흐름의 현재가치와"), "•  케이
 set_text(find(S(2), "•  자산 듀레이션과 부채 듀레이션의"), "•  순부채는 어느 눈금으로 재는가 (조건 ①)\n•  자산·부채 듀레이션 격차는 얼마인가\n•  금리가 오를 때 적립비율이 왜 개선되는가\n•  레버리지 LDI의 담보 부족은 언제 생기는가\n•  헤지비율을 올리면 무엇을 포기하는가")
 c = clone_slide(src, 2, prs)
 set_text(find(c, "먼저 케이스 데이터로 재현한다"), "먼저 케이스 데이터로 재현한다 — 그다음 가상 부채로 확장")
-set_text(find(c, "숫자는 언제나 재현 가능해야"), "숫자는 언제나 재현 가능해야 한다 — python w7m8_build.py → python w7m8_compute.py")
+set_text(find(c, "숫자는 언제나 재현 가능해야"), "숫자는 언제나 재현 가능해야 한다 — python w6m7_build.py → python w6m7_compute.py")
 set_text(find(c, "케이스 재현 — 5자산"), "케이스 재현 — 순부채와 갭 · 10분")
-set_text(find(c, "•  fml_w5_saa"), "•  fml_w7m8_cashflow · curve · assets · params · scenarios\n•  순부채 PV 두 눈금(5.5% 1,542조 · 국채 2,122조) · FR 95 / 69%\n•  부채 D 35년 · DV01 7.4조/bp · 자산 원화 D 0.85 · 갭 −34년")
+set_text(find(c, "•  fml_w5_saa"), "•  fml_w6m7_cashflow · curve · assets · params · scenarios\n•  순부채 PV 두 눈금(5.5% 1,542조 · 국채 2,122조) · FR 95 / 69%\n•  부채 D 35년 · DV01 7.4조/bp · 자산 원화 D 0.85 · 갭 −34년")
 set_text(find(c, "ETF 확장 — 25자산"), "안 B · C 산수 — 20분")
-set_text(find(c, "•  M4 실습의 fml_w4_panel.csv"), "•  fml_w7m8_market · options — 현물 매입 ÷ 장기물 발행, IRS 명목 ÷ 연 거래\n•  3일 +200bp 증거금 401조 · 250bp 버퍼 501조 vs 유동자산 123조\n•  헤지 후 μ(A 6.91 · B 6.94 · C 7.37%) ≥ 허들 5.5%")
+set_text(find(c, "•  M4 실습의 fml_w4_panel.csv"), "•  fml_w6m7_market · options — 현물 매입 ÷ 장기물 발행, IRS 명목 ÷ 연 거래\n•  3일 +200bp 증거금 401조 · 250bp 버퍼 501조 vs 유동자산 123조\n•  헤지 후 μ(A 6.91 · B 6.94 · C 7.37%) ≥ 허들 5.5%")
 set_text(find(c, "판정 조건 ② · ③ —"), "판정 — 안 B 만 조건 ①~⑤ 통과 · 안 C 는 ② 4.1배 · ③ 증거금 초과 · ⑤ 파생 조항 없음 (compute_log)")
 move_slide(prs, len(prs.slides) - 1, 2)
 # 가상 부채 vs 케이스 부채의 층위 (원 s06 → s07)
-sh7 = find(S(7), "•  어느 연기금도 가입자별"); set_size_px(sh7, h=250); set_text(sh7, "•  어느 연기금도 가입자별 지급 스케줄을 공개하지 않는다 — 개인정보이자 계리 자산이다\n•  그래서 인구구조에서 생성한 가상 부채(fml_w8_liability)를 제공한다. 구조는 실제와 닮았고, 숫자는 지어낸 것이다\n•  케이스의 국민연금 순부채(fml_w7m8_cashflow)는 2025 재정추계에 맞춘 교육용 추계 — 가상 DB 부채와 층위가 다르다\n•  IC 발언에서는 \"케이스 데이터(교육용 추계) 기준\"이라고 반드시 밝힌다")
+sh7 = find(S(7), "•  어느 연기금도 가입자별"); set_size_px(sh7, h=250); set_text(sh7, "•  어느 연기금도 가입자별 지급 스케줄을 공개하지 않는다 — 개인정보이자 계리 자산이다\n•  그래서 인구구조에서 생성한 가상 부채(fml_w7_liability)를 제공한다. 구조는 실제와 닮았고, 숫자는 지어낸 것이다\n•  케이스의 국민연금 순부채(fml_w6m7_cashflow)는 2025 재정추계에 맞춘 교육용 추계 — 가상 DB 부채와 층위가 다르다\n•  IC 발언에서는 \"케이스 데이터(교육용 추계) 기준\"이라고 반드시 밝힌다")
 # 이어지는 지시 (원 s08 → s09)
 set_text(find(S(9), "•  \"자산 듀레이션을 5년으로"), "•  \"케이스 데이터로 순부채 두 눈금과 갭 −34년을 재현해줘 — compute_log 대조\"\n•  \"헤지비율 0·50·100%로 금리 시나리오를 돌려줘\"\n•  \"레버리지 3배·담보 10%로 2022 영국 상황을 재현해줘\"")
 # 검증 (원 s09 → s10)

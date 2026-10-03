@@ -47,7 +47,7 @@ z = {0.7: 0.524, 0.3: -0.524}
 def K(G, p, m, s, T=10): return G*exp(-m*T + z[p]*s*sqrt(T))
 out["K"] = dict(market_bal=K(1.0, 0.7, 0.045, 0.09), market_eq=K(1.0, 0.7, 0.06, 0.2), market_ghp=1.0/(1+R)**10,
                 asp_eq=K(0.5, 0.3, 0.06, 0.2), asp_bal=K(0.5, 0.3, 0.045, 0.09))
-json.dump(out, open("w9_sim_results.json", "w"), indent=1, ensure_ascii=False)
+json.dump(out, open("w8_sim_results.json", "w"), indent=1, ensure_ascii=False)
 print(f"F0 {F0:.3f} cushion {A0-F0:.3f} FT {floor(120):.3f}")
 for m, r in out["cppi"].items(): print("m", m, {k: round(v, 3) for k, v in r.items()})
 print("fixed40", {k: round(v, 3) for k, v in out["fixed40"].items()})

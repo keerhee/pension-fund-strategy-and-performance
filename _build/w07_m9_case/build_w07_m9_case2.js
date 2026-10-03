@@ -9,7 +9,7 @@ const { p, C, S, LX, CW, setSubject, rect, hline, head, cover, divider, msgRows,
 const IMG = path.join(__dirname, "..", "img");
 const RATIO = JSON.parse(fs.readFileSync(path.join(IMG, "img_ratios.json"), "utf8"));
 const im = (n) => path.join(IMG, n + ".png");
-const R = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "w7m9_results.json"), "utf8"));
+const R = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "data", "w6m8_results.json"), "utf8"));
 const B = R.case2, D = B.default;
 const LK = Object.fromEntries(B.lockup.map(l => [l.illiq_cap_pct, l]));
 const SP = Object.fromEntries(B.spend_rule.map(l => [l.illiq_cap_pct, l]));
@@ -278,12 +278,12 @@ const two = (s, y, h, lt, ll, rt, rl, opt) => {
 }
 // 32 들고 올 숫자 ------------------------------------------------------------------
 { const [s, n] = S_();
-  const y = head(s, "준비 · 데이터", 2.0, "들고 올 숫자 — 첨부 데이터로 30분 안에 만든다", "python w7m9_build.py → python w7m9_compute.py — compute_log.txt 의 줄을 그대로 읽는다", n);
+  const y = head(s, "준비 · 데이터", 2.0, "들고 올 숫자 — 첨부 데이터로 30분 안에 만든다", "python w6m8_build.py → python w6m8_compute.py — compute_log.txt 의 줄을 그대로 읽는다", n);
   tbl(s, [["팀", "만들 숫자", "파일 · 위치"],
-    ["기금운용", `x 별 실질 μ(0: ${SP[0].mu_real.toFixed(2)} · 20: ${SP[20].mu_real.toFixed(2)} · 60: ${SP[60].mu_real.toFixed(2)}%) · x 20 의 z 별 실질가치 유지 확률`, "w7m9_results.json → case2.spend_rule · mc"],
+    ["기금운용", `x 별 실질 μ(0: ${SP[0].mu_real.toFixed(2)} · 20: ${SP[20].mu_real.toFixed(2)} · 60: ${SP[60].mu_real.toFixed(2)}%) · x 20 의 z 별 실질가치 유지 확률`, "w6m8_results.json → case2.spend_rule · mc"],
     ["리스크 · 유동성", `생존 연수(20: ${LK[20].survival_years} · 30: ${LK[30].survival_years} · 60: ${LK[60].survival_years}년) · y 별 강제매도 확률(25: ${pc(BUF[25].p_forced_sale)} · 30: ${pc(BUF[30].p_forced_sale)})`, "case2.lockup · buffer"],
-    ["대학재정 · 거버넌스", "목돈을 1,000억 · 고정 지출을 200억으로 바꿨을 때의 x · y · 평활 지출 경로", "w7m9_build.py 상단 상수 → 재실행"],
-    ["글로벌자문", "GPFG · Yale 공시 횡단면(규모 · 비중 · 지출률 · 정책 상한) · 접근권 요건 대비 H대", "fml_w7m9_public_facts.csv · case2.access"]],
+    ["대학재정 · 거버넌스", "목돈을 1,000억 · 고정 지출을 200억으로 바꿨을 때의 x · y · 평활 지출 경로", "w6m8_build.py 상단 상수 → 재실행"],
+    ["글로벌자문", "GPFG · Yale 공시 횡단면(규모 · 비중 · 지출률 · 정책 상한) · 접근권 요건 대비 H대", "fml_w6m8_public_facts.csv · case2.access"]],
     y, [2.2, 6.4, 3.49], 0.8, 16);
   note(s, "교육용 가정(is_assumed = 1)을 바꾸면 x · y · z 가 움직인다 — 락업을 7년으로 바꿔 보라", 6.5);
 }

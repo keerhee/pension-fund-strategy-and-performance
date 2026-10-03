@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""W6 M7 IC 케이스 — 판정 조건 계산 (w7m8_build.py 의 CSV → w7m8_results.json · compute_log.txt)
+"""W6 M7 IC 케이스 — 판정 조건 계산 (w6m7_build.py 의 CSV → w6m7_results.json · compute_log.txt)
 
 제1호 (기금운용위) 국민연금 기금의 LDI — 부채 벤치마크 도입 + 헤지 비율 목표·수단 (안 A·B·C)
   조건 ① 갭의 실재      국채 곡선 기준 적립비율 FR_g = F / PV_g(2026~2071 순유출) 와 자체 기준(5.5%) FR_h 를 층위로 구분하고,
@@ -14,13 +14,13 @@ import json, os
 import numpy as np, pandas as pd
 
 D = os.path.dirname(os.path.abspath(__file__))
-P = pd.read_csv(f"{D}/fml_w7m8_params.csv").set_index("key").value
+P = pd.read_csv(f"{D}/fml_w6m7_params.csv").set_index("key").value
 f = lambda k: float(P[k])
-cf = pd.read_csv(f"{D}/fml_w7m8_cashflow.csv")
-curve = pd.read_csv(f"{D}/fml_w7m8_curve.csv")
-assets = pd.read_csv(f"{D}/fml_w7m8_assets.csv").set_index("asset")
-mkt = pd.read_csv(f"{D}/fml_w7m8_market.csv").set_index("key").value
-opts = pd.read_csv(f"{D}/fml_w7m8_options.csv")
+cf = pd.read_csv(f"{D}/fml_w6m7_cashflow.csv")
+curve = pd.read_csv(f"{D}/fml_w6m7_curve.csv")
+assets = pd.read_csv(f"{D}/fml_w6m7_assets.csv").set_index("asset")
+mkt = pd.read_csv(f"{D}/fml_w6m7_market.csv").set_index("key").value
+opts = pd.read_csv(f"{D}/fml_w6m7_options.csv")
 log = []
 def L(s): log.append(s); print(s)
 
@@ -194,6 +194,6 @@ res = {"asof": P["asof"], "liability": {"window_end": END, "L_hurdle_trn": round
        "market": {"long_issue_2025_trn": long_issue, "cap_bond_trn": round(cap_bond_trn), "cap_irs_trn": round(cap_irs_trn), "long_out_trn": round(long_out), "ktb_out_trn": float(mkt["ktb_outstanding_trn"]),
                   "irs_turnover_trn": irs_turn, "liab_to_ktb": round(kr_ratio, 2)},
        "options": res_opts, "grid": grid, "sensitivity_B": sens}
-json.dump(res, open(f"{D}/w7m8_results.json", "w"), ensure_ascii=False, indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
+json.dump(res, open(f"{D}/w6m7_results.json", "w"), ensure_ascii=False, indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
 open(f"{D}/compute_log.txt", "w").write("\n".join(log) + "\n")
-print("→ w7m8_results.json · compute_log.txt")
+print("→ w6m7_results.json · compute_log.txt")
