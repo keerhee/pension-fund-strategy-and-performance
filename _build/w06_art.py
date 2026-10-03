@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""W06 프라이머의 그림 — M7 동적 자산배분 · SS2 재균형 프리미엄."""
+"""W07 프라이머의 그림 — M9 동적 자산배분 · SS2 재균형 프리미엄."""
 import numpy as np
 from matplotlib import pyplot as plt
 from primer_lib import (out_dir, save, clean, svg, box, limebox, darkbox,

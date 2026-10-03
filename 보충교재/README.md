@@ -20,9 +20,9 @@
 | [`Moskowitz_Quality_Defensive_Investing.pdf`](03_%ED%8C%A9%ED%84%B0_W12/Moskowitz_Quality_Defensive_Investing.pdf) | 36 | Quality·Defensive 투자 — 좋은 기업을 합리적 가격에, 안전한 자산에 레버리지를 (Yale SOM Master Class) | **W12 팩터투자** |
 | [`13F_Predatory_Trading_3Agent_MBA_Deck.pdf`](04_TPA_W15/13F_Predatory_Trading_3Agent_MBA_Deck.pdf) | 36 | 13F 전략적 공시와 포식적 거래 — 3-Agent 동적 게임 | **W15 TPA** · W10 |
 | [`FamaFrench_Model_ZeroOne.pdf`](03_%ED%8C%A9%ED%84%B0_W12/FamaFrench_Model_ZeroOne.pdf) | 29 | Fama-French 3요인 모델 — 이상현상에서 팩터로, 25 포트폴리오 구성법 | **W12 팩터투자** |
-| [`TPA_Framework_Brief_Deck_v01.pdf`](04_TPA_W15/TPA_Framework_Brief_Deck_v01.pdf) | 28 | TPA 설계 프레임 v0.1 — 밖의 자산·부채 → 헤지 가능성 R² → 딜 심사 → 거버넌스 세 조건, 5단계 절차와 명제 7개 | **W15 TPA** · W07 LDI |
+| [`TPA_Framework_Brief_Deck_v01.pdf`](04_TPA_W15/TPA_Framework_Brief_Deck_v01.pdf) | 28 | TPA 설계 프레임 v0.1 — 밖의 자산·부채 → 헤지 가능성 R² → 딜 심사 → 거버넌스 세 조건, 5단계 절차와 명제 7개 | **W15 TPA** · W06 LDI |
 | [`0. Stylized Facts and SDF.pdf`](01_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/0.%20Stylized%20Facts%20and%20SDF.pdf) | 21 | 수익률의 세 가지 정형화된 사실과 확률할인요인(SDF) | 과정 시작 전 · W02 |
-| [`Barberis_PE_Habit_Extrapolation_deck.pdf`](01_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/Barberis_PE_Habit_Extrapolation_deck.pdf) | 18 | 시장 P/E는 왜 한 세기 동안 출렁였는가 — Habit Formation과 과잉 외삽 | W06 동적포트폴리오와장기투자 |
+| [`Barberis_PE_Habit_Extrapolation_deck.pdf`](01_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/Barberis_PE_Habit_Extrapolation_deck.pdf) | 18 | 시장 P/E는 왜 한 세기 동안 출렁였는가 — Habit Formation과 과잉 외삽 | W07 동적포트폴리오와장기투자 |
 | [`Direct_Lending_Course_bj.pdf`](08_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90_W14/02_Courses/Direct_Lending_Course_bj.pdf) | 43 | Direct Lending 종합 과정 — 미들마켓 직접대출, 자본구조와 권리, 가격결정, 운용사 투자 관점 | W14 대체투자와비유동성 |
 | [`Residential_Credit_ABS_Course_bj.pdf`](08_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90_W14/02_Courses/Residential_Credit_ABS_Course_bj.pdf) | 52 | Residential Credit와 ABS 투자 — 주거용 신용, 대출 심사, RMBS·ABS 구조 (8주 과정) | W14 대체투자와비유동성 |
 | [`Risk_Based_Allocation_Main_VIII.pdf`](06_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Main_VIII.pdf) | 61 | 리스크 패리티와 최대 분산을 하나의 3자산 예제로 통합 비교 — MVO·EW·역변동성·GMV·ERC·리스크 버짓·MDP | **W05 리스크패리티와HRP** |
@@ -89,7 +89,7 @@
 | [`IPS_Investment_Policy_Statement_ZeroOne.pdf`](13_%EC%9E%90%EC%9C%A8%EC%A3%BC%ED%96%89%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9/IPS_Investment_Policy_Statement_ZeroOne.pdf) | 44 | **투자정책서(IPS)** — 왜 문서로 약속하는가(네 가지 기능 · 실패 사례 · 문서 위계), 무엇을 적는가(RRTTLLU · 필요 수익률 · 위험허용도), 7단계 구축 절차와 TPA 사례, 3층 거버넌스와 위임 매트릭스, 운용사 · 패밀리오피스 · 개인으로의 확장. 기안이 IPS를 운영체계의 첫 제약으로 쓰므로 그 바탕이 된다 |
 | [`IPS_Clause_Examples_ZeroOne.pdf`](13_%EC%9E%90%EC%9C%A8%EC%A3%BC%ED%96%89%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9/IPS_Clause_Examples_ZeroOne.pdf) | 38 | **IPS 조항 예문집** — IPS 덱의 예시편. 가상 기관 다섯 곳(한빛국부펀드 · 누리연금 · 새솔자산운용 · 가람 패밀리오피스 · 투자자 A)의 조항을 실제 문장으로 쓰고, 좋은 조항의 다섯 요소(주체 · 조건 · 수치 · 기한 · 예외)와 나쁜 예문을 고치는 법을 보인다. 기관명과 수치는 교육용 가정이다 |
 
-### 14_강화학습포트폴리오 — 강화학습을 이용한 동적 포트폴리오 운용 (W06 동적 포트폴리오 · W06 SS2 재균형과 함께)
+### 14_강화학습포트폴리오 — 강화학습을 이용한 동적 포트폴리오 운용 (W07 동적 포트폴리오 · W07 SS2 재균형과 함께)
 
 **본편 + 기초 부록 + 스페셜 세션 + 워크북** (4편 · 110쪽) — RL을 수익률 예측기가 아니라 거래비용 아래의 제어기로 본다. 기초 부록 → 본편 → GP 스페셜 세션 순으로 읽고, 계산은 워크북에서 손으로 따라간다.
 
@@ -106,7 +106,7 @@
 |---|---:|---|
 | [`적극적 운용의 기본법칙(FLAM) — 일반화 식과 증명.pdf`](15_%EC%A0%81%EA%B7%B9%EC%A0%81%EC%9A%B4%EC%9A%A9%EC%9D%98%EA%B8%B0%EB%B3%B8%EB%B2%95%EC%B9%99/%EC%A0%81%EA%B7%B9%EC%A0%81%20%EC%9A%B4%EC%9A%A9%EC%9D%98%20%EA%B8%B0%EB%B3%B8%EB%B2%95%EC%B9%99%28FLAM%29%20%E2%80%94%20%EC%9D%BC%EB%B0%98%ED%99%94%20%EC%8B%9D%EA%B3%BC%20%EC%A6%9D%EB%AA%85.pdf) | 4 | 일반화 기본법칙 IR = TC · IC · √BR(Clarke · de Silva · Thorley 2002)과 증명 — 기본 예측 공식(최적 선형 예측 · 조건부 기대값) → Grinold의 예측 규칙 α = σ · IC · z → 일반화 법칙. TC = 1이면 IR = IC√BR, 독립 신호의 IR²는 더해진다 |
 
-### 16_Garleanu_Pedersen모델 — Gârleanu–Pedersen 동적 거래 모델 (W06 3교시 기준선과 함께)
+### 16_Garleanu_Pedersen모델 — Gârleanu–Pedersen 동적 거래 모델 (W07 3교시 기준선과 함께)
 
 | 자료 | 쪽 | 무엇을 다루나 |
 |---|---:|---|
@@ -158,13 +158,13 @@
 227bp), `13F_Predatory_Trading`이 그 심사 결과가 공시로 새어 나갈 때의 문제를 다룬다.
 강의본을 본 뒤 프레임 → 13F 순서로 읽는다.
 포식적 거래를 더 파고들려면 `12_포식적거래/`의 4부작을 Part 1 → 4 순서로 읽고, 계산은 워크북에서 손으로 따라간다.
-연기금이 forced seller가 되는 조건(담보 spiral·UK LDI 2022)은 W07 LDI와도 이어진다.
+연기금이 forced seller가 되는 조건(담보 spiral·UK LDI 2022)은 W06 LDI와도 이어진다.
 
 **XS 자율주행 포트폴리오를 마친 뒤** — `13_자율주행자산운용`의 기안은 XS MVP를 출발 코드로 삼아 기관용 운영체계로 넓히는 계획이다.
 16주 동안 배운 IPS · CMA · 최적화 · IC · TPA가 각각 어느 에이전트와 엔진의 명세가 되는지 한 장씩 짚는다. 과정 전체를 되짚는 정리로도 쓸 수 있다.
 기안의 출발점인 IPS가 낯설면 같은 폴더의 `IPS_Investment_Policy_Statement`를 먼저 보고, 조항을 실제로 써 볼 때는 `IPS_Clause_Examples`의 예문을 옆에 둔다. W01 IPS 독해 과제의 배경 자료로도 쓴다.
 
-**W06 동적 포트폴리오를 더 파고들 때** — `14_강화학습포트폴리오`는 거래비용이 있을 때 언제 얼마나 옮길지를 강화학습과 Gârleanu–Pedersen 모델로 다룬다. W06 SS2의 재균형 규칙(밴드·빈도)과 같은 질문을 동적 최적화 쪽에서 푼다. 강화학습이 처음이면 기초 부록부터 본다. GP 모델만 따로 깊게 보려면 `16_Garleanu_Pedersen모델`을 본다 — W06 강의본 3교시 ‘기준선 ②’(34쪽)를 한 덱으로 푼 것이다.
+**W07 동적 포트폴리오를 더 파고들 때** — `14_강화학습포트폴리오`는 거래비용이 있을 때 언제 얼마나 옮길지를 강화학습과 Gârleanu–Pedersen 모델로 다룬다. W07 SS2의 재균형 규칙(밴드·빈도)과 같은 질문을 동적 최적화 쪽에서 푼다. 강화학습이 처음이면 기초 부록부터 본다. GP 모델만 따로 깊게 보려면 `16_Garleanu_Pedersen모델`을 본다 — W07 강의본 3교시 ‘기준선 ②’(34쪽)를 한 덱으로 푼 것이다.
 
 **W09 Grinold 법칙을 증명까지 볼 때** — `15_적극적운용의기본법칙`은 IR = IC√BR이 어디서 나오는지 세 단계로 증명한다. W09 23 · 24장의 예측 규칙과 그 증명이 이 문서의 2 · 3절을 줄인 것이다.
 

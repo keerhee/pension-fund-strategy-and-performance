@@ -1,4 +1,4 @@
-// W06 보강 1 — 처음 배우는 강화학습 (비전공생용 기초)
+// W07 보강 1 — 처음 배우는 강화학습 (비전공생용 기초)
 // 원천: 보충교재/14_강화학습포트폴리오 (본편 II · 기초 부록 · 워크북) 각색 + 2025~26 흐름 보강
 // 그림: w06_rl_art.py → _art/w06rl/
 // 실행: NODE_PATH=/Users/keerhee/Project/node_modules node w06_rl_basics.js
@@ -6,10 +6,10 @@ const { build, C } = require("./primer_deck.js");
 
 module.exports = {
   art: "w06rl",
-  out: "W06_동적포트폴리오와장기투자/W06_보강1_강화학습기초_처음배우는RL.pptx",
-  eyebrow: "연기금 운용전략과 성과평가 · W06 보강 1 · 강화학습 기초",
+  out: "W07_동적포트폴리오와장기투자/W07_보강1_강화학습기초_처음배우는RL.pptx",
+  eyebrow: "연기금 운용전략과 성과평가 · W07 보강 1 · 강화학습 기초",
   coverTitle: "처음 배우는\n강화학습",
-  coverSub: "W06 보강 1 · 3교시 ‘강화학습과 현대 동적 배분’을 읽기 위한 기초",
+  coverSub: "W07 보강 1 · 3교시 ‘강화학습과 현대 동적 배분’을 읽기 위한 기초",
   chain: ["보고", "고르고", "점수 받고", "고친다"],
 
   agendaTitle: "다섯 구획으로 3교시의 말을 모두 풀어 둡니다",
@@ -259,7 +259,7 @@ module.exports = {
                    "당장의 점수보다 앞으로의 가치를 봅니다.",
                    "금융에서는 데이터와 비용이 학습을 묶습니다."],
       message: "이제 강의본\n3교시로",
-      contacts: ["W06 · 동적 포트폴리오와 장기투자", "보충교재 16 · Gârleanu–Pedersen 모델"],
+      contacts: ["W07 · 동적 포트폴리오와 장기투자", "보충교재 16 · Gârleanu–Pedersen 모델"],
       note: "※ 더 깊은 내용(무거래 구간 · Gârleanu–Pedersen · 합성시장 검증 · 손계산 워크북)은 보충교재 14번 폴더의 본편 II · 기초 부록 · 워크북에 있습니다." },
   ],
 };

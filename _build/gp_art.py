@@ -2,7 +2,7 @@
 """보충교재 16 — Gârleanu–Pedersen 동적 거래 모델의 그림.
 
 실행: ../.venv/bin/python gp_art.py            (→ _art/gp/, 아이보리 바탕 — 보충 덱용)
-      GP_WHITE=1 ../.venv/bin/python gp_art.py (→ _art/gp_white/, 흰 바탕 — W06 강의본 삽입용)
+      GP_WHITE=1 ../.venv/bin/python gp_art.py (→ _art/gp_white/, 흰 바탕 — W07 강의본 삽입용)
 모든 수치는 여기서 직접 계산한다(손계산 표·시뮬레이션). 원 논문: Gârleanu·Pedersen, JF 68(6) 2013.
 """
 import os
@@ -362,7 +362,7 @@ def where_map():
     b += text(60, 226, "(수수료 중심)", 24, MUTED, anchor="start")
     b += text(60, 400, "이차 비용", 29, MUTED, bold=True, anchor="start")
     b += text(60, 436, "(대형 · 충격 중심)", 24, MUTED, anchor="start")
-    b += cbox(260, 70, 400, 250, "무거래 구간", ["리밸런싱 밴드", "W06 SS2 · 2교시 24쪽"], ts=36, ss=26, stroke=AMBER)
+    b += cbox(260, 70, 400, 250, "무거래 구간", ["리밸런싱 밴드", "W07 SS2 · 2교시 24쪽"], ts=36, ss=26, stroke=AMBER)
     b += cbox(810, 70, 660, 250, "구간 + 움직이는 중심", ["닫힌 해 없음 → MPO · RL", "RL이 가장 쓸모 있는 칸"], "dark", ts=36, ss=26)
     b += cbox(260, 290 + 50, 400, 250, "나눠서 이동", ["전환을 여러 기간에", "글라이드패스 실행"], ts=36, ss=26, stroke=TEAL)
     b += cbox(810, 290 + 50, 660, 250, "Gârleanu–Pedersen", ["조준점으로 일부만 이동", "TAA · 팩터 틸트 · 대형 신호 운용"], "lime", ts=38, ss=27)

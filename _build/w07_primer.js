@@ -1,12 +1,12 @@
-// W07 사전학습 — M8 부채연계투자(LDI) · M9 목표기반투자(GBI)
+// W06 사전학습 — M7 부채연계투자(LDI) · M8 목표기반투자(GBI)
 const { build, C } = require("./primer_deck.js");
 
 module.exports = {
   art: "w07",
-  out: "W07_LDI와GBI/W07_0_프라이머_LDI와GBI는왜부채와목표에서시작하나.pptx",
-  eyebrow: "연기금 운용전략과 성과평가 · W07 사전학습",
+  out: "W06_LDI와GBI/W06_0_프라이머_LDI와GBI는왜부채와목표에서시작하나.pptx",
+  eyebrow: "연기금 운용전략과 성과평가 · W06 사전학습",
   coverTitle: "LDI와 GBI는 왜\n부채와 목표에서 시작하나",
-  coverSub: "W07 사전학습 · M8 부채연계투자 · M9 목표기반투자",
+  coverSub: "W06 사전학습 · M7 부채연계투자 · M8 목표기반투자",
   chain: ["부채를 본다", "금리가 흔든다", "목표에서 시작한다"],
 
   agendaTitle: "네 구획이면 30분 안에 읽힙니다",
@@ -111,7 +111,7 @@ module.exports = {
                    "그 부채은 금리에 크게 흔들리고,",
                    "개인에게는 그 자리를 목표가 대신합니다."],
       message: "이제 강의본으로\n넘어가십시오",
-      contacts: ["W07_M8 · LDI 부채연계투자", "W07_M9 · GBI 목표기반투자"],
+      contacts: ["W06_M7 · LDI 부채연계투자", "W06_M8 · GBI 목표기반투자"],
       note: "※ 4교시는 모의 투자위원회입니다. 실제 시장 자료와 정확한 정의는 강의본과 실습데이터 덱에서 다룹니다." },
   ],
 };

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""W07 프라이머의 그림 — M8 부채연계투자(LDI) · M9 목표기반투자(GBI)."""
+"""W06 프라이머의 그림 — M7 부채연계투자(LDI) · M8 목표기반투자(GBI)."""
 import numpy as np
 from matplotlib import pyplot as plt
 from primer_lib import (out_dir, save, clean, svg, box, limebox, darkbox,
