@@ -1,0 +1,18 @@
+{
+  "episode": "EP.13",
+  "title": "GP Stakes",
+  "concept": "GP 지분 투자(GP Stakes) — 펀드가 아니라 운용사(GP) 자체의 소수 지분을 사서, 관리보수에서 비용을 뺀 FRE(Fee-Related Earnings)와 Carry를 지분율만큼 나눠 받는다. 운용에는 관여하지 않는다 — EP.09 2 and 20을 운용사 쪽에서 받는 셈",
+  "cuts": [
+    {"n":1,"sec":[0,4],"type":"title","text":["연기금 IC","일기","EP.13 · GP Stakes"]},
+    {"n":2,"sec":[4,10.5],"type":"problem","notice":"IC 안건 · GP Stakes 투자 · 대상: 운용사 A (펀드 아님) · 지분 20% · 매입가 40","bubble":["펀드가 아니라 운용사를 사요?","그럼 우리가 GP가 되는 거예요?"],"sfx":"우리가 GP?!"},
+    {"n":3,"sec":[10.5,17],"type":"twist","bubble":["운용은 안 해. 소수 지분만 사서","GP가 버는 보수와 Carry를 나눠 받지."],"sfx":"보수에 투자!"},
+    {"n":4,"sec":[17,30],"type":"explainer","assume":{"commitment":1000,"fee":0.02,"costs":12,"carry_avg":10,"stake":0.2,"price":40},
+     "bars":{"mgmt_fee":20,"costs":-12,"FRE":8,"carry":10,"our_share":3.6},
+     "latex":["\\text{FRE} = 2\\% \\times 1000 - 12 = 8","\\text{Share} = 20\\% \\times (8 + 10) = 3.6","\\text{Yield} = \\frac{1.6 + 2.0}{40} = 4\\% + 5\\% = 9\\%"],
+     "summary":"꾸준한 건 보수(4%), 출렁이는 건 Carry(5%)",
+     "bubble":["EP.09의 2 and 20을","운용사 쪽에서 받는 셈이지."]},
+    {"n":5,"sec":[30,37],"type":"relief","bubbles":[["그럼 위험은","없는 거예요?"],["AUM이 줄면 보수도 줄어.","핵심 인력이 떠나면 회사가 비지."]],"sfx":"사람이 자산!","chip":"체크: FRE 안정성 · 핵심 인력 · AUM 성장 · 이해상충 · 출구"},
+    {"n":6,"sec":[37,40.5],"type":"next","text":["다음 화","공동투자","보수 없이 딜에 같이 들어간다?"]}
+  ],
+  "fact-check": "단순화: 운용사 A의 약정 1,000 단일 숫자, 관리보수 2%를 매년 같게, Carry를 연평균 10으로 평탄화, 세금·재투자·GP 출자(GP commitment) 수익 생략. 실무 GP Stakes는 FRE·Carry·GP 대차대조표 수익을 함께 나누는 경우가 많고 구조가 거래마다 다르다. 대표 투자자(Blue Owl의 GP Stakes(옛 Dyal), Goldman Sachs Petershill 등) 언급은 기억 기반이며 화면에는 넣지 않았다."
+}
