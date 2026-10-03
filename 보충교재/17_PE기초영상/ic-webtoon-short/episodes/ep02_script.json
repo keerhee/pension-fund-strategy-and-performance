@@ -1,0 +1,14 @@
+{
+  "episode": "EP.02",
+  "title": "캐피털 콜 폭탄",
+  "concept": "Capital Call — 약정액(Commitment)을 GP가 투자 시점마다 나눠 인출. 미납 약정(Unfunded)만큼 유동성 관리 필요",
+  "cuts": [
+    {"n":1,"sec":[0,4],"type":"title","text":["연기금 IC","일기","EP.02 · 캐피털 콜 폭탄"]},
+    {"n":2,"sec":[4,10],"type":"problem","notices":["GP A 약정액의 15% · 10영업일 내 납입","GP B 약정액의 10% · 신규 딜 클로징","GP C 약정액의 12% · 추가 출자 요청"],"bubble":["부장님! 펀드 세 곳에서","동시에 돈을 달래요!!"]},
+    {"n":3,"sec":[10,15],"type":"twist","bubble":["약정(Commitment)한 돈을","GP가 투자할 때마다 나눠 부르는 거야."],"sfx":"예정된 일!"},
+    {"n":4,"sec":[15,24],"type":"explainer","chart":"calls_vs_distributions","calls":[20,25,20,15,8,4,2,0,0,0],"dists":[0,0,2,8,18,25,30,28,20,12],"bubble":["미납 약정(Unfunded)만큼","현금을 늘 준비해 둬야 해."]},
+    {"n":5,"sec":[24,29.5],"type":"relief","bubbles":[["그럼 현금을 전부","쌓아둬야 하나요?"],["그건 비효율이지. 오버커밋먼트와","유동성 버퍼로 맞추는 거야."]],"sfx":"아하!"},
+    {"n":6,"sec":[29.5,33],"type":"next","text":["다음 화","분배금이 왔다!","DPI vs TVPI"]}
+  ],
+  "fact-check": "콜·분배 수치는 설명용 예시(TVPI 약 1.5배). 납입 기한 10영업일은 LPA마다 다름"
+}

@@ -1,0 +1,17 @@
+{
+  "episode": "EP.07",
+  "title": "세컨더리",
+  "concept": "LP 지분 세컨더리 — 매도자는 분모 효과(Denominator Effect) 등으로 할인 매각, 매수자는 할인 매수로 J-커브 바닥을 건너뛴다. 미납 약정도 함께 넘어간다",
+  "cuts": [
+    {"n":1,"sec":[0,4],"type":"title","text":["연기금 IC","일기","EP.07 · 세컨더리"]},
+    {"n":2,"sec":[4,10.5],"type":"problem","news":"주식 급락… 연기금들 PE 지분 매각","card":"LP Interest NAV 100 → 매각 희망가 85 (15% 할인)","bubble":["100짜리를 85에 판대요!","왜 손해 보고 팔죠?"]},
+    {"n":3,"sec":[10.5,18],"type":"twist","bubble":["주식이 빠지니 PE 비중이","목표를 넘어버렸거든."],
+     "chart":{"before":{"total":100,"pe_pct":15},"after_equity_minus30":{"total":74.5,"pe_pct":20}},"sfx":"분모 효과! (Denominator Effect)"},
+    {"n":4,"sec":[18,31],"type":"explainer","inset":"원 LP의 J-커브, 4년차 진입","buyer":{"price":85,"exit_year":2,"exit":110,"irr":"13.8%","moic":"1.29x"},
+     "latex":["Price = 0.85 x NAV = 85","85(1+r)^2 = 110 => r≈13.8%","MOIC = 110/85 ≈ 1.29x"],
+     "bubble":["단, NAV가 몇 달 전 숫자라면","진짜 할인이 아닐 수도 있어."]},
+    {"n":5,"sec":[31,38],"type":"relief","bubbles":[["매수자가 또","떠안는 건요?"],["남은 약정(Unfunded)까지 같이 넘겨받지.","콜이 오면 이제 매수자가 내는 거야."]],"sfx":"꼼꼼히!","chip":"체크: 할인율 · NAV 기준일 · 미납 약정"},
+    {"n":6,"sec":[38,41.5],"type":"next","text":["다음 화","컨티뉴에이션 펀드","GP가 자기 펀드 자산을 산다?"]}
+  ],
+  "fact-check": "할인율 15%·2년 뒤 110 회수는 설명용 가정. 주식·채권 85 중 −30% 가정 시 PE 비중 15/74.5 = 20.1%. 세컨더리 가격은 통상 직전 분기 NAV 대비 %로 호가"
+}

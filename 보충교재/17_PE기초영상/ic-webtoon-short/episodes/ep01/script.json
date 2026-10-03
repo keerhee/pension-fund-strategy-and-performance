@@ -1,0 +1,15 @@
+{
+  "episode": "EP.01",
+  "title": "J-커브는 정상입니다",
+  "concept": "PE 펀드의 J-커브 (초기 관리보수·비용 → 가치 창출 → 회수)",
+  "characters": {"owl": "부엉이 CIO '부장님'", "penguin": "펭귄 신입 '펭'"},
+  "cuts": [
+    {"n":1,"sec":[0,4],"type":"title","text":["연기금 IC","일기","EP.01 · J-커브는 정상입니다"]},
+    {"n":2,"sec":[4,10],"type":"problem","speaker":"penguin","mood":"shock","bubble":["부장님… 첫해 수익률이","−8%예요… 망했어요 ㅠㅠ"],"sfx":"-8%"},
+    {"n":3,"sec":[10,15],"type":"twist","speaker":"owl","bubble":["침착해. 그건 J-커브야.","PE 첫 몇 해는 원래 마이너스지."],"sfx":"정상!"},
+    {"n":4,"sec":[15,23],"type":"explainer","chart":"jcurve","labels":["① 관리보수·초기비용","② 가치 창출","③ 회수 (Exit)"],"bubble":["IRR은 펀드 만기까지","보고 판단하는 거야."]},
+    {"n":5,"sec":[23,28],"type":"relief","bubbles":[["그럼 회복은 언제쯤…?"],["보통 4~5년차부터.","조급하면 지는 게임이야."]],"sfx":"휴~"},
+    {"n":6,"sec":[28,32],"type":"next","text":["다음 화","캐피털 콜","폭탄!","Capital Call · 약정액 인출 요청"]}
+  ],
+  "fact-check": "J-커브 회복 시점은 빈티지·전략별로 다름. '보통 4~5년차'는 일반적 설명 수준"
+}

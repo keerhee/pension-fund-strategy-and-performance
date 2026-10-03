@@ -1,0 +1,18 @@
+{
+  "episode": "EP.09",
+  "title": "2 and 20",
+  "concept": "관리보수 2%와 Carry 20%가 Gross 성과를 Net으로 얼마나 깎는지 — 약정 100 기준 손계산",
+  "cuts": [
+    {"n":1,"sec":[0,4],"type":"title","text":["연기금 IC","일기","EP.09 · 2 and 20"]},
+    {"n":2,"sec":[4,10],"type":"problem","card":"Track Record: Gross MOIC 2.0x (보수·Carry 차감 전)","bubble":["100 넣으면 200 된대요!","바로 약정하죠!"]},
+    {"n":3,"sec":[10,16.5],"type":"twist","bubble":["그건 보수 떼기 전 숫자야.","2% 관리보수, 20% Carry를 빼 봐."],"sfx":"Gross ≠ Net!"},
+    {"n":4,"sec":[16.5,30],"type":"explainer","chart":"commitment_vs_proceeds",
+     "commitment":{"invested":80,"fees":20},"proceeds":{"return_of_capital":100,"lp_profit":48,"carry":12},
+     "gross_moic":"2.0x","net_moic":"1.48x",
+     "latex":["Fee = 2% x 100 x 10 = 20 => Invested = 80","Proceeds = 80 x 2.0 = 160, Profit = 160 - 100 = 60","Carry = 20% x 60 = 12 => Net MOIC = 148/100 = 1.48x"],
+     "bubble":["투자 이익 80 중 32가 GP 몫.","보수 20 + Carry 12야."]},
+    {"n":5,"sec":[30,37],"type":"relief","bubbles":[["보수는 협상","못 해요?"],["투자기간이 끝나면 Fee 기준을","약정 대신 투자잔액으로 바꾸자고 하지."]],"sfx":"협상 포인트!","chip":"체크: Fee 기준 · 허들 · 캐치업 · 보수 상계"},
+    {"n":6,"sec":[37,40.5],"type":"next","text":["다음 화","캐치업","허들 넘으면 GP가 100%를?"]}
+  ],
+  "fact-check": "관리보수 10년 내내 약정 2%·허들 충족·풀 캐치업 가정의 단순화. 실제로는 투자기간 후 Fee 기준 인하(투자잔액·Step-down)가 일반적이라 보수 총액은 20보다 작은 경우가 많음. 펀드비용·거래보수 상계(Fee Offset)는 생략"
+}

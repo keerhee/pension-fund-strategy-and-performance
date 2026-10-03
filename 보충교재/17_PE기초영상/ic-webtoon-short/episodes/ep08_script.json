@@ -1,0 +1,17 @@
+{
+  "episode": "EP.08",
+  "title": "컨티뉴에이션 펀드",
+  "concept": "GP 주도 세컨더리(Continuation Vehicle) — 만기 펀드의 핵심 자산을 새 펀드로 이전, 기존 LP는 매각/잔류 선택. GP가 양쪽에 서므로 이전 가격이 핵심 쟁점",
+  "cuts": [
+    {"n":1,"sec":[0,4],"type":"title","text":["연기금 IC","일기","EP.08 · 컨티뉴에이션 펀드"]},
+    {"n":2,"sec":[4,10.5],"type":"problem","card":"Election Notice: 펀드 I 만기 / 자산 X → CV / 매각 Sell · 잔류 Roll","bubble":["GP가 자기 펀드 자산을","자기가 산대요! 괜찮은 거예요?"]},
+    {"n":3,"sec":[10.5,17.5],"type":"twist","bubble":["좋은 자산을 더 오래 들고 가려는 거야.","문제는 가격을 GP가 양쪽에서 정한다는 것."],"sfx":"이해상충! (Conflict of Interest)"},
+    {"n":4,"sec":[17.5,31],"type":"explainer","diagram":"Fund I ⇄ CV (asset X / cash 100), GP on both sides",
+     "lp":{"share":"10%","sell":10,"roll":"10x1.5 - 0.2x(15-10) = 14 at year 3","roll_moic":"1.4x","roll_irr":"11.9%"},
+     "latex":["Sell = 10% x 100 = 10","Roll = 10 x 1.5 - 0.2(15-10) = 14","price = 90 => Sell = 9 (-1)"],
+     "bubble":["그래서 이전 가격이","이 거래의 전부야."]},
+    {"n":5,"sec":[31,38],"type":"relief","bubbles":[["그럼 우리는","뭘 확인해요?"],["경쟁입찰로 정한 가격인지,","Fairness Opinion·LPAC 승인이 있는지."]],"sfx":"체크리스트!","chip":"체크: 가격 산정 · 선택 기간 · 새 보수 조건"},
+    {"n":6,"sec":[38,41.5],"type":"next","text":["다음 화","2 and 20","보수는 실제로 얼마나 떼가나?"]}
+  ],
+  "fact-check": "3년 뒤 150, 신규 Carry 20%(허들 없음)는 설명용 단순화. ILPA는 2023년 Continuation Funds 가이던스에서 가격 산정·선택 기간·LPAC 절차 등을 권고"
+}

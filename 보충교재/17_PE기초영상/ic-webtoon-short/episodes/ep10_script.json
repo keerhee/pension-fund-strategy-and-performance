@@ -1,0 +1,18 @@
+{
+  "episode": "EP.10",
+  "title": "캐치업 (Catch-up)",
+  "concept": "분배 워터폴의 GP 캐치업 — 허들 이후 GP가 100%를 받아 전체 이익의 20%에 도달할 때까지 따라잡고, 이후 80/20 분배",
+  "cuts": [
+    {"n":1,"sec":[0,4],"type":"title","text":["연기금 IC","일기","EP.10 · 캐치업 (Catch-up)"]},
+    {"n":2,"sec":[4,10.5],"type":"problem","doc":"LPA Section 8.2 Distributions: (ii) 8% Preferred Return to LPs / (iii) 100% to GP — Catch-up","bubble":["허들 넘으면 GP가 100%를?","이거 독소조항 아니에요?"]},
+    {"n":3,"sec":[10.5,17.5],"type":"twist","bubble":["허들까지는 우리가 먼저 받고,","GP는 이익의 20%를 '따라잡을' 때까지만 몰아받아."],"sfx":"따라잡기!"},
+    {"n":4,"sec":[17.5,32],"type":"explainer","chart":"waterfall_tiers",
+     "tiers":[{"name":"원금 반환","LP":100},{"name":"우선수익 8%","LP":8},{"name":"캐치업 100%","GP":2},{"name":"80/20","LP":40,"GP":10}],
+     "totals":{"LP":148,"GP":12,"GP_share_of_profit":"20%"},
+     "latex":["C = 20%(8+C) => C = 0.2x8/0.8 = 2","GP = 2 + 20% x 50 = 12 = 20% x 60","No catch-up: GP = 20% x 52 = 10.4 (17.3%)"],
+     "bubble":["100%는 잠깐이야.","결국 20%로 수렴하지."]},
+    {"n":5,"sec":[32,39],"type":"relief","bubbles":[["그럼 캐치업 비율도","협상할 수 있어요?"],["100% 대신 80%·50% 캐치업도 있어.","비율이 낮을수록 GP가 천천히 따라잡지."]],"sfx":"이해 완료!","chip":"체크: 허들 계산 방식 · 캐치업 비율 · 적용 단위"},
+    {"n":6,"sec":[39,42.5],"type":"next","text":["다음 화","워터폴","Carry는 언제 받나? 유럽식 vs 미국식"]}
+  ],
+  "fact-check": "허들 8을 납입 100의 단순 8%로 계산(실제는 기간·복리 반영 IRR 기준). 숫자는 EP.09(LP 148, Carry 12)와 일치하도록 설계. 캐치업 없을 때 GP 10.4/60 = 17.3%"
+}

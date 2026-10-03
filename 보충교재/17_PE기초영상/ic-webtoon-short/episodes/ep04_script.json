@@ -1,0 +1,18 @@
+{
+  "episode": "EP.04",
+  "title": "IRR의 함정",
+  "concept": "IRR은 속도, MOIC는 크기. 둘 다 봐야 한다. Subscription Line은 콜을 늦춰 IRR을 끌어올릴 수 있다",
+  "cuts": [
+    {"n":1,"sec":[0,4],"type":"title","text":["연기금 IC","일기","EP.04 · IRR의 함정"]},
+    {"n":2,"sec":[4,10],"type":"problem","cards":["펀드 A IRR 50%","펀드 B IRR 25%"],"bubble":["당연히 A죠!","IRR이 두 배잖아요!"]},
+    {"n":3,"sec":[10,15.5],"type":"twist","bubble":["잠깐. 얼마를, 얼마 동안","불렸는지부터 봐야지."],"sfx":"배수도 봐!"},
+    {"n":4,"sec":[15.5,27],"type":"explainer","chart":"cashflow_timeline",
+     "A":{"invest":100,"exit_year":1,"exit":150,"irr":"50%","moic":"1.5x"},
+     "B":{"invest":100,"exit_year":5,"exit":300,"irr":"24.6% (약 25%)","moic":"3.0x"},
+     "latex":["100(1+r)=150 => r=50%","100(1+r)^5=300 => r≈25%","1.25^5≈3.05"],
+     "bubble":["IRR은 속도,","배수(MOIC)는 크기야."]},
+    {"n":5,"sec":[27,33],"type":"relief","bubbles":[["그럼 IRR만 올리는","방법도 있어요?"],["Subscription Line으로 콜을 늦추면","IRR이 올라가. 그래서 둘 다 봐."]],"sfx":"소름!"},
+    {"n":6,"sec":[33,36.5],"type":"next","text":["다음 화","시계 조작?","Subscription Line의 비밀"]}
+  ],
+  "fact-check": "B의 정확한 IRR은 3^(1/5)-1 = 24.6%. A의 회수금 재투자 수익은 고려하지 않은 단순 비교"
+}

@@ -1,0 +1,17 @@
+{
+  "episode": "EP.11",
+  "title": "워터폴 (Waterfall)",
+  "concept": "분배 워터폴 방식 — 미국식(Deal-by-deal)은 딜별로 Carry를 먼저 받고 클로백으로 사후 정산, 유럽식(Whole-of-fund)은 펀드 전체 원금 반환 후 Carry",
+  "cuts": [
+    {"n":1,"sec":[0,4],"type":"title","text":["연기금 IC","일기","EP.11 · 워터폴 (Waterfall)"]},
+    {"n":2,"sec":[4,10.5],"type":"problem","notice":"Distribution Notice · 딜 A 매각: 회수 100(투자 50) → LP 90 / GP Carry 10","bubble":["GP는 벌써 Carry를 받았는데,","우린 원금도 다 못 돌려받았어요!"]},
+    {"n":3,"sec":[10.5,17.5],"type":"twist","bubble":["딜별로 계산하는 미국식이라 그래.","펀드 전체로 보는 유럽식이면 원금부터 다 받지."],"sfx":"순서의 차이!"},
+    {"n":4,"sec":[17.5,32],"type":"explainer","deals":{"A":{"year":3,"invest":50,"exit":100},"B":{"year":6,"invest":50,"exit":20}},
+     "american":{"yr3_GP":10,"yr6_GP":0,"clawback":6},"european":{"yr3":"GP 0 · LP 100","yr6_GP":4},
+     "latex":["Deal-by-deal: 20% x (100-50) = 10","Whole-of-fund: 20% x (120-100) = 4","Clawback = 10 - 4 = 6"],
+     "bubble":["미국식이면 받은 Carry를","돌려받는 장치가 꼭 필요해."]},
+    {"n":5,"sec":[32,39],"type":"relief","bubbles":[["GP가 이미 쓴 돈이면","어떻게 돌려받아요?"],["그래서 Carry 일부를 에스크로에 묶거나,","GP 파트너들의 보증을 받아 두지."]],"sfx":"안전장치!","chip":"체크: 워터폴 방식 · 클로백 · 에스크로 · GP 보증"},
+    {"n":6,"sec":[39,42.5],"type":"next","text":["다음 화","NAV 론","펀드가 포트폴리오를 담보로 돈을 빌린다?"]}
+  ],
+  "fact-check": "허들·캐치업 생략한 단순화. 실무의 미국식은 실현 딜 원금+비용(및 평가손 딜 상각분) 반환 후 Carry를 계산하는 수정형이 많음. 클로백은 통상 세후 기준으로 산정되어 전액 반환되지 않을 수 있음"
+}

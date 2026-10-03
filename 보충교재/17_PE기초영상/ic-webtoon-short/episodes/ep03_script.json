@@ -1,0 +1,16 @@
+{
+  "episode": "EP.03",
+  "title": "분배금이 왔다 — DPI vs TVPI",
+  "concept": "DPI(실현) = 분배/납입, RVPI(미실현) = NAV/납입, TVPI = DPI + RVPI",
+  "cuts": [
+    {"n":1,"sec":[0,4],"type":"title","text":["연기금 IC","일기","EP.03 · 분배금이 왔다"]},
+    {"n":2,"sec":[4,10],"type":"problem","notice":"Distribution Notice · GP A — 포트폴리오 회사 매각 대금 분배","bubble":["부장님! 우리 펀드가","벌써 1.6배래요! 부자다!!"]},
+    {"n":3,"sec":[10,15.5],"type":"twist","bubble":["1.6배는 TVPI야.","실제로 손에 쥔 돈은 DPI로 봐야지."],"sfx":"절반 넘게 평가액!"},
+    {"n":4,"sec":[15.5,26],"type":"explainer","chart":"paid_in_vs_value","paid_in":100,"distributions":70,"nav":90,
+     "latex":["DPI = Distributions/Paid-in = 0.7x","RVPI = NAV/Paid-in = 0.9x","TVPI = DPI + RVPI = 1.6x"],
+     "bubble":["NAV는 GP의 평가액이라","팔기 전까진 확정이 아니야."]},
+    {"n":5,"sec":[26,31.5],"type":"relief","bubbles":[["그럼 뭘 보고","판단해야 해요?"],["초기엔 TVPI, 후반엔 DPI.","둘의 차이가 미실현 몫이야."]],"sfx":"메모!"},
+    {"n":6,"sec":[31.5,35],"type":"next","text":["다음 화","IRR의 함정","빨리 돌려주면 IRR이 오른다?"]}
+  ],
+  "fact-check": "수치는 설명용 예시. 정의는 ILPA 표준 지표(DPI·RVPI·TVPI)와 일치"
+}

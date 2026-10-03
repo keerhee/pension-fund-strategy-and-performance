@@ -1,0 +1,18 @@
+{
+  "episode": "EP.05",
+  "title": "Subscription Line의 비밀",
+  "concept": "신용한도로 LP 콜을 늦추면 LP 기준 투자 기간이 짧아져 IRR은 오르고, 이자 비용 때문에 MOIC는 내려간다",
+  "cuts": [
+    {"n":1,"sec":[0,4],"type":"title","text":["연기금 IC","일기","EP.05 · Subscription Line의 비밀"]},
+    {"n":2,"sec":[4,10],"type":"problem","cards":["보고서 ① IRR 12.5%","보고서 ② IRR 15.1%"],"bubble":["회수 금액이 똑같은데","IRR은 왜 올랐죠?"]},
+    {"n":3,"sec":[10,16],"type":"twist","bubble":["GP가 은행 돈으로 먼저 사고,","우리 돈은 1년 늦게 불렀거든."],"sfx":"시계를 늦게 켰다!"},
+    {"n":4,"sec":[16,29],"type":"explainer","chart":"two_timelines",
+     "no_line":{"lp_out":[0,100],"in":[4,160],"irr":"12.47%","moic":"1.60x"},
+     "with_line":{"bank":[0,100],"rate":"5%","lp_out":[1,105],"in":[4,160],"irr":"15.07%","moic":"1.52x"},
+     "latex":["100(1+r)^4=160 => r≈12.5%","105(1+r)^3=160 => r≈15.1%","MOIC 160/100=1.60x vs 160/105≈1.52x"],
+     "bubble":["IRR은 올랐지만, 이자 5만큼","손에 쥐는 돈은 줄었지."]},
+    {"n":5,"sec":[29,36],"type":"relief","bubbles":[["GP는 왜","그렇게 해요?"],["IRR로 다음 펀드를 모으고,","허들 8%도 빨리 넘어 Carry를 받지."]],"sfx":"그랬구나!","chip":"LP 체크: 신용한도 전·후 IRR 함께 받기 (ILPA)"},
+    {"n":6,"sec":[36,39.5],"type":"next","text":["다음 화","PME","그래서, 시장보다 잘했나?"]}
+  ],
+  "fact-check": "금리 5%·1년 지연은 설명용 가정. 허들 8%는 업계 관행 수준. ILPA는 2017년 Subscription Line 가이던스에서 신용한도 전·후 IRR 공시를 권고"
+}
