@@ -83,3 +83,14 @@ def main(funcs, ep, meta):
         meta = dict(season="시즌 3 「시간은 답을 바꾼다」 (W07 동적 포트폴리오 · SS2 리밸런싱)", **meta)
         json.dump(meta, open(js, "w"), ensure_ascii=False, indent=1)
     run(funcs, CUTS, DUR, out, STILLS)
+
+
+def table(t, a0, cols, xs, header, rows, y0=395, dy=64, size=27, head_size=26):
+    """rows: [(cells, colors)] — 셀마다 색. 머리행은 NAVY."""
+    o = [f'<g opacity="{ease_out(prog(t, a0, .4)):.2f}">' + "".join(label(h, x, y0, head_size, NAVY, 900) for h, x in zip(header, xs))
+         + f'<line x1="80" y1="{y0+28}" x2="1000" y2="{y0+28}" stroke="{NAVY}" stroke-width="3"/></g>']
+    for r, (cells, colors) in enumerate(rows):
+        y = y0 + 28 + dy * (r + .75)
+        g = ease_out(prog(t, a0 + .4 + .55 * r, .4))
+        o.append(f'<g opacity="{g:.2f}">' + "".join(label(c, x, y, size, col, 900) for c, x, col in zip(cells, xs, colors)) + "</g>")
+    return "".join(o)

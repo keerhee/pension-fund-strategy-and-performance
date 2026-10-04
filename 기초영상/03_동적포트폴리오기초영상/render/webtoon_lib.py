@@ -39,6 +39,7 @@ def punch(text, x, y, size, fill=ORANGE, stroke=NAVY, scale=1.0, rot=0, sw=None)
             f'<text x="0" y="0" {t} fill="{fill}">{text}</text></g>')
 
 def label(text, x, y, size, fill=NAVY, weight=700, anchor="middle"):
+    text = str(text).replace("&lt;", "<").replace("<", "&lt;")   # [시즌 3] 부등호 자동 이스케이프
     return (f'<text x="{x}" y="{y}" font-family="{FONT}" font-weight="{weight}" font-size="{size}" '
             f'text-anchor="{anchor}" dominant-baseline="central" fill="{fill}">{text}</text>')
 
