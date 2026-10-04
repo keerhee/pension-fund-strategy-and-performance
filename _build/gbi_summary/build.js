@@ -210,9 +210,9 @@ const LW = 5.15, RX = M + LW + 0.40, RW = CW - LW - 0.40;   // 좌 수식 열 ·
   T.eqInCard(s, { x: M, w, y: cy + 0.04, h: FIG_BOT - cy - 0.04, kind: "ghost", cap: "두 상한 중 작은 값",
     path: img("eq/mrule"), ratio: rr("eq/mrule") });
   const x2 = M + w + 0.40, w2 = CW - w - 0.40;
-  textCard(s, x2, cy + 0.04, w2, 2.10, { kind: "white", cap: "① 급락 상한 — 견딜 손실 L",
+  textCard(s, x2, cy + 0.04, w2, 1.80, { kind: "white", cap: "① 급락 상한 — 견딜 손실 L",
     lines: ["월 99% VaR 약 12% → m 8", "하루 −20%(1987) → m 5", { text: "−25% 급락 → m 4", bold: true }] });
-  textCard(s, x2, cy + 2.30, w2, FIG_BOT - cy - 2.30, { kind: "dark", cap: "② 효용 기준 (Merton)",
+  textCard(s, x2, cy + 2.00, w2, FIG_BOT - cy - 2.00, { kind: "dark", cap: "② 효용 기준 (Merton)",
     lines: ["초과수익 4% · 변동성 18% · γ 0.5", { text: "→ m 약 2.5", bold: true, color: C.lime }] });
   T.punch(s, [{ text: "작은 값을 고른 뒤 마지막은 몬테카를로로 Safety ≥ 95% · Market ≥ 70%를 맞춥니다" },
     { text: "m은 철학의 숫자가 아니라 산수의 숫자입니다", color: C.red }], { y: 5.98 });
@@ -220,7 +220,7 @@ const LW = 5.15, RX = M + LW + 0.40, RW = CW - LW - 0.40;   // 좌 수식 열 ·
 // 18 m 민감도
 {
   const s = T.slide();
-  const cy = T.head(s, { title: "m이 크면 평균은 좋아지지만 최악은 나빠지고 Cash Trap에 갇힙니다", page: ++P,
+  const cy = T.head(s, { title: "m이 크면 중위 자산은 늘지만 최악은 나빠지고 Cash Trap에 갇힙니다", page: ++P,
     sub: "실습 Step 5 — 이순자 씨 65→75세 · 1,000 경로 · 출발 Floor 3.50억 → 75세 2.13억" });
   figAt(s, "fig/c_msens", M, CW, cy + 0.02, FIG_BOT);
   T.punch(s, [{ text: "m 3이면 Cash Trap 1.4% · Floor 위반 0%, m 6이면 Cash Trap 20.7% · 위반 1.9%" },
@@ -337,7 +337,7 @@ const LW = 5.15, RX = M + LW + 0.40, RW = CW - LW - 0.40;   // 좌 수식 열 ·
     { label: "퇴직연금 전체", value: 6.47, shown: "6.47%", color: C.blue },
     { label: "실적배당", value: 16.8, shown: "16.80%", color: C.teal }], { y: cy + 0.50, rowH: 0.80, barW: 3.9, max: 16.8 });
   T.insightBox(s, { x: M + CW - 4.5, y: cy + 0.04, w: 4.5, h: FIG_BOT - cy - 0.04, cap: "적립금 501조 원의 쏠림",
-    blocks: [{ title: "원리금보장 75.4%", desc: "퇴직연금 전체 · 디폴트옵션 안정형 85.4%" },
+    blocks: [{ title: "원리금보장 비중 75.4%", desc: "퇴직연금 전체 · 디폴트옵션 안정형은 85.4%" },
              { title: "안정형 583만 명", desc: "디폴트옵션 지정 가입자의 79.4%" }] });
   T.punch(s, [{ text: "가입자 열에 여덟이 3.09%를 고르고, 은퇴 목표액을 묻는 질문 자체가 없습니다" },
     { text: "GBI의 한국적 가치는 ‘목표를 묻는 것’에서 시작합니다", color: C.red }], { y: 5.98 });

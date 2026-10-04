@@ -28,7 +28,7 @@ def chart(name, f):
 
 # ---------------------------------------------------------------- 수식
 eq("risk1", r"\mathrm{Risk}=P\,(W_T<G)")
-eq("es", r"\mathrm{ES}=\mathbb{E}\,[\,G-W_T\;|\;W_T<G\,]", dark=True)
+eq("es", r"\mathrm{ES}=\mathbb{E}\,[\,G-W_T\ |\ W_T<G\,]", dark=True)
 eq("bpt", r"\max\ \sum_k U_k\quad \mathrm{s.t.}\quad P\,(W_k<G_k)\leq \alpha_k")
 eq("K", r"K=G\cdot e^{-mT}\cdot e^{+z_p\,\sigma\sqrt{T}}", fs=34)
 eq("gp", r"\ln K=\ln G-T\,g_p,\qquad g_p=m-z_p\,\frac{\sigma}{\sqrt{T}}")
@@ -38,10 +38,10 @@ eq("rb45", r"P_{45}=\frac{P_{65}}{1.02^{20}}=\frac{3.92}{1.486}\approx 2.64", da
 eq("atilde", r"\tilde{A}=\frac{A}{P(G)},\qquad P(G)=G\cdot B(t,T)")
 eq("dA", r"\frac{\Delta\tilde{A}}{\tilde{A}}\approx w_{PSP}\,(R_{PSP}-R_{GHP})")
 eq("cppi", r"E=m\,(A-F),\qquad w_{PSP}=\frac{m\,(A-F)}{A}")
-eq("cppicond", r"m\,(A-F)\,x\leq A-F;\Leftrightarrow; x\leq\frac{1}{m}", dark=True)
+eq("cppicond", r"m\,(A-F)\,x\leq A-F\quad\Leftrightarrow\quad x\leq\frac{1}{m}", dark=True)
 eq("mrule", r"m=\min\left\{\frac{1}{L},\ \frac{\mu-r}{\gamma\,\sigma^{2}}\right\}", fs=34)
 eq("flexi", r"F_t=0.8\,A_t,\qquad m_t=\frac{w_t^{TDF}}{1-0.8}")
-eq("dm", r"P\,(R_p<H)\leq\alpha;\Leftrightarrow; m_p+\Phi^{-1}(\alpha)\,\sigma_p\geq H")
+eq("dm", r"P\,(R_p<H)\leq\alpha\quad\Leftrightarrow\quad m_p+\Phi^{-1}(\alpha)\,\sigma_p\geq H")
 eq("gtot", r"\frac{1}{\gamma_{total}}=\sum_k\frac{a_k}{\gamma_k}", dark=True)
 eq("digital", r"X_T^{*}=k_{asp}\,G\cdot\mathbf{1}\{\xi_T\leq\bar{\xi}\}")
 eq("browne", r"P^{*}=\Phi\left(\Phi^{-1}(\tilde{A}_0)+\lambda\sqrt{T}\right)", dark=True)
@@ -224,7 +224,11 @@ ax.bar(xx + 0.2, c2, 0.4, color=C["muted"], label="② Cash Trap")
 ax.axhline(5, color=C["red"], ls="--", lw=1.5); ax.text(-0.45, 5.6, "① 임계 5%", color=C["red"], fontsize=14)
 ax.axhline(10, color=C["amber"], ls=":", lw=1.5); ax.text(-0.45, 10.6, "② 임계 10%", color=C["amber"], fontsize=14)
 for i, v in enumerate(c1):
-    ax.text(i - 0.2, v + 0.6, f"{v:.1f}", ha="center", fontsize=14)
+    # 임계선(5%) 바로 아래에 걸리는 라벨은 막대 안쪽으로 내린다
+    if 5 - 1.6 < v + 0.6 < 5 + 0.4:
+        ax.text(i - 0.2, v / 2, f"{v:.1f}", ha="center", va="center", fontsize=14, fontweight="bold")
+    else:
+        ax.text(i - 0.2, v + 0.6, f"{v:.1f}", ha="center", fontsize=14)
 ax.set_xticks(xx); ax.set_xticklabels(mk); ax.set_ylabel("확률 (%)"); ax.set_ylim(0, 25)
 ax.legend(loc="upper left", bbox_to_anchor=(0.0, 0.88), fontsize=14); ax.grid(axis="x", visible=False)
 chart("c_case1", f)
