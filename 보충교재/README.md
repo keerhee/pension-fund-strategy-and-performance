@@ -115,13 +115,14 @@
 |---|---:|---|
 | [`GP_동적거래모델_조준점과부분이동_ZeroOne.pdf`](16_Garleanu_Pedersen%EB%AA%A8%EB%8D%B8/GP_%EB%8F%99%EC%A0%81%EA%B1%B0%EB%9E%98%EB%AA%A8%EB%8D%B8_%EC%A1%B0%EC%A4%80%EC%A0%90%EA%B3%BC%EB%B6%80%EB%B6%84%EC%9D%B4%EB%8F%99_ZeroOne.pdf) | 43 | 예측 가능한 수익과 거래비용이 함께 있을 때의 최적 거래 규칙(JF 2013) — 신호의 반감기와 이차 비용 · 모델 식 네 개와 LQ 구조 · 원칙 1 부분 이동(a/λ)과 원칙 2 조준점(미래 목표의 가중평균, 신호별 반영 1/(1+φa/γ)) · 세 기간 손계산 · 20만 기간 네 전략 비교 · 상품선물 실증 · 무거래 구간과의 차이 · 연기금 대형 전환 · RL의 기준선 |
 
-### 17_LDI_GBI 수식도출 — Martellini GBI 수식 도출 III (W06 LDI·GBI · 특강 II와 함께)
+### 17_LDI_GBI 수식도출 — LDI 수식 도출 II · Martellini GBI 수식 도출 III (W06 LDI·GBI · 특강 II와 함께)
 
 | 자료 | 쪽 | 무엇을 다루나 |
 |---|---:|---|
-| [`03_Martellini_GBI_Derivations_III_zeroone.pdf`](17_LDI_GBI%20%EC%88%98%EC%8B%9D%EB%8F%84%EC%B6%9C/03_Martellini_GBI_Derivations_III_zeroone.pdf) | 84 | 목표를 값으로 재고 두 바구니로 나누는 비중 규칙 · 기초 도구와 부채의 측정 · 두 블록 최적해와 CPPI · 확률로 말하는 목표 · 은퇴소득·인출·요양 · 방법들의 관계와 동치 |
-| [`02_Martellini_GBI_Formula_Derivations_III.pdf`](17_LDI_GBI%20%EC%88%98%EC%8B%9D%EB%8F%84%EC%B6%9C/02_Martellini_GBI_Formula_Derivations_III.pdf) | 39 | 절마다 풀려는 문제 → 답 → 단계별 풀이 → 이렇게 한다 → 숫자로 확인 · CPPI 운용 순서 · Das-Markowitz · 디지털 옵션 델타 복제 · Flexicure 금액 계산 · 방법들의 동치 |
-| [`01_Martellini_GBI_Summary.pdf`](17_LDI_GBI%20%EC%88%98%EC%8B%9D%EB%8F%84%EC%B6%9C/01_Martellini_GBI_Summary.pdf) | 14 | 특강 II 마르텔리니 GBI 강의 덱 12종의 핵심 요약 |
+| [`LDI / LDI_Derivations_II_zeroone.pdf`](17_LDI_GBI%20%EC%88%98%EC%8B%9D%EB%8F%84%EC%B6%9C/LDI/LDI_Derivations_II_zeroone.pdf) | 74 | 부채연계투자(LDI) 실무 헤지 세 가지 — 부채 측정과 듀레이션 갭 · ① 현금흐름 매칭 ② 장기채 DV01 ③ 스왑 + 버퍼 · 헤지가 깨진 두 사건(2022 영국 LDI · 2023 SVB) · 헤지 비율과 위험 예산 · 최신 기법 |
+| [`GBI / 03_Martellini_GBI_Derivations_III_zeroone.pdf`](17_LDI_GBI%20%EC%88%98%EC%8B%9D%EB%8F%84%EC%B6%9C/GBI/03_Martellini_GBI_Derivations_III_zeroone.pdf) | 84 | 목표를 값으로 재고 두 바구니로 나누는 비중 규칙 · 기초 도구와 부채의 측정 · 두 블록 최적해와 CPPI · 확률로 말하는 목표 · 은퇴소득·인출·요양 · 방법들의 관계와 동치 |
+| [`GBI / 02_Martellini_GBI_Formula_Derivations_III.pdf`](17_LDI_GBI%20%EC%88%98%EC%8B%9D%EB%8F%84%EC%B6%9C/GBI/02_Martellini_GBI_Formula_Derivations_III.pdf) | 39 | 절마다 풀려는 문제 → 답 → 단계별 풀이 → 이렇게 한다 → 숫자로 확인 · CPPI 운용 순서 · Das-Markowitz · 디지털 옵션 델타 복제 · Flexicure 금액 계산 · 방법들의 동치 |
+| [`GBI / 01_Martellini_GBI_Summary.pdf`](17_LDI_GBI%20%EC%88%98%EC%8B%9D%EB%8F%84%EC%B6%9C/GBI/01_Martellini_GBI_Summary.pdf) | 14 | 특강 II 마르텔리니 GBI 강의 덱 12종의 핵심 요약 |
 
 > 웹툰 숏폼 같은 영상 자료는 [`../기초영상/`](../%EA%B8%B0%EC%B4%88%EC%98%81%EC%83%81/)에 따로 모았다.
 
@@ -146,7 +147,7 @@
 | `14_강화학습포트폴리오/` | 강화학습 포트폴리오 II — 본편 · 기초 부록 · Gârleanu–Pedersen 스페셜 세션 · 손계산 워크북 · 강화학습과 역강화학습(IRL) 강연 덱 |
 | `15_적극적운용의기본법칙/` | FLAM(적극적 운용의 기본법칙) 일반화 식 IR = TC · IC · √BR과 증명 |
 | `16_Garleanu_Pedersen모델/` | Gârleanu–Pedersen 동적 거래 모델 — 조준점과 부분 이동, 손계산 · 시뮬레이션 · 연기금 적용 |
-| `17_LDI_GBI 수식도출/` | Martellini GBI 수식 도출 III — 제로원 덱 · 풀이 노트 · 핵심 요약(PDF · md) |
+| `17_LDI_GBI 수식도출/` | `LDI/` LDI 수식 도출 II(실무 헤지 세 가지) · `GBI/` Martellini GBI 수식 도출 III(덱 · 풀이 노트 · 요약) |
 
 ---
 
