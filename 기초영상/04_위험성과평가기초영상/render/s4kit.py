@@ -44,8 +44,8 @@ def twist(t, lines, sfx, size=46, sfx_size=130):
 
 
 def explainer_frame(t, head, sub, head_size=104):
-    return [bg(CREAM), punch(head, 540, 150, head_size, fill=ORANGE, scale=back(prog(t, 0, .45))),
-            f'<g opacity="{ease_out(prog(t, .3, .5))}">' + label(sub, 540, 275, 34, NAVY, 700) + "</g>",
+    return [bg(CREAM), punch(head, 540, 150, min(head_size, int(1000 / max(1, len(head)) * 1.05)), fill=ORANGE, scale=back(prog(t, 0, .45))),
+            f'<g opacity="{ease_out(prog(t, .3, .5))}">' + label(sub, 540, 275, 34 if len(sub) <= 38 else max(24, int(34 * 38 / len(sub) + 2)), NAVY, 700) + "</g>",
             f'<rect x="50" y="330" width="980" height="1250" rx="24" fill="#fff" stroke="{NAVY}" stroke-width="8"/>']
 
 
