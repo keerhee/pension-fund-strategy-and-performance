@@ -1,0 +1,18 @@
+key,value,meaning,is_assumed
+asof,2026-09-21,기준일,0
+panel_seed,7207,모의실험 난수 시드,1
+endow_bn_krw,5000.0,"H대 발전기금(억, 가상)",1
+current_spend_bn,200.0,현행 연간 지출(억) = 기금의 4.0%,1
+lump_bn,600.0,신축 건물 공사비(억),1
+lump_year,3,공사비 인출 연차(기본),1
+lockup_years,10,기준 ① 사모투자 묶임 기간(년),1
+real_keep_min,0.5,기준 ② 30년 실질가치 유지 확률 하한,1
+spend_margin_pp,0.5,지출률 상한의 안전 여유 %p,1
+infl_pct,2.0,물가 %,1
+staff_h,1,H대 현재 사모투자 전담 인력(명),1
+staff_min,3,기준 ③ 직접 사모투자에 필요한 전담 인력(명),1
+mgr_min,15,기준 ③ 직접 사모투자에 필요한 펀드 수,1
+min_commit_bn,100.0,펀드당 최소 출자(억),1
+unfunded_share,0.4,출자 요청 총액 = 사모투자 목표 금액 × 비율,1
+call_years,4,출자 요청 납입 기간(년),1
+smooth_w,0.8,지출 평활 — 전년 지출 가중치,1

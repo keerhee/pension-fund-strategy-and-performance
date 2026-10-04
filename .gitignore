@@ -58,3 +58,6 @@ _구판/
 _build/lecfix/_eq/
 _build/lecfix/_art/
 보충교재/15_적극적운용의기본법칙/FLAM_Deck_Source/
+
+# 과제 정답지 — 교수용 폴더는 공개 저장소에 올리지 않는다.
+Assignment/**/2_Instructor/

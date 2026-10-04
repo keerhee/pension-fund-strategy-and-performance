@@ -1,0 +1,21 @@
+key,value,meaning,is_assumed
+asof,2026-09-21,기준일,0
+fund_2025_trn,1458.0,2025년 말 적립금(조),0
+fund_2026h1_trn,1865.6,"2026년 6월 말 적립금(조, 잠정)",0
+peak_year_official,2053,2025 재정추계 최대 적립 시점,0
+peak_fund_official,3659.0,최대 적립 규모(조),0
+deplete_45_official,2064,소진 — 수익률 4.5%,0
+deplete_55_official,2071,소진 — 수익률 5.5%,0
+hurdle_pct,5.5,허들 — 연금개혁 전제 기금수익률,0
+target_bond_dom_2027_pct,21.8,2027년 말 국내채권 목표 비중,0
+liab_end_year,2071,부채로 보는 순지급의 마지막 해,1
+kofr_pct,3.75,단기 변동금리,1
+swap_spread_30y_pp,-0.15,IRS 30년 − 국고채 30년,1
+hedge_tenor_y,30,헤지 수단 만기(년),1
+program_years,5,국채 분할 매입 기간(년),1
+cap_issue_share,0.3,기준 ② 국채 매입 한도 — 장기국채 연 발행량 대비 비율,1
+cap_irs_turnover_share,0.05,기준 ② 금리스왑 한도 — 연간 원화 스왑 거래량 대비 비율,1
+buffer_bp,250,기준 ③ 비상 담보 — 금리 급등 대비 bp (영국 연금감독청 최소 기준),0
+shock_bp_3d,200,기준 ③ 3영업일 금리 급등 bp,1
+dfr_material_pp,-5.0,기준 ① 임계 — 금리 −1%p 시 국채 기준 적립비율 변화 %p,1
+irs_turnover_2025_trn,5986.0,2025 원화 IRS 거래규모(조),0

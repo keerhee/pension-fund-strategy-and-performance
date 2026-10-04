@@ -1,0 +1,9 @@
+key,value,meaning,is_assumed
+asof,2026-09-21,기준일,0
+dc_guar_ret_pct,3.09,"원리금보장 평균 수익률 % (2025년, 금융감독원 퇴직연금 투자백서)",0
+panel_seed,7207,모의실험 난수 시드,1
+age0,55,가입자 나이,1
+retire_age,65,은퇴 나이(기간 10년),1
+g_s_mult,1.1,안전 목표 G_S = 초기 적립금 × 배수,1
+ghp_y0,3.0,10년 채권 금리 출발값 %,1
+market_alt_ret_pct,3.09,"원리금보장 수익률 % (G_M 계산용, 도구에서는 --guar로 바꾼다)",0
