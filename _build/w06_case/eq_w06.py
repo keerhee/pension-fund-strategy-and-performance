@@ -15,9 +15,9 @@ EQS = {   # mathtext: 한글 불가 · cases 불가 → 라벨은 캡션에, 결
     "eq_glide": r"$w_{t}=\max\{\,w_{h},\ 0.65-0.01\,(t-t^{*})\,\}$",
     "eq_trigger": r"$t^{*}=\min\{t:\ H_{t}/F_{t}<0.625\},\qquad w_{h}=\dfrac{5.5-\mu_{s}}{\mu_{r}-\mu_{s}}=50\%$",
     "eq_loss": r"$L_{t}=\dfrac{w_{t}\,\sigma_{r}\,F_{t}}{B_{t}}\ \leq\ 1$",
-    "eq_icapm": r"$w^{*}=\dfrac{\mu-r}{\gamma\sigma^{2}}\;+\;\left(1-\dfrac{1}{\gamma}\right)\dfrac{\beta\,\sigma_{x}}{\sigma_{a}}$",
-    "eq_predict": r"$\bar r_{t\rightarrow t+10}=\alpha+\beta\,x_{t}+\varepsilon_{t},\qquad t_{\beta}\ \geq\ 2\ \ (\mathrm{Newey\!-\!West})$",
-    "eq_hedge": r"$h_{i}=\left(1-\dfrac{1}{\gamma}\right)\dfrac{\beta_{i}\,\sigma_{x_i}}{\sigma_{a_i}},\qquad \gamma=5,\ T=10$",
+    "eq_icapm": r"$w^{*}_{T}=\dfrac{\mu-r}{\gamma\,\sigma^{2}}\;+\;h_{T}\qquad (h_{T}=0\ \ \mathrm{if}\ \gamma=1)$",
+    "eq_predict": r"$r_{t\rightarrow t+1}=\alpha+\beta\,x_{t}+\varepsilon_{t},\qquad |t_{\beta}|\ \geq\ 2\ \ (\mathrm{Newey\!-\!West},\ 1\mathrm{y})$",
+    "eq_hedge": r"$h_{i}=w^{*}_{i,10\mathrm{y}}-w^{*}_{i,1\mathrm{y}},\qquad w^{*}_{T}=\arg\max_{w}\ \mathrm{E}\left[\dfrac{W_{T}(w)^{1-\gamma}}{1-\gamma}\right]$",
 }
 ratios = {}
 for name, tex in EQS.items():

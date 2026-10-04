@@ -9,7 +9,8 @@ from matplotlib import font_manager as fm
 
 HERE = os.path.dirname(os.path.abspath(__file__)); W6 = os.path.dirname(HERE)
 D, IMG = f"{W6}/data", f"{W6}/img"; os.makedirs(IMG, exist_ok=True)
-fm.fontManager.addfont(os.path.expanduser("~/Library/Fonts/NotoSansCJK.ttc"))
+for _fp in (os.path.expanduser("~/Library/Fonts/NotoSansCJK.ttc"), "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc"):
+    if os.path.exists(_fp): fm.fontManager.addfont(_fp); break
 plt.rcParams.update({"font.family": "Noto Sans CJK KR", "font.size": 15, "axes.titlesize": 17, "axes.labelsize": 15,
                      "axes.spines.top": False, "axes.spines.right": False, "axes.edgecolor": "#6B7280", "axes.unicode_minus": False})
 NAVY, BLUE, GREEN, ORANGE, GRAY, BODY, MUTED, HAIR = "#1B2C5E", "#2E5BAA", "#3FA36F", "#E65100", "#F4F5F9", "#3B4252", "#6B7280", "#D6D6DB"
@@ -101,27 +102,35 @@ ax.set_title("정점 이후 '한 해 나쁜 해'가 급여 한 해분을 넘는�
 ax.legend(loc="upper right", frameon=False, fontsize=13); ax.grid(axis="y", color=HAIR, lw=0.8)
 save(fig, "fig_loss_ratio")
 
-# 6. KIC 헤징 수요 --------------------------------------------------------------------
-ins = R["agenda2"]["instruments"]
-fig, (ax, bx) = plt.subplots(1, 2, figsize=(12.5, 5.2), gridspec_kw={"width_ratios": [1.15, 1]}); fig.subplots_adjust(top=0.78, wspace=0.08)
-names = [i["name"].split("(")[0].strip() for i in ins]
-t = [i["t"] for i in ins]; hp = [i["hedge_pp"] for i in ins]
-ax.barh(names, t, color=[GREEN if i["cond1_ok"] else MUTED for i in ins], height=0.55); ax.axvline(2, color=ORANGE, ls=":", lw=1.5)
-ax.set_title("조건 ① 예측력 — 10년 지평 t값 (임계 2)", loc="left", color=NAVY); ax.invert_yaxis(); ax.set_xlim(-3, 5.2)
-for i, v in enumerate(t): ax.text(v + (0.15 if v >= 0 else -0.15), i, f"{v:.2f}", va="center", ha="left" if v >= 0 else "right", fontsize=13, color=BODY)
-bx.barh(names, hp, color=[GREEN if i["cond2_ok"] else MUTED for i in ins], height=0.55); bx.axvline(5, color=ORANGE, ls=":", lw=1.5); bx.axvline(-5, color=ORANGE, ls=":", lw=1.5)
-bx.set_title("조건 ② 헤징 수요 크기 (%p, γ=5 · 임계 ±5)", loc="left", color=NAVY); bx.invert_yaxis(); bx.set_yticklabels([]); bx.set_xlim(-8, 12.5)
-for i, v in enumerate(hp): bx.text(v + (0.3 if v >= 0 else -0.3), i, f"{v:+.1f}", va="center", ha="left" if v >= 0 else "right", fontsize=13, color=BODY)
-for a in (ax, bx): a.grid(axis="x", color=HAIR, lw=0.8)
-fig.suptitle("장기채·물가연동채는 두 조건을 넘고, 변동성 헤지는 둘 다 못 넘는다", x=0.01, y=0.97, ha="left", color=NAVY, fontsize=17)
+# 6. KIC 헤징 수요 — 1년 · 10년 최적 비중과 세 안 -----------------------------------------
+a2 = R["agenda2"]; ins = a2["instruments"]
+short = lambda t: t.split("(")[0].replace(" · 실물자산", "").strip()
+fig, (ax, bx) = plt.subplots(1, 2, figsize=(12.5, 5.2), gridspec_kw={"width_ratios": [1.3, 1]}); fig.subplots_adjust(top=0.80, wspace=0.28)
+names = ["주식"] + [short(i["name"]) for i in ins]
+w1 = [a2["equity"]["w_1y_pct"]] + [i["w_1y_pct"] for i in ins]; wH = [a2["equity"]["w_10y_pct"]] + [i["w_10y_pct"] for i in ins]
+yy = np.arange(len(names))
+ax.barh(yy - 0.2, w1, height=0.38, color=MUTED, label="1년 최적(단기)"); ax.barh(yy + 0.2, wH, height=0.38, color=GREEN, label=f"{a2['horizon']}년 최적")
+ax.set_yticks(yy); ax.set_yticklabels(names); ax.invert_yaxis(); ax.set_xlim(0, 80)
+for k in range(len(names)):
+    ax.text(w1[k] + 1, k - 0.2, f"{w1[k]:.1f}", va="center", fontsize=12, color=BODY); ax.text(wH[k] + 1, k + 0.2, f"{wH[k]:.1f}", va="center", fontsize=12, color=BODY)
+ax.set_title("최적 비중(%) — 두 막대의 차이가 헤징 수요", loc="left", color=NAVY); ax.legend(loc="lower right", frameon=False, fontsize=12)
+op = a2["options"]; lab = {"A": "A 헤지 없음", "B": "B 장기채+물가연동", "C": "C B+변동성 5%"}
+bx.bar([lab[o["option"]] for o in op], [o["ce_10y_pct"] for o in op], color=[MUTED, GREEN, MUTED], width=0.55)
+for k, o in enumerate(op): bx.text(k, o["ce_10y_pct"] + 0.02, f"{o['ce_10y_pct']:.2f}%\n({o['vs_A_bp']:+d}bp)", ha="center", fontsize=12, color=BODY)
+bx.set_ylim(3.5, 4.45); bx.set_title("세 안의 10년 확실성등가(비용 차감)", loc="left", color=NAVY); bx.tick_params(axis="x", labelsize=11)
+ax.grid(axis="x", color=HAIR, lw=0.8); bx.grid(axis="y", color=HAIR, lw=0.8)
+fig.suptitle("장기 투자자는 장기채 · 물가연동채를 더 담는다 — 변동성 헤지는 두 지평 모두 0", x=0.01, y=0.97, ha="left", color=NAVY, fontsize=17)
 save(fig, "fig_kic_hedge")
 
-# 7. 지평별 t값 — 왜 10년인가 --------------------------------------------------------
-hz = pd.DataFrame(R["agenda2"]["bond_horizon"])
+# 7. 간편 공식 vs 직접 계산 ------------------------------------------------------------
 fig, ax = plt.subplots(figsize=(7.5, 4.6))
-ax.bar(hz.horizon.astype(str) + "년", hz.t, color=[GREEN if v >= 2 else MUTED for v in hz.t], width=0.55)
-ax.axhline(2, color=ORANGE, ls=":", lw=1.5); ax.set_ylabel("t값"); ax.set_xlabel("예측 지평")
-for i, v in enumerate(hz.t): ax.text(i, v + 0.1, f"{v:.2f}", ha="center", fontsize=13, color=BODY)
-ax.set_title("장기채 — 금리의 예측력은 긴 지평에서만 보인다", loc="left", color=NAVY); ax.grid(axis="y", color=HAIR, lw=0.8)
+nm = [short(i["name"]) for i in ins]; xx = np.arange(len(nm))
+f_ = [i["formula_pp"] for i in ins]; d_ = [i["hedge_pp"] for i in ins]
+ax.bar(xx - 0.2, f_, width=0.38, color=MUTED, label="간편 공식 (1−1/γ)·β·σx/σa"); ax.bar(xx + 0.2, d_, width=0.38, color=GREEN, label="직접 계산 (10년 − 1년)")
+for k in range(len(nm)):
+    ax.text(k - 0.2, f_[k] + (1 if f_[k] >= 0 else -4), f"{f_[k]:+.1f}", ha="center", fontsize=12, color=BODY); ax.text(k + 0.2, d_[k] + 1, f"{d_[k]:+.1f}", ha="center", fontsize=12, color=BODY)
+ax.axhline(3, color=ORANGE, ls=":", lw=1.5); ax.axhline(0, color=HAIR, lw=1); ax.set_ylim(-8, 50)
+ax.set_xticks(xx); ax.set_xticklabels(nm); ax.set_ylabel("헤징 수요 (%p)"); ax.legend(frameon=False, fontsize=11, loc="upper left")
+ax.set_title("공식은 공분산을 보지 않는다 — 크기를 놓친다", loc="left", color=NAVY); ax.grid(axis="y", color=HAIR, lw=0.8)
 save(fig, "fig_kic_horizon")
 print("charts done")

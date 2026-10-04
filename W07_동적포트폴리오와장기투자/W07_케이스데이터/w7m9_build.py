@@ -171,68 +171,47 @@ pd.DataFrame([
     asof=ASOF, source="보건복지부 기금적립금 현황 · 국민연금 통계(2026.6)").to_csv(f"{OUT}/fml_w7m9_fund_history.csv", index=False)
 
 # ─────────────────────────────────────────────────────────────────────────────
-# 4. KIC 제2호 — 상태변수 모의 패널 (교육용, 파라미터를 알고 만든 데이터)
+# 4. KIC 제2호 — 상태변수 모의 패널 (교육용, 데이터 생성 과정을 공개한 자료)
 #    자산: 장기 국채(bond_long) · 물가연동채(tips) · 주식(eq) · 변동성 헤지(vol_hedge, 롱 VIX 선물 유사)
 #    상태변수: 10년 금리(yield10), 기대 인플레(infl_exp), 변동성 지수(vix)
-#    "예측력"은 상태변수 → 이후 10년 연환산 초과수익 회귀의 t값으로 잰다.
+#    상태변수의 '수준'이 다음 달 기대수익을, 상태변수의 '충격'이 이번 달 실현수익을 움직인다.
+#    시드는 고정(71)이며 결과에 맞춰 고르지 않았다 — 다른 시드의 결과는 compute 의 강건성 점검에 있다.
 # ─────────────────────────────────────────────────────────────────────────────
 N = 480
-GAMMA_KIC_, HZ_ = 5.0, 10
+KIC_SEED = 71
 
 
-def predictive(x, ret, hz):
-    """상태변수 x(t) → 이후 hz년 연환산 수익(%) 회귀의 (β, Newey–West t) — w7m9_compute.py 와 같은 정의"""
-    fwd = np.array([ret[i + 1:i + 1 + 12 * hz].mean() * 12 for i in range(len(ret) - 12 * hz)]); xs = x[: len(fwd)]
-    X = np.c_[np.ones(len(xs)), xs]; beta, *_ = np.linalg.lstsq(X, fwd, rcond=None); resid = fwd - X @ beta
-    lag = 12 * hz - 1; u = resid[:, None] * X; S = u.T @ u
-    for l in range(1, lag + 1):
-        wgt = 1 - l / (lag + 1); G = u[l:].T @ u[:-l]; S += wgt * (G + G.T)
-    XtX_inv = np.linalg.inv(X.T @ X); V = XtX_inv @ S @ XtX_inv
-    return float(beta[1]), float(beta[1] / np.sqrt(V[1, 1]))
-
-
-def simulate(seed):
+def simulate_kic(seed, n=N):
     r = np.random.default_rng(seed)
-    yld = np.zeros(N); inf = np.zeros(N); vix = np.zeros(N)
-    yld[0], inf[0], vix[0] = 3.5, 2.2, 18.0
-    for t in range(1, N):
-        yld[t] = yld[t-1] + 0.006 * (3.5 - yld[t-1]) + r.normal(0, 0.10)     # 매우 지속적(반감기 약 10년) — 장기 예측력의 원천
-        inf[t] = inf[t-1] + 0.008 * (2.2 - inf[t-1]) + r.normal(0, 0.08)
-        vix[t] = max(9, vix[t-1] + 0.10 * (18 - vix[t-1]) + r.normal(0, 2.4))    # 빠르게 되돌아감(반감기 7개월) — 장기 예측력 없음
-    e_b = r.normal(0, 1.2, N); e_t = r.normal(0, 1.0, N); e_e = r.normal(0, 4.2, N); e_v = r.normal(0, 7.0, N)
-    lag = lambda a: np.r_[a[0], a[:-1]]           # 전월 상태변수가 이달 수익을 예측
-    bond_long = 0.10 + 1.00 * (lag(yld) - 3.5) / 12 + e_b                  # 금리 1%p 높으면 이후 장기채 연 +1.0%p (강한 예측, β≈1)
-    tips = 0.06 + 0.60 * (lag(inf) - 2.2) / 12 + 0.25 * (lag(yld) - 3.5) / 12 + e_t   # 기대 인플레 1%p → 연 +0.6%p (중간)
-    eq = 0.50 + 0.05 * (lag(vix) - 18) / 12 + e_e                          # VIX 1pt → 연 +0.05%p (약함)
-    vol_hedge = -1.2 + 0.9 * np.diff(np.r_[vix[0], vix]) + e_v            # 변동성 헤지: 평시 캐리 −1.2%/월, VIX 급등 시 +
+    e_y = r.normal(0, 0.12, n); e_p = r.normal(0, 0.08, n); e_v = r.normal(0, 2.4, n)
+    yld = np.zeros(n); inf = np.zeros(n); vix = np.zeros(n); yld[0], inf[0], vix[0] = 3.5, 2.2, 18.0
+    for t in range(1, n):
+        yld[t] = yld[t-1] + 0.04 * (3.5 - yld[t-1]) + e_y[t]           # 10년 금리(%) — 평균 회귀
+        inf[t] = inf[t-1] + 0.03 * (2.2 - inf[t-1]) + e_p[t]           # 기대 인플레(%)
+        vix[t] = max(9.0, vix[t-1] + 0.10 * (18 - vix[t-1]) + e_v[t])  # VIX
+    lag = lambda a: np.r_[a[0], a[:-1]]
+    dv = np.diff(np.r_[vix[0], vix])
+    bond_long = 0.04 + 0.45 * (lag(yld) - 3.5) - 15.0 * e_y + r.normal(0, 0.3, n)          # 듀레이션 15 — 금리 하락 충격에 오르고, 이후 기대수익은 낮아진다
+    eq = 0.45 - 1.20 * (lag(inf) - 2.2) + 0.04 * (lag(vix) - 18) - 2.0 * e_p - 0.5 * dv + r.normal(0, 3.6, n)  # 인플레가 높으면 이후 주식 기대수익 하락
+    tips = 0.02 + 6.0 * e_p - 6.0 * e_y + r.normal(0, 1.0, n)                               # 인플레 상승 충격에 오른다
+    vol_hedge = -0.5 + 0.9 * dv + r.normal(0, 4.0, n)                                        # 평시 보유 비용(carry), VIX 급등 시 이익
     return yld, inf, vix, bond_long, tips, eq, vol_hedge
 
 
-# 교육용 패널은 "설계된 예측력"을 가져야 한다 — 한 번의 난수 경로는 40년 표본으로도 t값이 크게 흔들리므로
-# (장기 지평 회귀의 표본 문제 자체가 강의 소재다) 설계 범위에 드는 시드를 골라 기록한다.
-def in_design(seed):
-    yld, inf, vix, bl, tp, eq, vh = simulate(seed)
-    tb = predictive(yld, bl, HZ_)[1]; tt = predictive(inf, tp, HZ_)[1]; tv = predictive(vix, eq, HZ_)[1]
-    return (3.0 <= tb <= 6.0) and (2.0 <= tt <= 3.0) and (abs(tv) < 1.2), (tb, tt, tv)
-
-SEED = None
-for s in range(1, 3000):
-    ok, ts = in_design(s)
-    if ok: SEED = s; break
-assert SEED is not None, "설계 범위의 시드를 찾지 못함"
-yld, inf, vix, bond_long, tips, eq, vol_hedge = simulate(SEED)
-print(f"KIC 패널 시드 {SEED} — t값 장기채 {ts[0]:.2f} · TIPS {ts[1]:.2f} · VIX {ts[2]:.2f}")
+yld, inf, vix, bond_long, tips, eq, vol_hedge = simulate_kic(KIC_SEED)
+SEED = KIC_SEED
 dates = pd.date_range("1986-12-31", periods=N, freq="ME")
 panel = pd.DataFrame({"date": dates.strftime("%Y-%m-%d"), "yield10": yld.round(3), "infl_exp": inf.round(3), "vix": vix.round(2),
                       "bond_long_ret": (bond_long / 100).round(5), "tips_ret": (tips / 100).round(5),
                       "eq_ret": (eq / 100).round(5), "vol_hedge_ret": (vol_hedge / 100).round(5)})
 panel.to_csv(f"{OUT}/fml_w7m9_kic_panel_sim.csv", index=False)
+print(f"KIC 패널 시드 {SEED} (고정)")
 
 pd.DataFrame([
-    ("bond_long", "장기 국채 오버레이", "yield10", "금리 하락(재투자 수익 악화)", 5, 90, 1),
-    ("tips", "물가연동채 · 실물자산", "infl_exp", "인플레 상승(실질가치 하락)", 15, 60, 1),
-    ("vol_hedge", "변동성 헤지(옵션 · VIX 상품)", "vix", "변동성 상승(투자 기회 악화)", 140, 40, 1),
-], columns=["instrument", "name", "state_var", "bad_state", "carry_cost_bp", "liquidity_score", "is_assumed"]).assign(asof=ASOF).to_csv(f"{OUT}/fml_w7m9_kic_hedge.csv", index=False)
+    ("bond_long", "장기 국채 오버레이", "yield10", "금리 하락(재투자 수익 악화)", 5, "매매 · 롤오버 비용(연)", 1),
+    ("tips", "물가연동채 · 실물자산", "infl_exp", "인플레 상승(실질가치 하락)", 15, "매매 · 운용 보수(연)", 1),
+    ("vol_hedge", "변동성 헤지(옵션 · VIX 상품)", "vix", "변동성 상승(투자 기회 악화)", 40, "매매 비용(연) — 보유 비용(carry, 연 약 −6%)은 수익률 자료에 이미 반영", 1),
+], columns=["instrument", "name", "state_var", "bad_state", "cost_bp", "cost_note", "is_assumed"]).assign(asof=ASOF).to_csv(f"{OUT}/fml_w7m9_kic_hedge.csv", index=False)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 5. 파라미터 표
@@ -251,9 +230,10 @@ params = [
     ("hf_trigger", HF_TRIGGER, "조건 ① H/F 임계(총부 위험비중 40%)", 1), ("seq_limit_years", SEQ_LIMIT_YEARS, "참고 — 충격 1회 소진 앞당김(년)", 1), ("loss_ratio_max", LOSS_RATIO_MAX, "조건 ③ 1σ 손실액/급여 상한(년치)", 1),
     ("buffer_years", BUFFER_YEARS, "조건 ⑤ 안전자산 ≥ 급여 n년치", 1), ("glide_speed", GLIDE_SPEED, "감축 속도 %p/년", 1),
     ("floor_B", GLIDE_FLOOR_B, "안 B 종점", 1), ("floor_C", GLIDE_FLOOR_C, "안 C 종점", 1),
-    ("gamma_kic", GAMMA_KIC, "KIC 위험회피도", 1), ("kic_panel_seed", SEED, "KIC 모의 패널 난수 시드(설계 범위 탐색 결과)", 1), ("horizon_kic", HORIZON_KIC, "KIC 지평(년)", 1),
-    ("t_min", 2.0, "제2호 조건 ① 예측력 t값 하한", 1), ("hedge_min_pp", 5.0, "제2호 조건 ② 헤징 수요 하한(%p)", 1),
-    ("cost_max_bp", 30.0, "제2호 조건 ③ 연 캐리 비용 상한(bp)", 1),
+    ("gamma_kic", GAMMA_KIC, "KIC 위험회피도", 1), ("kic_panel_seed", SEED, "KIC 모의 패널 난수 시드(고정 · 결과에 맞춰 고르지 않음)", 1), ("horizon_kic", HORIZON_KIC, "KIC 지평(년)", 1),
+    ("rf_kic", 3.0, "KIC 무위험 금리 %/년", 1),
+    ("t_min", 2.0, "제2호 조건 ① 예측력 |t| 하한 — 1년 회귀(교육용 · 5% 유의수준 관례)", 1), ("hedge_min_pp", 3.0, "제2호 조건 ② 헤징 수요(10년 − 1년 최적 비중) 하한 %p(교육용)", 1),
+    ("gain_min_bp", 1.0, "제2호 조건 ③ 비용 차감 후 10년 확실성등가 기여 하한 bp/년(교육용)", 1),
 ]
 pd.DataFrame(params, columns=["key", "value", "meaning", "is_assumed"]).to_csv(f"{OUT}/fml_w7m9_params.csv", index=False)
 

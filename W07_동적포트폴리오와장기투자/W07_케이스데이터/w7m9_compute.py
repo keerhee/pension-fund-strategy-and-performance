@@ -8,12 +8,14 @@
   조건 ② 허들            종점 비중의 μ ≥ 5.5%(연금개혁 전제 기금수익률) — 종점 w ≥ w_h
   조건 ③ 시간분산(금액)   정점 이후 1σ 연간 손실액 ≤ 그해 급여 지출 1년치 (Samuelson: 비율이 아니라 금액)
   조건 ④ 소진 시점       경로별 소진 연도 ≥ 2071 (개혁 후 5.5% 공식 전망)
-  조건 ⑤ 유동성 버퍼     순유출 전환 이후(소진 5년 전까지) 매년 안전자산 ≥ 급여 2년치. 시퀀싱(2008형 충격 1회의 소진 앞당김)은 참고 산수 — 경로를 가르지 않는다
-제2호 (KIC) 헤징 수요 프로그램 — 수단별
-  조건 ① 예측력          상태변수 → 이후 10년 연환산 초과수익 회귀의 t값 ≥ 2 (Newey–West)
-  조건 ② 크기            헤징 수요(%p) = (1 − 1/γ) × β × σ_state / σ_asset ≥ 5%p
-  조건 ③ 비용            연 캐리 비용 ≤ 30bp
+  조건 ⑤ 유동성 버퍼     순유출 전환 이후(소진 5년 전까지) 매년 안전자산 ≥ 급여 1.5년치. 시퀀싱(2008형 충격 1회의 소진 앞당김)은 참고 산수 — 경로를 가르지 않는다
+제2호 (KIC) 헤징 수요 프로그램 — 수단별 (Campbell · Chan · Viceira 2003 방식을 단순화)
+  VAR(1) 추정(상태변수 3 · 자산 4의 월 초과수익을 전월 상태변수로) → 4,000개 경로 → 1년 · 10년 CRRA(γ=5) 최적 고정 비중
+  조건 ① 예측력          상태변수 → 기금 자산의 이후 1년 초과수익 회귀 |t| ≥ 2 (Newey–West · 겹치지 않는 1년 구간 40개)
+  조건 ② 헤징 수요       10년 최적 비중 − 1년 최적 비중 ≥ 3%p
+  조건 ③ 순편익          그 수단을 뺀 최적 대비 10년 확실성등가 기여(비용 차감) > 1bp/년
   조건 ④ 거버넌스        다년 손실 허용 명문화 — 표결 조건(계산 대상 아님)
+  임계값(①②③)은 교육용 가정이다. 참고로 간편 공식 (1−1/γ)·β·σx/σa(10년 회귀)의 값도 함께 남긴다 — 공분산을 보지 않는 근사.
 """
 import json, os
 import numpy as np, pandas as pd
@@ -141,10 +143,14 @@ res["agenda1"]["time_div"] = [{"T": T, "annualized": round(sig65 / T ** 0.5, 2),
 L("[시간분산] 65:35 σ {:.1f}% → T=30 연환산 {:.1f}% · 누적 {:.0f}%".format(sig65, sig65 / 30 ** 0.5, sig65 * 30 ** 0.5))
 
 # ── 제2호 KIC ──────────────────────────────────────────────────────────────
+from scipy.optimize import minimize
 L("\n=== 제2호 — KIC 헤징 수요 프로그램 ===")
-pn = pd.read_csv(f"{D}/fml_w7m9_kic_panel_sim.csv")
 hedge = pd.read_csv(f"{D}/fml_w7m9_kic_hedge.csv").set_index("instrument")
-gamma, Hz = f("gamma_kic"), int(f("horizon_kic"))
+gamma, Hz, RF = f("gamma_kic"), int(f("horizon_kic")), f("rf_kic") / 100 / 12
+AS = ["eq", "bond_long", "tips", "vol_hedge"]; SV = ["yield10", "infl_exp", "vix"]
+LINK = {"bond_long": ("yield10", "bond_long"), "tips": ("infl_exp", "eq"), "vol_hedge": ("vix", "eq")}
+COST = np.array([0.0] + [hedge.cost_bp[k] for k in AS[1:]]) / 1e4 / 12
+BOUNDS = [(0, 1.0), (0, 1.0), (0, 1.0), (0, 0.3)]
 
 
 def predictive(x, ret, hz):
@@ -152,37 +158,95 @@ def predictive(x, ret, hz):
     fwd = np.array([ret[i + 1:i + 1 + 12 * hz].mean() * 12 for i in range(len(ret) - 12 * hz)]); xs = x[: len(fwd)]
     X = np.c_[np.ones(len(xs)), xs]; beta, *_ = np.linalg.lstsq(X, fwd, rcond=None); resid = fwd - X @ beta
     lag = 12 * hz - 1; u = resid[:, None] * X; S = u.T @ u
-    for l in range(1, lag + 1):
+    for l in range(1, min(lag, len(u) - 1) + 1):
         wgt = 1 - l / (lag + 1); G = u[l:].T @ u[:-l]; S += wgt * (G + G.T)
     XtX_inv = np.linalg.inv(X.T @ X); V = XtX_inv @ S @ XtX_inv
     return float(beta[1]), float(beta[1] / np.sqrt(V[1, 1]))
 
 
+def kic_engine(pn, paths=4000, seed=7):
+    S = pn[SV].values; R = pn[[f"{k}_ret" for k in AS]].values; T = len(pn)
+    X = np.c_[np.ones(T - 1), S[:-1]]
+    Bs, *_ = np.linalg.lstsq(X, S[1:], rcond=None); Br, *_ = np.linalg.lstsq(X, R[1:], rcond=None)
+    U = np.c_[S[1:] - X @ Bs, R[1:] - X @ Br]; Lc = np.linalg.cholesky(np.cov(U.T) + 1e-12 * np.eye(U.shape[1]))
+    NM = 12 * Hz; Z = np.random.default_rng(seed).standard_normal((paths, NM, U.shape[1])) @ Lc.T
+    s = np.tile(S.mean(0), (paths, 1)); RET = np.zeros((paths, NM, 4))
+    for t in range(NM):
+        xt = np.c_[np.ones(paths), s]; RET[:, t] = xt @ Br + Z[:, t, 3:]; s = xt @ Bs + Z[:, t, :3]
+    def logce(w, m):
+        lw = np.log1p(np.clip(RF + RET[:, :m] @ w - COST @ np.abs(w), -0.99, None)).sum(1)
+        z = (1 - gamma) * lw; mx = z.max(); return (mx + np.log(np.mean(np.exp(z - mx)))) / (1 - gamma) * 12 / m
+    ce = lambda w, m: (np.exp(logce(w, m)) - 1) * 100
+    def opt(m, free, fixed=None):
+        fixed = fixed or {}
+        def fn(z):
+            w = np.zeros(4); w[free] = z
+            for k, v in fixed.items(): w[k] = v
+            return -logce(w, m)
+        best = None
+        for st in (0.3, 0.6):
+            z0 = np.full(len(free), 0.1); z0[0] = st if free[0] == 0 else 0.1
+            r = minimize(fn, z0, bounds=[BOUNDS[j] for j in free], method="L-BFGS-B")
+            if best is None or r.fun < best.fun: best = r
+        w = np.zeros(4); w[free] = best.x
+        for k, v in fixed.items(): w[k] = v
+        return w
+    return logce, ce, opt, NM
+
+
+pn = pd.read_csv(f"{D}/fml_w7m9_kic_panel_sim.csv")
+logce, ce, opt, NM = kic_engine(pn)
+ALL = [0, 1, 2, 3]; w1 = opt(12, ALL); wH = opt(NM, ALL); ceH = ce(wH, NM)
 a2 = []
-for inst, r in hedge.iterrows():
-    x = pn[r.state_var].values; ret = pn[f"{inst}_ret"].values * 100
-    beta, t = predictive(x, ret, Hz)
-    sig_state = np.std(x); sig_asset = np.std(ret) * 12 ** 0.5
-    hedge_pp = (1 - 1 / gamma) * beta * sig_state / sig_asset * 100
-    cost = r.carry_cost_bp
-    ok1, ok2, ok3 = t >= f("t_min"), abs(hedge_pp) >= f("hedge_min_pp"), cost <= f("cost_max_bp")
-    verdict = "채택" if ok1 and ok2 and ok3 else ("조건부" if (ok1 and ok3) or (ok2 and ok3 and t >= 1.5) else "기각")
-    a2.append({"instrument": inst, "name": r["name"], "state_var": r.state_var, "beta": round(beta, 3), "t": round(t, 2),
-               "sig_state": round(float(sig_state), 3), "sig_asset": round(float(sig_asset), 2),
-               "hedge_pp": round(float(hedge_pp), 1), "carry_cost_bp": int(cost), "cond1_ok": bool(ok1), "cond2_ok": bool(ok2), "cond3_ok": bool(ok3), "verdict": verdict})
-    L(f"[{r['name']}] {r.state_var} → 10년 수익: β {beta:.3f} · t {t:.2f} ({'통과' if ok1 else '탈락'}) · 헤징 수요 {hedge_pp:+.1f}%p ({'통과' if ok2 else '탈락'}) "
-      f"· 비용 {cost:.0f}bp ({'통과' if ok3 else '탈락'}) → {verdict}")
+for i, k in enumerate(AS[1:], start=1):
+    sv, tgt = LINK[k]; r = hedge.loc[k]
+    b1, t1 = predictive(pn[sv].values, pn[f"{tgt}_ret"].values * 100, 1)
+    bF, tF = predictive(pn[sv].values, pn[f"{k}_ret"].values * 100, Hz)
+    s_x, s_a = float(np.std(pn[sv].values)), float(np.std(pn[f"{k}_ret"].values * 100) * 12 ** 0.5)
+    formula_pp = (1 - 1 / gamma) * bF * s_x / s_a * 100
+    w_wo = opt(NM, [j for j in ALL if j != i]); gain = (ceH - ce(w_wo, NM)) * 100
+    hd = (wH[i] - w1[i]) * 100
+    ok1, ok2, ok3 = abs(t1) >= f("t_min"), hd >= f("hedge_min_pp"), gain > f("gain_min_bp")
+    verdict = "채택" if ok1 and ok2 and ok3 else "기각"
+    a2.append({"instrument": k, "name": r["name"], "state_var": sv, "target": tgt, "beta_1y": round(b1, 2), "t": round(t1, 2),
+               "w_1y_pct": round(w1[i] * 100, 1), "w_10y_pct": round(wH[i] * 100, 1), "hedge_pp": round(hd, 1), "gain_bp": round(gain, 1),
+               "cost_bp": int(r.cost_bp), "formula_t10": round(tF, 2), "formula_pp": round(formula_pp, 1),
+               "cond1_ok": bool(ok1), "cond2_ok": bool(ok2), "cond3_ok": bool(ok3), "verdict": verdict})
+    L(f"[{r['name']}] {sv} → {tgt} 1년: β {b1:+.2f} · t {t1:+.2f} ({'통과' if ok1 else '탈락'}) · 최적 비중 1년 {w1[i]*100:.1f}% → 10년 {wH[i]*100:.1f}% · "
+      f"헤징 수요 {hd:+.1f}%p ({'통과' if ok2 else '탈락'}) · CE 기여 {gain:+.1f}bp ({'통과' if ok3 else '탈락'}) → {verdict}"
+      f" | 참고 간편 공식: 10년 t {tF:.2f} · {formula_pp:+.1f}%p")
 res["agenda2"]["instruments"] = a2
 res["agenda2"]["gamma"] = gamma; res["agenda2"]["horizon"] = Hz
-hz_tab = []
-for hz in [1, 5, 10]:
-    beta, t = predictive(pn["yield10"].values, pn["bond_long_ret"].values * 100, hz)
-    hz_tab.append({"horizon": hz, "beta": round(beta, 3), "t": round(t, 2)})
-res["agenda2"]["bond_horizon"] = hz_tab
-L("[지평] 장기채 예측 t값: " + " · ".join(f"{h['horizon']}년 {h['t']:.2f}" for h in hz_tab))
-# γ 민감도 — 헤징 수요는 (1−1/γ) 에 비례
-res["agenda2"]["gamma_sens"] = [{"gamma": g, "bond_pp": round((1 - 1 / g) / (1 - 1 / gamma) * a2[0]["hedge_pp"], 1)} for g in [1, 2, 5, 10]]
-L("[γ 민감도] 장기채 헤징 수요: " + " · ".join(f"γ={s['gamma']} {s['bond_pp']:+.1f}%p" for s in res["agenda2"]["gamma_sens"]))
+res["agenda2"]["equity"] = {"w_1y_pct": round(w1[0] * 100, 1), "w_10y_pct": round(wH[0] * 100, 1)}
+L(f"[주식] 1년 {w1[0]*100:.1f}% → 10년 {wH[0]*100:.1f}%")
+wA = opt(NM, [0]); wB = opt(NM, [0, 1, 2]); wC = opt(NM, [0, 1, 2], {3: 0.05})
+opts = []; ceA = ce(wA, NM)
+for nm, w in [("A", wA), ("B", wB), ("C", wC)]:
+    opts.append({"vs_A_bp": int(round((ce(w, NM) - ceA) * 100)), "option": nm, "w_eq": round(w[0] * 100, 1), "w_bond": round(w[1] * 100, 1), "w_tips": round(w[2] * 100, 1), "w_vol": round(w[3] * 100, 1),
+                 "ce_10y_pct": round(ce(w, NM), 2), "ce_1y_pct": round(ce(w, 12), 2)})
+res["agenda2"]["options"] = opts
+L("[세 안] " + " · ".join(f"{o['option']} 주식 {o['w_eq']} · 장기채 {o['w_bond']} · 물가연동 {o['w_tips']} · 변동성 {o['w_vol']} → 10년 CE {o['ce_10y_pct']:.2f}% (A 대비 {o['vs_A_bp']:+d}bp)" for o in opts))
+# γ 민감도 — 직접 계산
+gs = []
+for g in [2, 5, 10]:
+    g0 = gamma; gamma = g; lc, cc, oo, nm_ = kic_engine(pn); a1_, aH_ = oo(12, ALL), oo(nm_, ALL); gamma = g0
+    gs.append({"gamma": g, "bond_pp": round((aH_[1] - a1_[1]) * 100, 1), "tips_pp": round((aH_[2] - a1_[2]) * 100, 1)})
+res["agenda2"]["gamma_sens"] = gs
+L("[γ 민감도] 헤징 수요(장기채 · 물가연동채): " + " · ".join(f"γ={x['gamma']} {x['bond_pp']:+.1f} · {x['tips_pp']:+.1f}%p" for x in gs))
+# 강건성 — 같은 생성 과정, 다른 40년(시드 1~5)
+import importlib.util
+rob = []
+spec = importlib.util.spec_from_file_location("bld", f"{D}/w7m9_build.py")
+src = open(f"{D}/w7m9_build.py").read()
+ns = {"np": np, "pd": pd}; exec(src[src.index("def simulate_kic"):src.index("yld, inf, vix, bond_long, tips, eq, vol_hedge = simulate_kic(KIC_SEED)")], {**ns, "N": 480}, ns)
+for sd in range(1, 6):
+    y_, p_, v_, b_, t_, e_, h_ = ns["simulate_kic"](sd)
+    pq = pd.DataFrame({"yield10": y_, "infl_exp": p_, "vix": v_, "bond_long_ret": b_ / 100, "tips_ret": t_ / 100, "eq_ret": e_ / 100, "vol_hedge_ret": h_ / 100})
+    lc, cc, oo, nm_ = kic_engine(pq)
+    A_, B_, C_ = oo(nm_, [0]), oo(nm_, [0, 1, 2]), oo(nm_, [0, 1, 2], {3: 0.05})
+    rob.append({"seed": sd, "B_vs_A_bp": round((cc(B_, nm_) - cc(A_, nm_)) * 100), "C_vs_B_bp": round((cc(C_, nm_) - cc(B_, nm_)) * 100), "w_tips_B": round(B_[2] * 100, 1)})
+res["agenda2"]["robustness"] = rob
+L("[강건성 · 시드 1~5] " + " · ".join(f"시드 {x['seed']}: B−A {x['B_vs_A_bp']:+d} · C−B {x['C_vs_B_bp']:+d}bp · 물가연동 {x['w_tips_B']}%" for x in rob))
 
 json.dump(res, open(f"{D}/w7m9_results.json", "w"), ensure_ascii=False, indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
 open(f"{D}/compute_log.txt", "w").write("\n".join(log) + "\n")

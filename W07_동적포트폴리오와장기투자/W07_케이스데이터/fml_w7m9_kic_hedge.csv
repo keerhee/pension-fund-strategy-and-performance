@@ -1,4 +1,4 @@
-instrument,name,state_var,bad_state,carry_cost_bp,liquidity_score,is_assumed,asof
-bond_long,장기 국채 오버레이,yield10,금리 하락(재투자 수익 악화),5,90,1,2026-09-20
-tips,물가연동채 · 실물자산,infl_exp,인플레 상승(실질가치 하락),15,60,1,2026-09-20
-vol_hedge,변동성 헤지(옵션 · VIX 상품),vix,변동성 상승(투자 기회 악화),140,40,1,2026-09-20
+instrument,name,state_var,bad_state,cost_bp,cost_note,is_assumed,asof
+bond_long,장기 국채 오버레이,yield10,금리 하락(재투자 수익 악화),5,매매 · 롤오버 비용(연),1,2026-09-20
+tips,물가연동채 · 실물자산,infl_exp,인플레 상승(실질가치 하락),15,매매 · 운용 보수(연),1,2026-09-20
+vol_hedge,변동성 헤지(옵션 · VIX 상품),vix,변동성 상승(투자 기회 악화),40,"매매 비용(연) — 보유 비용(carry, 연 약 −6%)은 수익률 자료에 이미 반영",1,2026-09-20
