@@ -25,6 +25,8 @@
 | [`Barberis_PE_Habit_Extrapolation_deck.pdf`](01_%EC%9E%85%EB%AC%B8_%ED%80%80%ED%8A%B8%EC%99%80%EC%9E%90%EC%82%B0%EA%B0%80%EA%B2%A9/Barberis_PE_Habit_Extrapolation_deck.pdf) | 18 | 시장 P/E는 왜 한 세기 동안 출렁였는가 — Habit Formation과 과잉 외삽 | W07 동적포트폴리오와장기투자 |
 | [`Direct_Lending_Course_bj.pdf`](08_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90_W14/02_Courses/Direct_Lending_Course_bj.pdf) | 43 | Direct Lending 종합 과정 — 미들마켓 직접대출, 자본구조와 권리, 가격결정, 운용사 투자 관점 | W14 대체투자와비유동성 |
 | [`Residential_Credit_ABS_Course_bj.pdf`](08_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90_W14/02_Courses/Residential_Credit_ABS_Course_bj.pdf) | 52 | Residential Credit와 ABS 투자 — 주거용 신용, 대출 심사, RMBS·ABS 구조 (8주 과정) | W14 대체투자와비유동성 |
+| [`PrivateCredit_Stress_2026_zeroone.pdf`](08_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90_W14/05_PrivateCredit_Stress/PrivateCredit_Stress_2026_zeroone.pdf) | 28 | 사모대출 스트레스 2026 — 2008년형 위기가 아니라 비유동 대출 펀드의 첫 신용 사이클. 사모대출·BDC 기본 구조 · 5% 환매 한도 · 2025.9~2026.10 전개 · 장부가 마킹 · 환매 대기열과 역선택 · LTV와 AI 디스럽션 · 2008년 비교와 체크리스트 (2026.10 브리핑) | W14 대체투자와비유동성 |
+| [`PrivateCredit_Stress_2026_workbook.pdf`](08_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90_W14/05_PrivateCredit_Stress/PrivateCredit_Stress_2026_workbook.pdf) | 7 | 사모대출 스트레스 2026 손계산 워크북 — 본편의 네 가지 계산(마킹 · 환매 대기열 · LTV)을 계산기 없이 | W14 대체투자와비유동성 |
 | [`Risk_Based_Allocation_Main_VIII.pdf`](06_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Main_VIII.pdf) | 61 | 리스크 패리티와 최대 분산을 하나의 3자산 예제로 통합 비교 — MVO·EW·역변동성·GMV·ERC·리스크 버짓·MDP | **W05 리스크패리티와HRP** |
 | [`Risk_Based_Allocation_Main_VIII_bj.pdf`](06_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Main_VIII_bj.pdf) | 61 | 본편 VIII와 같은 내용을 bj덱 디자인(크림·네이비)으로 만든 판 | **W05 리스크패리티와HRP** |
 | [`Risk_Based_Allocation_Special_Session_IV.pdf`](06_%EC%9C%84%ED%97%98%EA%B8%B0%EB%B0%98%EB%B0%B0%EB%B6%84_W05/Risk_Based_Allocation_Special_Session_IV.pdf) | 29 | 본편 결론을 뒷받침하는 도출·증명·알고리즘 — 예산 제약 ERC 해법, MDP 증명, ERC 계산 알고리즘, 4개 ETF 백테스트 | **W05 리스크패리티와HRP** |
@@ -127,6 +129,7 @@
 | `06_위험기반배분_W05/` | 위험 기반 자산배분 3덱 — 본편 VIII(일반판·bj판) · 특별 세션 IV · 워크북 III |
 | `07_블랙리터맨_W04/` | BL 기대수익률 업데이트 수치 예제 |
 | `08_대체투자_W14/02_Courses/` | 사모신용 과정 두 편 — Direct Lending · Residential Credit·ABS |
+| `08_대체투자_W14/05_PrivateCredit_Stress/` | 사모대출 스트레스 2026 브리핑 덱 + 손계산 워크북 (2026.10) |
 | `09_HRP와NCO_W05/` | HRP와 NCO 설명자료 — RMT 디노이징 · ONC 군집화 |
 | `10_RMT필터_W04/` | RMT 공분산 필터 덱 + 실습 노트북(yfinance로 데이터를 직접 받는다) + `SandP500_wiki.csv`(Wikipedia 접속이 안 될 때 쓰는 S&P 500 종목·섹터 목록, 2026-09-28 기준 503종목) |
 | `11_매크로전략_W13/` | 글로벌 매크로·국제금융·캐리·추세추종·인플레이션 헤지 강의덱 11편 + 외부 참고자료 11편 |
