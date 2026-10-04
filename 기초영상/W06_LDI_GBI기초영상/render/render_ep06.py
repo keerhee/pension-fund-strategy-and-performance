@@ -1,4 +1,4 @@
-"""시즌 2 「지킬 것부터 사라」 EP.06 '2022 영국 Doom Loop' — 9:16 웹툰 숏폼.
+"""W06 「지킬 것부터 사라」 EP.06 '2022 영국 Doom Loop' — 9:16 웹툰 숏폼.
 EP.01 기금(자산 DV01 0.03 · 부채 DV01 0.16)이 모자란 0.13을 고정 수취 IRS(D 20)로 채운다: 20 × N × 0.0001 = 0.13 → 명목 65.
 금리 +100bp → 잉여금은 0(헤지 성공)이지만 IRS 변동증거금 13을 오늘 현금으로 낸다. 현금 5(가정) → Gilt 매도 → Doom Loop.
 영국 감독당국 250bp 버퍼 → 0.13 × 250 = 32.5. (W06 M7 3교시 강의본: £45B 감세 · Gilt 나흘 +1%p · 32일 · 250bp, 기금 숫자는 교육용 가정)"""
@@ -11,7 +11,7 @@ EQ = [f"eq/ep06_{i}.png" for i in (1, 2, 3)]   # latex_png()로 미리 생성
 
 def cut1(t):
     s = title_cut(t, "EP.06 · 2022 영국 Doom Loop", chip_w=880)
-    s.insert(2, punch("시즌 2 · 지킬 것부터 사라", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
+    s.insert(2, punch("W06 · 지킬 것부터 사라", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
     return s
 
 

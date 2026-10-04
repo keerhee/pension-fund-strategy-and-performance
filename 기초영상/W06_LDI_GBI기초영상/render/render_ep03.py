@@ -1,4 +1,4 @@
-"""시즌 2 「지킬 것부터 사라」 EP.03 '숨은 공매도' — 9:16 웹툰 숏폼.
+"""W06 「지킬 것부터 사라」 EP.03 '숨은 공매도' — 9:16 웹툰 숏폼.
 EP.01과 같은 기금 A = 100(D_A 3), L = 80(D_L 20). 금리 −1%p → 자산 +3, 부채 +16.
 잉여금 20 → 7 (−65%), 적립비율 125% → 107%. 갭 D_A − D_L = −17년. (W06 M7 2교시 숫자 그대로)"""
 from webtoon_lib import *
@@ -10,7 +10,7 @@ EQ = [f"eq/ep03_{i}.png" for i in (1, 2, 3)]   # latex_png()로 미리 생성
 
 def cut1(t):
     s = title_cut(t, "EP.03 · 숨은 공매도", chip_w=720)
-    s.insert(2, punch("시즌 2 · 지킬 것부터 사라", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
+    s.insert(2, punch("W06 · 지킬 것부터 사라", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
     return s
 
 

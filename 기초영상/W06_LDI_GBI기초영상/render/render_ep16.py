@@ -1,4 +1,4 @@
-"""시즌 2 「지킬 것부터 사라」 EP.16 '매년 다시 잡는 Floor (Flexicure)' — 9:16 웹툰 숏폼. (GBI 2막 끝)
+"""W06 「지킬 것부터 사라」 EP.16 '매년 다시 잡는 Floor (Flexicure)' — 9:16 웹툰 숏폼. (GBI 2막 끝)
 Flexicure(EDHEC 2018): 매년 초 F = 0.8A, 재설정 직후 쿠션 0.2A → 비중 = m × 0.2. A 10 · F 8 · m 3 출발, PSP 60%.
 1년 뒤 벌었을 때(주식 +25%) A 11.5 → 재설정 F 9.2(이익 잠금) · 60% / 고정 F 8이면 91%.
 잃었을 때(주식 −25%) A 8.5 → 재설정 F 6.8 · 60% / 고정이면 18%(Cash Trap 근접). 보호 대상은 금액이 아니라 '한 해 손실 ≤ 20%'.
@@ -12,7 +12,7 @@ EQ = [f"eq/ep16_{i}.png" for i in (1, 2, 3)]   # latex_png()로 미리 생성
 
 def cut1(t):
     s = title_cut(t, "EP.16 · 매년 다시 잡는 Floor", chip_w=900)
-    s.insert(2, punch("시즌 2 · GBI 2막", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
+    s.insert(2, punch("W06 · GBI 2막", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
     return s
 
 

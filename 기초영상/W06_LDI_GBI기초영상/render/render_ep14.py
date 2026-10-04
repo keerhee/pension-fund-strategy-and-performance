@@ -1,4 +1,4 @@
-"""시즌 2 「지킬 것부터 사라」 EP.14 '쿠션 × 승수' — 9:16 웹툰 숏폼.
+"""W06 「지킬 것부터 사라」 EP.14 '쿠션 × 승수' — 9:16 웹툰 숏폼.
 위험자산(PSP) 금액 E = m(A − F), 비중 w = m(A − F)/A. F 5억 · m 4: A 10억 → 200%(상한 100%), A 6억 → 67%, A 5억 → 0%.
 위험자산이 x만큼 떨어질 때 손실 m(A − F)x < 쿠션 A − F → x < 1/m = 25%. 하락하면 자동으로 줄이고 오르면 늘린다(Black–Jones 1987 CPPI).
 (W06 M8 2교시 37장 그대로, EP.13 Floor ≈ 5억을 이어받음)"""
@@ -11,7 +11,7 @@ EQ = [f"eq/ep14_{i}.png" for i in (1, 2, 3)]   # latex_png()로 미리 생성
 
 def cut1(t):
     s = title_cut(t, "EP.14 · 쿠션 × 승수", chip_w=700)
-    s.insert(2, punch("시즌 2 · GBI 2막", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
+    s.insert(2, punch("W06 · GBI 2막", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
     return s
 
 

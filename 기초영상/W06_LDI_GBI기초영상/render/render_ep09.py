@@ -1,4 +1,4 @@
-"""시즌 2 「지킬 것부터 사라」 EP.09 '일곱 번 거절당한 이론' — 9:16 웹툰 숏폼.
+"""W06 「지킬 것부터 사라」 EP.09 '일곱 번 거절당한 이론' — 9:16 웹툰 숏폼.
 행동 포트폴리오 이론(BPT, Shefrin–Statman 2000): 계좌별 만족의 합을 최대로, 단 계좌마다 미달 확률 ≤ α_k (5% · 30% · 70%).
 Thaler의 Mental Accounting(1985)을 최적화 문제로 썼다. 주요 학술지 7번 거절 → 2000년 게재 → Thaler 노벨상(2017) 뒤 재평가.
 마음속 계좌는 오류가 아니라 인터페이스. (W06 M8 1교시 강의본 그대로, EP.08 확률을 계좌로 나눔)"""
@@ -11,7 +11,7 @@ EQ = [f"eq/ep09_{i}.png" for i in (1, 2, 3)]   # latex_png()로 미리 생성
 
 def cut1(t):
     s = title_cut(t, "EP.09 · 일곱 번 거절당한 이론", chip_w=900)
-    s.insert(2, punch("시즌 2 · GBI 1막", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
+    s.insert(2, punch("W06 · GBI 1막", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
     return s
 
 

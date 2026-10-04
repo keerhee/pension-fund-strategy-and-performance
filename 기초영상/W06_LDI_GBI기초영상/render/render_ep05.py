@@ -1,4 +1,4 @@
-"""시즌 2 「지킬 것부터 사라」 EP.05 'Redington의 방패' — 9:16 웹툰 숏폼.
+"""W06 「지킬 것부터 사라」 EP.05 'Redington의 방패' — 9:16 웹툰 숏폼.
 부채: 10년 뒤 100, y = 5%(연속복리) → PV 60.65. 같은 돈으로 바벨(5년 38.94 + 15년 64.20, D 10 · C 125) vs 5년물 몽땅(77.88, D 5).
 금리 −2%p: 바벨 +0.37 · 5년물 −7.05 / +2%p: 바벨 +0.25 · 5년물 +5.22. Redington 3조건 A ≥ L · D_A A = D_L L · C_A A ≥ C_L L.
 (W06 M7 2교시 강의본 숫자 그대로, +2%p는 같은 식으로 계산)"""
@@ -11,7 +11,7 @@ EQ = [f"eq/ep05_{i}.png" for i in (1, 2, 3)]   # latex_png()로 미리 생성
 
 def cut1(t):
     s = title_cut(t, "EP.05 · Redington의 방패", chip_w=820)
-    s.insert(2, punch("시즌 2 · 지킬 것부터 사라", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
+    s.insert(2, punch("W06 · 지킬 것부터 사라", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
     return s
 
 

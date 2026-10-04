@@ -38,13 +38,13 @@ def cut4(t):
     return s
 
 
-def cut5(t): return relief(t, ["시즌 4에서 결국", "뭘 배운 거예요?"], ["잘했는지는 한 숫자로 못 알아.", "무엇을 · 무엇과 · 얼마 동안 견줬나지."],
+def cut5(t): return relief(t, ["W09에서 결국", "뭘 배운 거예요?"], ["잘했는지는 한 숫자로 못 알아.", "무엇을 · 무엇과 · 얼마 동안 견줬나지."],
                            "견주는 법!", "체크: 위험 척도 · 성과 지표 · 실력 문턱 · 출처 분해 · 대상별 자", happy=True, a_size=44, chip_size=32)
 
 
 def cut6(t):   # 시즌 종료 + 다음 예고
     s = [bg(NAVY, "dotsW")]
-    s.append(punch("시즌 4 끝!", 540, 520, 130, fill="#fff", scale=back(prog(t, 0, .45))))
+    s.append(punch("W09 끝!", 540, 520, 130, fill="#fff", scale=back(prog(t, 0, .45))))
     s.append(punch("잘했는지 어떻게 아나", 540, 800, 92, fill=YELLOW, scale=back(prog(t, .5, .45)), rot=-3))
     s.append(f'<g opacity="{ease_out(prog(t, 1.0, .5))}">' + label("다음: W10 주식퀀트모델 — 측정에서 전략으로", 540, 1020, 42, "#fff", 800) + "</g>")
     s.append(penguin(380, 1610 + (1 - ease_out(prog(t, 1.4, .6))) * 400, .6, "happy"))
@@ -60,8 +60,8 @@ META = dict(
           {"n": 3, "bubble": ["청년과 은퇴자는 위험의 뜻부터 달라.", "대상과 목적이 자를 정하는 거야."], "sfx": "자는 여러 개!"},
           {"n": 4, "matrix": {p[0]: f"{p[1]} — {p[2]}" for p in PER}, "latex": ["TWR: manager skill, MWR (IRR): investor experience", "retiree: MDD, Sortino, Calmar, MWR", "alternatives: KS-PME > 1 ⇒ beat the index"],
            "summary": "목적과 수명이 자를 바꾼다", "bubble": ["무엇을, 누구에게, 어떤 자로", "재는지가 측정의 전부야."]},
-          {"n": 5, "bubbles": [["시즌 4에서 결국", "뭘 배운 거예요?"], ["잘했는지는 한 숫자로 못 알아.", "무엇을 · 무엇과 · 얼마 동안 견줬나지."]], "sfx": "견주는 법!"},
-          {"n": 6, "type": "season_end", "text": ["시즌 4 끝!", "잘했는지 어떻게 아나", "다음: W10 주식퀀트모델 — 측정에서 전략으로"]}],
+          {"n": 5, "bubbles": [["W09에서 결국", "뭘 배운 거예요?"], ["잘했는지는 한 숫자로 못 알아.", "무엇을 · 무엇과 · 얼마 동안 견줬나지."]], "sfx": "견주는 법!"},
+          {"n": 6, "type": "season_end", "text": ["W09 끝!", "잘했는지 어떻게 아나", "다음: W10 주식퀀트모델 — 측정에서 전략으로"]}],
     **{"fact-check": "국민성장펀드는 실존 정책펀드(2025.12 출범)이나 위원회 설정과 측정 체계 초안은 케이스의 교육용 가상 시나리오. 페르소나별 지표는 케이스 11장 표 그대로(대체투자 행은 케이스 3 · 9장의 KS-PME 채택 안건을 더한 것). 결론 문장은 학생 덱 14장의 '채택되는 발언' 예시까지만 썼다. 시즌 마지막이라 6컷은 W10 예고."})
 
 if __name__ == "__main__": main([cut1, cut2, cut3, cut4, cut5, cut6], "B4", META)

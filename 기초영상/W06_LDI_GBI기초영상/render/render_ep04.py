@@ -1,4 +1,4 @@
-"""시즌 2 「지킬 것부터 사라」 EP.04 'DV01과 헤지비율' — 9:16 웹툰 숏폼.
+"""W06 「지킬 것부터 사라」 EP.04 'DV01과 헤지비율' — 9:16 웹툰 숏폼.
 EP.01·03과 같은 기금. 자산 DV01 = 3 × 100 × 0.0001 = 0.03, 부채 DV01 = 20 × 80 × 0.0001 = 0.16 → 1bp당 잉여금 −0.13.
 헤지비율 h = 300 / 1,600 ≈ 19%. 국민연금: 부채 DV01 7.4조/bp, 헤지 2.1%. (W06 M7 2교시·케이스 숫자 그대로)"""
 from webtoon_lib import *
@@ -10,7 +10,7 @@ EQ = [f"eq/ep04_{i}.png" for i in (1, 2, 3)]   # latex_png()로 미리 생성
 
 def cut1(t):
     s = title_cut(t, "EP.04 · DV01과 헤지비율", chip_w=820)
-    s.insert(2, punch("시즌 2 · 지킬 것부터 사라", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
+    s.insert(2, punch("W06 · 지킬 것부터 사라", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
     return s
 
 

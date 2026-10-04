@@ -3,7 +3,7 @@
 import json, os, sys
 from webtoon_lib import *
 
-SEASON = "시즌 3 · 시간은 답을 바꾼다"
+SEASON = "W07 · 시간은 답을 바꾼다"
 CUTS = [(0, 4), (4, 10.5), (10.5, 17), (17, 31), (31, 38), (38, 41.5)]
 DUR = 41.5
 STILLS = [2.8, 9.9, 16.5, 30.5, 37.5, 41.0]
@@ -80,7 +80,7 @@ def main(funcs, ep, meta):
     out = f"../output/ic_webtoon_s3_ep{ep}.mp4"
     if len(sys.argv) > 1 and sys.argv[1] == "stills":
         js = f"../episodes/ep{ep}_script.json"
-        meta = dict(season="시즌 3 「시간은 답을 바꾼다」 (W07 동적 포트폴리오 · SS2 리밸런싱)", **meta)
+        meta = dict(season="W07 「시간은 답을 바꾼다」 (W07 동적 포트폴리오 · SS2 리밸런싱)", **meta)
         json.dump(meta, open(js, "w"), ensure_ascii=False, indent=1)
     run(funcs, CUTS, DUR, out, STILLS)
 

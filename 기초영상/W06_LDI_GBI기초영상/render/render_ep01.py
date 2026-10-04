@@ -1,4 +1,4 @@
-"""시즌 2 「지킬 것부터 사라」 EP.01 '자산 +7%인데 왜 혼나요?' — 9:16 웹툰 숏폼.
+"""W06 「지킬 것부터 사라」 EP.01 '자산 +7%인데 왜 혼나요?' — 9:16 웹툰 숏폼.
 자산 100이 +7%(107), 부채 80이 +10%(88). 적립비율 125% → 121.6%, 잉여금 20 → 19.
 잉여금 수익률 R_S = r_A − (L/A)·r_L = 7 − 0.8×10 = −1%. (W06 M7 1교시 숫자 그대로)"""
 from webtoon_lib import *
@@ -10,7 +10,7 @@ EQ = [f"eq/ep01_{i}.png" for i in (1, 2, 3)]   # latex_png()로 미리 생성
 
 def cut1(t):
     s = title_cut(t, "EP.01 · 자산 +7%인데 왜 혼나요?", chip_w=960)
-    s.insert(2, punch("시즌 2 · 지킬 것부터 사라", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
+    s.insert(2, punch("W06 · 지킬 것부터 사라", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
     return s
 
 

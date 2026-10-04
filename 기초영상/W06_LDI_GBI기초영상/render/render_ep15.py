@@ -1,4 +1,4 @@
-"""시즌 2 「지킬 것부터 사라」 EP.15 'Cash Trap' — 9:16 웹툰 숏폼.
+"""W06 「지킬 것부터 사라」 EP.15 'Cash Trap' — 9:16 웹툰 숏폼.
 EP.07 이순자 씨(65→75세, 5억, Floor 3.50억, 매달 0.15억 인출) · CPPI 월간 리밸런싱 · 1,000 경로 · 주식 로그 6% σ 20%, GHP 실질 1.5%, seed 2026.
 m 1→6: 중위 4.95 → 6.45(↑) · 최악 10% 평균 3.10 → 2.12(↓) · Cash Trap 0% → 20.7%. m 3 Trap 1.4% vs m 6 20.7%.
 평균은 좋아지고 최악은 나빠진다. (W06 M8 실습데이터 Step 5 · w8_sim_results.json 그대로)"""
@@ -15,7 +15,7 @@ TRAP = [0.0, 0.1, 1.4, 9.4, 16.5, 20.7]
 
 def cut1(t):
     s = title_cut(t, "EP.15 · Cash Trap", chip_w=640)
-    s.insert(2, punch("시즌 2 · GBI 2막", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
+    s.insert(2, punch("W06 · GBI 2막", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
     return s
 
 

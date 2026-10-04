@@ -1,4 +1,4 @@
-"""시즌 2 「지킬 것부터 사라」 EP.B2 '디폴트옵션에 Flexicure를?' — 9:16 웹툰 숏폼. (IC 보너스 2 — W06 M8 케이스 1부)
+"""W06 「지킬 것부터 사라」 EP.B2 '디폴트옵션에 Flexicure를?' — 9:16 웹툰 숏폼. (IC 보너스 2 — W06 M8 케이스 1부)
 K퇴직연금(가상) Flexicure형 등록 심의 · 표준 가입자 55→65세 · 초기 1.00 · G_S = 1.01¹⁰ ≈ 1.10. 세 숫자 Floor x · 승수 m · 총보수 c를 판정 조건으로 거른다.
 ① 목표 미달 ≤ 5%: m 2 3.6% · m 3 10.0% / ② Cash Trap ≤ 10%: m 2 0.1% · m 6 19.2% / ③ 수수료 후 Market ≥ 70%: 0.5% 73% · 0.8% 67% /
 ④ 2022형 충격 위반 ≤ 1%: GHP 연동 0% · 고정 100% → 기본 답 x 0.90 · m ≤ 2 · c ≤ 0.5% 조건부 승인. 반면교사 2022 TDF −16.9% · LTCM 27배.
@@ -12,7 +12,7 @@ EQ = [f"eq/epB2_{i}.png" for i in (1, 2, 3)]   # latex_png()로 미리 생성
 
 def cut1(t):
     s = title_cut(t, "EP.B2 · 디폴트옵션에 Flexicure를?", chip_w=980)
-    s.insert(2, punch("시즌 2 · IC 보너스", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
+    s.insert(2, punch("W06 · IC 보너스", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
     return s
 
 

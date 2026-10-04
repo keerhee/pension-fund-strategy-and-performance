@@ -1,4 +1,4 @@
-"""시즌 2 「지킬 것부터 사라」 EP.B3 'Yale을 흉내 낼 수 있나?' — 9:16 웹툰 숏폼. (IC 보너스 3 · 시즌 마지막 — W06 M8 케이스 2부)
+"""W06 「지킬 것부터 사라」 EP.B3 'Yale을 흉내 낼 수 있나?' — 9:16 웹툰 숏폼. (IC 보너스 3 · 시즌 마지막 — W06 M8 케이스 2부)
 H대학교 발전기금(가상): 5,000억 · 지출 200억(4.0%) · 3년차 건축 목돈 600억 · 대체 전담 1명. 실질 잠식 3 − 2 − 4 = −3%/년.
 좌표 (x 비유동 상한, y 안전 유동 하한, z 지출률): Yale형 (60,15,5.25) 생존 2년 → 부결 · GPFG형 (0,35,4.0) 통과 · 여유 없음 · 기본 답 (20,30,4.5) 13년 → 조건부 승인.
 y 하한 (620 + 600) ÷ 0.88 ≈ 1,386억 → 28% → 격자 30%. z 5.25% 실질가치 유지 46% vs 4.5% 59%. Yale도 2025년 PE 세컨더리 약 25억 달러 매각.
@@ -13,7 +13,7 @@ PURPLE = "#6B3FA0"
 
 def cut1(t):
     s = title_cut(t, "EP.B3 · Yale을 흉내 낼 수 있나?", chip_w=960)
-    s.insert(2, punch("시즌 2 · IC 보너스", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
+    s.insert(2, punch("W06 · IC 보너스", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
     return s
 
 
@@ -102,9 +102,9 @@ def cut5(t):   # 후속 질문 + 답 + 체크 칩
 
 def cut6(t):   # 시즌 종료 + W07 예고
     s = [bg(NAVY, "dotsW")]
-    s.append(punch("시즌 2 끝!", 540, 520, 130, fill="#fff", scale=back(prog(t, 0, .45))))
+    s.append(punch("W06 끝!", 540, 520, 130, fill="#fff", scale=back(prog(t, 0, .45))))
     s.append(punch("지킬 것부터 사라", 540, 800, 110, fill=YELLOW, scale=back(prog(t, .5, .45)), rot=-3))
-    s.append(f'<g opacity="{ease_out(prog(t, 1.0, .5))}">' + label("다음 시즌: W07 동적 포트폴리오와 장기투자", 540, 1020, 44, "#fff", 800) + "</g>")
+    s.append(f'<g opacity="{ease_out(prog(t, 1.0, .5))}">' + label("다음: W07 동적 포트폴리오와 장기투자", 540, 1020, 44, "#fff", 800) + "</g>")
     s.append(penguin(380, 1610 + (1 - ease_out(prog(t, 1.4, .6))) * 400, .6, "happy"))
     s.append(owl(720, 1610 + (1 - ease_out(prog(t, 1.6, .6))) * 400, .6, blink=(2.6 < t < 2.75)))
     return s

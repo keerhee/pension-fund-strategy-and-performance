@@ -1,4 +1,4 @@
-"""시즌 2 「지킬 것부터 사라」 EP.08 '위험 = 지각할 확률' — 9:16 웹툰 숏폼.
+"""W06 「지킬 것부터 사라」 EP.08 '위험 = 지각할 확률' — 9:16 웹툰 숏폼.
 95 · 70 · 30은 비중이 아니라 목표 달성 확률이다. Safety 20번 중 19번 · Market 10번 중 7번 · Aspirational 10번 중 3번.
 위험 = P(W_T < G), 미달 허용 α = 5% · 30% · 70%, z = 1.645 · 0.524 · −0.524. (W06 M8 1교시 강의본 그대로, EP.07 이순자 씨 목표표 이어받음)"""
 from webtoon_lib import *
@@ -10,7 +10,7 @@ EQ = [f"eq/ep08_{i}.png" for i in (1, 2, 3)]   # latex_png()로 미리 생성
 
 def cut1(t):
     s = title_cut(t, "EP.08 · 위험 = 지각할 확률", chip_w=860)
-    s.insert(2, punch("시즌 2 · GBI 1막", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
+    s.insert(2, punch("W06 · GBI 1막", 540, 330, 58, fill="#fff", scale=back(prog(t, 0, .45)), sw=8))
     return s
 
 
