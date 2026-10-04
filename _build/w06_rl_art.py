@@ -218,9 +218,9 @@ def gridworld():
     fig, axes = plt.subplots(1, 2, figsize=FIG)
     _grid(axes[0], V, None, True, title="가치 V — 여기서 출발하면 앞으로 받을 점수")
     _grid(axes[1], V, pol, False, title="정책 π — 칸마다 가치가 큰 쪽으로")
-    fig.text(.5, .015, "한 걸음마다 −0.4 · 할인 γ = 0.9 · 목표 +10 · 함정 −10  →  가치가 큰 칸을 따라가면 그것이 최선의 길",
+    fig.text(.5, .06, "한 걸음마다 −0.4 · 할인 γ = 0.9 · 목표 +10 · 함정 −10  →  가치가 큰 칸을 따라가면 그것이 최선의 길",
              ha="center", fontsize=15, color=INK)
-    fig.tight_layout(rect=(0, .06, 1, 1))
+    fig.tight_layout(rect=(0, .11, 1, 1))
     return save(fig, "gridworld.png", EX)
 
 
@@ -334,9 +334,9 @@ def qlearn_progress():
         _grid(ax, V, pol, True, ok=ok, nums=False,
               title=f"{ep}판 뒤 — 맞는 칸 {n_ok}/{len(ok)}",
               tc=TEAL if n_ok == len(ok) else INK)
-    fig.text(.5, .02, "초록 화살표 = 최선의 행동(동점 포함) · 빨강 = 아직 틀림 · 칸 색 = 배운 가치(진할수록 높음)",
+    fig.text(.5, .07, "초록 화살표 = 최선의 행동(동점 포함) · 빨강 = 아직 틀림 · 칸 색 = 배운 가치(진할수록 높음)",
              ha="center", fontsize=15, color=INK)
-    fig.tight_layout(rect=(0, .07, 1, 1))
+    fig.tight_layout(rect=(0, .12, 1, 1))
     return save(fig, "qlearn_progress.png", "α = 0.5 · ε = 0.2 — " + SIM)
 
 
