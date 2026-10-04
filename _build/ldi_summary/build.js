@@ -99,7 +99,7 @@ T.divider(S(), { num: "01", title: "무엇을 풀려는가", page: ++pg,
   P(s, ["같은 해의 잉여금 수익률은 −4.5%입니다 (도출 II 2-1).",
         RED("연기금의 성적표는 수익률이 아니라 자산 대 부채입니다.")]); }
 
-{ const s = S(); const cy = H(s, { title: "부채는 앞으로 줄 돈을 오늘 값으로 할인해 더한 값입니다",
+{ const s = S(); const cy = H(s, { title: "부채는 앞으로 줄 금액을 오늘 값으로 할인해 더한 값입니다",
     sub: "자산은 매일 관찰되지만 부채는 할인율로 추정될 뿐이다" });
   const y1 = eqCard(s, "pv", { y: cy, h: 1.45, w: LW, x: M, kind: "ghost", cap: "부채의 현재가치 (도출 II 1-1)" });
   info(s, M, y1 + 0.16, LW, 5.82 - y1 - 0.16, "숫자로 확인", [
@@ -235,7 +235,7 @@ T.divider(S(), { num: "03", title: "막는 방법", page: ++pg,
   P(s, ["중기채로는 자산의 두 배가 넘게 필요해 불가능합니다.",
         RED("현물로 모자라는 몫을 채우는 것이 방법 ③ 스왑입니다.")]); }
 
-{ const s = S(); const cy = H(s, { title: "스왑은 돈 없이 듀레이션을 빌리고 대가로 현금 증거금을 냅니다",
+{ const s = S(); const cy = H(s, { title: "스왑은 자금 없이 듀레이션을 빌리고 대가로 현금 증거금을 냅니다",
     sub: "고정금리 수취 스왑 — 헤지 노출 80 · 듀레이션 20 · 헤지 자본 K (도출 II 3-3)" });
   const y1 = eqCard(s, "margin", { y: cy, h: 1.45, w: LW, x: M, kind: "ghost", cap: "변동증거금" });
   eqCard(s, "buffer", { y: y1 + 0.16, h: 5.82 - y1 - 0.16, w: LW, x: M, kind: "dark", cap: "버틸 수 있는 금리 상승폭과 레버리지 상한" });

@@ -17,5 +17,5 @@
 <line x1="40" y1="316" x2="1560" y2="316" stroke="#DDE3E2" stroke-width="2"/>
 <text x="40" y="356" font-size="31" fill="#64757D">위험의 뜻</text><text x="590" y="356" text-anchor="middle" font-size="31" fill="#102027">적립비율 하락</text><text x="1300" y="356" text-anchor="middle" font-size="31" font-weight="700" fill="#102027">목표를 못 이룰 확률</text>
 <line x1="880" y1="345" x2="1010" y2="345" stroke="#0B6B68" stroke-width="4" marker-end="url(#ar)"/>
-<rect x="40" y="400" width="1520" height="92" fill="#B7F34A"/><text x="800" y="459" text-anchor="middle" font-size="36" font-weight="700" fill="#071A1D">두 블록 분리는 그대로 — 지킬 것을 복제하고, 남는 돈으로 수익을 추구한다</text>
+<rect x="40" y="400" width="1520" height="92" fill="#B7F34A"/><text x="800" y="459" text-anchor="middle" font-size="36" font-weight="700" fill="#071A1D">두 블록 분리는 그대로 — 지킬 것을 복제하고, 남는 자금으로 수익을 추구한다</text>
 </svg>
