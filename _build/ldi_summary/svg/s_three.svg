@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="500" viewBox="0 0 1600 500" font-family="Pretendard">
+  <defs><marker id="ar" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#0B6B68"/></marker></defs>
+  <rect width="1600" height="500" fill="#F7F5F0"/>
+  <line x1="30" y1="490" x2="1570" y2="490" stroke="#102027" stroke-width="3"/>
+  <rect x="40" y="280" width="460" height="210" fill="#FFFFFF" stroke="#DDE3E2" stroke-width="2"/>
+  <text x="70" y="335" font-size="36" font-weight="700" fill="#0B6B68">① 현금흐름 매칭</text>
+  <text x="70" y="390" font-size="32" fill="#102027">5년 국채 사다리 20</text>
+  <text x="70" y="445" font-size="32" fill="#102027">DV01 0.01 · 누적 6%</text>
+  <line x1="510" y1="260" x2="560" y2="215" stroke="#0B6B68" stroke-width="5" marker-end="url(#ar)"/>
+  <rect x="570" y="160" width="460" height="330" fill="#FFFFFF" stroke="#DDE3E2" stroke-width="2"/>
+  <text x="600" y="215" font-size="36" font-weight="700" fill="#0B6B68">② 장기채 DV01</text>
+  <text x="600" y="270" font-size="32" fill="#102027">30년 국채 30</text>
+  <text x="600" y="325" font-size="32" fill="#102027">DV01 0.06 · 누적 44%</text>
+  <text x="600" y="440" font-size="32" fill="#64757D">헤지의 몸통</text>
+  <line x1="1040" y1="140" x2="1090" y2="95" stroke="#0B6B68" stroke-width="5" marker-end="url(#ar)"/>
+  <rect x="1100" y="20" width="460" height="470" fill="#B7F34A"/>
+  <text x="1130" y="75" font-size="36" font-weight="700" fill="#071A1D">③ 스왑 + 버퍼</text>
+  <text x="1130" y="130" font-size="32" fill="#071A1D">30년 스왑 명목 45</text>
+  <text x="1130" y="185" font-size="32" fill="#071A1D">DV01 0.09 · 누적 100%</text>
+  <text x="1130" y="320" font-size="32" fill="#071A1D">버퍼가 허락하는 만큼만</text>
+  <text x="1130" y="445" font-size="32" font-weight="700" fill="#071A1D">합계 = 부채 DV01 0.16</text>
+</svg>

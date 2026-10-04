@@ -1,0 +1,17 @@
+{
+ "c_pv": 1.5556,
+ "c_gap": 1.5556,
+ "c_conv": 1.5556,
+ "c_hedge": 1.5556,
+ "c_red": 1.5556,
+ "c_buffer": 1.5556,
+ "c_budget": 1.5556,
+ "c_trigger": 1.5556,
+ "c_nps": 1.5556,
+ "s_balance": 3.2,
+ "s_bridge": 3.2,
+ "s_loop": 1.7241,
+ "s_map": 3.2,
+ "s_mirror": 3.2,
+ "s_three": 3.2
+}

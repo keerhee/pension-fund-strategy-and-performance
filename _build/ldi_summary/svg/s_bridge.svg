@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="500" viewBox="0 0 1600 500" font-family="Pretendard">
+<defs><marker id="ar" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#0B6B68"/></marker></defs>
+<rect width="1600" height="500" fill="#F7F5F0"/>
+<rect x="330" y="6" width="520" height="52" fill="#FFFFFF" stroke="#DDE3E2" stroke-width="2"/><text x="590" y="43" text-anchor="middle" font-size="32" font-weight="700" fill="#102027">LDI · 기관 (M7)</text>
+<rect x="1040" y="6" width="520" height="52" fill="#071A1D"/><text x="1300" y="43" text-anchor="middle" font-size="32" font-weight="700" fill="#B7F34A">GBI · 개인 (M8)</text>
+<text x="40" y="108" font-size="31" fill="#64757D">지켜야 할 것</text><text x="590" y="108" text-anchor="middle" font-size="31" fill="#102027">부채 (연금 약속)</text><text x="1300" y="108" text-anchor="middle" font-size="31" font-weight="700" fill="#102027">목표 (노후 생활비 등)</text>
+<line x1="880" y1="97" x2="1010" y2="97" stroke="#0B6B68" stroke-width="4" marker-end="url(#ar)"/>
+<line x1="40" y1="130" x2="1560" y2="130" stroke="#DDE3E2" stroke-width="2"/>
+<text x="40" y="170" font-size="31" fill="#64757D">지키는 블록</text><text x="590" y="170" text-anchor="middle" font-size="31" fill="#102027">LHP (부채 복제 채권)</text><text x="1300" y="170" text-anchor="middle" font-size="31" font-weight="700" fill="#102027">GHP (목표 복제 채권)</text>
+<line x1="880" y1="159" x2="1010" y2="159" stroke="#0B6B68" stroke-width="4" marker-end="url(#ar)"/>
+<line x1="40" y1="192" x2="1560" y2="192" stroke="#DDE3E2" stroke-width="2"/>
+<text x="40" y="232" font-size="31" fill="#64757D">버틸 여유</text><text x="590" y="232" text-anchor="middle" font-size="31" fill="#102027">잉여금 · 적립비율</text><text x="1300" y="232" text-anchor="middle" font-size="31" font-weight="700" fill="#102027">쿠션 · 바닥(floor)</text>
+<line x1="880" y1="221" x2="1010" y2="221" stroke="#0B6B68" stroke-width="4" marker-end="url(#ar)"/>
+<line x1="40" y1="254" x2="1560" y2="254" stroke="#DDE3E2" stroke-width="2"/>
+<text x="40" y="294" font-size="31" fill="#64757D">수익 추구</text><text x="590" y="294" text-anchor="middle" font-size="31" fill="#102027">PSP</text><text x="1300" y="294" text-anchor="middle" font-size="31" font-weight="700" fill="#102027">PSP (그대로)</text>
+<line x1="880" y1="283" x2="1010" y2="283" stroke="#0B6B68" stroke-width="4" marker-end="url(#ar)"/>
+<line x1="40" y1="316" x2="1560" y2="316" stroke="#DDE3E2" stroke-width="2"/>
+<text x="40" y="356" font-size="31" fill="#64757D">위험의 뜻</text><text x="590" y="356" text-anchor="middle" font-size="31" fill="#102027">적립비율 하락</text><text x="1300" y="356" text-anchor="middle" font-size="31" font-weight="700" fill="#102027">목표를 못 이룰 확률</text>
+<line x1="880" y1="345" x2="1010" y2="345" stroke="#0B6B68" stroke-width="4" marker-end="url(#ar)"/>
+<rect x="40" y="400" width="1520" height="92" fill="#B7F34A"/><text x="800" y="459" text-anchor="middle" font-size="36" font-weight="700" fill="#071A1D">두 블록 분리는 그대로 — 지킬 것을 복제하고, 남는 돈으로 수익을 추구한다</text>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="500" viewBox="0 0 1600 500" font-family="Pretendard">
+  <defs><marker id="ar" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#0B6B68"/></marker></defs>
+  <rect width="1600" height="500" fill="#F7F5F0"/>
+  <line x1="400" y1="20" x2="400" y2="490" stroke="#102027" stroke-width="3"/>
+  <rect x="40" y="30" width="340" height="460" fill="#FFFFFF" stroke="#DDE3E2" stroke-width="2"/>
+  <text x="210" y="210" text-anchor="middle" font-size="44" font-weight="700" fill="#102027">자산 100</text>
+  <text x="210" y="262" text-anchor="middle" font-size="31" fill="#64757D">주식 · 채권 · 대체</text>
+  <text x="210" y="312" text-anchor="middle" font-size="32" font-weight="700" fill="#0B6B68">듀레이션 ≈ 3년</text>
+  <rect x="420" y="30" width="360" height="368" fill="#071A1D"/>
+  <text x="600" y="160" text-anchor="middle" font-size="44" font-weight="700" fill="#B7F34A">부채 80</text>
+  <text x="600" y="212" text-anchor="middle" font-size="31" fill="#FFFFFF">연금 약속의 현재가치</text>
+  <text x="600" y="262" text-anchor="middle" font-size="32" font-weight="700" fill="#FFFFFF">듀레이션 ≈ 20년</text>
+  <rect x="420" y="402" width="360" height="88" fill="#B7F34A"/>
+  <text x="600" y="458" text-anchor="middle" font-size="34" font-weight="700" fill="#071A1D">잉여금 20</text>
+  <line x1="800" y1="260" x2="880" y2="260" stroke="#0B6B68" stroke-width="5" marker-end="url(#ar)"/>
+  <rect x="900" y="30" width="660" height="460" fill="#FFFFFF" stroke="#DDE3E2" stroke-width="2"/>
+  <text x="940" y="95" font-size="38" font-weight="700" fill="#102027">부채 = 장기채 공매도</text>
+  <line x1="940" y1="125" x2="1520" y2="125" stroke="#DDE3E2" stroke-width="2"/>
+  <text x="940" y="185" font-size="32" fill="#102027">금리가 내리면 부채 가치가 오른다</text>
+  <text x="940" y="235" font-size="32" fill="#102027">빌려 판 장기채의 손실과 같다</text>
+  <text x="940" y="320" font-size="32" font-weight="700" fill="#0B6B68">금리 1%p 하락: 자산 +3 · 부채 +16</text>
+  <text x="940" y="420" font-size="38" font-weight="700" fill="#C00000">잉여금 20 → 7</text>
+</svg>

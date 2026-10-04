@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="580" viewBox="0 0 1000 580" font-family="Pretendard">
+  <defs><marker id="ar" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#0B6B68"/></marker></defs>
+  <rect width="1000" height="580" fill="#F7F5F0"/>
+  <circle cx="500" cy="290" r="105" fill="#071A1D"/>
+  <text x="500" y="282" text-anchor="middle" font-size="38" font-weight="700" fill="#B7F34A">Doom</text>
+  <text x="500" y="326" text-anchor="middle" font-size="38" font-weight="700" fill="#B7F34A">Loop</text>
+  <rect x="320" y="10" width="360" height="90" fill="#FFFFFF" stroke="#C00000" stroke-width="4"/>
+  <text x="500" y="70" text-anchor="middle" font-size="42" font-weight="700" fill="#C00000">금리 급등</text>
+  <rect x="640" y="245" width="350" height="90" fill="#FFFFFF" stroke="#DDE3E2" stroke-width="2"/>
+  <text x="815" y="305" text-anchor="middle" font-size="42" font-weight="700" fill="#102027">스왑 손실</text>
+  <rect x="320" y="480" width="360" height="90" fill="#FFFFFF" stroke="#DDE3E2" stroke-width="2"/>
+  <text x="500" y="540" text-anchor="middle" font-size="42" font-weight="700" fill="#102027">증거금 요구</text>
+  <rect x="10" y="245" width="350" height="90" fill="#FFFFFF" stroke="#DDE3E2" stroke-width="2"/>
+  <text x="185" y="305" text-anchor="middle" font-size="42" font-weight="700" fill="#102027">국채 투매</text>
+  <path d="M690,60 Q815,90 815,232" fill="none" stroke="#0B6B68" stroke-width="5" marker-end="url(#ar)"/>
+  <path d="M815,345 Q815,490 692,522" fill="none" stroke="#0B6B68" stroke-width="5" marker-end="url(#ar)"/>
+  <path d="M310,525 Q185,490 185,348" fill="none" stroke="#0B6B68" stroke-width="5" marker-end="url(#ar)"/>
+  <path d="M185,235 Q185,90 308,58" fill="none" stroke="#0B6B68" stroke-width="5" marker-end="url(#ar)"/>
+</svg>
