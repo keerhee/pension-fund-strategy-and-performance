@@ -9,7 +9,8 @@
   python3 factor_lab.py rolling --factor HML --window 120    # 10년 롤링 프리미엄
   python3 factor_lab.py combo --w HML=0.5,UMD=0.5            # 팩터 결합 성과
   python3 factor_lab.py manager --port S1B5 --start 196307    # 가상 운용사의 CAPM·FF3 알파
-  python3 factor_lab.py jkp --file <JKP CSV> --start 201508   # 내려받은 JKP 팩터(미국·한국) 요약
+  python3 factor_lab.py jkp --country kor                     # data/factors/ 의 JKP 팩터(미국·한국) 요약
+  python3 factor_lab.py jkp --country usa --start 201508      # 미국 표본 밖(2015.08~)
 """
 import argparse, os, numpy as np, pandas as pd
 from scipy import stats
@@ -54,7 +55,7 @@ def main():
     ap=argparse.ArgumentParser(); ap.add_argument('cmd',choices=['summary','grs','factors','rolling','combo','manager','jkp'])
     ap.add_argument('--set',default='ind30',choices=list(SETS)); ap.add_argument('--model',default='capm',choices=list(MODELS))
     ap.add_argument('--start'); ap.add_argument('--end'); ap.add_argument('--factor',default='HML'); ap.add_argument('--window',type=int,default=120)
-    ap.add_argument('--w',default='HML=0.5,UMD=0.5'); ap.add_argument('--port',default='S1B5'); ap.add_argument('--file'); ap.add_argument('--factors',default='be_me,ret_12_1,market_equity')
+    ap.add_argument('--w',default='HML=0.5,UMD=0.5'); ap.add_argument('--port',default='S1B5'); ap.add_argument('--file'); ap.add_argument('--country',choices=['usa','kor']); ap.add_argument('--weighting',default='vw_cap',choices=['ew','vw','vw_cap']); ap.add_argument('--factors',default='be_me,ret_12_1,market_equity')
     a=ap.parse_args(); f=load(a.start,a.end); pd.set_option('display.width',200)
     if a.cmd=='summary':
         R=excess(a.set,f).dropna(how='all'); s=pd.DataFrame({'mean%':R.mean(),'sd%':R.std(),'sharpe_ann':R.mean()/R.std()*np.sqrt(12)})
@@ -95,9 +96,14 @@ def main():
             g=grs(R,f[MODELS[m]]); b=' '.join(f'{c}={v:.2f}' for c,v in zip(MODELS[m],g['beta'][0]))
             print(f'  {m:7s} T={g["T"]}  alpha={g["alpha"][0]:.3f}%/월 (연 {g["alpha"][0]*12:.2f}%)  t={g["t"][0]:.2f}  R2={g["r2"][0]:.3f}  {b}')
     elif a.cmd=='jkp':
+        if not a.file:
+            if not a.country: print('--file 또는 --country(usa|kor) 를 준다'); return
+            a.file=os.path.join(H,'data','factors',f'[{a.country}]_[all_factors]_[monthly]_[{a.weighting}].csv')
+        if not os.path.exists(a.file):
+            print(f'파일이 없다: {a.file}\nBAF634 강의 데이터를 내려받아 이 폴더 아래 data/ 에 넣는다 (DATA.md 참고):\nhttps://drive.google.com/drive/folders/1vRVfhTRU7YsaT1ndiqTEkxfSEfVIioVZ?usp=sharing'); return
         d=pd.read_csv(a.file); d.columns=[c.lower() for c in d.columns]
         if 'location' in d and d['location'].nunique()>1: print('location 열에 여러 국가가 있음:',d['location'].unique()[:10])
-        d['date']=pd.to_datetime(d['date']); d=d[d['date']>=pd.Timestamp(a.start[:4]+'-'+a.start[4:]+'-01')] if a.start else d
+        d['date']=pd.to_datetime(d['date']); dall=d.copy(); d=d[d['date']>=pd.Timestamp(a.start[:4]+'-'+a.start[4:]+'-01')] if a.start else d
         if 'weighting' in d and d['weighting'].nunique()>1: print('weighting 열에 여러 가중 방식:',d['weighting'].unique(),'→ 한 가지만 남긴 파일을 쓴다'); return
         if 'direction' in d: print('direction(부호):',d.groupby('name')['direction'].first().reindex(a.factors.split(',')).to_dict())
         W=d.pivot_table(index='date',columns='name',values='ret')*100   # JKP는 소수 → %
@@ -113,10 +119,10 @@ def main():
         # 이 과제의 미국 1926~2015 팩터와 겹치는 기간의 상관 (부호 확인용 — 미국 파일일 때 의미가 있다)
         MAP={'be_me':'HML','ret_12_1':'UMD','market_equity':'SMB'}
         ours=load(); ours.index=pd.PeriodIndex(ours.index,freq='M')
-        Y=X.copy(); Y.index=Y.index.to_period('M'); rows=[]
-        for c in names:
+        Y=dall.pivot_table(index='date',columns='name',values='ret')*100; Y.index=Y.index.to_period('M'); rows=[]
+        for c in [x for x in a.factors.split(',') if x in Y]:
             if c in MAP:
                 j=pd.concat([Y[c],ours[MAP[c]]],axis=1).dropna()
                 if len(j)>=24: rows.append(f'{c} vs {MAP[c]}: 겹치는 {len(j)}개월 상관 {j.corr().iloc[0,1]:.2f}')
-        if rows: print('\n부호 확인 (이 과제의 1926~2015 팩터와 비교)'); print('\n'.join(rows))
+        if rows: print('\n부호 확인 (이 과제의 1926~2015 팩터와 겹치는 전 기간, --start 와 무관)'); print('\n'.join(rows))
 if __name__=='__main__': main()

@@ -61,3 +61,6 @@ _build/lecfix/_art/
 
 # 과제 정답지 — 교수용 폴더는 공개 저장소에 올리지 않는다.
 Assignment/**/2_Instructor/
+
+# BAF634 강의 데이터(JKP) — 학생이 Google Drive에서 받아 둔다 (Assignment/BAF634_Factor_Data/DATA.md)
+Assignment/BAF634_Factor_Data/data/
