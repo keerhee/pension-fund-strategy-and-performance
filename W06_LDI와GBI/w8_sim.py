@@ -1,6 +1,6 @@
 """W06 M8 정본 시뮬레이션 — 이순자 씨(가상, 65세·금융자산 5억·NPS 월 150만·생활비 월 300만)
 단위 억 원(2026 실질). 가정: 주식(PSP) 연 로그수익 m 6%·σ 20%(강의 K 예제와 같은 자본시장 가정),
-GHP(물가연동국채) 실질 1.5% = Floor 할인율, 월간 리밸런싱, 레버리지 금지(위험자산 ≤ 100%), 1,000 경로, seed 2026.
+GHP(물가연동국채) 실질 1.5% = Floor 할인율, 필요 자본 K는 강의본 방법 1, 월간 리밸런싱, 레버리지 금지(위험자산 ≤ 100%), 1,000 경로, seed 2026.
 Floor = 남은 생활비 부족분(연 1,800만, 88세까지)의 현재가치. 기간 65→75세(10년)."""
 import json, numpy as np
 R, MU, SIG, N, SEED, T, LIFE = 0.015, 0.06, 0.20, 1000, 2026, 10, 23
@@ -41,11 +41,23 @@ out["cppi"] = {m: run("cppi", m) for m in range(1, 7)}
 out["fixed40"] = run("fixed"); out["flex"] = run("flex")
 out["shock2022"] = {m: run("cppi", m, shock=True) for m in [2, 3, 6]}
 out["shock2022"]["fixed40"] = run("fixed", shock=True)
-# 이순자 Safety 미달(정적 GHP 전액이면 0) · 필요 자본 K(10년 뒤 의료 1억 70% · 손주 0.5억 30%, 주식 m6% σ20%)
+# 필요 자본 K — 강의본 단원 ③ 방법 1(목표마다 주식 비중 w를 골라 K를 가장 작게):
+#   K = G·e^(−T·g), g = r + wλ − ½w²σ² − z·wσ/√T, w* = λ/σ² − z/(σ√T)를 0~1로 자른다.
+#   실습 가정에서 r = GHP 실질 1.5%, 주식 로그수익 6% = r + λ − ½σ² → λ = 6.5%.
+#   후보 비교(강의본 27장 · 부록 B-2와 같은 방식): 균형형(m 4.5% · σ 9%) · 주식 · GHP 한 가지씩만 쓸 때의 K
 from math import exp, sqrt
 z = {0.7: 0.524, 0.3: -0.524}
+LAM = MU - R + SIG**2/2
 def K(G, p, m, s, T=10): return G*exp(-m*T + z[p]*s*sqrt(T))
-out["K"] = dict(market_bal=K(1.0, 0.7, 0.045, 0.09), market_eq=K(1.0, 0.7, 0.06, 0.2), market_ghp=1.0/(1+R)**10,
+def K1(G, p, T=10):
+    w_raw = LAM/SIG**2 - z[p]/(SIG*sqrt(T)); w = min(max(w_raw, 0.0), 1.0)
+    g = R + w*LAM - 0.5*w**2*SIG**2 - z[p]*w*SIG/sqrt(T)
+    return G*exp(-T*g), w_raw, w, g
+km, wmr, wm, gm = K1(1.0, 0.7); ka, war, wa, ga = K1(0.5, 0.3)
+out["K"] = dict(lam=LAM, market_m1=km, w_market_raw=wmr, w_market=wm, g_market=gm,
+                asp_m1=ka, w_asp_raw=war, w_asp=wa, g_asp=ga,
+                total_m1=F0 + km + ka, spare_m1=A0 - (F0 + km + ka),
+                market_bal=K(1.0, 0.7, 0.045, 0.09), market_eq=K(1.0, 0.7, 0.06, 0.2), market_ghp=1.0/(1+R)**10,
                 asp_eq=K(0.5, 0.3, 0.06, 0.2), asp_bal=K(0.5, 0.3, 0.045, 0.09))
 json.dump(out, open("w8_sim_results.json", "w"), indent=1, ensure_ascii=False)
 print(f"F0 {F0:.3f} cushion {A0-F0:.3f} FT {floor(120):.3f}")

@@ -25,9 +25,10 @@ EQ = {
  "dv01":   (r"\mathrm{DV01}=D\times V\times 0.0001", G),
  "conv":   (r"\frac{\Delta V}{V}\approx-D\,\Delta y+\frac{1}{2}\,C\,(\Delta y)^2", G),
  "h":      (r"h=\frac{\mathrm{DV01}_A}{\mathrm{DV01}_L}=\frac{D_A\,A}{D_L\,L}", D),
- "red1":   (r"A\geq L", G),
+ "red1":   (r"A=L", G),
  "red2":   (r"D_A\,A=D_L\,L", G),
- "red3":   (r"C_A\,A\geq C_L\,L", D),
+ "red3":   (r"C_A\,A>C_L\,L", D),
+ "redS":   (r"\Delta S\approx-(D_A\,A-D_L\,L)\,\Delta y+\frac{1}{2}\,(C_A\,A-C_L\,L)\,(\Delta y)^2", G),
  "cf":     (r"N_t=CF_t\quad(t\leq T_1)", G),
  "whedge": (r"w_{\mathrm{hedge}}=h\cdot\frac{D_L\,L}{D_H\,A}", G),
  "margin": (r"\mathrm{Margin}\approx\mathrm{DV01}_{\mathrm{swap}}\times\Delta y_{\mathrm{bp}}", G),
@@ -195,7 +196,7 @@ for b, v in zip(bars, vals):
     ax.text(b.get_x() + b.get_width() / 2, v + 2, f"{v}%", ha="center",
             fontsize=16, fontweight="bold", color=C["body"])
 ax.axhline(100, color=C["hair"], lw=1.2, ls="--")
-ax.set_ylim(0, 112); ax.set_ylabel("적립비율 (%)")
+ax.set_ylim(0, 112); ax.set_ylabel("적립비율 (%, 우리 계산)")
 keep("c_nps", save(f, "fig/c_nps.png"))
 
 # ---------------------------------------------------------------- SVG ----

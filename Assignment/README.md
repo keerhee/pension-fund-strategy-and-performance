@@ -4,7 +4,7 @@
 
 | 폴더 | 내용 |
 |---|---|
-| `W06_Team_Assignment/` | W06 LDI·GBI 팀 과제 — 1팀 국민연금 금리 인하 · 2팀 금리 인상 · 3팀 H대학 기금 · 4팀 디폴트옵션 |
+| `W06_Team_Assignment/` | W06 LDI·GBI 팀 과제 — 1팀 국민연금 금리 인하 · 2팀 금리 인상 · 3팀 디폴트옵션 · 4팀 H대학 기금 |
 | `W07_Team_Assignment/` | W07 동적 포트폴리오 팀 과제 — 1팀 글라이드패스 · 2팀 KIC 헤징 · 3팀 국민연금 리밸런싱 · 4팀 기관 리밸런싱 규칙 |
 | `W07_Team_Assignment_Bonus/` | W07 보너스(확장) 과제 — A 국면 TDF · B RL 검증 · C 역강화학습 · D 실데이터 헤징 |
 | `W02_Lab_CAPM_GRS/` | W02 개인 실습 — CAPM 시계열 회귀와 GRS 검정 (산업 30 · 모멘텀 10 · 규모×BE/ME 25) |

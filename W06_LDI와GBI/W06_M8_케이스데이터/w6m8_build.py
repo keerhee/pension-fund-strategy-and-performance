@@ -101,7 +101,7 @@ CMA = {  # asset: (name, mu %, sigma %, liquid, is_direct)
     "eq":       ("주식(상장 대체 포함)", 8.0, 15.0, 1),
     "bond_gov": ("국채·우량채", 3.5, 5.0, 1),
     "cash":     ("현금·MMF", 2.5, 0.5, 1),
-    "alt_pe":   ("비유동 대체 — 펀드오브펀드·세컨더리 경유(순)", 10.0, 20.0, 0),
+    "alt_pe":   ("비유동 대체 — 재간접·세컨더리 경유(순)", 10.0, 20.0, 0),
     "alt_pe_direct": ("비유동 대체 — 일류 PE·VC 직접(접근권 충족 시)", 12.0, 22.0, 0),
 }
 ALLOC = {  # 비유동 x% → (eq, bond_gov, cash, alt_pe)
@@ -132,7 +132,7 @@ def simulate_panel(seed):
     dy = np.r_[0, np.diff(y)]
     bond = y / 100 / 12 - 7.0 * dy / 100                         # 듀레이션 7 국채 지수
     cash = np.clip(y - 0.5, 0.2, None) / 100 / 12
-    pe_true = 0.0015 + 1.10 * eq + r.normal(0, 0.02, n)         # 비유동 대체 실제 수익(순, 펀드오브펀드 경유) — 주식 β 1.10 + 프리미엄
+    pe_true = 0.0015 + 1.10 * eq + r.normal(0, 0.02, n)         # 비유동 대체 실제 수익(순, 재간접 경유) — 주식 β 1.10 + 프리미엄
     pe_rep = np.zeros(n)
     for t in range(n):
         pe_rep[t] = 0.35 * pe_true[t] + 0.65 * (pe_rep[t-1] if t else pe_true[t])   # 평가 지연(스무딩)

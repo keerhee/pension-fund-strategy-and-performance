@@ -3,7 +3,7 @@
 """W6 M7 IC 케이스 교육용 데이터 생성 (기준일 2026-09-21).
 
 제1호  국민연금 기금의 부채연계투자(LDI) — 부채 벤치마크를 도입하고, 부채 헤지 비율을 몇 %까지, 어떤 수단으로 올리는가
-      안 A 현행(헤지 추가 없음 · 부채 지표 없음) · 안 B 시장 상한형(현물 초장기 국채, 5년) · 안 C 오버레이형(IRS 레버리지, 헤지 비율 30%)
+      안 A 현행 유지(LDI 조치 없음 · 부채 지표 없음 · 헤지 3%) · 안 B 30년 국고채 교체(보유 채권 131조, 5년 · 헤지 5%) · 안 C IRS 오버레이(헤지 비율 30%)
 
 공시 수치(is_assumed=0)와 교육용 가정(is_assumed=1)을 열로 구분한다. 교육용 가정은 이 파일 상단 상수를
 바꾸면 되고, 바꾸면 w6m7_compute.py 의 판정 결과가 달라진다 — 그것이 실습의 일부다.
@@ -68,7 +68,7 @@ MU = {"eq_dom": 8.0, "eq_for": 8.0, "alt": 8.0, "bond_dom": 4.2, "bond_for": 4.5
 KOFR = 3.75                                  # 단기 변동금리(교육용)
 SWAP_SPREAD_30Y = -0.15                      # IRS 30년 고정금리 − 국고채 30년 (%p, 교육용)
 HEDGE_TENOR = 30                             # 헤지 수단 만기(년) — 현물 국고채 · IRS 모두 30년
-PROGRAM_YEARS = 5                            # 안 B 현물 매입 프로그램 기간(년)
+PROGRAM_YEARS = 5                            # 안 B 30년 국고채 교체 프로그램 기간(년)
 CAP_ISSUE_SHARE = 0.30                       # 조건 ② 임계 — 매입액 ≤ 프로그램 기간 장기물(20·30·50년) 신규 발행의 30%
 CAP_IRS_TURNOVER_SHARE = 0.05                # 조건 ② 임계 — IRS 명목 ≤ 연간 원화 IRS 거래규모의 5%
 LONG_BOND_SHARE_2026PLAN = 0.35              # 2026 발행계획 장기물 비중(공시, 계획)
@@ -144,9 +144,9 @@ market.to_csv(f"{OUT}/fml_w6m7_market.csv", index=False)
 
 # ── 안 A·B·C ───────────────────────────────────────────────────────────────
 options = pd.DataFrame([
-    ("A", "현행 — 헤지 추가 없음 · 부채 벤치마크 없음", "none", 0.0, 0, 0, 0),
-    ("B", f"시장 상한형 — 현물 30년 국고채, {PROGRAM_YEARS}년 프로그램, 매입 ≤ 장기물 발행의 {CAP_ISSUE_SHARE:.0%} · 부채 벤치마크(LBP) 공시", "cash_bond_30y", np.nan, PROGRAM_YEARS, 0, 1),
-    ("C", f"오버레이형 — IRS 30년 오버레이로 헤지 비율 {HEDGE_TARGET_C:.0%}, 버퍼 {BUFFER_BP}bp · 부채 벤치마크 공시", "irs_30y", HEDGE_TARGET_C, 1, BUFFER_BP, 1),
+    ("A", "현행 유지 — LDI 조치 없음(2027 목표 비중 이행 = 헤지 3%) · 부채 벤치마크 없음", "none", 0.0, 0, 0, 0),
+    ("B", f"30년 국고채 교체 — 보유 채권을 30년 국고채로, {PROGRAM_YEARS}년 프로그램, 매입 ≤ 장기물 발행의 {CAP_ISSUE_SHARE:.0%} · 부채 벤치마크(LBP) 공시", "cash_bond_30y", np.nan, PROGRAM_YEARS, 0, 1),
+    ("C", f"IRS 오버레이 — 30년 고정금리 수취 스왑으로 헤지 비율 {HEDGE_TARGET_C:.0%}, 버퍼 {BUFFER_BP}bp · 부채 벤치마크 공시", "irs_30y", HEDGE_TARGET_C, 1, BUFFER_BP, 1),
 ], columns=["option", "description", "instrument", "hedge_ratio_target", "program_years", "buffer_bp", "lbp_disclosure"])
 options["is_assumed"] = 1; options["asof"] = ASOF
 options.to_csv(f"{OUT}/fml_w6m7_options.csv", index=False)

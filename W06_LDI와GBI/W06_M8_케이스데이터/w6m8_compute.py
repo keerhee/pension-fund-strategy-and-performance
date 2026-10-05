@@ -3,15 +3,15 @@
 """W6 M8 IC 케이스 — 판정 조건 계산 (w6m8_build.py 의 CSV → w6m8_results.json · compute_log.txt)
 
 케이스 1 (K퇴직연금 사업자 상품심의위원회) Flexicure형 디폴트옵션 — Floor x · 승수 m · 수수료 c
-  조건 ① 목표 미달 확률   P(W_T < G_S) ≤ 5%  (Safety 버킷 — 강의 1교시)
-  조건 ② Cash Trap        PSP 비중 < 5% 로 락인된 채 만기 도달할 확률 ≤ 10% (m 이 클수록 커진다 — 강의 2교시)
+  조건 ① 목표 미달 확률   P(W_T < G_S) ≤ 5%  (Safety 버킷 — 강의 단원 ①)
+  조건 ② Cash Trap        PSP 비중 < 5% 로 락인된 채 만기 도달할 확률 ≤ 10% (m 이 클수록 커진다 — 강의 단원 ⑤⑥)
   조건 ③ 수수료 잠식      수수료 차감 후 P(W_T ≥ G_M) ≥ 70%, G_M = 원리금보장 3.09% 10년 복리 (Market 버킷)
   조건 ④ 2022형 충격      주식 −20% · 금리 +300bp 에서 Floor 위반율 ≤ 1% — Floor 를 GHP 가격으로 정의할 때와 고정 원금으로 정의할 때
   조건 ⑤ 거버넌스         "보장" 표현 금지 · 설명 3문장 · 재심 트리거 — 표결 조건(계산 대상 아님)
 케이스 2 (H대학교 발전기금 투자위원회) Yale 모델 — 비유동 대체 상한 x · 안전 유동자산 하한 y · 지출률 z
   조건 ① 실질 지평         2022형 충격 + 목돈 인출 + 캐피탈콜 아래 비유동 자산을 팔지 않고 버티는 연수 ≥ 락업 7년
   조건 ② 지출 Floor        현행 지출 4.0% ≤ z ≤ 실질 기대수익 − 0.5%p (교육용 CMA)
-  조건 ③ 접근권            직접 PE·VC = 전담 인력 ≥ 3 · 매니저 15개 분산(최소 출자 100억 × 15) — 미충족이면 펀드오브펀드·세컨더리
+  조건 ③ 접근권            직접 PE·VC = 전담 인력 ≥ 3 · 매니저 15개 분산(최소 출자 100억 × 15) — 미충족이면 재간접·세컨더리
   조건 ④ 충격 후 지출 유지  충격 후 3년간 매도 없이 고정 지출·목돈을 안전 유동자산으로 대는 확률 ≥ 95% → y
   조건 ⑤ 거버넌스           분모 효과 시 신규 약정 중단 · 연 1회 재계산 — 표결 조건
 """
@@ -172,7 +172,7 @@ for x in XS:
     alt_bn = x / 100 * W0
     ok3 = (f("staff_h") >= f("staff_min")) and (alt_bn >= f("mgr_min") * f("min_commit_bn"))
     acc.append({"illiq_cap_pct": int(x), "alt_bn": alt_bn, "managers_affordable": int(alt_bn // f("min_commit_bn")), "staff": int(f("staff_h")),
-                "direct_ok": bool(ok3), "vehicle": "직접 PE·VC" if ok3 else ("펀드오브펀드 · 세컨더리" if x > 0 else "—")})
+                "direct_ok": bool(ok3), "vehicle": "직접 PE·VC" if ok3 else ("재간접 · 세컨더리" if x > 0 else "—")})
 L(f"[조건 ③ 접근권] 전담 인력 {int(f('staff_h'))}명 < {int(f('staff_min'))} → 직접 PE·VC 불가(전 구간). 매니저 15개 분산에 필요한 배분 = {f('mgr_min')*f('min_commit_bn'):,.0f}억 = 기금의 {f('mgr_min')*f('min_commit_bn')/W0:.0%} → x ≥ 30 이어야 규모 요건만 충족")
 res["case2"]["access"] = acc
 
@@ -275,7 +275,7 @@ L("[종합] " + " · ".join(f"x={s['illiq_cap_pct']}: ①{'통과' if s['c1'] el
 if ok2:
     x2 = max(s["illiq_cap_pct"] for s in ok2); z2 = max([s for s in ok2 if s["illiq_cap_pct"] == x2][0]["z_feasible"])
     res["case2"]["default"] = {"x": x2, "y": y_star, "z": z2}
-    L(f"[기본 답] 비유동 대체 상한 {x2}%(펀드오브펀드·세컨더리) · 안전 유동자산 하한 {y_star}% · 지출률 {z2}%(80/20 평활, 고정 지출 3.5% Floor) — 조건부 승인")
+    L(f"[기본 답] 비유동 대체 상한 {x2}%(재간접·세컨더리) · 안전 유동자산 하한 {y_star}% · 지출률 {z2}%(80/20 평활, 고정 지출 3.5% Floor) — 조건부 승인")
 json.dump(res, open(f"{D}/w6m8_results.json", "w"), ensure_ascii=False, indent=1, default=lambda o: o.item() if hasattr(o, "item") else str(o))
 open(f"{D}/compute_log.txt", "w").write("\n".join(log) + "\n")
 print("→ w6m8_results.json · compute_log.txt")

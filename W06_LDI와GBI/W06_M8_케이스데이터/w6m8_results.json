@@ -2156,7 +2156,7 @@
     "managers_affordable": 5,
     "staff": 1,
     "direct_ok": false,
-    "vehicle": "펀드오브펀드 · 세컨더리"
+    "vehicle": "재간접 · 세컨더리"
    },
    {
     "illiq_cap_pct": 20,
@@ -2164,7 +2164,7 @@
     "managers_affordable": 10,
     "staff": 1,
     "direct_ok": false,
-    "vehicle": "펀드오브펀드 · 세컨더리"
+    "vehicle": "재간접 · 세컨더리"
    },
    {
     "illiq_cap_pct": 30,
@@ -2172,7 +2172,7 @@
     "managers_affordable": 15,
     "staff": 1,
     "direct_ok": false,
-    "vehicle": "펀드오브펀드 · 세컨더리"
+    "vehicle": "재간접 · 세컨더리"
    },
    {
     "illiq_cap_pct": 40,
@@ -2180,7 +2180,7 @@
     "managers_affordable": 20,
     "staff": 1,
     "direct_ok": false,
-    "vehicle": "펀드오브펀드 · 세컨더리"
+    "vehicle": "재간접 · 세컨더리"
    },
    {
     "illiq_cap_pct": 60,
@@ -2188,7 +2188,7 @@
     "managers_affordable": 30,
     "staff": 1,
     "direct_ok": false,
-    "vehicle": "펀드오브펀드 · 세컨더리"
+    "vehicle": "재간접 · 세컨더리"
    }
   ],
   "spend_rule": [
@@ -2746,7 +2746,7 @@
      4.5
     ],
     "direct_ok": false,
-    "vehicle": "펀드오브펀드 · 세컨더리",
+    "vehicle": "재간접 · 세컨더리",
     "pass": true
    },
    {
@@ -2763,7 +2763,7 @@
      5.25
     ],
     "direct_ok": false,
-    "vehicle": "펀드오브펀드 · 세컨더리",
+    "vehicle": "재간접 · 세컨더리",
     "pass": true
    },
    {
@@ -2781,7 +2781,7 @@
      5.25
     ],
     "direct_ok": false,
-    "vehicle": "펀드오브펀드 · 세컨더리",
+    "vehicle": "재간접 · 세컨더리",
     "pass": false
    },
    {
@@ -2799,7 +2799,7 @@
      5.25
     ],
     "direct_ok": false,
-    "vehicle": "펀드오브펀드 · 세컨더리",
+    "vehicle": "재간접 · 세컨더리",
     "pass": false
    },
    {
@@ -2817,7 +2817,7 @@
      5.25
     ],
     "direct_ok": false,
-    "vehicle": "펀드오브펀드 · 세컨더리",
+    "vehicle": "재간접 · 세컨더리",
     "pass": false
    }
   ],

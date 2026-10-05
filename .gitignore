@@ -13,6 +13,8 @@
 # 제3자 저작물 — 재배포하지 않고 원문 링크로 대신한다 (_참고자료/README.md 참조)
 _참고자료/CPP_TPA리포트_MeasuringWhatMatters_2026-07_EN.pdf
 _pdf/CPP_TPA리포트_MeasuringWhatMatters_2026-07_EN.pdf
+보충교재/17_LDI_GBI 수식도출/GBI/07_Das_Markowitz_Scheid_Statman_2010_JFQA_원문.pdf
+보충교재/17_LDI_GBI 수식도출/GBI/*_원문.pdf
 
 # 강의계획서 — 학과 제출 문서라 공개하지 않는다.
 # 편집 원본 .docx는 위 규칙으로 이미 제외되므로, 렌더한 PDF만 여기서 막는다.
@@ -64,3 +66,8 @@ Assignment/**/2_Instructor/
 
 # BAF634 강의 데이터(JKP) — 학생이 Google Drive에서 받아 둔다 (Assignment/BAF634_Factor_Data/DATA.md)
 Assignment/BAF634_Factor_Data/data/
+
+# 덱 빌드 폴더의 산출물 사본 · 검수용 콘택트 시트 — 정본 PDF는 보충교재 폴더에 있다.
+_build/*/sheets/
+_build/dmss_deck/*.pdf
+_build/gbwm_deck/*.pdf

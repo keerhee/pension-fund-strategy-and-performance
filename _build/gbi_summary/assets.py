@@ -294,7 +294,7 @@ svg_save("s_bridge", b, W, H)
 # (S2) 3계층 버킷 피라미드 (1120×720, 우측 열 표시 폭 약 5.5in → 44px ≈ 16pt)
 W, H = 1120, 720
 tiers = [("③ Aspirational ≥ 30%", "상속 · 꿈 — 주식 · 대체", "white", 720),
-         ("② Market ≥ 70%", "여유 생활 — 균형형", "white", 900),
+         ("② Market ≥ 70%", "여유 생활 — GHP + 주식 67%", "white", 900),
          ("① Safety ≥ 95%", "필수 생활비 — RB · GHP", "dark", 1100)]
 b = ""
 for i, (t1, t2, k, w) in enumerate(tiers):
