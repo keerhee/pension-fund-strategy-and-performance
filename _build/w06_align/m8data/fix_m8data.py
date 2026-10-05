@@ -19,7 +19,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
 
-W = os.path.join(R, "W06_LDI와GBI"); BK = os.path.join(R, "_구판", "W06_정합전_2026-10-05")
+W = os.path.join(R, "W06_LDI와GBI"); WS = os.path.join(W, "W06_M8_실습데이터"); BK = os.path.join(R, "_구판", "W06_정합전_2026-10-05")
 DECK = "W06_M8_실습데이터_GBI목표기반투자"
 OUT = os.path.join(HERE, "out"); os.makedirs(OUT, exist_ok=True)
 # 강의본 장 번호는 하드코딩하지 않고 재번호 결과(이름 키 → 실제 번호)에서 읽는다
@@ -51,9 +51,11 @@ src = src.replace(OLD_K, NEW_K)
 src = src.replace('GHP(물가연동국채) 실질 1.5% = Floor 할인율, 월간 리밸런싱',
                   'GHP(물가연동국채) 실질 1.5% = Floor 할인율, 필요 자본 K는 강의본 방법 1, 월간 리밸런싱')
 src = src.replace("(강의본 26장 · 부록 B-2", f"(강의본 {PG['o21']}장 · 부록 B-2")
-open(os.path.join(W, "w8_sim.py"), "w", encoding="utf8").write(src)
-subprocess.run([sys.executable, "w8_sim.py"], cwd=W, check=True)
-J = json.load(open(os.path.join(W, "w8_sim_results.json")))
+src = src.replace('json.dump(out, open("w8_sim_results.json", "w"), indent=1, ensure_ascii=False)',
+                  'json.dump(out, open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "w8_sim_results.json"), "w"), indent=1, ensure_ascii=False)').replace("import json, numpy as np", "import json, os, numpy as np", 1)
+open(os.path.join(WS, "w8_sim.py"), "w", encoding="utf8").write(src)
+subprocess.run([sys.executable, "w8_sim.py"], cwd=WS, check=True)
+J = json.load(open(os.path.join(WS, "w8_sim_results.json")))
 Kd = J["K"]
 F0 = J["F0"]
 print("K:", {k: round(v, 4) for k, v in Kd.items()})

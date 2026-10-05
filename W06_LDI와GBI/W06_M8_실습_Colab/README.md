@@ -37,7 +37,7 @@ jupyter notebook            # 이 폴더에서 → 00부터 차례로
 출력까지 다시 저장하려면: `jupyter nbconvert --to notebook --execute --inplace 01_방법1_가장싼필요자본.ipynb`
 
 ## 숫자의 출처
-`../gbi_mc.py`(+ `gbi_mc_results.json` · `gbi_mc_demo.json`), `../priority_mc.py`, `../dm_mc.py`, 보충교재 `17_LDI_GBI 수식도출/GBI/05_Martellini_GBI_Formula_Derivations_III.md` 3-6 · 4-2절,
+`../W06_M8_실습_몬테카를로/`의 `gbi_mc.py`(+ `gbi_mc_results.json` · `gbi_mc_demo.json`) · `priority_mc.py` · `dm_mc.py`, 보충교재 `17_LDI_GBI 수식도출/GBI/05_Martellini_GBI_Formula_Derivations_III.md` 3-6 · 4-2절,
 `_build/gbwm_deck/gbwm_dp.py` · `compute.py`(DORS 덱). 노트북은 이 스크립트들과 같은 난수 순서를 써서 같은 숫자를 냅니다.
 
 ## 재현 메모

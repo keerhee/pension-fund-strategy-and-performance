@@ -2,7 +2,7 @@
 단위 억 원(2026 실질). 가정: 주식(PSP) 연 로그수익 m 6%·σ 20%(강의 K 예제와 같은 자본시장 가정),
 GHP(물가연동국채) 실질 1.5% = Floor 할인율, 필요 자본 K는 강의본 방법 1, 월간 리밸런싱, 레버리지 금지(위험자산 ≤ 100%), 1,000 경로, seed 2026.
 Floor = 남은 생활비 부족분(연 1,800만, 88세까지)의 현재가치. 기간 65→75세(10년)."""
-import json, numpy as np
+import json, os, numpy as np
 R, MU, SIG, N, SEED, T, LIFE = 0.015, 0.06, 0.20, 1000, 2026, 10, 23
 C = 0.18                       # (300 − 150)만 × 12 = 1,800만 = 0.18억
 A0, MKT, ASP = 5.0, 1.0, 0.5
@@ -59,7 +59,7 @@ out["K"] = dict(lam=LAM, market_m1=km, w_market_raw=wmr, w_market=wm, g_market=g
                 total_m1=F0 + km + ka, spare_m1=A0 - (F0 + km + ka),
                 market_bal=K(1.0, 0.7, 0.045, 0.09), market_eq=K(1.0, 0.7, 0.06, 0.2), market_ghp=1.0/(1+R)**10,
                 asp_eq=K(0.5, 0.3, 0.06, 0.2), asp_bal=K(0.5, 0.3, 0.045, 0.09))
-json.dump(out, open("w8_sim_results.json", "w"), indent=1, ensure_ascii=False)
+json.dump(out, open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "w8_sim_results.json"), "w"), indent=1, ensure_ascii=False)
 print(f"F0 {F0:.3f} cushion {A0-F0:.3f} FT {floor(120):.3f}")
 for m, r in out["cppi"].items(): print("m", m, {k: round(v, 3) for k, v in r.items()})
 print("fixed40", {k: round(v, 3) for k, v in out["fixed40"].items()})

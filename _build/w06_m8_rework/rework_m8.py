@@ -18,7 +18,7 @@
  17) [10차] Das–Markowitz를 손계산(한 포트폴리오 검사 → 두 자산 축소) → 행렬 일반화 순서로 · 롱온리 영향(은퇴 · 교육 0, 합산 연 12bp)
  18) [11차] 원문(DMSS 2010, JFQA 45(2) 311–334) 대조 감사 반영 — 합산 효율은 공매도 허용 시 · 12bp는 계정별 롱온리 · A·B·C·D 표기 · 19.89% 오기 · 표 3 · Telser 1956 · 인용 범위
  19) [12차] 롱온리를 엑셀 해 찾기 · scipy로 푸는 장(solver_fig.py) · 바닥은 CPPI, 그 위 위험 블록은 Das–Markowitz로 — 두 층 구조 장
- 20) [13차] 방법 3 몬테카를로 네 장(원리 · 절차 · 결과 · Claude Code) — 숫자는 W06_LDI와GBI/gbi_mc.py 실행 결과(gbi_mc_results.json) · 비교표 세 열 · 실무 장마다 방법 1 · 2 · 3 연결
+ 20) [13차] 방법 3 몬테카를로 네 장(원리 · 절차 · 결과 · Claude Code) — 숫자는 W06_LDI와GBI/W06_M8_실습_몬테카를로/gbi_mc.py 실행 결과(gbi_mc_results.json) · 비교표 세 열 · 실무 장마다 방법 1 · 2 · 3 연결
  21) [14차] 방법 3을 초보자용으로 — 규칙을 경로에 적용(3년 표) · 10경로 장난감 K 찾기 · 오해 바로잡기 · 여러 목표 격자(gbi_mc.py --demo)
  22) [15차] 목표가 여럿일 때 조합 폭발과 줄이는 법 두 장(손으로 세기 · 다섯 방법 표 · 우선순위 순서 실제 풀이 · 공통 난수 효과)
  23) [16차] 47장 재현 실습 장 — 프롬프트 요약 · priority_mc.py 실제 출력(코드 그림) · 검증 넷
@@ -816,7 +816,7 @@ note(FD, 630, "※ 위험 블록 = 계정별 롱온리 해의 합산 · 갭 위�
 
 
 # (파5) 13차 — 방법 3 몬테카를로 네 장 · 숫자는 gbi_mc_results.json
-MC = json.load(open(os.path.join(R, "W06_LDI와GBI", "gbi_mc_results.json")))
+MC = json.load(open(os.path.join(R, "W06_LDI와GBI", "W06_M8_실습_몬테카를로", "gbi_mc_results.json")))
 G_ = {g["goal"]: g for g in MC["goals"]}
 E_MC1 = render(r"\hat{p}=\frac{1}{N}\sum_{i=1}^{N}\mathbf{1}\left\{W_T^{(i)}\geq G\right\},\qquad \mathrm{SE}=\sqrt{\frac{\hat{p}\,(1-\hat{p})}{N}}", "mc1.png", fontsize=42)
 MC1 = clone(S(16))
@@ -899,7 +899,7 @@ lecfix.set_table(rel, [["파일", "푸는 문제 · 방법", "강의 장", "프�
 col_widths(rel, (130, 310, 130, 207)); table_font(rel, 11, 11); row_heights(rel, [24, 24, 24, 24, 24]); set_px(rel, x=x14m - 2, y=y14m + 212)
 
 # (파6) 14차 — 방법 3 초보자용 세 장 · 숫자는 gbi_mc_demo.json
-DM = json.load(open(os.path.join(R, "W06_LDI와GBI", "gbi_mc_demo.json")))
+DM = json.load(open(os.path.join(R, "W06_LDI와GBI", "W06_M8_실습_몬테카를로", "gbi_mc_demo.json")))
 RA = clone(S(3))
 T(RA, 3, "‘규칙을 경로에 적용한다’ = 경로 하나를 한 해씩 굴린다는 뜻입니다")
 T(RA, 5, "seed 2026의 경로 1, 앞 3년(본 계산과 같은 난수) · 주식 연 수익률 R은 표대로, GHP는 해마다 2.02%")
@@ -1058,7 +1058,7 @@ set_px(sh(CB1, 8), y=560); font(sh(CB1, 8), 16)
 note(CB1, 600, "※ {p:MXG}장 격자는 변수를 둘(총자본 K, 주식 w)로 묶어 21 × 41 = 861개 · 해마다 비중을 바꾸는 동적 문제는 동적계획법(자산 수준 × 시점 격자를 거꾸로 푼다)")
 note(CB1, 626, "※ Das · Ostrov · Radhakrishnan · Srivastav (2018) A New Approach to Goals-Based Wealth Management, JOIM 16(3) · 동적계획법: 같은 저자 (2020) CMS 17")
 
-DE = json.load(open(os.path.join(R, "W06_LDI와GBI", "gbi_mc_demo.json")))
+DE = json.load(open(os.path.join(R, "W06_LDI와GBI", "W06_M8_실습_몬테카를로", "gbi_mc_demo.json")))
 EP, CR = DE["E_priority"], DE["F_crn"]
 CB2 = clone(S(51))
 T(CB2, 3, "우선순위 순서로 풀면 탐색 10번 — 대신 Safety는 확정입니다")
@@ -1091,12 +1091,12 @@ note(CB2, 658, "※ 이분법은 0과 남은 자금 사이를 반씩 좁혀 폭�
 
 # (파8) 16차 — 47장을 직접: Claude Code 실습 장(63장 프롬프트 장표 복제)
 import subprocess as _sp
-_out = _sp.run([sys.executable, os.path.join(R, "W06_LDI와GBI", "priority_mc.py")], capture_output=True, text=True, check=True).stdout.strip()
+_out = _sp.run([sys.executable, os.path.join(R, "W06_LDI와GBI", "W06_M8_실습_몬테카를로", "priority_mc.py")], capture_output=True, text=True, check=True).stdout.strip()
 _out = re.sub(r"걸린 시간 [0-9.]+초", "걸린 시간 0.03초", _out)          # 실행마다 다른 시간은 대표값으로
 OUT_PNG = code_png("$ python3 priority_mc.py\n" + _out, "prio_out.png", fontsize=12)
 CC = clone(S(63))
 T(CC, 3, "[실습 A] 방법 3으로 방법 1 문제 — 목표 여럿 · 우선순위({p:CB2}장)")
-T(CC, 5, "priority_mc.py — 전문: W06_M8_실습_우선순위MC_ClaudeCode_프롬프트.md · numpy만 · 1초 안")
+T(CC, 5, "W06_M8_실습_몬테카를로/ — priority_mc.py · 전문 W06_M8_실습_우선순위MC_ClaudeCode_프롬프트.md")
 T(CC, 8, "검증 체크"); T(CC, 9, "넷이 맞으면 성공")
 T(CC, 10, "Safety 4.91억\nMarket 2.26억 ± 0.01\n합계 9.14억\n시드를 바꿔도 둘째 자리만"); font(sh(CC, 10), 14)
 T(CC, 12, "[입력] 프롬프트 요약 — 빈 폴더의 Claude Code에 전문을 붙여 넣는다")
@@ -1155,7 +1155,7 @@ set_px(sh(VB2, 8), y=560); font(sh(VB2, 8), 17)
 
 
 # (파10) 18차 — 방법 3으로 방법 2 문제를 푼다(51장 표 장표 복제) · 숫자는 dm_mc_results.json
-DQ = json.load(open(os.path.join(R, "W06_LDI와GBI", "dm_mc_results.json")))
+DQ = json.load(open(os.path.join(R, "W06_LDI와GBI", "W06_M8_실습_몬테카를로", "dm_mc_results.json")))
 A_ = DQ["accounts"]
 def _w(v): return " · ".join(f"{x:.1f}" for x in v)
 DMC1 = clone(S(51))
@@ -1217,7 +1217,7 @@ _txt = "$ python3 dm_mc.py\n" + "\n".join(
 OUTB = code_png(_txt, "dm_out.png", fontsize=11)
 CCB = clone(S(63))
 T(CCB, 3, "[실습 B] 방법 3으로 방법 2 문제 — Das–Markowitz({p:DMC1}장)")
-T(CCB, 5, "dm_mc.py — 전문: W06_M8_실습_DasMarkowitzMC_ClaudeCode_프롬프트.md · numpy만 · 10초 안")
+T(CCB, 5, "W06_M8_실습_몬테카를로/ — dm_mc.py · 전문 W06_M8_실습_DasMarkowitzMC_ClaudeCode_프롬프트.md")
 T(CCB, 8, "검증 체크"); T(CCB, 9, "넷이 맞으면 성공")
 T(CCB, 10, "γ 한 축이 닫힌 해 ±1%p\n(상속 ±2%p)\n롱온리 상속 0 · 8.9 · 91.1 (±1%p)\n확률은 세기(정규식 금지)"); font(sh(CCB, 10), 14)
 T(CCB, 12, "[입력] 프롬프트 요약 — 빈 폴더의 Claude Code에 전문을 붙여 넣는다")
@@ -1249,7 +1249,7 @@ lecfix.set_table(tb, [["소주제 (머리 띠 이름)", "푸는 질문", "장"],
     ["실습 · 도구", "[실습 A] priority_mc.py · [실습 B] dm_mc.py · [도구] gbi_mc.py", "{p:CC} · {p:CCB} · {p:MC4}장"],
     ["세 방법 비교 · 정리", "비교표 · 방법 2가 편한 이유 · 바닥 + 계정 · 체크포인트", "{p:CMP2}~{p:o26}장"]])
 col_widths(tb, (260, 662, 210)); table_font(tb, 14, 13); row_heights(tb, [30] + [34] * 9); set_px(tb, y=186); stripe(tb)
-rich(line(U3, 534, "**Colab** — 같은 예제를 Colab 노트북으로: W06_M8_실습_Colab/ (실습 A · B · 도구와 같은 숫자)", 16))
+rich(line(U3, 534, "**파일** — 스크립트 · 프롬프트는 W06_M8_실습_몬테카를로/, 같은 예제의 Colab 노트북은 W06_M8_실습_Colab/", 16))
 T(U3, 8, "막히면 이 지도로 — 어느 방법의 어느 단계인지 머리 띠에서 확인합니다"); set_px(sh(U3, 8), y=584); font(sh(U3, 8), 17)
 
 # (하) 단원 ③ — 방법 1 vs 방법 2(3장 표 장표 복제)

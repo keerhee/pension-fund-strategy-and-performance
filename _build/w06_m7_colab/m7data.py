@@ -32,5 +32,5 @@ def assets():
     return _rows(os.path.join(CASE, "fml_w6m7_assets.csv"))
 
 def liability_lab():
-    r = _rows(os.path.join(W6, "fml_w7_liability.csv"))
+    r = _rows(os.path.join(W6, "W06_M7_실습데이터", "fml_w7_liability.csv"))
     return [int(x["year"]) for x in r], [float(x["연간지급액_억원"]) for x in r]

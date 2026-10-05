@@ -61,7 +61,7 @@ jupyter notebook            # 이 폴더에서 → 00부터 차례로
 ## 숫자의 출처
 - 강의본 본문 · 부록의 예시 기금(A 100 · L 80, 10년 불릿 등) — 노트북 안에서 직접 계산
 - 국민연금: `../W06_M7_케이스데이터/` CSV(교육용 추계)와 `w6m7_compute.py` — 같은 식을 노트북에 옮겼고 `compute_log.txt`와 한 자리까지 같음
-- 가상 DB 부채: `../fml_w7_liability.csv`(가상 데이터 — 강의용) — 실습 덱 끝장의 `lab_sim.py`는 저장소에 없어, 실습 덱 14장의 가정으로 시뮬레이터를 다시 짰음
+- 가상 DB 부채: `../W06_M7_실습데이터/fml_w7_liability.csv`(가상 데이터 — 강의용) — 실습 덱 끝장의 `lab_sim.py`는 저장소에 없어, 실습 덱 14장의 가정으로 시뮬레이터를 다시 짰음
 - 잉여금 변동성의 금리 변동성 0.8%p: 보충교재 `17_LDI_GBI 수식도출/LDI/02_LDI_Derivations_II_zeroone` 6-1절
 - 빌더: `_build/w06_m7_colab/`(`build_00~07.py` · `build_readme.py` · `nbhelp.py` · `m7data.py` · `run.sh`)
 
