@@ -1,5 +1,8 @@
 # 미국 주식 포트폴리오·팩터 데이터 (W02 · W10 실습, W12 팀 프로젝트 공용)
 
+**처음이면 여기부터** — 실행 가이드 `Lab_Run_Guide_Beginner.pdf` 를 읽고, Colab 노트북을 연다(설치 불필요):
+https://colab.research.google.com/github/keerhee/pension-fund-strategy-and-performance/blob/main/Assignment/BAF634_Factor_Data/BAF634_Factor_Lab_Colab.ipynb
+
 KAIST BAF634 고급금융계량분석(2025) 과제 2의 `Problem_Set_2.xls`(github.com/jaepil-choi/KAIST-BAF634-2025)를 시트별 CSV로 옮겼다. 원자료는 Kenneth French Data Library. 모든 값은 **월간 %**, 첫 열 `yyyymm`.
 
 | 파일 | 내용 | 기간 |
