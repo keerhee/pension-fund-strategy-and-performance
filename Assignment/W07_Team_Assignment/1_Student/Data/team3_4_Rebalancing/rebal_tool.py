@@ -19,8 +19,8 @@
   [1] 자산군별 평균회귀 점검 — 월간 수익률 AR(1) 계수 φ와 t값, 분산비 VR(12)
   [2] 위험한도 — 위험자산 비중별 CVaR95와 한도(−15%)를 지키는 위험자산 상한
   [3] 실행 가능성 — 복원 거래를 며칠 안에 끝낼 수 있는가
-  [4] 세 안의 성과 — 분산수익(DR) · 거래비용 · 순 재균형 프리미엄 · 회전율 · 위험 비중 이탈 · 최대 단일 거래 · 판정
-용어: DR(분산수익) = 포트폴리오 기하수익 − 자산별 기하수익의 가중평균. 재균형이 "싸게 사고 비싸게 파는" 효과로 얻는 수익.
+  [4] 세 안의 성과 — 분산수익(DR) · 거래비용 · 순 리밸런싱 프리미엄 · 회전율 · 위험 비중 이탈 · 최대 단일 거래 · 판정
+용어: DR(분산수익) = 포트폴리오 기하수익 − 자산별 기하수익의 가중평균. 리밸런싱이 "싸게 사고 비싸게 파는" 효과로 얻는 수익.
 """
 import argparse, math, os
 import numpy as np, pandas as pd
@@ -227,7 +227,7 @@ else:
              ("B 매월 말 목표까지 전량 복원(밴드 없음)", dict(mode="cal", k=21)),
              ("C 넓은 밴드 ±5 · 분기 점검", dict(mode="band", band_scale=5, check=63))]
 bh = run("bh", aum=AUM, W=W)
-print(f"[4] 세 안의 성과 (20년 모의 패널) — 참고: 재균형 없음(매수 후 보유) DR {bh['DR_bp']:+.1f}bp · 위험 비중 이탈 최대 {bh['risk_dev_max_pp']:+.1f}%p · CVaR 초과일 {bh['pct_days_over_cvar']}%")
+print(f"[4] 세 안의 성과 (20년 모의 패널) — 참고: 리밸런싱 없음(매수 후 보유) DR {bh['DR_bp']:+.1f}bp · 위험 비중 이탈 최대 {bh['risk_dev_max_pp']:+.1f}%p · CVaR 초과일 {bh['pct_days_over_cvar']}%")
 print(f"    판정 기준: ② 순 프리미엄 > 0 · ③ 실행 가능(복원 거래 ≤ {MAX_DAYS:.0f}거래일) · ④ 위험한도(CVaR 초과일 ≤ 0.5%, 이탈 ≤ +{w_max*100-65:.1f}%p)")
 for name, kw in rules:
     r = run(aum=AUM, W=W, **kw)
@@ -244,6 +244,6 @@ for name, kw in rules:
         days = r["max_trade_trn"] / (PART_CASH * adv); note = f"최대 단일 거래 {r['max_trade_trn']}조 → {days:.1f}일"
     c3 = days <= MAX_DAYS
     print(f"\n  ◆ {name}")
-    print(f"    DR {r['DR_bp']:+.1f}bp − 비용 {cost:.1f}bp = 순 프리미엄 {r['net_bp']:+.1f}bp/년 · 회전율 {r['turnover_pct']}%/년 · 재균형 {r['n_rebal_per_yr']}회/년")
+    print(f"    DR {r['DR_bp']:+.1f}bp − 비용 {cost:.1f}bp = 순 프리미엄 {r['net_bp']:+.1f}bp/년 · 회전율 {r['turnover_pct']}%/년 · 리밸런싱 {r['n_rebal_per_yr']}회/년")
     print(f"    위험 비중 이탈 {r['risk_dev_min_pp']:+.1f} ~ {r['risk_dev_max_pp']:+.1f}%p · CVaR 한도 초과일 {r['pct_days_over_cvar']}% · 실행: {note}")
     print(f"    판정 ② {'통과' if c2 else '탈락'} · ③ {'통과' if c3 else '탈락'} · ④ {'통과' if c4 else '탈락'}")
