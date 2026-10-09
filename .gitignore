@@ -73,6 +73,5 @@ _build/*/sheets/
 _build/dmss_deck/*.pdf
 _build/gbwm_deck/*.pdf
 
-# 기말 팀 프로젝트 덱 그림은 중간 산출물이다 — _build/final_project_deck/assets.py 로 다시 만든다.
-_build/final_project_deck/viz/
-_build/final_project_deck/eq/
+# 기말 팀 프로젝트 덱 빌드 스크립트·그림은 로컬에만 둔다 (덱 PDF와 중복).
+_build/final_project_deck/
