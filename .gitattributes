@@ -20,3 +20,4 @@
 # 강의 자료 저장소이므로 마크다운이 "코드"로 집계되지 않게 한다.
 *.md            linguist-documentation
 _참고자료/*     linguist-vendored
+*.bat text eol=crlf

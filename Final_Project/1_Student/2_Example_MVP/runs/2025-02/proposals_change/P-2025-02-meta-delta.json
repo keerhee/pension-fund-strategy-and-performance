@@ -1,0 +1,30 @@
+{
+ "id": "P-2025-02-meta-delta",
+ "kind": "param",
+ "by": "meta-reviewer",
+ "target": "cma-builder 스킬 파라미터",
+ "path": [
+  "cma",
+  "shrink_delta"
+ ],
+ "old": 0.5,
+ "new": 0.7,
+ "change": "기대수익률 수축 강도 δ 0.5 → 0.7",
+ "why": "최근 4분기 평균 예측오차 14.6% > 기준 8%",
+ "test": {
+  "quarters": [
+   "2023-02",
+   "2023-05",
+   "2023-08",
+   "2023-11",
+   "2024-02",
+   "2024-05",
+   "2024-08",
+   "2024-11"
+  ],
+  "mae_current": 0.135904,
+  "mae_new": 0.136701,
+  "improved": false,
+  "summary": "과거 8분기 재추정 MAE 13.59% → 13.67%"
+ }
+}

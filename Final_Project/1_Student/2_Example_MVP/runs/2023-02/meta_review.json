@@ -1,0 +1,37 @@
+{
+ "as_of": "2023-02",
+ "evaluated": "2022-11",
+ "months": [
+  "2022-12",
+  "2023-02"
+ ],
+ "asset_error_ann": {
+  "SPY": -0.181675,
+  "EFA": 0.102635,
+  "EEM": -0.12606,
+  "IEF": -0.081164,
+  "TLT": -0.040726,
+  "LQD": -0.070107,
+  "HYG": -0.050253,
+  "TIP": -0.065052,
+  "VNQ": -0.113572,
+  "GLD": 0.059853,
+  "DBC": -0.305672
+ },
+ "mae": 0.108797,
+ "rolling_mae": 0.129052,
+ "quarter_return": {
+  "pc-adversarial": -0.022014,
+  "pc-equal": -0.006456,
+  "pc-erc": -0.004658,
+  "pc-invvol": -0.00513,
+  "pc-maxsharpe": -0.012731,
+  "pc-minvar": -0.00498
+ },
+ "adopted_quarter_return": -0.00498,
+ "rejected_but_better": [],
+ "proposals": [
+  "P-2023-02-meta-delta"
+ ],
+ "auto_applied": false
+}

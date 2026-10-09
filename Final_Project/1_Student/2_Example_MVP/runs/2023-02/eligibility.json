@@ -1,0 +1,32 @@
+{
+ "pc-equal": {
+  "eligible": true,
+  "violations": [],
+  "n_eff": 10.9489
+ },
+ "pc-invvol": {
+  "eligible": true,
+  "violations": [],
+  "n_eff": 9.8616
+ },
+ "pc-minvar": {
+  "eligible": true,
+  "violations": [],
+  "n_eff": 4.8853
+ },
+ "pc-maxsharpe": {
+  "eligible": true,
+  "violations": [],
+  "n_eff": 4.6853
+ },
+ "pc-erc": {
+  "eligible": true,
+  "violations": [],
+  "n_eff": 9.6751
+ },
+ "pc-adversarial": {
+  "eligible": true,
+  "violations": [],
+  "n_eff": 4.166
+ }
+}

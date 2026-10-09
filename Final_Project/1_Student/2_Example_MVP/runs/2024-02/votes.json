@@ -1,0 +1,125 @@
+{
+ "ballots": {
+  "pc-equal": [
+   "pc-invvol",
+   "pc-erc",
+   "pc-minvar"
+  ],
+  "pc-invvol": [
+   "pc-minvar",
+   "pc-erc",
+   "pc-equal"
+  ],
+  "pc-minvar": [
+   "pc-erc",
+   "pc-invvol",
+   "pc-equal"
+  ],
+  "pc-maxsharpe": [
+   "pc-equal",
+   "pc-invvol",
+   "pc-erc",
+   "pc-minvar"
+  ],
+  "pc-erc": [
+   "pc-equal",
+   "pc-invvol",
+   "pc-minvar"
+  ],
+  "pc-adversarial": [
+   "pc-minvar",
+   "pc-equal",
+   "pc-erc",
+   "pc-invvol"
+  ]
+ },
+ "rule": "자기 제외 상위 4개 [5, 4, 3, 2]점 · 최하위 -2점 · λ=0.5",
+ "result": {
+  "pc-equal": {
+   "S": 10.0,
+   "S_hat": 0.4,
+   "M": 0.7,
+   "score": 0.55
+  },
+  "pc-invvol": {
+   "S": 15.0,
+   "S_hat": 0.733333,
+   "M": 0.59488,
+   "score": 0.664107
+  },
+  "pc-minvar": {
+   "S": 4.0,
+   "S_hat": 0.0,
+   "M": 0.318962,
+   "score": 0.159481
+  },
+  "pc-erc": {
+   "S": 19.0,
+   "S_hat": 1.0,
+   "M": 0.531366,
+   "score": 0.765683
+  }
+ },
+ "bottom_flags": {
+  "pc-equal": [
+   "pc-invvol",
+   "pc-minvar"
+  ],
+  "pc-invvol": [
+   "pc-adversarial"
+  ],
+  "pc-minvar": [
+   "pc-equal",
+   "pc-maxsharpe",
+   "pc-erc"
+  ],
+  "pc-erc": []
+ },
+ "ranking": [
+  "pc-erc",
+  "pc-invvol",
+  "pc-equal",
+  "pc-minvar"
+ ],
+ "winner": "pc-erc",
+ "metric": {
+  "M": {
+   "pc-equal": 0.7,
+   "pc-invvol": 0.59488,
+   "pc-minvar": 0.318962,
+   "pc-erc": 0.531366
+  },
+  "components": {
+   "bt_sharpe": {
+    "pc-equal": -0.330529,
+    "pc-invvol": -0.401852,
+    "pc-minvar": -0.409696,
+    "pc-erc": -0.417988
+   },
+   "slack": {
+    "pc-equal": 0.0,
+    "pc-invvol": 0.0,
+    "pc-minvar": -1e-06,
+    "pc-erc": 0.0
+   },
+   "n_eff": {
+    "pc-equal": 10.948925,
+    "pc-invvol": 9.880861,
+    "pc-minvar": 5.062041,
+    "pc-erc": 9.8437
+   },
+   "regime_fit": {
+    "pc-equal": -0.0,
+    "pc-invvol": -0.0,
+    "pc-minvar": -0.0,
+    "pc-erc": -0.0
+   },
+   "est_risk": {
+    "pc-equal": -0.049977,
+    "pc-invvol": -0.045509,
+    "pc-minvar": -0.040497,
+    "pc-erc": -0.04671
+   }
+  }
+ }
+}

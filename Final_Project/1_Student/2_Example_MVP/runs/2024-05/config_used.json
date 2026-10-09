@@ -1,0 +1,42 @@
+{
+ "as_of": "2024-05",
+ "params": {
+  "_note": "보호 파일 — 에이전트는 직접 수정할 수 없다. harness.apply_change()만 CIO 승인 후 고친다.",
+  "cma": {
+   "window_months": 84,
+   "shrink_delta": 0.5
+  },
+  "vote": {
+   "lambda": 0.5,
+   "top_points": [
+    5,
+    4,
+    3,
+    2
+   ],
+   "bottom_points": -2
+  },
+  "metric_window_months": 36,
+  "adversarial": {
+   "sr_min_rule": "median_of_others",
+   "starts": 8
+  },
+  "meta": {
+   "mae_trigger": 0.08,
+   "lookback_quarters": 4,
+   "delta_step": 0.2,
+   "test_quarters": 8
+  },
+  "stress": {
+   "rate_shock_2022": [
+    "2022-01-01",
+    "2022-08-01"
+   ],
+   "covid_2020": [
+    "2020-02-01",
+    "2020-03-01"
+   ]
+  }
+ },
+ "ips_sha": "9f0594adce6e"
+}

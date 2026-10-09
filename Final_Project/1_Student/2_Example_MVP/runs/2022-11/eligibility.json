@@ -1,0 +1,34 @@
+{
+ "pc-equal": {
+  "eligible": true,
+  "violations": [],
+  "n_eff": 10.9489
+ },
+ "pc-invvol": {
+  "eligible": true,
+  "violations": [],
+  "n_eff": 9.8747
+ },
+ "pc-minvar": {
+  "eligible": true,
+  "violations": [],
+  "n_eff": 4.9564
+ },
+ "pc-maxsharpe": {
+  "eligible": true,
+  "violations": [],
+  "n_eff": 4.2781
+ },
+ "pc-erc": {
+  "eligible": true,
+  "violations": [],
+  "n_eff": 9.4326
+ },
+ "pc-adversarial": {
+  "eligible": false,
+  "violations": [
+   "유효 종목 수 3.93 < 4.0"
+  ],
+  "n_eff": 3.9349
+ }
+}

@@ -821,6 +821,14 @@ for s in P2:
         if ca.target_slide is not None and ca.target_slide is O[2]:
             ca.target_slide = g1
 sub_runs(prs)
+# 영상 대본용 대응표: 새 장 → 옛 109장 번호(또는 새 장 이름)
+_inv = {id(v): k for k, v in O.items()}
+_nm = {id(v): k for k, v in Nw.items()}
+_nm.update({id(c2): "cover2", id(g1): "gloss1_p2", id(g2): "gloss2_p2", id(m2): "map_p2", id(rv): "review_p2", id(kd): "kelly_div"})
+_nm.update({id(x): f"kelly{i+1}" for i, x in enumerate(K)})
+json.dump({"P1": [{"new": i, "old": _inv.get(id(x)), "key": _nm.get(id(x))} for i, x in enumerate(P1, 1)],
+           "P2": [{"new": i, "old": _inv.get(id(x)), "key": _nm.get(id(x))} for i, x in enumerate(P2, 1)]},
+          open(os.path.join(HERE, "slide_map_parts.json"), "w"), ensure_ascii=False, indent=0)
 prs.save(TMP)
 n1 = len(P1); print("전체", len(order), "장 = Part I", n1, "+ Part II", len(P2))
 

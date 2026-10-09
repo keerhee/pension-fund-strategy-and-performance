@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>채점 콘솔 — 자율주행 포트폴리오</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+:root{--navy:#0B1F3A;--navy2:#14345E;--orange:#F28C28;--teal:#1E9C9C;--green:#2E9D63;--red:#D2493D;--bg:#F3F5F9;--card:#fff;--line:#DCE2EC;--text:#1B2433;--muted:#5E6B80}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:"Pretendard","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:15px;line-height:1.55;word-break:keep-all}
+header{background:var(--navy);color:#fff;padding:18px 28px 0}
+header h1{margin:0;font-size:22px;font-weight:800}header .sub{color:#A9BCD6;font-size:13px;margin-top:2px}
+nav{display:flex;gap:4px;margin-top:14px;flex-wrap:wrap}nav button{background:transparent;border:0;color:#C9D6E8;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;border-radius:8px 8px 0 0;font-family:inherit}
+nav button.on{background:var(--bg);color:var(--navy)}
+main{padding:22px 28px 60px;max-width:1500px;margin:0 auto}
+.banner{background:#FFF4E5;border:1px solid #F5C58A;color:#7A4A10;padding:10px 14px;border-radius:10px;margin-bottom:16px;font-size:14px}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:1fr 1fr}.g5{grid-template-columns:repeat(5,1fr)}.g3{grid-template-columns:repeat(3,1fr)}
+@media(max-width:1000px){.g2,.g5,.g3{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.card h3{margin:0 0 10px;font-size:15px;color:var(--navy)}
+.kpi .v{font-size:26px;font-weight:800;color:var(--navy)}.kpi .l{font-size:12.5px;color:var(--muted)}.kpi .s{font-size:12px;color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}th{background:#F0F3F8;color:var(--muted);font-weight:700}
+.pill{display:inline-block;padding:1px 8px;border-radius:10px;font-size:12px;font-weight:700}
+.ok{background:#E3F4EA;color:var(--green)}.no{background:#FBE5E2;color:var(--red)}.wait{background:#EEF1F6;color:var(--muted)}.warn{background:#FFF0DD;color:#B5650F}
+.btn{background:var(--navy);color:#fff;border:0;border-radius:9px;padding:9px 16px;font-weight:700;cursor:pointer;font-size:14px;font-family:inherit}
+.btn.alt{background:var(--orange)}.btn:disabled{opacity:.45;cursor:not-allowed}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}.chip{border:1px solid var(--line);background:#fff;border-radius:16px;padding:4px 12px;cursor:pointer;font-size:13px;font-family:inherit}.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.md h1{font-size:19px;margin:0 0 8px;color:var(--navy)}.md h2{font-size:15.5px;margin:16px 0 6px;color:var(--navy);border-left:4px solid var(--orange);padding-left:8px}.md table{margin:6px 0 10px}.md p{margin:6px 0}.md ul{margin:4px 0 8px;padding-left:20px}
+.md code{background:#EEF1F6;padding:0 4px;border-radius:4px;font-size:12.5px}
+.trace{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;max-height:330px;overflow:auto;background:#0E1B2E;color:#CFE0F5;border-radius:10px;padding:10px}
+.trace .b{color:#FF9B8A}.trace .a{color:#F2B26A}
+label{font-size:13px;color:var(--muted);display:block;margin-top:8px}input,select{font-family:inherit;font-size:14px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;width:100%}
+.row{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.row>div{flex:1;min-width:120px}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:s 1s linear infinite;vertical-align:-2px;margin-right:6px}@keyframes s{to{transform:rotate(360deg)}}
+.small{font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px;margin-right:12px;font-size:12.5px}.legend i{width:16px;height:3px;display:inline-block}
+.howto{counter-reset:s}.howto li{margin:6px 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>채점 콘솔 — 자율주행 포트폴리오 (예시 MVP)</h1>
+  <div class="sub">BAF.60080 특강 XS 팀 프로젝트 · 가상 기금 KFP · 평가 구간 2022.9~2025.7 · 분기 말 결정 12회</div>
+  <nav id="tabs"></nav>
+</header>
+<main id="main"></main>
+<script>
+const STATIC = window.STATIC_DATA || null;
+const TABS = [["home","개요"],["quarter","분기 보기"],["check","공개 점검 T1~T8"],["live","라이브 점검 L1~L3"],["docs","문서"],["how","채점 방법"]];
+const NAMES = {"pc-equal":"동일가중","pc-invvol":"역변동성","pc-minvar":"최소분산","pc-maxsharpe":"최대 샤프(MVO)","pc-erc":"ERC","pc-adversarial":"적대적 분산자"};
+let S = null, curTab = "home", curQ = null;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+function md(src){
+  const lines = (src||"").split("\n"); let h = "", i = 0;
+  const inl = t => esc(t).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/`([^`]+)`/g,"<code>$1</code>");
+  while(i < lines.length){
+    const l = lines[i];
+    if(/^\|/.test(l)){ let rows=[]; while(i<lines.length && /^\|/.test(lines[i])){ if(!/^\|[\s\-:|]+\|$/.test(lines[i])) rows.push(lines[i]); i++; }
+      h += "<table>" + rows.map((r,k)=>"<tr>"+r.replace(/^\||\|$/g,"").split("|").map(c=>k?`<td>${inl(c.trim())}</td>`:`<th>${inl(c.trim())}</th>`).join("")+"</tr>").join("") + "</table>"; continue; }
+    if(/^```/.test(l)){ let b=[]; i++; while(i<lines.length && !/^```/.test(lines[i])) b.push(lines[i++]); i++; h += `<pre class="trace">${esc(b.join("\n"))}</pre>`; continue; }
+    if(/^### /.test(l)) h += `<h3>${inl(l.slice(4))}</h3>`; else if(/^## /.test(l)) h += `<h2>${inl(l.slice(3))}</h2>`; else if(/^# /.test(l)) h += `<h1>${inl(l.slice(2))}</h1>`;
+    else if(/^\s*[-*] /.test(l)){ let it=[]; while(i<lines.length && /^\s*[-*] /.test(lines[i])) it.push(lines[i++].replace(/^\s*[-*] /,"")); h += "<ul>"+it.map(x=>`<li>${inl(x)}</li>`).join("")+"</ul>"; continue; }
+    else if(/^\d+\. /.test(l)){ let it=[]; while(i<lines.length && /^\d+\. /.test(lines[i])) it.push(lines[i++].replace(/^\d+\. /,"")); h += "<ol>"+it.map(x=>`<li>${inl(x)}</li>`).join("")+"</ol>"; continue; }
+    else if(/^> /.test(l)) h += `<p class="small">${inl(l.slice(2))}</p>`;
+    else if(l.trim()) h += `<p>${inl(l)}</p>`;
+    i++;
+  }
+  return `<div class="md">${h}</div>`;
+}
+function math(el){ if(window.renderMathInElement) try{ renderMathInElement(el,{delimiters:[{left:"$$",right:"$$",display:true},{left:"$",right:"$",display:false}],throwOnError:false}); }catch(e){} }
+async function api(path, body){
+  if(STATIC){ if(path==="/api/summary") return STATIC.summary; if(path.startsWith("/api/quarter")) return STATIC.quarters[new URLSearchParams(path.split("?")[1]).get("q")]; throw new Error("정적 보기에서는 실행할 수 없다"); }
+  const r = await fetch(path, body ? {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)} : {});
+  return r.json();
+}
+function busy(btn, on, label){ btn.disabled = on; btn.innerHTML = on ? `<span class="spin"></span>실행 중…` : label; }
+function tabs(){ $("#tabs").innerHTML = TABS.map(([k,v])=>`<button class="${k===curTab?'on':''}" onclick="go('${k}')">${v}</button>`).join(""); }
+function go(t){ curTab=t; tabs(); ({home,quarter,check,live,docs,how})[t](); }
+const pct = (x,d=1)=> (x*100).toFixed(d)+"%";
+const decPill = d => d==="승인"?`<span class="pill ok">승인</span>`: d==="조건부 승인"?`<span class="pill warn">조건부 승인</span>`: d==="반려"?`<span class="pill no">반려</span>`:`<span class="pill wait">${esc(d)}</span>`;
+
+function chart(p){
+  const keys = [["채택 경로(CIO)","#0B1F3A",3],["60/40 (SPY·IEF)","#9AA7BA",2],["pc-maxsharpe","#F28C28",2],["pc-minvar","#1E9C9C",2]];
+  const W=760,H=260,L=46,R=12,T=12,B=28; const n=p.dates.length;
+  const all = keys.flatMap(([k])=>p.cum_paths[k]); const lo=Math.min(1,...all), hi=Math.max(...all);
+  const x=i=>L+(W-L-R)*i/(n-1), y=v=>T+(H-T-B)*(1-(v-lo)/(hi-lo));
+  let g=""; for(let k=0;k<=4;k++){ const v=lo+(hi-lo)*k/4; g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#E6EAF1"/><text x="${L-6}" y="${y(v)+4}" font-size="11" text-anchor="end" fill="#5E6B80">${((v-1)*100).toFixed(0)}%</text>`; }
+  p.dates.forEach((d,i)=>{ if(i%6===0) g+=`<text x="${x(i)}" y="${H-8}" font-size="11" text-anchor="middle" fill="#5E6B80">${d}</text>`; });
+  const lines = keys.map(([k,c,w])=>`<polyline fill="none" stroke="${c}" stroke-width="${w}" points="${p.cum_paths[k].map((v,i)=>x(i)+","+y(v)).join(" ")}"/>`).join("");
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%">${g}${lines}</svg><div class="legend">${keys.map(([k,c])=>`<span><i style="background:${c}"></i>${esc(NAMES[k]?NAMES[k]+" (계속 보유 가정)":k)}</span>`).join("")}</div>`;
+}
+
+async function home(){
+  const s = S; const p = s.performance; const m = p ? p.metrics : {};
+  const k = (l,v,sub)=>`<div class="card kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${sub||""}</div></div>`;
+  const sc = s.selfcheck;
+  $("#main").innerHTML = (STATIC?`<div class="banner">정적 보기다. 버튼으로 다시 계산하려면 제출 폴더의 <b>start.command</b>(맥) 또는 <b>start.bat</b>(윈도)를 더블클릭해 채점 콘솔을 연다.</div>`:"") + `
+  <div class="grid g5">
+    ${k("채택 경로 연율 수익", pct(m["채택 경로(CIO)"].ann_ret,2), `변동성 ${pct(m["채택 경로(CIO)"].vol)} · MDD ${pct(m["채택 경로(CIO)"].mdd)}`)}
+    ${k("60/40 (비교 기준)", pct(m["60/40 (SPY·IEF)"].ann_ret,2), `변동성 ${pct(m["60/40 (SPY·IEF)"].vol)} · MDD ${pct(m["60/40 (SPY·IEF)"].mdd)}`)}
+    ${k("MVO 계속 보유(4개 분기 기각)", pct(m["pc-maxsharpe"].ann_ret,2), "기각안의 사후 성과 — 숨기지 않는다")}
+    ${k("평균 분기 회전율", pct(p.avg_turnover), `CMA 평균 예측오차 ${pct(p.mae_mean)}`)}
+    ${k("공개 점검", sc? `${sc.filter(r=>r.pass).length} / ${sc.length}` : "미실행", "T1~T8 — 탭에서 다시 실행")}
+  </div>
+  <div class="grid g2" style="margin-top:16px">
+    <div class="card"><h3>누적 수익 (평가 구간 ${p.period[0]} ~ ${p.period[1]})</h3>${chart(p)}</div>
+    <div class="card"><h3>분기별 결정 — 행을 누르면 그 분기로 간다</h3><table><tr><th>분기</th><th>국면</th><th>IC 권고</th><th>CIO</th><th>자동 기각</th></tr>
+      ${s.quarters.map(r=>`<tr style="cursor:pointer" onclick="curQ='${r.q}';go('quarter')"><td>${r.q}</td><td>${esc(r.regime)}</td><td>${esc(NAMES[r.winner]||r.winner||"없음")}</td><td>${decPill(r.decision)}</td><td class="small">${r.rejected.map(x=>NAMES[x]).join(", ")||"—"}</td></tr>`).join("")}</table></div>
+  </div>
+  <div class="card" style="margin-top:16px">${md(s.docs.performance)}</div>`;
+}
+
+async function quarter(){
+  const qs = S.quarters.map(r=>r.q); curQ = curQ || qs[qs.length-1];
+  const d = await api("/api/quarter?q="+curQ);
+  const tr = d.trace.map(t=>`<div>${String(t.seq).padStart(2,"0")} <span class="a">${esc(t.agent)}</span> ${esc(t.skill||"")} → ${esc((t.outputs||[]).map(o=>o.file.split("/").pop()+"#"+o.sha.slice(0,6)).join(", "))} <span style="color:#8FA3BF">${esc(t.note||"")}</span>${t.blocked?` <span class="b">차단 ${esc(t.blocked)}</span>`:""}${t.error?` <span class="b">${esc(t.error)}</span>`:""}${t.lookahead?` <span class="b">미래 날짜 ${esc(t.lookahead)}</span>`:""}${(t.constraints||[]).length?` <span class="b">기각: ${esc(t.constraints.join(" / "))}</span>`:""}</div>`).join("");
+  const mr = d.meta_review;
+  $("#main").innerHTML = `
+  <div class="chips">${qs.map(q=>`<button class="chip ${q===curQ?'on':''}" onclick="curQ='${q}';go('quarter')">${q}</button>`).join("")}</div>
+  <div class="grid g2">
+    <div class="card">${md(d.ic_report)}</div>
+    <div class="grid" style="align-content:start">
+      <div class="card"><h3>다시 계산해 제출본과 대조</h3><p class="small">임시 복사본에서 이 분기를 처음부터 다시 돌린다. 코드가 계산한 숫자(CMA·배분안·득표·보유 비중)는 제출본과 소수 6자리까지 같아야 한다.</p>
+        <button class="btn" id="rc" onclick="recompute()" ${STATIC?"disabled":""}>이 분기 다시 계산</button><div id="rcout" style="margin-top:10px"></div></div>
+      <div class="card">${md(d.cio)}</div>
+      <div class="card">${md(d.macro)}${md(d.research)}</div>
+      ${mr?`<div class="card"><h3>메타 리뷰 — 직전 분기(${mr.evaluated}) 사후 평가</h3><p>예측오차 MAE <b>${pct(mr.mae)}</b> · 최근 4분기 평균 ${pct(mr.rolling_mae)} · 채택 포트폴리오 분기 수익 ${pct(mr.adopted_quarter_return,2)}</p>
+        <p class="small">기각됐지만 사후에 더 좋았던 안: ${mr.rejected_but_better.map(x=>NAMES[x]).join(", ")||"없음"} · 변경 제안 ${mr.proposals.length}건 · 자동 반영 ${mr.auto_applied?"예":"아니오"}</p></div>`:""}
+      <div class="card"><h3>감사 기록 trace.jsonl (${d.trace.length}줄)</h3><div class="trace">${tr}</div></div>
+    </div>
+  </div>`;
+}
+async function recompute(){
+  const b=$("#rc"); busy(b,true); const r = await api("/api/recompute",{q:curQ}); busy(b,false,"이 분기 다시 계산");
+  $("#rcout").innerHTML = r.ok ? `<p>${r.all_match?'<span class="pill ok">전부 일치</span>':'<span class="pill no">불일치 있음</span>'}</p><table><tr><th>항목</th><th>제출본과</th></tr>${r.items.map(x=>`<tr><td>${esc(x.item)}</td><td>${x.match?'<span class="pill ok">일치</span>':'<span class="pill no">다름</span>'}</td></tr>`).join("")}</table>` : `<pre class="trace">${esc(r.log||r.error)}</pre>`;
+}
+
+const TDESC = {T1:"새 폴더(실행 기록 없음)에서 README대로 첫 분기 실행",T2:"SPY 50% 배분안을 후보에 끼워 넣기",T3:"meta-reviewer가 파라미터 파일을 직접 고치게 하기",T4:"as_of 이후 데이터를 읽게 하기",T5:"과제 문서 §5 M8의 4인 투표 예제",T6:"같은 분기를 두 번 실행해 숫자 비교",T7:"한 분기의 trace로 입력 → CIO 결정까지 거슬러 가기",T8:"제출된 runs/에서 두 분기를 골라 다시 돌려 대조"};
+async function check(){
+  const sc = S.selfcheck || [];
+  const rows = (sc.length?sc:Object.keys(TDESC).map(id=>({id,name:"",pass:null,detail:""}))).map(r=>`<tr><td><b>${r.id}</b></td><td>${esc(TDESC[r.id])}</td><td>${r.pass===null?'<span class="pill wait">미실행</span>':r.pass?'<span class="pill ok">통과</span>':'<span class="pill no">실패</span>'}</td><td class="small">${esc(r.detail)}</td><td class="small">${r.sec??""}${r.sec!=null?"초":""}</td></tr>`).join("");
+  $("#main").innerHTML = `<div class="card"><h3>공개 점검 T1~T8 — 팀이 제출 전에 돌리고, 채점자가 똑같이 다시 돌린다</h3>
+    <p class="small">모든 점검은 임시 복사본에서 돈다. 제출 폴더는 바뀌지 않는다. 판단 문장(LLM 부분)은 정확히 같은지 보지 않고, 코드로 계산한 숫자만 정확히 대조한다.</p>
+    <button class="btn alt" id="sc" onclick="runCheck()" ${STATIC?"disabled":""}>T1~T8 전체 실행 (약 10초)</button>
+    <table style="margin-top:12px"><tr><th>#</th><th>방법</th><th>결과</th><th>내용</th><th>시간</th></tr>${rows}</table></div>`;
+}
+async function runCheck(){ const b=$("#sc"); busy(b,true); const r=await api("/api/selfcheck",{}); S.selfcheck=r; check(); }
+
+async function live(){
+  const qs = S.quarters.map(r=>r.q);
+  $("#main").innerHTML = `<div class="banner">발표 당일 교수가 주는 과제다. 원칙은 하나 — <b>코드를 고치지 않고 IPS와 입력만 바꿔</b> 대응한다. 모두 임시 복사본에서 돈다.</div>
+  <div class="grid g3">
+   <div class="card"><h3>L1 · IPS 조항 바꿔 다시 실행</h3>
+    <div class="row"><div><label>분기</label><select id="l1q">${qs.map(q=>`<option ${q==="2024-02"?"selected":""}>${q}</option>`).join("")}</select></div></div>
+    <div class="row"><div><label>사전 변동성 한도 vol_cap</label><input id="l1v" value="0.10"></div><div><label>종목 상한 asset_max</label><input id="l1m" value="0.30"></div></div>
+    <div class="row"><div><label>유효 종목 수 하한</label><input id="l1n" value="3.5"></div><div><label>대체 상한</label><input id="l1a" value="0.25"></div></div>
+    <p class="small">예: 2024-02에서 하한을 4.0 → 3.5로 낮추면 기각됐던 MVO가 표결에 오른다. 결론이 바뀌는가?</p>
+    <button class="btn" id="b1" onclick="L1()" ${STATIC?"disabled":""}>실행</button></div>
+   <div class="card"><h3>L2 · 가상의 다음 달 충격</h3>
+    <div class="row"><div><label>주식 한 달 수익률(%)</label><input id="l2e" value="-15"></div><div><label>금리 변화(bp)</label><input id="l2r" value="150"></div></div>
+    <div class="row"><div><label>금(%)</label><input id="l2g" value="3"></div><div><label>원자재(%)</label><input id="l2c" value="-5"></div></div>
+    <p class="small">2025-08 한 달을 붙이고 다음 분기를 진행한다. 채권은 듀레이션으로 환산한다. CIO 결정이 없으므로 IC 보고서에서 멈춘다 — 팀 CIO가 그 자리에서 결정한다.</p>
+    <button class="btn" id="b2" onclick="L2()" ${STATIC?"disabled":""}>실행</button></div>
+   <div class="card"><h3>L3 · 숨은 결함 주입</h3>
+    <p class="small">(가) 비중 합이 1.03인 배분안을 끼워 넣는다.<br>(나) 2024-11 리서치 메모에 그 뒤(2025-03)의 사건을 섞는다.</p>
+    <div class="row"><button class="btn" id="b3a" onclick="L3('sum103')" ${STATIC?"disabled":""}>(가) 실행</button><button class="btn" id="b3b" onclick="L3('future_memo')" ${STATIC?"disabled":""}>(나) 실행</button></div></div>
+  </div>
+  <div class="card" style="margin-top:16px" id="lout"><p class="small">결과가 여기 나온다.</p></div>`;
+}
+async function L1(){ const b=$("#b1"); busy(b,true);
+  const r = await api("/api/l1",{q:$("#l1q").value, overrides:{vol_cap:+$("#l1v").value, asset_max:+$("#l1m").value, effective_n_min:+$("#l1n").value, "groups.alternative.max":+$("#l1a").value}}); busy(b,false,"실행");
+  if(r.error){ $("#lout").innerHTML=`<pre class="trace">${esc(r.error)}</pre>`; return; }
+  const ks = Object.keys(r.before.eligible);
+  $("#lout").innerHTML = `<h3>L1 결과 — 권고 ${esc(NAMES[r.before.winner]||r.before.winner)} → <b>${esc(NAMES[r.after.winner]||r.after.winner||"없음 (전 안 기각)")}</b></h3>
+   <table><tr><th>안</th><th>제출본 IPS</th><th>바꾼 IPS</th><th>위반 사유</th></tr>${ks.map(k=>`<tr><td>${NAMES[k]}</td><td>${r.before.eligible[k]?'<span class="pill ok">적격</span>':'<span class="pill no">기각</span>'}</td><td>${r.after.eligible[k]?'<span class="pill ok">적격</span>':'<span class="pill no">기각</span>'}</td><td class="small">${esc((r.after.violations[k]||[]).join("; "))}</td></tr>`).join("")}</table>${md(r.ic_report)}`; }
+async function L2(){ const b=$("#b2"); busy(b,true);
+  const r = await api("/api/l2",{equity:$("#l2e").value, rate_bp:$("#l2r").value, gold:$("#l2g").value, commodity:$("#l2c").value}); busy(b,false,"실행");
+  $("#lout").innerHTML = r.error?`<pre class="trace">${esc(r.error)}</pre>`:`<p class="banner">${esc(r.note)}</p><div class="grid g2"><div>${md(r.ic_report)}</div><div>${md(r.cio)}<h3>붙인 충격(월 수익률 %)</h3><pre class="trace">${esc(JSON.stringify(r.shock_row,null,1))}</pre></div></div>`; }
+async function L3(kind){ const b=$(kind==="sum103"?"#b3a":"#b3b"); busy(b,true); const r = await api("/api/l3",{kind}); busy(b,false,kind==="sum103"?"(가) 실행":"(나) 실행");
+  $("#lout").innerHTML = r.error?`<pre class="trace">${esc(r.error)}</pre>`:`<h3>L3 ${kind==="sum103"?"(가) 비중 합 1.03":"(나) 미래 사건 혼입"} — ${r.caught?'<span class="pill ok">잡아냈다</span>':'<span class="pill no">놓쳤다</span>'}</h3><p>잡은 곳: <b>${esc(r.where)}</b></p>${r.injected?`<p class="small">주입한 문장: ${esc(r.injected)}</p>`:""}<pre class="trace">${esc(JSON.stringify(r.evidence,null,1))}\n\n${esc(r.log||"")}</pre>`; }
+
+async function docs(){
+  const D = S.docs; const keys=[["readme","README"],["ips","IPS"],["prereg","사전 등록"],["changelog","CHANGELOG"],["interventions","CIO 개입 기록"],["resolution","도입 의결문"]];
+  $("#main").innerHTML = `<div class="chips">${keys.map(([k,v],i)=>`<button class="chip ${i===0?'on':''}" onclick="document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));this.classList.add('on');document.getElementById('doc').innerHTML=md(S.docs['${k}']);math(document.getElementById('doc'))">${v}</button>`).join("")}</div><div class="card" id="doc">${md(D.readme)}</div>`; math($("#doc"));
+}
+function how(){
+  $("#main").innerHTML = `<div class="grid g2"><div class="card"><h3>채점자는 이렇게 한다 (약 20분)</h3><ol class="howto">
+  <li><b>압축 풀기</b> — 제출 zip을 아무 폴더에 푼다.</li>
+  <li><b>더블클릭</b> — 맥은 <code>start.command</code>, 윈도는 <code>start.bat</code>. 처음 한 번은 파이썬 패키지를 설치한다(1~2분). 브라우저에 이 콘솔이 열린다.</li>
+  <li><b>개요</b> — 성과·분기별 결정·기각안의 사후 성과를 읽는다.</li>
+  <li><b>공개 점검</b> — [T1~T8 전체 실행]을 누른다. 팀이 제출한 결과와 같아야 한다.</li>
+  <li><b>분기 보기</b> — 아무 분기나 골라 [이 분기 다시 계산]. 숫자가 전부 일치하는지 본다.</li>
+  <li><b>문서</b> — IPS·사전 등록·CHANGELOG·CIO 개입 기록·의결문을 읽고 점수표에 적는다.</li></ol>
+  <p class="small">라이브 점검 L1~L3은 발표 당일 팀이 이 콘솔(또는 자기 노트북)로 시연한다.</p></div>
+  <div class="card"><h3>무엇이 다시 계산되고 무엇이 재생되는가</h3><table><tr><th>부분</th><th>채점 콘솔에서</th></tr>
+  <tr><td>CMA·최적화·위험 지표·적격 심사·투표 점수·성과</td><td><span class="pill ok">다시 계산</span> 코드가 계산하므로 소수 6자리까지 같아야 한다</td></tr>
+  <tr><td>CIO 결정·변경 승인</td><td><span class="pill wait">입력으로 재생</span> 사람이 적은 data/cio_decisions.csv · approvals.csv</td></tr>
+  <tr><td>에이전트의 판단 문장(매크로 해석·리서치 메모·검토 의견)</td><td><span class="pill wait">녹화본 재생</span> 예시 MVP는 규칙 기반 대역. 팀이 LLM 에이전트를 쓰면 문장은 다시 돌릴 때마다 달라질 수 있어 양식과 근거 기록만 본다</td></tr></table>
+  <p class="small">LLM 라이브 실행은 비용과 비결정성 때문에 채점자가 하지 않는다. 팀이 발표 때 Claude Code로 시연한다.</p></div></div>`;
+}
+(async()=>{ S = await api("/api/summary"); go("home"); })();
+</script>
+</body>
+</html>

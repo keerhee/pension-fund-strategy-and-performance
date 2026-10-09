@@ -1,0 +1,163 @@
+{
+ "ballots": {
+  "pc-equal": [
+   "pc-invvol",
+   "pc-erc",
+   "pc-minvar",
+   "pc-maxsharpe",
+   "pc-adversarial"
+  ],
+  "pc-invvol": [
+   "pc-minvar",
+   "pc-erc",
+   "pc-equal",
+   "pc-maxsharpe",
+   "pc-adversarial"
+  ],
+  "pc-minvar": [
+   "pc-erc",
+   "pc-invvol",
+   "pc-adversarial",
+   "pc-equal",
+   "pc-maxsharpe"
+  ],
+  "pc-maxsharpe": [
+   "pc-equal",
+   "pc-adversarial",
+   "pc-minvar",
+   "pc-invvol",
+   "pc-erc"
+  ],
+  "pc-erc": [
+   "pc-equal",
+   "pc-invvol",
+   "pc-minvar",
+   "pc-adversarial",
+   "pc-maxsharpe"
+  ],
+  "pc-adversarial": [
+   "pc-maxsharpe",
+   "pc-minvar",
+   "pc-equal",
+   "pc-invvol",
+   "pc-erc"
+  ]
+ },
+ "rule": "자기 제외 상위 4개 [5, 4, 3, 2]점 · 최하위 -2점 · λ=0.5",
+ "result": {
+  "pc-equal": {
+   "S": 18.0,
+   "S_hat": 1.0,
+   "M": 0.678535,
+   "score": 0.839268
+  },
+  "pc-invvol": {
+   "S": 17.0,
+   "S_hat": 0.923077,
+   "M": 0.480223,
+   "score": 0.70165
+  },
+  "pc-minvar": {
+   "S": 18.0,
+   "S_hat": 1.0,
+   "M": 0.613572,
+   "score": 0.806786
+  },
+  "pc-maxsharpe": {
+   "S": 5.0,
+   "S_hat": 0.0,
+   "M": 0.579561,
+   "score": 0.28978
+  },
+  "pc-erc": {
+   "S": 9.0,
+   "S_hat": 0.307692,
+   "M": 0.451381,
+   "score": 0.379537
+  },
+  "pc-adversarial": {
+   "S": 5.0,
+   "S_hat": 0.0,
+   "M": 0.3,
+   "score": 0.15
+  }
+ },
+ "bottom_flags": {
+  "pc-equal": [],
+  "pc-invvol": [],
+  "pc-minvar": [],
+  "pc-maxsharpe": [
+   "pc-minvar",
+   "pc-erc"
+  ],
+  "pc-erc": [
+   "pc-maxsharpe",
+   "pc-adversarial"
+  ],
+  "pc-adversarial": [
+   "pc-equal",
+   "pc-invvol"
+  ]
+ },
+ "ranking": [
+  "pc-equal",
+  "pc-minvar",
+  "pc-invvol",
+  "pc-erc",
+  "pc-maxsharpe",
+  "pc-adversarial"
+ ],
+ "winner": "pc-equal",
+ "metric": {
+  "M": {
+   "pc-equal": 0.678535,
+   "pc-invvol": 0.480223,
+   "pc-minvar": 0.613572,
+   "pc-maxsharpe": 0.579561,
+   "pc-erc": 0.451381,
+   "pc-adversarial": 0.3
+  },
+  "components": {
+   "bt_sharpe": {
+    "pc-equal": -0.128862,
+    "pc-invvol": -0.229961,
+    "pc-minvar": -0.185281,
+    "pc-maxsharpe": 0.222444,
+    "pc-erc": -0.264618,
+    "pc-adversarial": -0.496889
+   },
+   "slack": {
+    "pc-equal": 0.0,
+    "pc-invvol": -1e-06,
+    "pc-minvar": 0.0,
+    "pc-maxsharpe": 0.0,
+    "pc-erc": -1e-06,
+    "pc-adversarial": 0.0
+   },
+   "n_eff": {
+    "pc-equal": 10.948925,
+    "pc-invvol": 9.907251,
+    "pc-minvar": 4.98373,
+    "pc-maxsharpe": 4.663549,
+    "pc-erc": 9.83049,
+    "pc-adversarial": 4.055373
+   },
+   "regime_fit": {
+    "pc-equal": -0.0,
+    "pc-invvol": -0.0,
+    "pc-minvar": -0.0,
+    "pc-maxsharpe": -0.0,
+    "pc-erc": -0.0,
+    "pc-adversarial": -0.0
+   },
+   "est_risk": {
+    "pc-equal": -0.04862,
+    "pc-invvol": -0.044269,
+    "pc-minvar": -0.039645,
+    "pc-maxsharpe": -0.049656,
+    "pc-erc": -0.045499,
+    "pc-adversarial": -0.054145
+   }
+  }
+ }
+}

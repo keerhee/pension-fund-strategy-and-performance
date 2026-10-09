@@ -1,0 +1,35 @@
+{
+ "as_of": "2024-11",
+ "evaluated": "2024-08",
+ "months": [
+  "2024-09",
+  "2024-11"
+ ],
+ "asset_error_ann": {
+  "SPY": 0.219735,
+  "EFA": -0.243889,
+  "EEM": -0.054277,
+  "IEF": -0.072131,
+  "TLT": -0.088989,
+  "LQD": -0.019995,
+  "HYG": 0.051215,
+  "TIP": -0.035402,
+  "VNQ": 0.106698,
+  "GLD": 0.195882,
+  "DBC": -0.062694
+ },
+ "mae": 0.104628,
+ "rolling_mae": 0.161116,
+ "quarter_return": {
+  "pc-adversarial": 0.009673,
+  "pc-equal": 0.011308,
+  "pc-erc": 0.00909,
+  "pc-invvol": 0.009132,
+  "pc-maxsharpe": 0.032871,
+  "pc-minvar": 0.009065
+ },
+ "adopted_quarter_return": 0.00909,
+ "rejected_but_better": [],
+ "proposals": [],
+ "auto_applied": false
+}

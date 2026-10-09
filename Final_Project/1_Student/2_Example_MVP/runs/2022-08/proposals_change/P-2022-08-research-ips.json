@@ -1,0 +1,12 @@
+{
+ "id": "P-2022-08-research-ips",
+ "kind": "ips",
+ "by": "research-agent",
+ "target": "ips.md 4항",
+ "change": "채권군 하한 25% → 15% 한시 완화 (물가 가속 국면 동안)",
+ "why": "물가 8.5% 가속 국면에서 듀레이션 손실 위험이 크다",
+ "test": {
+  "improved": null,
+  "summary": "정책 변경은 백테스트로 검증하지 않음 — CIO 판단"
+ }
+}

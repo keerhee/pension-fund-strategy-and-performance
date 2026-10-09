@@ -1,0 +1,145 @@
+{
+ "ballots": {
+  "pc-equal": [
+   "pc-invvol",
+   "pc-erc",
+   "pc-minvar",
+   "pc-maxsharpe"
+  ],
+  "pc-invvol": [
+   "pc-minvar",
+   "pc-erc",
+   "pc-equal",
+   "pc-maxsharpe"
+  ],
+  "pc-minvar": [
+   "pc-erc",
+   "pc-invvol",
+   "pc-maxsharpe",
+   "pc-equal"
+  ],
+  "pc-maxsharpe": [
+   "pc-equal",
+   "pc-invvol",
+   "pc-erc",
+   "pc-minvar"
+  ],
+  "pc-erc": [
+   "pc-equal",
+   "pc-invvol",
+   "pc-minvar",
+   "pc-maxsharpe"
+  ],
+  "pc-adversarial": [
+   "pc-maxsharpe",
+   "pc-minvar",
+   "pc-equal",
+   "pc-erc",
+   "pc-invvol"
+  ]
+ },
+ "rule": "자기 제외 상위 4개 [5, 4, 3, 2]점 · 최하위 -2점 · λ=0.5",
+ "result": {
+  "pc-equal": {
+   "S": 14.0,
+   "S_hat": 0.75,
+   "M": 0.553045,
+   "score": 0.651523
+  },
+  "pc-invvol": {
+   "S": 15.0,
+   "S_hat": 0.8125,
+   "M": 0.57341,
+   "score": 0.692955
+  },
+  "pc-minvar": {
+   "S": 13.0,
+   "S_hat": 0.6875,
+   "M": 0.53347,
+   "score": 0.610485
+  },
+  "pc-maxsharpe": {
+   "S": 2.0,
+   "S_hat": 0.0,
+   "M": 0.312819,
+   "score": 0.15641
+  },
+  "pc-erc": {
+   "S": 18.0,
+   "S_hat": 1.0,
+   "M": 0.534919,
+   "score": 0.767459
+  }
+ },
+ "bottom_flags": {
+  "pc-equal": [
+   "pc-minvar"
+  ],
+  "pc-invvol": [
+   "pc-adversarial"
+  ],
+  "pc-minvar": [
+   "pc-maxsharpe"
+  ],
+  "pc-maxsharpe": [
+   "pc-equal",
+   "pc-invvol",
+   "pc-erc"
+  ],
+  "pc-erc": []
+ },
+ "ranking": [
+  "pc-erc",
+  "pc-invvol",
+  "pc-equal",
+  "pc-minvar",
+  "pc-maxsharpe"
+ ],
+ "winner": "pc-erc",
+ "metric": {
+  "M": {
+   "pc-equal": 0.553045,
+   "pc-invvol": 0.57341,
+   "pc-minvar": 0.53347,
+   "pc-maxsharpe": 0.312819,
+   "pc-erc": 0.534919
+  },
+  "components": {
+   "bt_sharpe": {
+    "pc-equal": -0.374664,
+    "pc-invvol": -0.476253,
+    "pc-minvar": -0.472381,
+    "pc-maxsharpe": -0.011454,
+    "pc-erc": -0.505769
+   },
+   "slack": {
+    "pc-equal": 0.0,
+    "pc-invvol": 0.0,
+    "pc-minvar": 0.0,
+    "pc-maxsharpe": -0.0,
+    "pc-erc": 0.0
+   },
+   "n_eff": {
+    "pc-equal": 10.948925,
+    "pc-invvol": 9.873779,
+    "pc-minvar": 5.057309,
+    "pc-maxsharpe": 4.404102,
+    "pc-erc": 9.795146
+   },
+   "regime_fit": {
+    "pc-equal": -0.0,
+    "pc-invvol": -0.0,
+    "pc-minvar": -0.0,
+    "pc-maxsharpe": -0.0,
+    "pc-erc": -0.0
+   },
+   "est_risk": {
+    "pc-equal": -0.049532,
+    "pc-invvol": -0.045083,
+    "pc-minvar": -0.040097,
+    "pc-maxsharpe": -0.048928,
+    "pc-erc": -0.046222
+   }
+  }
+ }
+}
