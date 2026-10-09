@@ -6,20 +6,20 @@ BAF.60080 특강 XS · 학생 배포 묶음
 
 | 순서 | 파일 | 무엇 | 시간 |
 |---|---|---|---|
-| 1 | `3_Videos/1_XS_Project_Briefing.mp4` | 과제 안내 영상 | 2분 |
-| 2 | `3_Videos/2_SelfDriving_Portfolio_Concept.mp4` | 자율주행 포트폴리오 개념 (Ang 2026 · 이 과정과의 연결) | 3분 |
-| 3 | `1_Project_Guide.md` | **과제문** — 한 줄 문제 · 필수 기능 · 데이터 · 제출물 · 채점 방법 · 점수표 | 30분 |
-| 4 | `2_Example_MVP/` | **예시 MVP** — 제출물의 모양 그대로. `start.command`(맥) · `start.bat`(윈도)를 더블클릭하면 채점 콘솔이 열린다 | 15분 |
+| 1 | `1_Videos/1_XS_Project_Briefing.mp4` | 과제 안내 영상 | 2분 |
+| 2 | `1_Videos/2_SelfDriving_Portfolio_Concept.mp4` | 자율주행 포트폴리오 개념 (Ang 2026 · 이 과정과의 연결) | 3분 |
+| 3 | `2_Project_Guide.md` | **과제문** — 한 줄 문제 · 필수 기능 · 데이터 · 제출물 · 채점 방법 · 점수표 | 30분 |
+| 4 | `3_Example_MVP/` | **예시 MVP** — 제출물의 모양 그대로. `start.command`(맥) · `start.bat`(윈도)를 더블클릭하면 채점 콘솔이 열린다 | 15분 |
 
 `.md` 파일은 옵시디언·VS Code·GitHub 등 마크다운 보기 도구로 열면 표와 수식이 제대로 보인다.
 
 ## 예시 MVP를 처음 열 때
 
 1. 파이썬 3.10 이상이 필요하다 (https://www.python.org/downloads/).
-2. `2_Example_MVP/start.command`(맥) 또는 `start.bat`(윈도)를 더블클릭한다. 처음 한 번은 패키지 설치로 1~2분 걸린다.
+2. `3_Example_MVP/start.command`(맥) 또는 `start.bat`(윈도)를 더블클릭한다. 처음 한 번은 패키지 설치로 1~2분 걸린다.
 3. 브라우저에 채점 콘솔이 열리면 **공개 점검 → [T1~T8 전체 실행]**을 눌러 본다. 여러분의 제출물도 채점자가 이렇게 돌린다.
 4. 맥에서 "확인되지 않은 개발자" 경고가 뜨면 `start.command`를 우클릭 → 열기.
-5. 파이썬이 없으면 `2_Example_MVP/dashboard.html`로 같은 화면을 읽기 전용으로 본다.
+5. 파이썬이 없으면 `3_Example_MVP/dashboard.html`로 같은 화면을 읽기 전용으로 본다.
 
 ## 핵심 일정
 

@@ -69,7 +69,7 @@ Ang 발표에서 기억할 세 문장이다.
 
 ---
 
-## 2. 출발점 — 예시 MVP (배포 묶음의 `2_Example_MVP/`)
+## 2. 출발점 — 예시 MVP (배포 묶음의 `3_Example_MVP/`)
 
 교수가 배포하는 **예시 MVP**를 팀 저장소의 출발점으로 쓴다. 이 폴더 그대로가 최종 제출물의 모양이다 — 무엇을 어떤 형태로 내야 하는지 이것을 보고 맞춘다.
 
@@ -613,4 +613,4 @@ LLM의 판단 부분(리서치 메모 문장, 검토 의견, 투표 순위)은 �
 - revfactory/harness — Claude Code 에이전트 팀 설계 메타 스킬 (Apache-2.0).
 - 공개 구현: github.com/chirindaopensource/agentic_architecture_for_institutional_asset_management
 - 이 과정 특강 XS: `특강/특강I_자율주행포트폴리오/` (강의본·IC 케이스·self-driving-mvp)
-- 예시 MVP: 배포 묶음의 `2_Example_MVP/` (이 과제의 제출물 모양 · 채점 콘솔)
+- 예시 MVP: 배포 묶음의 `3_Example_MVP/` (이 과제의 제출물 모양 · 채점 콘솔)
