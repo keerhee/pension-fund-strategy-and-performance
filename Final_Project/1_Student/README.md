@@ -8,7 +8,7 @@ BAF.60080 특강 XS · 학생 배포 묶음
 |---|---|---|---|
 | 1 | `1_Videos/1_XS_Project_Briefing.mp4` | 과제 안내 영상 | 2분 |
 | 2 | `1_Videos/2_SelfDriving_Portfolio_Concept.mp4` | 자율주행 포트폴리오 개념 (Ang 2026 · 이 과정과의 연결) | 3분 |
-| 3 | `2_Project_Guide/` | **과제문** (`XS_Team_Project_Guide.pdf` · 원본 `.md`) — 한 줄 문제 · 필수 기능 · 데이터 · 제출물 · 채점 방법 · 점수표 | 30분 |
+| 3 | `2_Project_Guide/` | **과제문** (`XS_Team_Project_Guide.pdf` · 원본 `.md` · 발표용 요약 덱 `XS_Team_Project_Guide_Deck.pdf` 42장) — 한 줄 문제 · 필수 기능 · 데이터 · 제출물 · 채점 방법 · 점수표 | 30분 |
 | 4 | `3_Example_MVP/` | **예시 MVP** — 제출물의 모양 그대로. `start.command`(맥) · `start.bat`(윈도)를 더블클릭하면 채점 콘솔이 열린다 | 15분 |
 
 `.md` 파일은 옵시디언·VS Code·GitHub 등 마크다운 보기 도구로 열면 표와 수식이 제대로 보인다.
