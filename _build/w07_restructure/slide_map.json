@@ -1,0 +1,547 @@
+[
+{
+"new": 1,
+"old": 1,
+"key": null
+},
+{
+"new": 2,
+"old": 2,
+"key": null
+},
+{
+"new": 3,
+"old": 3,
+"key": null
+},
+{
+"new": 4,
+"old": 4,
+"key": null
+},
+{
+"new": 5,
+"old": 5,
+"key": null
+},
+{
+"new": 6,
+"old": 6,
+"key": null
+},
+{
+"new": 7,
+"old": 7,
+"key": null
+},
+{
+"new": 8,
+"old": 8,
+"key": null
+},
+{
+"new": 9,
+"old": null,
+"key": "loss"
+},
+{
+"new": 10,
+"old": null,
+"key": "sp"
+},
+{
+"new": 11,
+"old": null,
+"key": "kospi"
+},
+{
+"new": 12,
+"old": 9,
+"key": null
+},
+{
+"new": 13,
+"old": 10,
+"key": null
+},
+{
+"new": 14,
+"old": 11,
+"key": null
+},
+{
+"new": 15,
+"old": null,
+"key": "iid2"
+},
+{
+"new": 16,
+"old": 12,
+"key": null
+},
+{
+"new": 17,
+"old": null,
+"key": "d2"
+},
+{
+"new": 18,
+"old": null,
+"key": "prob"
+},
+{
+"new": 19,
+"old": null,
+"key": "dp"
+},
+{
+"new": 20,
+"old": null,
+"key": "myopic"
+},
+{
+"new": 21,
+"old": 13,
+"key": null
+},
+{
+"new": 22,
+"old": 14,
+"key": null
+},
+{
+"new": 23,
+"old": null,
+"key": "opp"
+},
+{
+"new": 24,
+"old": null,
+"key": "hedge"
+},
+{
+"new": 25,
+"old": 15,
+"key": null
+},
+{
+"new": 26,
+"old": null,
+"key": "liab"
+},
+{
+"new": 27,
+"old": 16,
+"key": null
+},
+{
+"new": 28,
+"old": 17,
+"key": null
+},
+{
+"new": 29,
+"old": null,
+"key": "d3"
+},
+{
+"new": 30,
+"old": null,
+"key": "rb_def"
+},
+{
+"new": 31,
+"old": null,
+"key": "rb_26"
+},
+{
+"new": 32,
+"old": null,
+"key": "rb_90"
+},
+{
+"new": 33,
+"old": 24,
+"key": null
+},
+{
+"new": 34,
+"old": null,
+"key": "rb_band"
+},
+{
+"new": 35,
+"old": null,
+"key": "rb_case"
+},
+{
+"new": 36,
+"old": null,
+"key": "rb_b1"
+},
+{
+"new": 37,
+"old": null,
+"key": "rb_b2"
+},
+{
+"new": 38,
+"old": null,
+"key": "rb_pe"
+},
+{
+"new": 39,
+"old": null,
+"key": "rb_reg"
+},
+{
+"new": 40,
+"old": null,
+"key": "rb_prem"
+},
+{
+"new": 41,
+"old": null,
+"key": "rb_ips"
+},
+{
+"new": 42,
+"old": null,
+"key": "rb_kelly"
+},
+{
+"new": 43,
+"old": 18,
+"key": null
+},
+{
+"new": 44,
+"old": 19,
+"key": null
+},
+{
+"new": 45,
+"old": null,
+"key": "lab"
+},
+{
+"new": 46,
+"old": null,
+"key": "hc"
+},
+{
+"new": 47,
+"old": 20,
+"key": null
+},
+{
+"new": 48,
+"old": null,
+"key": "lc_tab"
+},
+{
+"new": 49,
+"old": 21,
+"key": null
+},
+{
+"new": 50,
+"old": 22,
+"key": null
+},
+{
+"new": 51,
+"old": null,
+"key": "bodie"
+},
+{
+"new": 52,
+"old": 23,
+"key": null
+},
+{
+"new": 53,
+"old": 25,
+"key": null
+},
+{
+"new": 54,
+"old": null,
+"key": "swf"
+},
+{
+"new": 55,
+"old": null,
+"key": "hh"
+},
+{
+"new": 56,
+"old": null,
+"key": "ret"
+},
+{
+"new": 57,
+"old": 26,
+"key": null
+},
+{
+"new": 58,
+"old": 27,
+"key": null
+},
+{
+"new": 59,
+"old": 28,
+"key": null
+},
+{
+"new": 60,
+"old": null,
+"key": "d5"
+},
+{
+"new": 61,
+"old": null,
+"key": "gp_why"
+},
+{
+"new": 62,
+"old": 30,
+"key": null
+},
+{
+"new": 63,
+"old": null,
+"key": "gp_cost"
+},
+{
+"new": 64,
+"old": null,
+"key": "gp_model"
+},
+{
+"new": 65,
+"old": null,
+"key": "gp_lq"
+},
+{
+"new": 66,
+"old": 31,
+"key": null
+},
+{
+"new": 67,
+"old": null,
+"key": "gp_hand"
+},
+{
+"new": 68,
+"old": 32,
+"key": null
+},
+{
+"new": 69,
+"old": null,
+"key": "gp_mdp"
+},
+{
+"new": 70,
+"old": null,
+"key": "gp_why_rl"
+},
+{
+"new": 71,
+"old": 29,
+"key": null
+},
+{
+"new": 72,
+"old": null,
+"key": "rl_types"
+},
+{
+"new": 73,
+"old": null,
+"key": "rl_loop"
+},
+{
+"new": 74,
+"old": null,
+"key": "rl_irl"
+},
+{
+"new": 75,
+"old": 33,
+"key": null
+},
+{
+"new": 76,
+"old": 34,
+"key": null
+},
+{
+"new": 77,
+"old": 35,
+"key": null
+},
+{
+"new": 78,
+"old": 36,
+"key": null
+},
+{
+"new": 79,
+"old": 37,
+"key": null
+},
+{
+"new": 80,
+"old": 38,
+"key": null
+},
+{
+"new": 81,
+"old": 39,
+"key": null
+},
+{
+"new": 82,
+"old": 40,
+"key": null
+},
+{
+"new": 83,
+"old": 41,
+"key": null
+},
+{
+"new": 84,
+"old": 42,
+"key": null
+},
+{
+"new": 85,
+"old": 43,
+"key": null
+},
+{
+"new": 86,
+"old": 44,
+"key": null
+},
+{
+"new": 87,
+"old": 45,
+"key": null
+},
+{
+"new": 88,
+"old": 46,
+"key": null
+},
+{
+"new": 89,
+"old": 47,
+"key": null
+},
+{
+"new": 90,
+"old": null,
+"key": "tdf_ki"
+},
+{
+"new": 91,
+"old": null,
+"key": "tdf_nh"
+},
+{
+"new": 92,
+"old": null,
+"key": "tdf_kw"
+},
+{
+"new": 93,
+"old": 48,
+"key": null
+},
+{
+"new": 94,
+"old": 49,
+"key": null
+},
+{
+"new": 95,
+"old": 50,
+"key": null
+},
+{
+"new": 96,
+"old": 51,
+"key": null
+},
+{
+"new": 97,
+"old": null,
+"key": "ep3_why"
+},
+{
+"new": 98,
+"old": 52,
+"key": null
+},
+{
+"new": 99,
+"old": 53,
+"key": null
+},
+{
+"new": 100,
+"old": 54,
+"key": null
+},
+{
+"new": 101,
+"old": 55,
+"key": null
+},
+{
+"new": 102,
+"old": 56,
+"key": null
+},
+{
+"new": 103,
+"old": 57,
+"key": null
+},
+{
+"new": 104,
+"old": 58,
+"key": null
+},
+{
+"new": 105,
+"old": 59,
+"key": null
+},
+{
+"new": 106,
+"old": 60,
+"key": null
+},
+{
+"new": 107,
+"old": 61,
+"key": null
+},
+{
+"new": 108,
+"old": 62,
+"key": null
+},
+{
+"new": 109,
+"old": 63,
+"key": null
+}
+]

@@ -721,3 +721,9 @@ for a, b in (("자세한 내용은 W07 보강 2", "자세한 내용은 W07 보�
     assert replace_all(prs, a, b) >= 1, a
 prs.save(DST)
 print("저장:", NAME, len(prs.slides), "장")
+
+# 영상 대본용: 새 장 번호 → 옛 장 번호(또는 새 장 이름)
+import json as _json
+_inv = {id(v): k for k, v in OLD.items()}; _invn = {id(v): k for k, v in N.items()}
+_json.dump([{"new": i, "old": _inv.get(id(s_)), "key": _invn.get(id(s_))} for i, s_ in enumerate(prs.slides, 1)],
+           open(os.path.join(HERE, "slide_map.json"), "w"), ensure_ascii=False, indent=0)

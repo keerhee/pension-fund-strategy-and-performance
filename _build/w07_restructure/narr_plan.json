@@ -1,0 +1,593 @@
+[
+{
+"new": 1,
+"narr": 1,
+"status": "keep"
+},
+{
+"new": 2,
+"narr": 2,
+"status": "revise"
+},
+{
+"new": 3,
+"narr": 3,
+"status": "revise"
+},
+{
+"new": 4,
+"narr": 4,
+"status": "revise"
+},
+{
+"new": 5,
+"narr": 5,
+"status": "revise"
+},
+{
+"new": 6,
+"narr": 6,
+"status": "revise"
+},
+{
+"new": 7,
+"narr": 7,
+"status": "revise"
+},
+{
+"new": 8,
+"narr": 8,
+"status": "keep"
+},
+{
+"new": 9,
+"narr": null,
+"status": "write",
+"key": "loss"
+},
+{
+"new": 10,
+"narr": null,
+"status": "write",
+"key": "sp"
+},
+{
+"new": 11,
+"narr": null,
+"status": "write",
+"key": "kospi"
+},
+{
+"new": 12,
+"narr": 9,
+"status": "revise"
+},
+{
+"new": 13,
+"narr": 10,
+"status": "keep"
+},
+{
+"new": 14,
+"narr": 11,
+"status": "revise"
+},
+{
+"new": 15,
+"narr": null,
+"status": "write",
+"key": "iid2"
+},
+{
+"new": 16,
+"narr": 12,
+"status": "revise"
+},
+{
+"new": 17,
+"narr": null,
+"status": "write",
+"key": "d2"
+},
+{
+"new": 18,
+"narr": null,
+"status": "write",
+"key": "prob"
+},
+{
+"new": 19,
+"narr": null,
+"status": "write",
+"key": "dp"
+},
+{
+"new": 20,
+"narr": null,
+"status": "write",
+"key": "myopic"
+},
+{
+"new": 21,
+"narr": 13,
+"status": "keep"
+},
+{
+"new": 22,
+"narr": 14,
+"status": "keep"
+},
+{
+"new": 23,
+"narr": null,
+"status": "write",
+"key": "opp"
+},
+{
+"new": 24,
+"narr": null,
+"status": "write",
+"key": "hedge"
+},
+{
+"new": 25,
+"narr": 15,
+"status": "keep"
+},
+{
+"new": 26,
+"narr": null,
+"status": "write",
+"key": "liab"
+},
+{
+"new": 27,
+"narr": 16,
+"status": "revise"
+},
+{
+"new": 28,
+"narr": 17,
+"status": "keep"
+},
+{
+"new": 29,
+"narr": null,
+"status": "write",
+"key": "d3"
+},
+{
+"new": 30,
+"narr": null,
+"status": "write",
+"key": "rb_def"
+},
+{
+"new": 31,
+"narr": null,
+"status": "write",
+"key": "rb_26"
+},
+{
+"new": 32,
+"narr": null,
+"status": "write",
+"key": "rb_90"
+},
+{
+"new": 33,
+"narr": 24,
+"status": "keep"
+},
+{
+"new": 34,
+"narr": null,
+"status": "write",
+"key": "rb_band"
+},
+{
+"new": 35,
+"narr": null,
+"status": "write",
+"key": "rb_case"
+},
+{
+"new": 36,
+"narr": null,
+"status": "write",
+"key": "rb_b1"
+},
+{
+"new": 37,
+"narr": null,
+"status": "write",
+"key": "rb_b2"
+},
+{
+"new": 38,
+"narr": null,
+"status": "write",
+"key": "rb_pe"
+},
+{
+"new": 39,
+"narr": null,
+"status": "write",
+"key": "rb_reg"
+},
+{
+"new": 40,
+"narr": null,
+"status": "write",
+"key": "rb_prem"
+},
+{
+"new": 41,
+"narr": null,
+"status": "write",
+"key": "rb_ips"
+},
+{
+"new": 42,
+"narr": null,
+"status": "write",
+"key": "rb_kelly"
+},
+{
+"new": 43,
+"narr": 18,
+"status": "revise"
+},
+{
+"new": 44,
+"narr": 19,
+"status": "keep"
+},
+{
+"new": 45,
+"narr": null,
+"status": "write",
+"key": "lab"
+},
+{
+"new": 46,
+"narr": null,
+"status": "write",
+"key": "hc"
+},
+{
+"new": 47,
+"narr": 20,
+"status": "keep"
+},
+{
+"new": 48,
+"narr": null,
+"status": "write",
+"key": "lc_tab"
+},
+{
+"new": 49,
+"narr": 21,
+"status": "keep"
+},
+{
+"new": 50,
+"narr": 22,
+"status": "revise"
+},
+{
+"new": 51,
+"narr": null,
+"status": "write",
+"key": "bodie"
+},
+{
+"new": 52,
+"narr": 23,
+"status": "keep"
+},
+{
+"new": 53,
+"narr": 25,
+"status": "keep"
+},
+{
+"new": 54,
+"narr": null,
+"status": "write",
+"key": "swf"
+},
+{
+"new": 55,
+"narr": null,
+"status": "write",
+"key": "hh"
+},
+{
+"new": 56,
+"narr": null,
+"status": "write",
+"key": "ret"
+},
+{
+"new": 57,
+"narr": 26,
+"status": "revise"
+},
+{
+"new": 58,
+"narr": 27,
+"status": "keep"
+},
+{
+"new": 59,
+"narr": 28,
+"status": "revise"
+},
+{
+"new": 60,
+"narr": null,
+"status": "write",
+"key": "d5"
+},
+{
+"new": 61,
+"narr": null,
+"status": "write",
+"key": "gp_why"
+},
+{
+"new": 62,
+"narr": 33,
+"status": "revise"
+},
+{
+"new": 63,
+"narr": null,
+"status": "write",
+"key": "gp_cost"
+},
+{
+"new": 64,
+"narr": null,
+"status": "write",
+"key": "gp_model"
+},
+{
+"new": 65,
+"narr": null,
+"status": "write",
+"key": "gp_lq"
+},
+{
+"new": 66,
+"narr": 34,
+"status": "revise"
+},
+{
+"new": 67,
+"narr": null,
+"status": "write",
+"key": "gp_hand"
+},
+{
+"new": 68,
+"narr": 35,
+"status": "revise"
+},
+{
+"new": 69,
+"narr": null,
+"status": "write",
+"key": "gp_mdp"
+},
+{
+"new": 70,
+"narr": null,
+"status": "write",
+"key": "gp_why_rl"
+},
+{
+"new": 71,
+"narr": 29,
+"status": "revise"
+},
+{
+"new": 72,
+"narr": null,
+"status": "write",
+"key": "rl_types"
+},
+{
+"new": 73,
+"narr": null,
+"status": "write",
+"key": "rl_loop"
+},
+{
+"new": 74,
+"narr": null,
+"status": "write",
+"key": "rl_irl"
+},
+{
+"new": 75,
+"narr": 30,
+"status": "keep"
+},
+{
+"new": 76,
+"narr": 31,
+"status": "revise"
+},
+{
+"new": 77,
+"narr": 32,
+"status": "revise"
+},
+{
+"new": 78,
+"narr": 36,
+"status": "keep"
+},
+{
+"new": 79,
+"narr": 37,
+"status": "keep"
+},
+{
+"new": 80,
+"narr": 38,
+"status": "keep"
+},
+{
+"new": 81,
+"narr": 39,
+"status": "keep"
+},
+{
+"new": 82,
+"narr": 40,
+"status": "keep"
+},
+{
+"new": 83,
+"narr": 41,
+"status": "keep"
+},
+{
+"new": 84,
+"narr": 42,
+"status": "keep"
+},
+{
+"new": 85,
+"narr": 43,
+"status": "keep"
+},
+{
+"new": 86,
+"narr": 44,
+"status": "keep"
+},
+{
+"new": 87,
+"narr": 45,
+"status": "keep"
+},
+{
+"new": 88,
+"narr": 46,
+"status": "keep"
+},
+{
+"new": 89,
+"narr": 47,
+"status": "revise"
+},
+{
+"new": 90,
+"narr": null,
+"status": "write",
+"key": "tdf_ki"
+},
+{
+"new": 91,
+"narr": null,
+"status": "write",
+"key": "tdf_nh"
+},
+{
+"new": 92,
+"narr": null,
+"status": "write",
+"key": "tdf_kw"
+},
+{
+"new": 93,
+"narr": 48,
+"status": "revise"
+},
+{
+"new": 94,
+"narr": 49,
+"status": "keep"
+},
+{
+"new": 95,
+"narr": 50,
+"status": "keep"
+},
+{
+"new": 96,
+"narr": 51,
+"status": "revise"
+},
+{
+"new": 97,
+"narr": null,
+"status": "write",
+"key": "ep3_why"
+},
+{
+"new": 98,
+"narr": 52,
+"status": "keep"
+},
+{
+"new": 99,
+"narr": 53,
+"status": "keep"
+},
+{
+"new": 100,
+"narr": 54,
+"status": "keep"
+},
+{
+"new": 101,
+"narr": 55,
+"status": "keep"
+},
+{
+"new": 102,
+"narr": 56,
+"status": "keep"
+},
+{
+"new": 103,
+"narr": 57,
+"status": "keep"
+},
+{
+"new": 104,
+"narr": 58,
+"status": "keep"
+},
+{
+"new": 105,
+"narr": 59,
+"status": "keep"
+},
+{
+"new": 106,
+"narr": 60,
+"status": "keep"
+},
+{
+"new": 107,
+"narr": 61,
+"status": "revise"
+},
+{
+"new": 108,
+"narr": 62,
+"status": "keep"
+},
+{
+"new": 109,
+"narr": 63,
+"status": "revise"
+}
+]

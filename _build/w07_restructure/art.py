@@ -166,8 +166,8 @@ def bodie():
     P = [N(m * sqrt(t) / sig) for t in T]; C = [2 * N(sig * sqrt(t) / 2) - 1 for t in T]
     fig, axs = plt.subplots(1, 2, figsize=(11.2, 3.2))
     axs[0].plot(T, P, color=NAVY, lw=2.2); axs[0].scatter([1, 30], [N(m / sig), N(m * sqrt(30) / sig)], color=RED, zorder=3)
-    axs[0].text(3, N(m / sig) - .03, f"1년 {N(m/sig):.0%}", fontsize=11, color=RED)
-    axs[0].text(31, N(m * sqrt(30) / sig) - .05, f"30년 {N(m*sqrt(30)/sig):.0%}", fontsize=11, color=RED)
+    axs[0].text(3, N(m / sig) - .03, "1년 58%", fontsize=11, color=RED)
+    axs[0].text(31, N(m * sqrt(30) / sig) - .05, "30년 86%", fontsize=11, color=RED)
     axs[0].set_ylim(.5, 1); axs[0].set_title("A. 주식이 채권을 이길 확률", fontsize=12, color=NAVY, loc="left")
     axs[1].plot(T, C, color=ORANGE, lw=2.2); axs[1].scatter([30], [2 * N(sig * sqrt(30) / 2) - 1], color=RED, zorder=3)
     axs[1].text(32, 2 * N(sig * sqrt(30) / 2) - 1 - .05, f"30년 {2*N(sig*sqrt(30)/2)-1:.3f}", fontsize=11, color=RED)
