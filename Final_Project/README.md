@@ -10,7 +10,7 @@ BAF.60080 특강 XS(자율주행 포트폴리오)와 짝을 이루는 기말 팀
 |---|---|
 | `1_Student/README.md` | 학생 묶음 안내 — 여는 순서와 예시 MVP 실행법 |
 | `1_Student/1_Videos/` | ① 과제 안내 영상(2분) · 자율주행 포트폴리오 개념 영상(3분) — 영상 파일은 저장소에 올리지 않고 수업에서 따로 배포한다 |
-| `1_Student/2_Project_Guide.pdf` | ② **과제문** (18쪽) — 한 줄 문제 · 필수 기능 · 데이터 · 제출물 · 채점 방법 · 점수표. 원본 `2_Project_Guide.md` |
+| `1_Student/2_Project_Guide/` | ② **과제문** — `XS_Team_Project_Guide.pdf`(18쪽) · 원본 `.md`. 한 줄 문제 · 필수 기능 · 데이터 · 제출물 · 채점 방법 · 점수표 |
 | `1_Student/3_Example_MVP/` | ③ **예시 MVP** — 제출물의 모양 그대로. `start.command`(맥) · `start.bat`(윈도)를 더블클릭하면 채점 콘솔이 열린다. 파이썬이 없으면 `dashboard.html` |
 | `2_Instructor/` | 강사 키트 — 진행안 · 평가 운영 · 점검 문제 은행 · 영상 내레이션 키트 (공개 저장소에서 제외) |
 
@@ -26,7 +26,7 @@ BAF.60080 특강 XS(자율주행 포트폴리오)와 짝을 이루는 기말 팀
 ## 시작하기
 
 1. `1_Student/1_Videos/`의 안내 영상 두 편(2분 · 3분)을 먼저 본다.
-2. `1_Student/2_Project_Guide.pdf`(과제문)를 읽는다.
+2. `1_Student/2_Project_Guide/XS_Team_Project_Guide.pdf`(과제문)를 읽는다.
 3. `1_Student/3_Example_MVP/start.command`(맥) 또는 `start.bat`(윈도)를 더블클릭해 채점 콘솔을 연다. 파이썬 3.10 이상이 필요하다.
 4. 채점 콘솔에서 **공개 점검 → [T1~T8 전체 실행]**을 눌러 본다. 제출물도 채점자가 이렇게 돌린다.
 
