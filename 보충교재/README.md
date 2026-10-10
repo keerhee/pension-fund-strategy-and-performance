@@ -126,6 +126,14 @@ Gârleanu–Pedersen 동적 거래 모델 덱(43쪽)은 W07 강의본 3교시 �
 | 05 | [`GBI/05_Martellini_GBI_Formula_Derivations_III.pdf`](17_LDI_GBI%20%EC%88%98%EC%8B%9D%EB%8F%84%EC%B6%9C/GBI/05_Martellini_GBI_Formula_Derivations_III.pdf) | 39 | **GBI 수식 도출 III — 풀이 노트** — 04 덱의 문서판 — 절마다 풀려는 문제 → 답 → 단계별 풀이 → 이렇게 한다 → 숫자로 확인(md 수식 원문 포함) |
 | 06 | [`GBI/06_Martellini_GBI_Summary.pdf`](17_LDI_GBI%20%EC%88%98%EC%8B%9D%EB%8F%84%EC%B6%9C/GBI/06_Martellini_GBI_Summary.pdf) | 14 | **Martellini GBI 핵심 요약 (참고)** — 특강 II 마르텔리니 GBI 강의 덱 12종의 핵심 요약 |
 
+### 19_TDF기초및원리 — TDF 자산배분의 손실확률 설계 (W07 동적 포트폴리오 · 생애주기와 TDF와 함께)
+
+논문 리뷰 덱 「경기 국면을 고려한 TDF 자산배분」을 네 단계(TDF의 이해 → 시간과 손실확률 → 설계 원리 → 국면 의존성)로 따라간다. 같은 내용이 W07 강의본 Part I 14~51쪽 챕터 ‘TDF 기초 및 원리’로 들어가 있다(강의본 양식으로 색만 바꿈).
+
+| 자료 | 쪽 | 무엇을 다루나 |
+|---|---:|---|
+| [`TDF_Loss_Probability_GlidePath_zeroone_III.pdf`](19_TDF%EA%B8%B0%EC%B4%88%EB%B0%8F%EC%9B%90%EB%A6%AC/TDF_Loss_Probability_GlidePath_zeroone_III.pdf) | 38 | **TDF 자산배분의 손실확률 설계** — TDF와 글라이드패스(삼성 · Vanguard · 운용사 비교) · 손실확률 식(Equation 1)과 제곱근 법칙 · 위험·안전자산 혼합(Exhibit 2 · 3)으로 손실확률 5%를 지키는 91.8% → 8.5% 글라이드패스 · 60/40 변동성 3.3~18.6%와 국면별 손실확률(Exhibit 4 · 5) |
+
 > 웹툰 숏폼 같은 영상 자료는 [`../기초영상/`](../%EA%B8%B0%EC%B4%88%EC%98%81%EC%83%81/)에 따로 모았다.
 
 ## 폴더
@@ -150,6 +158,7 @@ Gârleanu–Pedersen 동적 거래 모델 덱(43쪽)은 W07 강의본 3교시 �
 | `15_적극적운용의기본법칙/` | FLAM(적극적 운용의 기본법칙) 일반화 식 IR = TC · IC · √BR과 증명 |
 | `16_Garleanu_Pedersen모델/` | (W07 보강 2-1로 옮김) Gârleanu–Pedersen 동적 거래 모델 |
 | `17_LDI_GBI 수식도출/` | LDI · GBI 요약·기초 덱(01 · 03)과 수식 도출(02 · 04 · 05), Martellini 참고 요약(06) — 강의 순서 번호 |
+| `19_TDF기초및원리/` | TDF 자산배분의 손실확률 설계 — 논문 리뷰 덱(W07 강의본 Part I 챕터 ‘TDF 기초 및 원리’의 원본) |
 
 ---
 
