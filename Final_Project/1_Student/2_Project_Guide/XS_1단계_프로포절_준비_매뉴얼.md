@@ -16,6 +16,7 @@
 | **1단계 가이드** (6쪽) | [XS_Project_Guide_Stage1_Proposal.pdf](https://github.com/keerhee/pension-fund-strategy-and-performance/blob/main/Final_Project/1_Student/2_Project_Guide/XS_Project_Guide_Stage1_Proposal.pdf) | 프로포절에서 할 일과 낼 것 — **지금 기준 문서** |
 | **과제문** (17쪽) | [XS_Team_Project_Guide.pdf](https://github.com/keerhee/pension-fund-strategy-and-performance/blob/main/Final_Project/1_Student/2_Project_Guide/XS_Team_Project_Guide.pdf) | 과제 전체의 규칙. 지금은 이 매뉴얼이 가리키는 쪽만 읽습니다 |
 | **안내 덱** (43장) | [XS_Team_Project_Guide_Deck.pdf](https://github.com/keerhee/pension-fund-strategy-and-performance/blob/main/Final_Project/1_Student/2_Project_Guide/XS_Team_Project_Guide_Deck.pdf) | 과제를 그림으로 요약한 슬라이드 |
+| **안내 영상** (2편) | [유튜브 재생목록](https://www.youtube.com/playlist?list=PLM8J6IgGgG-Y) | 과제 안내(약 7분)와 자율주행 포트폴리오 개념(3분) |
 | **예시 MVP** | [3_Example_MVP 폴더](https://github.com/keerhee/pension-fund-strategy-and-performance/tree/main/Final_Project/1_Student/3_Example_MVP) | 그대로 돌아가는 출발점 — 우리 팀 MVP 초안의 바탕 |
 
 ## 팀원 여섯 명의 역할
@@ -37,7 +38,7 @@ CIO(최종 결정자)는 팀원 한 명이 겸하되, 거버넌스 매니저는 
 
 처음에는 네 가지만 하면 됩니다. 과제의 모양을 잡고, 예시 MVP가 내 컴퓨터에서 도는지 확인합니다.
 
-1. **안내 덱 훑어보기 (10분)** — 수업에서 받은 안내 영상을 봤다면 건너뛰어도 됩니다.
+1. **안내 영상 보기 (10분)** — [과제 안내 영상](https://youtu.be/AWTGIp71xgM)(약 7분)과 [개념 영상](https://youtu.be/bfOLa39dldg)(3분). 두 편 모두 [유튜브 재생목록](https://www.youtube.com/playlist?list=PLM8J6IgGgG-Y)에 있습니다. 영상을 볼 수 없다면 안내 덱을 훑어봅니다.
 2. **1단계 가이드 1~2쪽 읽기 (10분)** — ‘두 단계 한눈에 보기’, ‘최종 목표 미리 보기’, ‘팀’.
 3. **과제문 1~2쪽의 ‘기본 지식’ 읽기 (5분)** — 처음 보는 용어(하네스 · IPS · CMA 등)를 여기서 익힙니다.
 4. **예시 MVP 한 번 돌리기 (5분)** — 아래 ‘예시 MVP 내려받아 돌리기’의 1~4번.
