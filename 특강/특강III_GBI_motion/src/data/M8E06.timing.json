@@ -1,0 +1,114 @@
+{
+ "fps": 30,
+ "total": 3013,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_reset",
+   "from_": 0,
+   "dur": 1022,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 223,
+     "cap": "Flexicure — 매년 초 F = 0.8A로 다시 정한다",
+     "audio": null
+    },
+    {
+     "start": 254,
+     "dur": 281,
+     "cap": "벌었을 때 A 11.5 → F 9.2(이익 잠금), PSP 60% 유지 · 재설정 안 하면 91%",
+     "audio": null
+    },
+    {
+     "start": 548,
+     "dur": 247,
+     "cap": "잃었을 때 A 8.5 → F 6.8, PSP 60% · 재설정 안 하면 18% — Cash Trap 근접",
+     "audio": null
+    },
+    {
+     "start": 808,
+     "dur": 184,
+     "cap": "보호하는 것은 절대 금액이 아니라 \"한 해 손실 ≤ 20%\"",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_devices",
+   "from_": 1022,
+   "dur": 670,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 131,
+     "cap": "벌면 잠그고 — Ratchet(TIPP, Estep–Kritzman 1988) · 최대낙폭 Floor(Grossman–Zhou 1993)",
+     "audio": null
+    },
+    {
+     "start": 162,
+     "dur": 266,
+     "cap": "가까워지면 줄이고(Cap) · 닿으면 확정하고(Stop-gain) · 불안하면 조인다(변동성 연동 m)",
+     "audio": null
+    },
+    {
+     "start": 442,
+     "dur": 198,
+     "cap": "IC 결정 — 잃었을 때 Floor 유지(보호 우선) vs 재설정(참여 우선)",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_limits",
+   "from_": 1692,
+   "dur": 607,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 121,
+     "cap": "장점 — 자동 · 투명 · 감정 편향 차단",
+     "audio": null
+    },
+    {
+     "start": 152,
+     "dur": 227,
+     "cap": "한계 — Cash Trap · m 선택 · 이산 리밸런싱 오버슈트 · 쏠림",
+     "audio": null
+    },
+    {
+     "start": 393,
+     "dur": 184,
+     "cap": "도입 조건 — 규모 한도 · 매도 속도 상한 (IC 반대신문 쟁점)",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_var",
+   "from_": 2299,
+   "dur": 714,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 174,
+     "cap": "VaR 방식 — \"2σ 손실 ≤ 자산의 5%\"가 되게 위험자산을 정한다",
+     "audio": null
+    },
+    {
+     "start": 206,
+     "dur": 271,
+     "cap": "평상시 σ 18% → 4.8억(48%) · 불안기 36% → 2.4억(24%) — 2.4억을 한 번에 판다",
+     "audio": null
+    },
+    {
+     "start": 490,
+     "dur": 194,
+     "cap": "권고 — 필수 목표는 고정 Floor(GHP)로, VaR 예산은 위험 계좌 안에서만",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M8E06_bed.mp3"
+}

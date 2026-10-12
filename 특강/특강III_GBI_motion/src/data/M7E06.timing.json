@@ -1,0 +1,96 @@
+{
+ "fps": 30,
+ "total": 2872,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_tools",
+   "from_": 0,
+   "dur": 647,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 271,
+     "cap": "LBP — 부채를 채권 포트폴리오로 표현한 성과의 기준",
+     "audio": null
+    },
+    {
+     "start": 302,
+     "dur": 315,
+     "cap": "IRS 오버레이 — 현금을 거의 쓰지 않고 듀레이션을 늘리는 지렛대",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_pimco",
+   "from_": 647,
+   "dur": 801,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 213,
+     "cap": "2000년대 초 — 채권 명가들이 LDI 시장 선점",
+     "audio": null
+    },
+    {
+     "start": 244,
+     "dur": 256,
+     "cap": "2008 위기 → 수요 급증 · 2012 PIMCO LDI $600B+",
+     "audio": null
+    },
+    {
+     "start": 514,
+     "dur": 256,
+     "cap": "한국 — 장기물 발행 연 87조 · IRS 거래가 헤지 규모의 상한 (조건 ②)",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_margin",
+   "from_": 1448,
+   "dur": 854,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 247,
+     "cap": "변동증거금 = 스왑 DV01 × 금리 변동(bp) — DV01이 그대로 현금 수요",
+     "audio": null
+    },
+    {
+     "start": 278,
+     "dur": 281,
+     "cap": "안 C — 사흘 +200bp에 증거금 401조 vs 국민연금 유동자산 123조",
+     "audio": null
+    },
+    {
+     "start": 572,
+     "dur": 252,
+     "cap": "영국 감독당국(2022 이후) — 250bp 급등 버퍼 · 5영업일 재충전",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_checkpoint",
+   "from_": 2302,
+   "dur": 570,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 237,
+     "cap": "③~⑥ 정리 — 갭이 위험의 원천, Redington이 방패, 실무는 두 블록 + 스왑",
+     "audio": null
+    },
+    {
+     "start": 269,
+     "dur": 271,
+     "cap": "이론적으로 완결 — 그러나 시스템 전체가 같은 방향으로 움직이면?",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M7E06_bed.mp3"
+}

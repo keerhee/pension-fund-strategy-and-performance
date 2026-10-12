@@ -1,0 +1,121 @@
+{
+ "fps": 30,
+ "total": 2501,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_hook",
+   "from_": 0,
+   "dur": 434,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 160,
+     "cap": "변동성 12% — 이 숫자는 목표 달성 여부를 말해 주지 않는다",
+     "audio": null
+    },
+    {
+     "start": 191,
+     "dur": 213,
+     "cap": "GBI의 3원칙 — ① 목표 정의 ② 우선순위 ③ 확률 기반 배분",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_principles",
+   "from_": 434,
+   "dur": 481,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 165,
+     "cap": "① 목표 정의 — 금액 · 시점 · 중요도",
+     "audio": null
+    },
+    {
+     "start": 196,
+     "dur": 150,
+     "cap": "② 우선순위 — Safety 먼저, 꿈은 그다음",
+     "audio": null
+    },
+    {
+     "start": 360,
+     "dur": 92,
+     "cap": "③ 확률 — 위험 = 목표 미달 확률",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_metaphor",
+   "from_": 915,
+   "dur": 420,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 208,
+     "cap": "버킷 = 통장 쪼개기 · 위험 = 지각할 확률 · 우선순위 = 밥·반찬·디저트",
+     "audio": null
+    },
+    {
+     "start": 240,
+     "dur": 150,
+     "cap": "얼마나 흔들리느냐가 아니라 늦을 확률이 중요하다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_measure",
+   "from_": 1335,
+   "dur": 583,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 189,
+     "cap": "위험 = P(W_T < G) — 목표 미달 확률",
+     "audio": null
+    },
+    {
+     "start": 220,
+     "dur": 160,
+     "cap": "깊이까지 — 못 미치면 얼마나 모자라나 (기대 부족분)",
+     "audio": null
+    },
+    {
+     "start": 393,
+     "dur": 160,
+     "cap": "\"위험 12%\"가 아니라 \"Safety 실패 확률 3%\"가 답",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S4_buckets",
+   "from_": 1918,
+   "dur": 583,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 121,
+     "cap": "95 · 70 · 30은 배분 비중이 아니라 달성 확률",
+     "audio": null
+    },
+    {
+     "start": 152,
+     "dur": 227,
+     "cap": "Safety ≥ 95% 필수 생활비 → GHP · Market ≥ 70% 여유 생활 → GHP + 주식 · Aspirational ≥ 30% 상속·꿈 → 주식",
+     "audio": null
+    },
+    {
+     "start": 393,
+     "dur": 160,
+     "cap": "배분 금액은 이 확률 조건에서 거꾸로 계산해 나온다",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M8E01_bed.mp3"
+}

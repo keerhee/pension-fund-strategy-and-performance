@@ -1,0 +1,158 @@
+{
+ "fps": 30,
+ "total": 4864,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_episode",
+   "from_": 0,
+   "dur": 835,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 252,
+     "cap": "1952년 런던 — \"금리가 움직여도 잉여금을 지키려면?\"",
+     "audio": null
+    },
+    {
+     "start": 283,
+     "dur": 232,
+     "cap": "답은 테일러 전개 한 줄 — 1차 항은 0으로, 2차 항은 0 이상으로",
+     "audio": null
+    },
+    {
+     "start": 529,
+     "dur": 276,
+     "cap": "70년 된 방패 — 1990년대 DB LDI의 표준, 2000년대 IRS 기반 LDI",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_three",
+   "from_": 835,
+   "dur": 767,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 227,
+     "cap": "조건 1 현재가치 — 출발선 부족을 막는다",
+     "audio": null
+    },
+    {
+     "start": 259,
+     "dur": 218,
+     "cap": "조건 2 금액 듀레이션 일치 — 1차 항(방향)을 지운다",
+     "audio": null
+    },
+    {
+     "start": 490,
+     "dur": 247,
+     "cap": "조건 3 금액 볼록성 우위 — 2차 항(휘어짐)을 양수로",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_dollar",
+   "from_": 1602,
+   "dur": 623,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 256,
+     "cap": "지금 기금 — 자산 금액 듀레이션 300 · 부채 1,600",
+     "audio": null
+    },
+    {
+     "start": 288,
+     "dur": 305,
+     "cap": "금리 −1%p → 1차 효과 −13 · 괄호가 0이면 헤지비율 100%와 같은 조건",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_barbell",
+   "from_": 2225,
+   "dur": 989,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 194,
+     "cap": "부채: 10년 뒤 100 (PV 60.65) — 같은 PV의 두 자산",
+     "audio": null
+    },
+    {
+     "start": 225,
+     "dur": 271,
+     "cap": "바벨 — 5년물 38.94 + 15년물 64.20, D = 10 · C = 125 > 100",
+     "audio": null
+    },
+    {
+     "start": 510,
+     "dur": 140,
+     "cap": "불일치 — 5년물 77.88 하나, D = 5",
+     "audio": null
+    },
+    {
+     "start": 663,
+     "dur": 295,
+     "cap": "금리 −2%p: 바벨 +0.37 · 불일치 −7.05",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S4_tdf",
+   "from_": 3214,
+   "dur": 835,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 232,
+     "cap": "TDF 글라이드패스 = 면역화의 개인 버전",
+     "audio": null
+    },
+    {
+     "start": 264,
+     "dur": 266,
+     "cap": "젊을 때는 개인 부채 D가 길어 주식, 은퇴가 가까울수록 채권",
+     "audio": null
+    },
+    {
+     "start": 543,
+     "dur": 261,
+     "cap": "그러나 TDF는 나이 하나로 모든 것을 정한다 → M8 GBI",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S5_limits",
+   "from_": 4049,
+   "dur": 815,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 223,
+     "cap": "현금흐름 매칭은 완벽하지만 비싸고 유연성이 낮다",
+     "audio": null
+    },
+    {
+     "start": 254,
+     "dur": 184,
+     "cap": "듀레이션 매칭은 작은 평행 이동에 대한 보장 — 계속 다시 맞춰야 한다",
+     "audio": null
+    },
+    {
+     "start": 451,
+     "dur": 334,
+     "cap": "한국 — 30·50년 국고채 437조 vs 순부채 2,122조",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M7E04_bed.mp3"
+}

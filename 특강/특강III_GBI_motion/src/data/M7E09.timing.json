@@ -1,0 +1,109 @@
+{
+ "fps": 30,
+ "total": 3409,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_boxes",
+   "from_": 0,
+   "dur": 487,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 189,
+     "cap": "코딩 경험 없이 — 원하는 바를 말로 설명하고 결과를 검토한다",
+     "audio": null
+    },
+    {
+     "start": 220,
+     "dur": 237,
+     "cap": "세 박스 — [입력] 프롬프트 · [입력] 명령어 · [출력] 생성물",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_loop",
+   "from_": 487,
+   "dur": 628,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 281,
+     "cap": "① 메타프롬프트 → ② 코드 → ③ 실행 → ④ 결과",
+     "audio": null
+    },
+    {
+     "start": 312,
+     "dur": 285,
+     "cap": "개선 루프 — \"버퍼를 250bp로 바꿔 다시 돌려줘\"",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_spec",
+   "from_": 1115,
+   "dur": 657,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 344,
+     "cap": "A 케이스 재현 · B 가상 부채의 PV·D·DV01 · C 헤지 0/50/100%의 ΔFR",
+     "audio": null
+    },
+    {
+     "start": 375,
+     "dur": 252,
+     "cap": "D 레버리지 LDI 위기 — +50bp × 3일, 버퍼 100 / 150 / 250bp 비교",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_result",
+   "from_": 1772,
+   "dur": 1043,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 324,
+     "cap": "버퍼 100bp — 3일차 증거금 고갈 → 강제매도 8.7% → 헤지 89%로 축소 (FR −2.7%p)",
+     "audio": null
+    },
+    {
+     "start": 356,
+     "dur": 242,
+     "cap": "버퍼 250bp — 증거금 충당 → 강제매도 0% → FR −0.9%p로 방어",
+     "audio": null
+    },
+    {
+     "start": 611,
+     "dur": 402,
+     "cap": "버퍼 150bp 차이가 강제매도 여부를 가른다 — 영국 규제 250bp의 근거",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S4_speech",
+   "from_": 2815,
+   "dur": 594,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 237,
+     "cap": "나쁜 발언: \"LDI는 위험해 보입니다\" — 직관과 형용사",
+     "audio": null
+    },
+    {
+     "start": 269,
+     "dur": 295,
+     "cap": "좋은 발언: \"100bp면 3일차 고갈, 250bp면 강제매도 0%\" — 조건과 숫자",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M7E09_bed.mp3"
+}

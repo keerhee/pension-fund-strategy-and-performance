@@ -1,0 +1,127 @@
+{
+ "fps": 30,
+ "total": 3565,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_problem",
+   "from_": 0,
+   "dur": 728,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 285,
+     "cap": "H대(가상) 5,000억 기금 — 장학·연구 고정 지출을 지키며 사모를 어디까지 담을까",
+     "audio": null
+    },
+    {
+     "start": 317,
+     "dur": 121,
+     "cap": "IC는 철학의 이름을 고르지 않고 세 숫자 x · y · z를 정한다",
+     "audio": null
+    },
+    {
+     "start": 451,
+     "dur": 247,
+     "cap": "x 비유동 상한 20% · y 유동 하한 30% · z 지출률 4.5%",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_barriers",
+   "from_": 728,
+   "dur": 728,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 174,
+     "cap": "Yale 모방 3장벽 — 접근권 · 시간 지평 · 인력",
+     "audio": null
+    },
+    {
+     "start": 206,
+     "dur": 271,
+     "cap": "충격 뒤 버티는 연수 — x 20%: 13년 · x 60%: 2년 (락업 10년)",
+     "audio": null
+    },
+    {
+     "start": 490,
+     "dur": 208,
+     "cap": "대체 전담 1명 — 직접 투자는 3명 이상 · 하나라도 못 넘으면 x를 낮추거나 간접으로",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_flexicure",
+   "from_": 1456,
+   "dur": 599,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 319,
+     "cap": "Flexicure 다섯 단계 ① Floor — 앞 3년 고정 지출 + 공사비 + 남은 출자 요청 = 1,536억",
+     "audio": null
+    },
+    {
+     "start": 351,
+     "dur": 218,
+     "cap": "② GHP로 덮기 · ③ 쿠션과 승수 — (주식 + 사모) ÷ 쿠션 ≤ 2",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_shock",
+   "from_": 2055,
+   "dur": 989,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 218,
+     "cap": "④ 2008형 충격 — 주식 −40 · 국채 +8 · 현금 +3 · 사모 −10%",
+     "audio": null
+    },
+    {
+     "start": 249,
+     "dur": 218,
+     "cap": "B안 — 쿠션 1,572억, m 1.53 ≤ 2 · 사모 비중 22.5%",
+     "audio": null
+    },
+    {
+     "start": 480,
+     "dur": 232,
+     "cap": "C안(Yale 추종) — 쿠션 712억, m 4.2 초과 · 사모 35.5% — 사실상 갇힘",
+     "audio": null
+    },
+    {
+     "start": 726,
+     "dur": 232,
+     "cap": "사모는 못 판다 — 줄이는 수단은 신규 약정 중단뿐 (목표 + 2%p 넘으면 중단)",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S4_same",
+   "from_": 3044,
+   "dur": 521,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 169,
+     "cap": "H대 문제는 기관판 GBI — 같은 기법, 다른 주인",
+     "audio": null
+    },
+    {
+     "start": 201,
+     "dur": 290,
+     "cap": "이순자 씨: Floor 3.50억 · 쿠션 1.50억 ↔ H대: Floor 1,536억 · 쿠션 위 위험 예산",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M8E08_bed.mp3"
+}

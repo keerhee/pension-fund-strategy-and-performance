@@ -1,0 +1,102 @@
+{
+ "fps": 30,
+ "total": 3141,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_objective",
+   "from_": 0,
+   "dur": 628,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 276,
+     "cap": "Sharpe–Tint(1990) — 목적은 잉여금 수익률, 평균은 크게 · 분산에는 벌점",
+     "audio": null
+    },
+    {
+     "start": 307,
+     "dur": 290,
+     "cap": "부채가 R_S 안에 있어 최적화가 스스로 부채를 따라가는 자산을 찾는다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_two_blocks",
+   "from_": 628,
+   "dur": 849,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 223,
+     "cap": "최적해 = 투기적 수요(PSP) + 헤지 수요(LHP)",
+     "audio": null
+    },
+    {
+     "start": 254,
+     "dur": 310,
+     "cap": "PSP 주식 = 4% ÷ (3.6 × 0.15²) ≈ 49% · LHP 30년 국채 = 80%",
+     "audio": null
+    },
+    {
+     "start": 577,
+     "dur": 242,
+     "cap": "합계 130% — 모자라는 30%는 고정금리 수취 스왑",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_rule",
+   "from_": 1477,
+   "dur": 849,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 232,
+     "cap": "헤지 몫 식에는 μ도 γ도 없다 — 공격적이든 보수적이든 같다",
+     "audio": null
+    },
+    {
+     "start": 264,
+     "dur": 160,
+     "cap": "성향을 이유로 헤지를 깎으면 그것은 금리 베팅",
+     "audio": null
+    },
+    {
+     "start": 437,
+     "dur": 382,
+     "cap": "주식 50%일 때 잉여금 변동성 — 헤지 19%: 12.8% → 헤지 100%: 7.5%",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_underfunded",
+   "from_": 2326,
+   "dur": 815,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 203,
+     "cap": "D_L = D_H일 때 헤지 비중 = L/A = 1/FR",
+     "audio": null
+    },
+    {
+     "start": 235,
+     "dur": 237,
+     "cap": "FR 125% → 80% · FR 120% → 83% · FR 80% → 125%",
+     "audio": null
+    },
+    {
+     "start": 485,
+     "dur": 300,
+     "cap": "미적립일수록 헤지가 100%를 넘고 — 그 레버리지가 2022 위기의 원인",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M7E05_bed.mp3"
+}

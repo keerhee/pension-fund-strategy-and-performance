@@ -1,0 +1,152 @@
+{
+ "fps": 30,
+ "total": 3979,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_hook",
+   "from_": 0,
+   "dur": 748,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 208,
+     "cap": "주식·채권·대체 모두 플러스 — 자산 +7.5%, 수익률 표만 보면 좋은 해",
+     "audio": null
+    },
+    {
+     "start": 240,
+     "dur": 203,
+     "cap": "할인율 3% → 2% — 같은 약속이 15% 더 무거워졌습니다",
+     "audio": null
+    },
+    {
+     "start": 456,
+     "dur": 261,
+     "cap": "적립비율 125% → 117% — 부채가 처음 드러나는 순간",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_tvm",
+   "from_": 748,
+   "dur": 487,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 218,
+     "cap": "기본 지식 — 금리 4%면 오늘 100이 1년 뒤 104",
+     "audio": null
+    },
+    {
+     "start": 249,
+     "dur": 208,
+     "cap": "복리를 거꾸로 풀면 할인 — t년 뒤 금액 ÷ (1 + r)ᵗ",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_liability",
+   "from_": 1235,
+   "dur": 607,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 150,
+     "cap": "3년간 매년 30을 지급하는 약속, 할인율 4%",
+     "audio": null
+    },
+    {
+     "start": 182,
+     "dur": 189,
+     "cap": "28.85 + 27.74 + 26.67 = 83.25",
+     "audio": null
+    },
+    {
+     "start": 384,
+     "dur": 194,
+     "cap": "줄 금액은 90이지만 오늘 83.25만 있으면 됩니다 — 6.75는 이자가 채운다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_fr",
+   "from_": 1842,
+   "dur": 777,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 203,
+     "cap": "자산은 매일 관찰되지만 부채는 할인율로 추정될 뿐",
+     "audio": null
+    },
+    {
+     "start": 235,
+     "dur": 295,
+     "cap": "적립비율 FR = A/L = 125% · 잉여금 S = A − L = 20",
+     "audio": null
+    },
+    {
+     "start": 543,
+     "dur": 203,
+     "cap": "국민연금이 공시하는 적립배율(적립금 ÷ 그해 지출)은 다른 지표",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S4_move",
+   "from_": 2619,
+   "dur": 690,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 208,
+     "cap": "자산 +7%, 부채 +10% → 새 자산 107, 새 부채 88",
+     "audio": null
+    },
+    {
+     "start": 240,
+     "dur": 189,
+     "cap": "적립비율 121.6% — 7%를 벌고도 3.4%p 하락",
+     "audio": null
+    },
+    {
+     "start": 442,
+     "dur": 218,
+     "cap": "근사식 ΔFR ≈ FR × (r_A − r_L) = −3.75%p",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S5_rs",
+   "from_": 3309,
+   "dur": 670,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 213,
+     "cap": "성적표 한 숫자 — 잉여금 수익률 R_S = r_A − (L/A) r_L",
+     "audio": null
+    },
+    {
+     "start": 244,
+     "dur": 218,
+     "cap": "7% − 0.8 × 10% = −1% — 잉여금 20 → 19",
+     "audio": null
+    },
+    {
+     "start": 476,
+     "dur": 165,
+     "cap": "연기금의 성적표는 r_A가 아니라 r_A − r_L",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M7E01_bed.mp3"
+}

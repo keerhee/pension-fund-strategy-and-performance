@@ -1,0 +1,90 @@
+{
+ "fps": 30,
+ "total": 2137,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_loop",
+   "from_": 0,
+   "dur": 512,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 261,
+     "cap": "메타프롬프트 → 코드 → 실행 → 결과 — 말로 반복한다",
+     "audio": null
+    },
+    {
+     "start": 293,
+     "dur": 189,
+     "cap": "개선 루프 — \"2022년식 충격을 넣고 TDF와 나란히 비교해줘\"",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_six",
+   "from_": 512,
+   "dur": 429,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 135,
+     "cap": "이순자 씨 GBI 설계기 — 여섯 단계로 강의 전체를 재현",
+     "audio": null
+    },
+    {
+     "start": 167,
+     "dur": 232,
+     "cap": "① Floor ② 쿠션 ③ 필요 자본 K ④ CPPI 1,000 경로 ⑤ m 1~6 민감도 ⑥ Flexicure vs 40/60",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_result",
+   "from_": 941,
+   "dur": 704,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 247,
+     "cap": "m = 3 — 중위 6.10억 · 최악 10% 2.24억 · 위반 0% · Cash Trap 1.4%",
+     "audio": null
+    },
+    {
+     "start": 278,
+     "dur": 295,
+     "cap": "m = 6 — 중위 6.45억 · 최악 10% 2.12억 · 위반 1.9% · Cash Trap 20.7%",
+     "audio": null
+    },
+    {
+     "start": 587,
+     "dur": 87,
+     "cap": "m이 크면 평균은 좋고 최악은 나쁘다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_speech",
+   "from_": 1645,
+   "dur": 492,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 155,
+     "cap": "나쁜 발언: \"수익률이 낮아 보인다\" · \"주식을 더 담아야\"",
+     "audio": null
+    },
+    {
+     "start": 186,
+     "dur": 276,
+     "cap": "좋은 발언: \"m=6이면 Cash Trap 21%, m=3이면 Floor 위반 0%\"",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M8E10_bed.mp3"
+}

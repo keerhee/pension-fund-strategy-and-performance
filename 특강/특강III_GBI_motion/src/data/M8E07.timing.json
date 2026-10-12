@@ -1,0 +1,133 @@
+{
+ "fps": 30,
+ "total": 4213,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_map",
+   "from_": 0,
+   "dur": 844,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 295,
+     "cap": "MVO → TDF → LDI → GBI — 오른쪽으로 갈수록 \"누구를 위한 최적인가\"가 좁혀진다",
+     "audio": null
+    },
+    {
+     "start": 327,
+     "dur": 135,
+     "cap": "GBI는 가장 개인화된 틀이지만 가장 복잡하고 비싸다",
+     "audio": null
+    },
+    {
+     "start": 476,
+     "dur": 339,
+     "cap": "4대 도전 — 목표 수집 · 계산 복잡성 · 비용(0.8~1.5%) · 규제",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_pension",
+   "from_": 844,
+   "dur": 869,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 218,
+     "cap": "한국 퇴직연금 501조 — DB는 회사, DC·IRP는 개인이 위험을 진다",
+     "audio": null
+    },
+    {
+     "start": 249,
+     "dur": 285,
+     "cap": "DB 228.9조(3.53%) · DC 141.6조(8.47%) · IRP 130.9조(9.44%)",
+     "audio": null
+    },
+    {
+     "start": 548,
+     "dur": 290,
+     "cap": "적립금의 75.4%가 원리금보장 — 수익률 3.09% vs 실적배당 16.80%",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_default",
+   "from_": 1713,
+   "dur": 893,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 266,
+     "cap": "디폴트옵션 — 목표를 묻지 않고 대신 정해 주는 장치 (2022.7 시행)",
+     "audio": null
+    },
+    {
+     "start": 298,
+     "dur": 252,
+     "cap": "실제 선택 — 적립금 53.3조 중 안정형(원리금보장) 85.4%",
+     "audio": null
+    },
+    {
+     "start": 563,
+     "dur": 300,
+     "cap": "TDF — 나이 하나로 줄이는 글라이드패스, Floor 없음 → 2022년 TDF2025 −14.0%",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_robo",
+   "from_": 2606,
+   "dur": 864,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 295,
+     "cap": "로보어드바이저 — 디지털 TDF에서 목표 기반 관리로",
+     "audio": null
+    },
+    {
+     "start": 327,
+     "dur": 319,
+     "cap": "2024.12 IRP 일임 혁신금융 지정 → 2025.3 첫 출시 · 운용금액 1조 2,760억(2026.3)",
+     "audio": null
+    },
+    {
+     "start": 660,
+     "dur": 174,
+     "cap": "한국 GBI의 병목은 기술이 아니라 제도였고, 그 제도가 막 열렸다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S4_reform",
+   "from_": 3470,
+   "dur": 743,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 184,
+     "cap": "발전 방향 ① 수익률 공시 → 목표 달성 확률 공시",
+     "audio": null
+    },
+    {
+     "start": 215,
+     "dur": 247,
+     "cap": "② 위험 등급 디폴트 → 목표 기반 디폴트",
+     "audio": null
+    },
+    {
+     "start": 476,
+     "dur": 237,
+     "cap": "③ 적립 단계만 → 인출 단계까지 — 일시금 대신 소득으로",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M8E07_bed.mp3"
+}

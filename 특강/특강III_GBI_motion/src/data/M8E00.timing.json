@@ -1,0 +1,121 @@
+{
+ "fps": 30,
+ "total": 3115,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_bridge",
+   "from_": 0,
+   "dur": 723,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 223,
+     "cap": "개인의 노후 생활비 약속은 연기금의 부채와 같습니다",
+     "audio": null
+    },
+    {
+     "start": 254,
+     "dur": 213,
+     "cap": "LDI와 같은 문법 — 지킬 것을 먼저 안전자산으로 복제, 남는 자금으로 수익 추구",
+     "audio": null
+    },
+    {
+     "start": 480,
+     "dur": 213,
+     "cap": "부채 L → 목표 G · 부채 벤치마크 → GHP · 잉여금 → 쿠션",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_same",
+   "from_": 723,
+   "dur": 714,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 126,
+     "cap": "이순자 씨와 김영수 씨 — 같은 65세, 같은 금융자산 5억",
+     "audio": null
+    },
+    {
+     "start": 157,
+     "dur": 300,
+     "cap": "이순자 씨: 월 300만이 필요하고 부족은 불가 · 김영수 씨: 임대 수입으로 생활비 충분",
+     "audio": null
+    },
+    {
+     "start": 471,
+     "dur": 213,
+     "cap": "TDF라면 두 사람에게 같은 포트폴리오 — 같은 답일 수 없다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_messages",
+   "from_": 1437,
+   "dur": 670,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 174,
+     "cap": "① 목표가 다르면 포트폴리오도 달라야 한다 — 정의 · 우선순위 · 확률",
+     "audio": null
+    },
+    {
+     "start": 206,
+     "dur": 223,
+     "cap": "② 3계층 버킷 — Safety 95% · Market 70% · Aspirational 30%",
+     "audio": null
+    },
+    {
+     "start": 442,
+     "dur": 198,
+     "cap": "③ Flexicure — Floor 위의 쿠션에 비례해 위험자산을 동적 배분",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_map",
+   "from_": 2107,
+   "dur": 492,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 242,
+     "cap": "열 개 단원 — 목표와 위험 · 심리계정 · 필요 자본 · Floor · 쿠션 · 운용 규칙 · 현실 · 기관 · 실습 · IC",
+     "audio": null
+    },
+    {
+     "start": 273,
+     "dur": 189,
+     "cap": "발언은 수익률이 아니라 목표 언어 — Floor · 쿠션 · 달성 확률",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S4_ic",
+   "from_": 2599,
+   "dur": 516,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 266,
+     "cap": "제1호 — 디폴트옵션 Flexicure형 도입: Floor · m 상한 · 총보수",
+     "audio": null
+    },
+    {
+     "start": 298,
+     "dur": 189,
+     "cap": "제2호 — H대학기금: 비유동 상한 x · 유동 하한 y · 지출률 z",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M8E00_bed.mp3"
+}

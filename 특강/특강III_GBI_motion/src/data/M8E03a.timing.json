@@ -1,0 +1,140 @@
+{
+ "fps": 30,
+ "total": 3791,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_ghp",
+   "from_": 0,
+   "dur": 482,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 247,
+     "cap": "GHP는 목표를 확실히 맞추고, PSP는 수익을 추구한다",
+     "audio": null
+    },
+    {
+     "start": 278,
+     "dur": 174,
+     "cap": "LDI의 Hedging + Return-Seeking과 같은 2펀드 분리",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_luck",
+   "from_": 482,
+   "dur": 584,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 281,
+     "cap": "성장은 T에 비례하고, 흔들림은 √T로만 커진다",
+     "audio": null
+    },
+    {
+     "start": 312,
+     "dur": 242,
+     "cap": "95%면 나쁜 운(z = 1.645)까지, 30%면 좋은 운(z = −0.524)을 기대해도 된다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_formula",
+   "from_": 1066,
+   "dur": 651,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 184,
+     "cap": "필요 자본 = 성장만큼 할인하고, 확률만큼 안전마진을 더한 값",
+     "audio": null
+    },
+    {
+     "start": 215,
+     "dur": 208,
+     "cap": "Safety 6억 · 95% · GHP 2% → 6 × e^(−0.2) = 4.91억",
+     "audio": null
+    },
+    {
+     "start": 437,
+     "dur": 184,
+     "cap": "p < 50%면 z가 음수라 오히려 덜 든다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_tail",
+   "from_": 1717,
+   "dur": 560,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 266,
+     "cap": "Market 계좌 — 10년 뒤 3억을 70%로: K를 키우면 미달 꼬리가 줄어든다",
+     "audio": null
+    },
+    {
+     "start": 298,
+     "dur": 232,
+     "cap": "K 1.6억 → 달성 39% · 1.9억 → 55% · 2.24억 → 70%",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S4_wstar",
+   "from_": 2277,
+   "dur": 786,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 237,
+     "cap": "방법 1 — 목표마다 확률 p를 딱 채우는 가장 싼 K",
+     "audio": null
+    },
+    {
+     "start": 269,
+     "dur": 145,
+     "cap": "최적 주식 비중 = Merton 비중 1.5 − 확률 조정 z/(σ√T)",
+     "audio": null
+    },
+    {
+     "start": 427,
+     "dur": 329,
+     "cap": "Safety 0% · Market 67% · Aspirational 100%",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S5_sum",
+   "from_": 3063,
+   "dur": 728,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 256,
+     "cap": "55세 · 10억 — 4.91 + 2.24 + 1.97 = 9.13억",
+     "audio": null
+    },
+    {
+     "start": 288,
+     "dur": 189,
+     "cap": "남는 0.87억은 꿈의 계좌로 → 49 / 22 / 28%",
+     "audio": null
+    },
+    {
+     "start": 490,
+     "dur": 208,
+     "cap": "49 / 22 / 28은 입력이 아니라 결과 — 목표와 확률은 개인이, 배분은 계산이 정한다",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M8E03a_bed.mp3"
+}

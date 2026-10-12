@@ -1,0 +1,152 @@
+{
+ "fps": 30,
+ "total": 3674,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_flexicure",
+   "from_": 0,
+   "dur": 569,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 189,
+     "cap": "Flexicure = Flexibility + Security — 하한을 보장한 위에서 효용 극대화",
+     "audio": null
+    },
+    {
+     "start": 220,
+     "dur": 194,
+     "cap": "RB = 노후 월세 선불 · Floor = 체육관 매트 · 쿠션 두께만큼 뛴다",
+     "audio": null
+    },
+    {
+     "start": 427,
+     "dur": 111,
+     "cap": "LTCM은 매트 없이 27배 높이에서 뛰었다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_rule",
+   "from_": 569,
+   "dur": 578,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 111,
+     "cap": "위험자산 E = m × 쿠션(A − F)",
+     "audio": null
+    },
+    {
+     "start": 143,
+     "dur": 271,
+     "cap": "위험자산이 x 떨어지면 손실 m·C·x — 이것이 쿠션보다 작아야 한다 → x < 1/m",
+     "audio": null
+    },
+    {
+     "start": 427,
+     "dur": 121,
+     "cap": "1/m 미만의 급락에는 Floor가 지켜진다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_auto",
+   "from_": 1147,
+   "dur": 656,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 189,
+     "cap": "F 5억 · m 4 — 자산 10억이면 PSP 100%(상한)",
+     "audio": null
+    },
+    {
+     "start": 220,
+     "dur": 208,
+     "cap": "6억 → 67% · 5억 → 0% — 자산이 Floor에 가까워질수록 자동 축소",
+     "audio": null
+    },
+    {
+     "start": 442,
+     "dur": 184,
+     "cap": "쿠션이 0이 되면 전액 안전자산 — 회복장에 못 타는 Cash Trap",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_blackjones",
+   "from_": 1803,
+   "dur": 468,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 218,
+     "cap": "Black–Jones(1987) CPPI — 두 변수 m과 F, 델타헤지 없이 규칙 기반",
+     "audio": null
+    },
+    {
+     "start": 249,
+     "dur": 189,
+     "cap": "Fischer Black의 유산 — BS(73) · CPPI(87) · BL(92), 이 과목에서 모두 만난다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S4_var",
+   "from_": 2271,
+   "dur": 796,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 198,
+     "cap": "승수 m은 VaR로 정한다 — m ≤ 1/x",
+     "audio": null
+    },
+    {
+     "start": 230,
+     "dur": 237,
+     "cap": "월 99% 10% → 10 · 하루 −20%(1987) → 5 · 33% → 3 · 50% → 2",
+     "audio": null
+    },
+    {
+     "start": 480,
+     "dur": 285,
+     "cap": "A 100 · F 80 · m 3: x 20%면 손실 12 ≤ 쿠션 20, x 40%면 24 > 20 → 뚫림",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S5_trap",
+   "from_": 3067,
+   "dur": 607,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 174,
+     "cap": "m이 크면 평균은 좋아지지만 최악은 나빠지고 Cash Trap에 갇힌다",
+     "audio": null
+    },
+    {
+     "start": 206,
+     "dur": 281,
+     "cap": "이순자 씨 65→75세 · 1,000 경로 — m 3: Cash Trap 1.4% · m 6: 20.7%, 위반 1.9%",
+     "audio": null
+    },
+    {
+     "start": 500,
+     "dur": 77,
+     "cap": "갇힐 확률이 m의 진짜 비용",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M8E05_bed.mp3"
+}

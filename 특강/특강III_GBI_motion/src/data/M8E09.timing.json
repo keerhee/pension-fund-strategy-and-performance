@@ -1,0 +1,90 @@
+{
+ "fps": 30,
+ "total": 2084,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_language",
+   "from_": 0,
+   "dur": 458,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 145,
+     "cap": "두 안건은 하나의 언어 — Floor · 쿠션 · 달성 확률",
+     "audio": null
+    },
+    {
+     "start": 177,
+     "dur": 252,
+     "cap": "개념 → 쟁점: RB·GHP → Floor 재료 · m·Cash Trap → 승수 상한 · 비용 → 디폴트 자격 · Flexicure → x·y·z",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_case1",
+   "from_": 458,
+   "dur": 569,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 121,
+     "cap": "제1호 디폴트옵션 Flexicure형 — 조건부 승인",
+     "audio": null
+    },
+    {
+     "start": 152,
+     "dur": 160,
+     "cap": "Floor 0.90 · m 상한 ≤ 2 · 총보수 ≤ 0.5%",
+     "audio": null
+    },
+    {
+     "start": 326,
+     "dur": 213,
+     "cap": "Floor를 낮추고 m을 키우면 평균은 좋지만 Cash Trap과 수수료가 디폴트 자격을 위협한다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_case2",
+   "from_": 1027,
+   "dur": 579,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 203,
+     "cap": "제2호 H대 기금 — 조건부 승인 (x, y, z) = (20, 30, 4.5)",
+     "audio": null
+    },
+    {
+     "start": 235,
+     "dur": 315,
+     "cap": "비유동은 재간접·세컨더리 · 고정 3.5%가 Floor · 충격 뒤 m ≤ 2 · 사모 22% 넘으면 약정 중단",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_hw",
+   "from_": 1606,
+   "dur": 478,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 174,
+     "cap": "발언은 \"조건 X가 Y이면 답은 Z\" — 수익률이 아니라 목표 언어로",
+     "audio": null
+    },
+    {
+     "start": 206,
+     "dur": 242,
+     "cap": "과제 — 개인 2건 · 팀 1건(한국 GBI 플랫폼 설계) · 선택 구현 1건",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M8E09_bed.mp3"
+}

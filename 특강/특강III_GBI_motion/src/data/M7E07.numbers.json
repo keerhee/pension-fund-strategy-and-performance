@@ -1,0 +1,22 @@
+{
+ "boe_cap": 65,
+ "boe_bought": 19.3,
+ "budget": 45,
+ "loss": 150,
+ "aum2021": 1.5,
+ "days_to_resign": 32,
+ "tenure": 49,
+ "svb": {
+  "assets": 2090,
+  "deposits": 1755,
+  "uninsured": 0.86,
+  "bonds": 1170,
+  "D": 6,
+  "dy": 0.025,
+  "loss_calc": 175.5,
+  "loss_disc": 150,
+  "run": 420,
+  "swap_closed": 110,
+  "sale_loss": 18
+ }
+}

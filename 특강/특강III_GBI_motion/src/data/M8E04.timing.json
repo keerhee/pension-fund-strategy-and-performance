@@ -1,0 +1,152 @@
+{
+ "fps": 30,
+ "total": 3931,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_rb",
+   "from_": 0,
+   "dur": 704,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 290,
+     "cap": "Retirement Bond — 은퇴 후 실질 고정 소득만 주는 개인의 Floor 자산",
+     "audio": null
+    },
+    {
+     "start": 322,
+     "dur": 165,
+     "cap": "쿠폰도 원금 상환도 없다 — 목표는 잔고가 아니라 평생 소득",
+     "audio": null
+    },
+    {
+     "start": 500,
+     "dur": 174,
+     "cap": "Merton의 SeLFIES(2017) → 브라질 RendA+(2023) 첫 발행",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_price",
+   "from_": 704,
+   "dur": 569,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 227,
+     "cap": "연 2,400만 원 × 20년, 실질 2% — 65세에 사면 약 3.92억",
+     "audio": null
+    },
+    {
+     "start": 259,
+     "dur": 116,
+     "cap": "45세에 사면 약 2.64억 — 20년을 더 할인 (1.02²⁰ = 1.486)",
+     "audio": null
+    },
+    {
+     "start": 389,
+     "dur": 150,
+     "cap": "젊을수록 노후 소득의 가격이 싸다 — RB 가격이 곧 Floor",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_replicate",
+   "from_": 1273,
+   "dur": 680,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 237,
+     "cap": "이상적 자산이 없으면 GHP로 복제한다 — 명목 국채 + TIPS + 스왑",
+     "audio": null
+    },
+    {
+     "start": 269,
+     "dur": 194,
+     "cap": "한국 — 물가연동국채는 있지만 유동성 빈약, 연금식 지급 국채는 없다",
+     "audio": null
+    },
+    {
+     "start": 476,
+     "dur": 174,
+     "cap": "RB 발행은 재정 부담이 아니라 어차피 존재하는 약속을 시장화하는 일",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_floor",
+   "from_": 1953,
+   "dur": 752,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 160,
+     "cap": "Floor = 필수 목표의 연금현가 — 임의 비율이 아니라 시장 가격",
+     "audio": null
+    },
+    {
+     "start": 191,
+     "dur": 247,
+     "cap": "연 2,400만 × 25년 — 금리 1.5%: 4.97억 · 2.5%: 4.42억",
+     "audio": null
+    },
+    {
+     "start": 451,
+     "dur": 271,
+     "cap": "낙관 할인율의 함정 — 3.5%면 3.96억, 쿠션이 커 보여 위험을 더 산다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S4_lee",
+   "from_": 2705,
+   "dur": 540,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 92,
+     "cap": "이순자 씨 — 이상 → 복제 → 가격 → 운용",
+     "audio": null
+    },
+    {
+     "start": 123,
+     "dur": 223,
+     "cap": "월 150만 원 부족분의 평생 소득 → 복제 비용 3.50억이 Floor",
+     "audio": null
+    },
+    {
+     "start": 360,
+     "dur": 150,
+     "cap": "남는 1.50억만 쿠션 — Flexicure 규칙으로 굴린다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S5_episode",
+   "from_": 3245,
+   "dur": 686,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 377,
+     "cap": "Martellini · Milhau — 2012 RB 개념 → 2015 GBI 프레임워크 → 2018 Flexicure",
+     "audio": null
+    },
+    {
+     "start": 409,
+     "dur": 247,
+     "cap": "2020 COVID 급락에 규칙 기반 방어 — 위기가 이론을 검증한다",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M8E04_bed.mp3"
+}

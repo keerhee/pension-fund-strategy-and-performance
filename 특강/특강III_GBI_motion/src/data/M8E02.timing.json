@@ -1,0 +1,127 @@
+{
+ "fps": 30,
+ "total": 3284,
+ "hasAudio": false,
+ "scenes": [
+  {
+   "id": "S0_thaler",
+   "from_": 0,
+   "dur": 656,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 165,
+     "cap": "Thaler(1985) — 자금에는 꼬리표가 붙는다",
+     "audio": null
+    },
+    {
+     "start": 196,
+     "dur": 160,
+     "cap": "월급은 아끼고 보너스는 쉽게 · 여행 적금은 지키며 카드빚",
+     "audio": null
+    },
+    {
+     "start": 369,
+     "dur": 256,
+     "cap": "GBI는 이 편향을 오류가 아니라 인터페이스로 쓴다 — 행동의 방화벽",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S1_bpt",
+   "from_": 656,
+   "dur": 723,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 281,
+     "cap": "Shefrin–Statman(2000) BPT — 계좌별 미달 확률 ≤ α 아래 기대 부를 최대로",
+     "audio": null
+    },
+    {
+     "start": 312,
+     "dur": 271,
+     "cap": "7번 거절, 2000년 게재 — 지금은 인용 5,000회+, GBI의 이론적 표준",
+     "audio": null
+    },
+    {
+     "start": 597,
+     "dur": 97,
+     "cap": "거절의 횟수는 아이디어의 가치와 무관하다",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S2_dm",
+   "from_": 1379,
+   "dur": 704,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 213,
+     "cap": "Das–Markowitz(2010) — 계좌마다 (H, α) 두 숫자만 묻는다",
+     "audio": null
+    },
+    {
+     "start": 244,
+     "dur": 218,
+     "cap": "H 최소 수익률 · α 미달 확률 한도 → 효율선 위 한 점",
+     "audio": null
+    },
+    {
+     "start": 476,
+     "dur": 198,
+     "cap": "위험회피도 γ를 묻는 대신 (H, α)를 묻는다 — 같은 포트폴리오의 다른 이름",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S3_compare",
+   "from_": 2083,
+   "dur": 565,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 252,
+     "cap": "세 방식 — 관찰(Thaler) · 행동의 최적화(BPT) · 운용의 최적화(Das–Markowitz)",
+     "audio": null
+    },
+    {
+     "start": 283,
+     "dur": 252,
+     "cap": "BPT는 합치면 비효율 · Das–Markowitz는 공매도 허용 시 합쳐도 효율선 위",
+     "audio": null
+    }
+   ]
+  },
+  {
+   "id": "S4_bucket",
+   "from_": 2648,
+   "dur": 636,
+   "lines": [
+    {
+     "start": 18,
+     "dur": 208,
+     "cap": "3계층 버킷 — 아래층이 채워져야 위층에 자금이 간다",
+     "audio": null
+    },
+    {
+     "start": 240,
+     "dur": 208,
+     "cap": "Safety는 RB/GHP · Market은 60/40 · Aspirational은 주식·대체",
+     "audio": null
+    },
+    {
+     "start": 461,
+     "dur": 145,
+     "cap": "계층은 독립 운용 — 실패해도 무엇이 실패했는지 안다",
+     "audio": null
+    }
+   ]
+  }
+ ],
+ "bed": "audio/M8E02_bed.mp3"
+}
