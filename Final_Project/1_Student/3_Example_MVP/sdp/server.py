@@ -1,7 +1,8 @@
 """채점 콘솔 — 브라우저 버튼으로 제출본을 다시 계산하고 점검한다.
 
     python -m sdp serve        (start.command / start.bat 가 대신 실행)
-    → http://localhost:8765
+    → http://localhost:8765          시연 화면 (자율주행 프로세스 · 중심)
+    → http://localhost:8765/console  채점 콘솔 (보조)
 
 모든 버튼은 제출 폴더를 건드리지 않고 임시 복사본에서 돈다.
 """
@@ -10,7 +11,7 @@ import json, os, threading, webbrowser
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from urllib.parse import urlparse, parse_qs
 from .data import ROOT
-from . import live, selfcheck, perf
+from . import live, selfcheck, perf, demo, intake
 from .pipeline import quarters
 
 PORT = int(os.environ.get("SDP_PORT", "8765"))
@@ -60,8 +61,16 @@ class H(BaseHTTPRequestHandler):
     def do_GET(self):
         u = urlparse(self.path); qs = parse_qs(u.query)
         try:
-            if u.path in ("/", "/index.html"):
+            if u.path in ("/", "/demo"):   # 중심: 자율주행 시연 화면 (엔진 = 예시 MVP)
+                return self._send(200, _read(os.path.join(ROOT, "demo", "시연화면_예시MVP.html")), "text/html; charset=utf-8")
+            if u.path in ("/console", "/index.html"):   # 보조: 채점 콘솔
                 return self._send(200, _read(os.path.join(ROOT, "console", "index.html")), "text/html; charset=utf-8")
+            if u.path == "/standalone":   # 단독판 시연 화면 (장난감 엔진, 파일 하나)
+                return self._send(200, _read(os.path.join(ROOT, "demo", "standalone", "SDAM_시연화면_단독판.html")), "text/html; charset=utf-8")
+            if u.path == "/api/demo/samples":
+                return self._send(200, demo.samples())
+            if u.path == "/api/demo/replay":
+                return self._send(200, demo.replay(qs["q"][0]))
             if u.path == "/api/summary":
                 return self._send(200, summary())
             if u.path == "/api/quarter":
@@ -82,6 +91,12 @@ class H(BaseHTTPRequestHandler):
                 if not body.get("only"):
                     selfcheck.write(res)
                 return self._send(200, res)
+            if p == "/api/demo/intake":   # 접수 에이전트 — 어떤 형식이든 표준 형식으로 옮기고 근거·확인 필요를 붙인다
+                return self._send(200, intake.interpret(body.get("text", ""), body.get("slot", "input"), body.get("name", "")))
+            if p == "/api/demo/start":
+                return self._send(200, demo.start(body.get("q"), body.get("input_md"), body.get("shock_md"), body.get("intake")))
+            if p == "/api/demo/decide":
+                return self._send(200, demo.decide(body["sid"], body["decision"], body.get("reason", ""), body.get("condition", "")))
             if p == "/api/l1":
                 return self._send(200, live.l1(body["q"], body["overrides"]))
             if p == "/api/l2":

@@ -163,14 +163,15 @@ TESTS = [("T1", "깨끗한 실행", t1), ("T2", "IPS 위반 주입", t2), ("T3",
          ("T5", "투표 검산", t5), ("T6", "계산 재현", t6), ("T7", "감사 추적", t7), ("T8", "증거 대조", t8)]
 
 
-def run(log=print, only: list | None = None) -> list:
+def run(log=print, only: list | None = None, params: dict | None = None) -> list:
+    """params 예: {"T7": {"q": "2024-02"}, "T8": {"qs": ["2023-08"]}} — 채점자가 고른 분기로 돌린다."""
     res = []
     for tid, name, fn in TESTS:
         if only and tid not in only:
             continue
         t0 = time.time()
         try:
-            ok, msg = fn(log)
+            ok, msg = fn(log, **((params or {}).get(tid) or {}))
         except Exception as e:
             ok, msg = False, f"{type(e).__name__}: {e}"
         res.append({"id": tid, "name": name, "pass": bool(ok), "detail": msg, "sec": round(time.time() - t0, 1)})

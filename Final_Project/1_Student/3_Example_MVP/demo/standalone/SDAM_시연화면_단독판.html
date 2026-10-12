@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>자율주행 포트폴리오 시연 화면 — 단독판</title>
+<!--
+  ─────────────────────────────────────────────────────────────
+  발표용 HTML MVP 예시 VI (HTML + CSS + JS, 파일 하나)
+    · V에 더해 — 기금 "입력 파일"(md)을 올리면 그 값으로 엔진이 다시 계산한다
+      (IPS 한도 · 자산별 기대수익·변동성·정책 비중·범위·현재 보유 · 상관계수 · 스트레스 · 리서치 메모)
+    · 입력 파일에 형식 오류가 있으면 "◇ 입력 검사"에서 멈추고 사유를 보여 준다
+    · 돌발 과제 md는 V와 같다 — 입력 파일 위에 겹쳐 적용된다
+    · 마지막에 사람 CIO가 최종 승인(또는 반려)한다 — HUMAN_CIO 로 켜고 끈다
+    · 입력 파일 견본: 같은 폴더의 SDAM_입력파일_예시_KFP.md · 돌발 md 3개 (화면의 "입력 예시 내려받기"와 같은 내용)
+
+  구조 — 화면과 엔진을 나눈다
+    · 화면(이 파일): 버튼을 누르면 엔진을 부르고, 엔진이 남긴 파일을 "읽어서" 보여 준다.
+    · 엔진(run_all.py): 에이전트를 돌리고 runs/<실행번호>/ 에 파일을 저장한다.
+      돌발 md는 엔진에 그대로 넘기고, 엔진이 runs/<실행번호>/shock.md 로 보관한다.
+
+  이 예시는 엔진 없이도 열리도록 "예시 엔진"(ENGINE 블록)을 이 파일 안에 넣어 두었다.
+  예시 엔진은 입력 파일을 실제로 읽고 계산한다 — 후보 7개 · IPS 판정 · 위원 4명 표결 · CIO 결론.
+  실제 팀 프로젝트에서는 ENGINE 블록을 서버(run_all.py)로 옮기고 callEngine() 한 곳만 fetch로 바꾼다.
+
+  화면 규칙 3가지
+    1) 화면은 숫자를 계산하지 않는다 — 파일에 적힌 값을 그대로 보여 준다.
+    2) 실행 번호(run_id)를 항상 보여 준다.
+    3) 사람이 누른 버튼(승인·반려·정지)은 개입 기록에 남긴다.
+  ─────────────────────────────────────────────────────────────
+-->
+<style>
+  :root {
+    --ink: #071A1D; --paper: #F7F5F0; --lime: #B7F34A; --teal: #0B6B68;
+    --red: #C00000; --muted: #64757D; --line: #DDE3E2; --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Noto Sans KR", system-ui, sans-serif; background: var(--paper); color: #102027; }
+  header { background: var(--ink); color: var(--white); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  header h1 { margin: 0; font-size: 20px; }
+  header .run { font-family: monospace; color: var(--lime); font-size: 14px; }
+
+  /* 버튼 줄 */
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 20px 6px; align-items: center; }
+  button, .filebtn { font: inherit; font-weight: 700; font-size: 15px; padding: 10px 14px; border-radius: 8px;
+           border: 2px solid var(--teal); background: var(--white); color: var(--teal); cursor: pointer; }
+  button:disabled { opacity: .35; cursor: not-allowed; }
+  button.main { background: var(--lime); border-color: var(--lime); color: #102027; }
+  button.human { background: var(--ink); border-color: var(--ink); color: var(--lime); }
+  button.stop, button.reject { border-color: var(--red); color: var(--red); }
+  select { font: inherit; padding: 9px; border-radius: 8px; border: 2px solid var(--teal); background: var(--white); }
+  .sep { width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
+
+  /* 돌발 md 올리는 줄 */
+  .inbar { padding-bottom: 4px; }
+  .vh { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; pointer-events: none; }
+  .shockbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 6px 20px 14px; }
+  .drop { cursor: pointer; flex: 1 1 320px; border: 2px dashed var(--teal); border-radius: 8px; padding: 9px 12px; color: var(--muted); font-size: 14px; background: var(--white); }
+  .drop.over { background: #eefbd9; border-color: var(--lime); }
+  .drop b { color: #102027; }
+
+  /* 세 칸 화면 */
+  main { display: grid; grid-template-columns: 260px 1fr 300px; gap: 14px; padding: 0 20px 20px; }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+  .panel { background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 16px; min-height: 360px; }
+  .panel.dark { background: var(--ink); color: var(--white); border: 0; }
+  .panel h2 { margin: 0 0 12px; font-size: 16px; color: var(--teal); }
+  .panel.dark h2 { color: var(--lime); }
+
+  /* ① 진행 단계 */
+  .steps { list-style: none; margin: 0; padding: 0; }
+  .steps li { padding: 7px 8px; border-radius: 6px; cursor: pointer; color: #9FB0B2; }
+  .steps li.done { color: var(--white); }
+  .steps li.done::before { content: "✓ "; color: var(--lime); }
+  .steps li.now { background: var(--lime); color: #102027; font-weight: 700; }
+  .steps li.now::before { content: "● "; }
+  .steps li.wait { background: #3a2a00; color: #FFD27A; font-weight: 700; }
+  .steps li.human { border-left: 3px solid #FFD27A; }
+  .steps li.sel { outline: 2px solid var(--lime); }
+
+  /* ② 근거 파일 */
+  pre { background: var(--paper); border-radius: 8px; padding: 12px; white-space: pre-wrap; font-size: 14px; line-height: 1.55; margin: 0; }
+  .hint { color: var(--muted); font-size: 13px; margin-top: 10px; }
+
+  /* ③ 결과 요약 */
+  .w { display: grid; grid-template-columns: 50px 1fr 52px; align-items: center; gap: 6px; margin: 6px 0; font-size: 14px; }
+  .w .b { height: 16px; background: var(--teal); border-radius: 3px; transition: width .6s; }
+  .kv { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding: 7px 0; font-size: 14px; }
+  .kv b.ok { color: var(--teal); } .kv b.bad { color: var(--red); }
+  .banner { padding: 8px 10px; border-radius: 6px; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .banner.ok { background: var(--lime); } .banner.bad { background: #fde8e8; color: var(--red); }
+  .banner.wait { background: #fff3d6; color: #7a5200; }
+
+  /* 아래 줄: 비교표 · 개입 기록 */
+  .bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 20px 24px; }
+  @media (max-width: 900px) { .bottom { grid-template-columns: 1fr; } }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 6px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 400; }
+  .log { font-family: monospace; font-size: 13px; max-height: 180px; overflow: auto; }
+
+  /* 1쪽 보고서 (IC 보고서 + CIO 결정 + 사람 CIO 승인) */
+  .overlay { position: fixed; inset: 0; background: rgba(7,26,29,.6); display: none; overflow: auto; padding: 24px 12px; }
+  .overlay.show { display: block; }
+  .page { background: var(--white); max-width: 760px; margin: 0 auto; padding: 32px 36px; border-radius: 6px; font-size: 14px; line-height: 1.6; }
+  .page h3 { margin: 0; font-size: 22px; }
+  .page .meta { color: var(--muted); font-size: 12px; margin: 4px 0 14px; border-bottom: 3px solid var(--ink); padding-bottom: 8px; }
+  .page h4 { margin: 16px 0 6px; font-size: 15px; color: var(--teal); }
+  .page .verdict { display: flex; gap: 10px; flex-wrap: wrap; }
+  .page .chip { padding: 6px 12px; border-radius: 6px; background: var(--paper); font-weight: 700; }
+  .page .chip.final { background: var(--lime); }
+  .page .chip.no { background: #fde8e8; color: var(--red); }
+  .page .minority { border-left: 4px solid var(--red); padding: 6px 10px; background: #fff5f5; }
+  .page .sign { border: 2px solid var(--ink); border-radius: 6px; padding: 10px 12px; }
+  .page .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+  .page .actions.top { position: sticky; top: -24px; margin: -32px -36px 14px; padding: 10px 36px; background: var(--white); border-bottom: 1px solid var(--line); z-index: 1; }
+  .page pre { font-size: 14px; }
+  /* ② 근거 파일 머리 — 제목 + 인쇄 · 닫기 */
+  .phead { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+  .phead h2 { margin: 0 !important; }
+  .ftools { display: flex; gap: 6px; flex-shrink: 0; }
+  button.sm { font-size: 13px; padding: 5px 9px; border-width: 1.5px; }
+  @media print {
+    @page { margin: 18mm; }
+    body { background: #fff; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body > *:not(.overlay) { display: none !important; }
+    .overlay { position: static; background: none; padding: 0; display: block; }
+    .page { max-width: none; padding: 0; }
+    .page .actions { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="appTitle">자율주행 포트폴리오 · 시연 화면 — 단독판 (장난감 엔진 · 입력 파일 · md 돌발 · 사람 CIO 승인)</h1>
+  <span class="run" id="runLabel">run_id: —</span>
+</header>
+
+<!-- 버튼 줄: 버튼마다 README에 같은 일을 하는 명령이 있어야 한다 -->
+<div class="bar">
+  <button class="main" id="btnLive">▶ 라이브 실행</button>
+  <button id="btnReplay">▷ 재생 실행</button>
+  <button id="btnCompare">⇄ 두 실행 비교</button>
+  <span class="sep"></span>
+  <button class="human" id="btnApprove" disabled>✓ 사람 승인</button>
+  <button class="reject" id="btnReject" disabled hidden>✕ 반려</button>
+  <button class="stop" id="btnStop" disabled>■ 긴급 정지</button>
+  <button id="btnReport" disabled>📄 1쪽 보고서</button>
+</div>
+
+<!-- 입력 파일: 기금의 IPS · 자본시장 가정 · 현재 보유를 담은 md 파일을 올린다 (끌어다 놓아도 된다) -->
+<div class="shockbar inbar">
+  <button type="button" class="filebtn" id="btnPickInput">📥 입력 파일 올리기</button>
+  <input type="file" id="inputFile" accept=".md,.markdown,.txt,text/markdown,text/plain" class="vh">
+  <div class="drop" id="dropIn" data-kind="input">기금 <b>입력 파일(.md)</b>을 여기에 끌어다 놓아도 된다 — <span id="inputName">올린 파일 없음 · 내장 예시(KFP)로 실행</span></div>
+  <button id="btnInputSample">입력 예시 내려받기</button>
+  <button id="btnInputReset" disabled>내장 예시로 되돌리기</button>
+</div>
+
+<!-- 돌발 과제: 발표 당일 받은 md 파일을 올린다 (끌어다 놓아도 된다) -->
+<div class="shockbar">
+  <button type="button" class="filebtn" id="btnPickShock">📄 돌발 과제 md 올리기</button>
+  <input type="file" id="shockFile" accept=".md,.markdown,.txt,text/markdown,text/plain" class="vh">
+  <div class="drop" id="drop" data-kind="shock">돌발 과제 <b>.md</b> 파일을 끌어다 놓아도 된다 — <span id="shockName">선택된 파일 없음</span></div>
+  <button id="btnShock" disabled>◆ 돌발 과제 투입</button>
+  <select id="sample" title="연습용 돌발 md를 내려받는다">
+    <option value="">예시 md 내려받기…</option>
+    <option value="A">A · 위험 한도 강화 (IPS 변경)</option>
+    <option value="B">B · 침체 신호 (시장 신호)</option>
+    <option value="C">C · LLM 교체 (모델 교체)</option>
+  </select>
+</div>
+
+<main>
+  <section class="panel dark">
+    <h2>① 진행 단계</h2>
+    <ul class="steps" id="steps"></ul>
+    <p class="hint" style="color:#9FB0B2">끝난 단계를 누르면 그 단계의 파일이 열린다</p>
+  </section>
+
+  <section class="panel">
+    <div class="phead">
+      <h2 id="fileTitle">② 근거 파일</h2>
+      <span class="ftools"><button class="sm" id="btnFilePrint" disabled>🖨 인쇄</button><button class="sm" id="btnFileClose" disabled>✕ 닫기</button></span>
+    </div>
+    <pre id="fileBody">▶ 라이브 실행을 누르면 시작한다.
+입력 파일을 올리지 않으면 내장 예시(가상 기금 KFP)로 계산한다.
+돌발 과제는 md 파일을 올린 뒤 ◆ 돌발 과제 투입을 누른다.</pre>
+    <p class="hint">화면은 runs/ 폴더의 파일을 그대로 읽어 보여 준다</p>
+  </section>
+
+  <section class="panel">
+    <h2>③ 결과 요약</h2>
+    <div id="summary"><p class="hint">아직 결과가 없다</p></div>
+  </section>
+</main>
+
+<div class="bottom">
+  <section class="panel" style="min-height:auto">
+    <h2>⇄ 실행 비교</h2>
+    <div id="compare"><p class="hint">실행을 두 번 이상 하면 비교할 수 있다</p></div>
+  </section>
+  <section class="panel" style="min-height:auto">
+    <h2>사람 개입 기록 (intervention_log)</h2>
+    <div class="log" id="log">기록 없음</div>
+  </section>
+</div>
+
+<!-- 실행이 끝나면 뜨는 1쪽 보고서 (인쇄하면 이 부분만 나온다) -->
+<div class="overlay" id="overlay"><div class="page" id="page"></div></div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// 0. 설정 — 사람 CIO 최종 승인을 켜고 끈다
+//    true : ⑦ CIO 에이전트 결론 뒤에 사람 CIO가 승인·반려해야 집행된다 (사람 개입 지점 +1)
+//    false: CIO 에이전트 결론이 곧 최종 (예시 IV와 같다)
+// ─────────────────────────────────────────────────────────────
+const HUMAN_CIO = true;
+const SIGNER = "CIO (사람)";   // 실제로는 로그인한 CIO 이름
+
+// ─────────────────────────────────────────────────────────────
+// 1. 단계 목록 — 참고 설계의 리서치 + ①~⑧
+//    돌발 md가 있으면 맨 앞에 "돌발 입력"이, HUMAN_CIO면 ⑦ 뒤에 "사람 CIO 승인"이 붙는다
+// ─────────────────────────────────────────────────────────────
+const BASE_STEPS = [
+  { id: "input",    name: "◇ 입력 검사",      file: "input_check.json" },
+  { id: "research", name: "리서치 브리프",   file: "research_brief.md" },
+  { id: "regime",   name: "① 국면 판단",     file: "regime.json" },
+  { id: "cma",      name: "② CMA · ③ 공분산", file: "cma.json" },
+  { id: "build",    name: "④ 후보 구성 · CRO", file: "proposals.json" },
+  { id: "vote",     name: "⑤ 검토 · 투표",    file: "votes.json" },
+  { id: "ic",       name: "⑥ IC 심의",       file: "ic_report.md" },
+  { id: "cio",      name: "⑦ CIO 에이전트 결론", file: "final_alloc.json" },
+  { id: "meta",     name: "⑧ 메타 점검",     file: "meta_report.json" },
+];
+function stepsFor(r) {
+  const s = [];
+  BASE_STEPS.forEach((x) => {
+    s.push(x);
+    if (x.id === "input" && r && r.shock) s.push({ id: "shock", name: "◆ 돌발 입력", file: "shock.md" });
+    if (x.id === "cio" && HUMAN_CIO) s.push({ id: "signoff", name: "⑦+ 사람 CIO 승인", file: "cio_signoff.json", human: true });
+  });
+  return s;
+}
+let STEPS = stepsFor(null);
+
+// ─────────────────────────────────────────────────────────────
+// 2. 돌발 과제 md 형식 — 발표 당일 이 모양의 파일 하나가 주어진다
+//    엔진이 읽는 줄은 "유형:" 과 "## 변경 내용" 아래의 "- 항목: 값" 이다
+// ─────────────────────────────────────────────────────────────
+const SAMPLE_MD = {
+  A: `# 돌발 과제 A — 위험 한도 강화
+유형: IPS 변경
+발표일: 2026-12-01
+
+## 변경 내용
+- 추적오차 한도: 6% → 3%
+
+## 팀이 할 일
+- 코드는 고치지 않는다. 입력(IPS)과 설정만 바꿔 다시 실행한다.
+- IPS 새 버전은 사람이 서명해야 반영된다.
+`,
+  B: `# 돌발 과제 B — 침체 신호
+유형: 시장 신호
+발표일: 2026-12-01
+
+## 변경 내용
+- 실업수당 청구: 4주 연속 급증
+- 장단기 금리차: 역전 심화
+- 근거 등급: A
+
+## 팀이 할 일
+- 리서치 브리프에 이 신호를 넣고 ①부터 다시 판단한다.
+`,
+  C: `# 돌발 과제 C — LLM 교체
+유형: 모델 교체
+발표일: 2026-12-01
+
+## 변경 내용
+- 판단 모델: llm-y-2026
+
+## 팀이 할 일
+- 모델만 바꿔 다시 실행하고, 결론이 얼마나 달라지는지 비교표로 보인다.
+`,
+};
+
+const SAMPLE_INPUT = "# 기금 입력 파일 — 가상 기금 KFP\n기준일: 2026-11-30\n무위험 수익률: 3.0%\n판단 모델: llm-x-2026\n\n> SDAM MVP 예시 VI의 「📥 입력 파일 올리기」에 넣는 파일이다. 수치는 모두 설명용 가상 값이다.\n> 엔진은 아래 다섯 절(IPS · 자산 · 상관계수 · 스트레스 · 리서치 메모)을 읽는다. 절 이름과 표의 열 순서를 바꾸지 않는다.\n\n## IPS\n- 추적오차 한도: 6%\n- 유효 종목 수 하한: 4.0\n- 변동성 상한: 12%\n\n## 자산\n| 자산 | 기대수익(%) | 변동성(%) | 정책 비중(%) | 하한(%) | 상한(%) | 현재 보유(%) |\n|---|---|---|---|---|---|---|\n| 국내주식 | 6.5 | 18.0 | 14 | 5 | 25 | 15 |\n| 해외주식 | 7.0 | 16.0 | 36 | 20 | 50 | 35 |\n| 국내채권 | 3.6 | 5.0 | 26 | 15 | 45 | 27 |\n| 해외채권 | 4.0 | 7.0 | 8 | 0 | 20 | 8 |\n| 대체투자 | 6.0 | 12.0 | 15 | 5 | 25 | 14 |\n| 현금 | 3.0 | 0.5 | 1 | 0 | 10 | 1 |\n\n## 상관계수\n| | 국내주식 | 해외주식 | 국내채권 | 해외채권 | 대체투자 | 현금 |\n|---|---|---|---|---|---|---|\n| 국내주식 | 1 | 0.65 | -0.10 | 0.00 | 0.45 | 0 |\n| 해외주식 | 0.65 | 1 | -0.15 | 0.10 | 0.50 | 0 |\n| 국내채권 | -0.10 | -0.15 | 1 | 0.55 | 0.05 | 0.10 |\n| 해외채권 | 0.00 | 0.10 | 0.55 | 1 | 0.10 | 0.05 |\n| 대체투자 | 0.45 | 0.50 | 0.05 | 0.10 | 1 | 0 |\n| 현금 | 0 | 0 | 0.10 | 0.05 | 0 | 1 |\n\n## 스트레스\n| 자산 | 2022 금리 급등 재현(%) |\n|---|---|\n| 국내주식 | -25 |\n| 해외주식 | -18 |\n| 국내채권 | -8 |\n| 해외채권 | -12 |\n| 대체투자 | -5 |\n| 현금 | 1 |\n\n## 리서치 메모\n- 근거 등급: B\n- 물가 둔화, 기준금리 동결 전망\n- 해외 성장 둔화 신호가 일부 지표에서 보인다\n";
+
+// ENGINE-START
+// ─────────────────────────────────────────────────────────────
+// 3. 예시 엔진 — 실제 프로젝트에서는 이 블록 전체가 서버(run_all.py)로 간다
+//    입력 파일(md)을 읽어 후보를 만들고, IPS로 판정하고, 위원 4명이 표결하고, CIO가 결론을 낸다.
+//    화면은 엔진이 돌려준 "파일들"(아래 out의 각 칸)을 읽어 보여 주기만 한다.
+// ─────────────────────────────────────────────────────────────
+const ENGINE = (() => {
+  const num = (s) => { const m = String(s).replace(/,/g, "").match(/-?\d+(?:\.\d+)?/); return m ? parseFloat(m[0]) : NaN; };
+  const r1 = (x) => Math.round(x * 10) / 10, r2 = (x) => Math.round(x * 100) / 100, r3 = (x) => Math.round(x * 1000) / 1000;
+
+  // ── 입력 파일 읽기: "키: 값" 줄 · "## 절" · 표 · "- 항목: 값" 줄 ──
+  function parseInput(md) {
+    const errors = [], warnings = [];
+    const top = {}, sections = {};
+    let sec = null;
+    md.split(/\r?\n/).forEach((line) => {
+      const h = line.match(/^##\s+(.+?)\s*$/);
+      if (h) { sec = h[1].trim(); sections[sec] = { rows: [], items: {}, bullets: [] }; return; }
+      if (!sec) { const kv = line.match(/^([^#>|\-][^:：]*?)\s*[:：]\s*(.+)$/); if (kv) top[kv[1].trim()] = kv[2].trim(); return; }
+      const S = sections[sec];
+      if (/^\s*\|/.test(line)) {
+        const cells = line.trim().replace(/^\||\|$/g, "").split("|").map((c) => c.trim());
+        if (cells.every((c) => /^:?-{2,}:?$/.test(c) || c === "")) return;   // 구분선
+        S.rows.push(cells);
+      } else if (/^\s*-\s+/.test(line)) {
+        const t = line.replace(/^\s*-\s+/, "").trim();
+        const kv = t.match(/^([^:：]+?)\s*[:：]\s*(.+)$/);
+        if (kv) S.items[kv[1].trim()] = kv[2].trim(); else S.bullets.push(t);
+      }
+    });
+    const need = ["IPS", "자산", "상관계수", "스트레스", "리서치 메모"];
+    need.forEach((n) => { if (!sections[n]) errors.push(`'## ${n}' 절이 없다`); });
+    if (errors.length) return { errors, warnings };
+
+    const ips = sections["IPS"].items;
+    const teLim = num(ips["추적오차 한도"]), neffMin = num(ips["유효 종목 수 하한"]), volCap = num(ips["변동성 상한"]);
+    if (!(teLim > 0)) errors.push("IPS의 '추적오차 한도'를 읽지 못했다");
+    if (!(neffMin > 0)) errors.push("IPS의 '유효 종목 수 하한'을 읽지 못했다");
+
+    const ar = sections["자산"].rows; const head = ar.shift() || [];
+    if (head.length < 7) errors.push("'자산' 표는 7열이어야 한다 (자산·기대수익·변동성·정책 비중·하한·상한·현재 보유)");
+    const assets = ar.map((c) => ({ name: c[0], mu: num(c[1]), vol: num(c[2]), pol: num(c[3]), lo: num(c[4]), hi: num(c[5]), cur: num(c[6]) }));
+    assets.forEach((a) => {
+      ["mu", "vol", "pol", "lo", "hi", "cur"].forEach((k) => { if (isNaN(a[k])) errors.push(`${a.name}: 숫자가 아닌 칸이 있다`); });
+      if (a.lo > a.hi) errors.push(`${a.name}: 하한 ${a.lo}%가 상한 ${a.hi}%보다 크다`);
+      if (a.pol < a.lo || a.pol > a.hi) warnings.push(`${a.name}: 정책 비중 ${a.pol}%가 범위 밖이다`);
+    });
+    const sum = (k) => assets.reduce((s, a) => s + a[k], 0);
+    if (Math.abs(sum("pol") - 100) > 0.5) errors.push(`정책 비중 합계가 ${r1(sum("pol"))}%다 — 100%여야 한다`);
+    if (Math.abs(sum("cur") - 100) > 0.5) errors.push(`현재 보유 합계가 ${r1(sum("cur"))}%다 — 100%여야 한다`);
+    if (sum("lo") > 100 || sum("hi") < 100) errors.push(`하한 합계 ${sum("lo")}%·상한 합계 ${sum("hi")}% — 100%를 만들 수 없다`);
+
+    const names = assets.map((a) => a.name);
+    const cr = sections["상관계수"].rows; const chead = (cr.shift() || []).slice(1);
+    const corr = names.map(() => names.map(() => NaN));
+    cr.forEach((c) => { const i = names.indexOf(c[0]); if (i < 0) return; chead.forEach((n, k) => { const j = names.indexOf(n); if (j >= 0) corr[i][j] = num(c[k + 1]); }); });
+    names.forEach((n, i) => names.forEach((m, j) => {
+      if (isNaN(corr[i][j])) errors.push(`상관계수 ${n}–${m} 칸이 비었다`);
+      else if (i === j && corr[i][j] !== 1) errors.push(`상관계수 대각 ${n}은 1이어야 한다`);
+      else if (j > i && Math.abs(corr[i][j] - corr[j][i]) > 1e-9) errors.push(`상관계수 ${n}–${m}가 대칭이 아니다`);
+    }));
+
+    const sr = sections["스트레스"].rows; const shead = sr.shift() || [];
+    const stressName = (shead[1] || "스트레스").replace(/\(%\)/, "").trim();
+    const stress = names.map((n) => { const row = sr.find((c) => c[0] === n); return row ? num(row[1]) : NaN; });
+    stress.forEach((v, i) => { if (isNaN(v)) errors.push(`스트레스 표에 ${names[i]}가 없다`); });
+
+    const memo = sections["리서치 메모"];
+    return { errors, warnings,
+      fund: (md.match(/^#\s+(.+)$/m) || [, "기금"])[1].trim(), asof: top["기준일"] || "—",
+      rf: num(top["무위험 수익률"] || "0"), model: top["판단 모델"] || "llm-x-2026",
+      ips: { teLim, neffMin, volCap: volCap > 0 ? volCap : null }, assets, corr, stress, stressName,
+      memo: { grade: memo.items["근거 등급"] || "—", lines: memo.bullets } };
+  }
+
+  // ── 행렬 계산 (비중은 소수, 수익·변동성도 소수로) ──
+  const covOf = (inp) => inp.assets.map((a, i) => inp.assets.map((b, j) => inp.corr[i][j] * a.vol * b.vol / 1e4));
+  const mv = (S, w) => S.map((row) => row.reduce((s, x, j) => s + x * w[j], 0));
+  const dot = (a, b) => a.reduce((s, x, i) => s + x * b[i], 0);
+  // 비중 범위와 합계 1을 동시에 맞추는 투영: w = clip(v − τ, lo, hi), τ는 이분법
+  function project(v, lo, hi) {
+    let a = -10, b = 10;
+    for (let k = 0; k < 100; k++) { const t = (a + b) / 2; const s = v.reduce((s, x, i) => s + Math.min(hi[i], Math.max(lo[i], x - t)), 0); if (s > 1) a = t; else b = t; }
+    const t = (a + b) / 2; return v.map((x, i) => Math.min(hi[i], Math.max(lo[i], x - t)));
+  }
+  function ascend(w0, grad, lo, hi, steps, eta) { let w = project(w0, lo, hi); for (let k = 0; k < steps; k++) { const g = grad(w); w = project(w.map((x, i) => x + eta * g[i]), lo, hi); } return w; }
+
+  function candidates(inp, S, mu) {
+    const n = inp.assets.length, lo = inp.assets.map((a) => a.lo / 100), hi = inp.assets.map((a) => a.hi / 100);
+    const vol = inp.assets.map((a) => a.vol / 100), ex = mu.map((m) => m - inp.rf / 100);
+    const P = (v) => project(v, lo, hi);
+    const list = [];
+    list.push({ id: "policy", name: "정책 비중 유지", family: "기준", w: inp.assets.map((a) => a.pol / 100) });
+    list.push({ id: "equal", name: "동일가중", family: "휴리스틱", w: P(Array(n).fill(1 / n)) });
+    const iv = vol.map((v) => 1 / v), ivs = iv.reduce((s, x) => s + x, 0);
+    list.push({ id: "invvol", name: "역변동성", family: "휴리스틱", w: P(iv.map((x) => x / ivs)) });
+    list.push({ id: "minvar", name: "최소분산", family: "위험 구조", w: ascend(Array(n).fill(1 / n), (w) => mv(S, w).map((x) => -2 * x), lo, hi, 4000, 0.5) });
+    let e = Array(n).fill(1 / n);   // 위험기여 균등: 곱셈 갱신 뒤 범위 투영
+    for (let k = 0; k < 500; k++) { const Sw = mv(S, e), pv = dot(e, Sw); e = e.map((x, i) => x * Math.sqrt((pv / n) / Math.max(x * Sw[i], 1e-12))); const s = e.reduce((a, b) => a + b, 0); e = e.map((x) => x / s); }
+    list.push({ id: "erc", name: "위험 균형 (ERC)", family: "위험 구조", w: P(e) });
+    list.push({ id: "maxdiv", name: "최대 분산", family: "위험 구조", w: ascend(Array(n).fill(1 / n), (w) => { const Sw = mv(S, w), sp = Math.sqrt(dot(w, Sw)), sv = dot(vol, w); return vol.map((v, i) => v / sp - sv * Sw[i] / sp ** 3); }, lo, hi, 4000, 0.002) });
+    list.push({ id: "maxsharpe", name: "최대 샤프", family: "수익 최적화", w: ascend(Array(n).fill(1 / n), (w) => { const Sw = mv(S, w), sp = Math.sqrt(dot(w, Sw)), r = dot(ex, w); return ex.map((x, i) => x / sp - r * Sw[i] / sp ** 3); }, lo, hi, 4000, 0.002) });
+    return list;
+  }
+
+  function evaluate(c, inp, S, mu, ips) {
+    const p = inp.assets.map((a) => a.pol / 100), cur = inp.assets.map((a) => a.cur / 100);
+    const d = c.w.map((x, i) => x - p[i]);
+    const vol = Math.sqrt(dot(c.w, mv(S, c.w))) * 100, te = Math.sqrt(dot(d, mv(S, d))) * 100;
+    const ret = dot(c.w, mu) * 100, neff = 1 / c.w.reduce((s, x) => s + x * x, 0);
+    const stress = dot(c.w, inp.stress), turnover = c.w.reduce((s, x, i) => s + Math.abs(x - cur[i]), 0) / 2 * 100;
+    const v = [];
+    if (te > ips.teLim + 1e-9) v.push(`추적오차 ${r2(te)}% > 한도 ${ips.teLim}%`);
+    if (neff < ips.neffMin - 1e-9) v.push(`유효 종목 수 ${r2(neff)} < 하한 ${ips.neffMin}`);
+    if (ips.volCap && vol > ips.volCap + 1e-9) v.push(`변동성 ${r2(vol)}% > 상한 ${ips.volCap}%`);
+    const slack = Math.min((ips.teLim - te) / ips.teLim, (neff - ips.neffMin) / ips.neffMin, ips.volCap ? (ips.volCap - vol) / ips.volCap : 1);
+    return { ...c, ret: r2(ret), vol: r2(vol), te: r2(te), neff: r2(neff), stress: r2(stress), turnover: r1(turnover), slack: r3(slack), eligible: v.length === 0, violations: v };
+  }
+
+  // 위원 4명 — 각자 다른 기준으로 순위를 매긴다 (보르다: 1위 n−1점 … 꼴찌 0점)
+  const MEMBERS = [
+    { who: "수익 위원", key: (c) => -c.ret, why: (c) => `기대수익 ${c.ret}%` },
+    { who: "위험 위원", key: (c) => -c.stress * 100 + c.vol, why: (c) => `스트레스 손실 ${c.stress}% · 변동성 ${c.vol}%` },
+    { who: "IPS 위원", key: (c) => -c.slack, why: (c) => `IPS 여유 ${Math.round(c.slack * 100)}% (추적오차 ${c.te}% · 유효 종목 수 ${c.neff})` },
+    { who: "반대 위원", key: (c) => c.turnover, why: (c) => `현재 보유 대비 회전율 ${c.turnover}% — 바꾸는 만큼 비용과 오류가 생긴다` },
+  ];
+  function vote(el) {
+    const n = el.length, score = Object.fromEntries(el.map((c) => [c.id, 0])), ballots = {};
+    MEMBERS.forEach((m) => { const order = [...el].sort((a, b) => m.key(a) - m.key(b)); ballots[m.who] = order.map((c) => c.name); order.forEach((c, k) => (score[c.id] += n - 1 - k)); });
+    const ranked = [...el].sort((a, b) => score[b.id] - score[a.id] || b.ret - a.ret);
+    const win = ranked[0];
+    const members = MEMBERS.map((m) => { const order = [...el].sort((a, b) => m.key(a) - m.key(b)); const k = order.findIndex((c) => c.id === win.id);
+      const yes = k < 2; return [m.who, yes ? "찬성" : "반대", yes ? `${m.why(win)} — 내 기준 ${k + 1}위` : `내 기준 1위는 ${order[0].name} (${m.why(order[0])}) · 이 안은 ${k + 1}위`]; });
+    const yes = members.filter((m) => m[1] === "찬성").length;
+    return { score, ballots, ranked, win, members, tally: `${yes} : ${4 - yes}`, verdict: yes >= 3 ? "승인" : yes === 2 ? "조건부 승인" : "부결" };
+  }
+
+  function regimeOf(inp, shockKind) {
+    const text = inp.memo.lines.join(" ");
+    let regime = "확장", conf = 0.60;
+    if (shockKind === "시장" || /침체|역전|실업/.test(text)) { regime = "침체 진입"; conf = 0.71; }
+    else if (/과열|물가 상승|인플레이션 상승/.test(text)) { regime = "경기 과열"; conf = 0.64; }
+    else if (/둔화/.test(text)) { regime = "경기 후기"; conf = 0.62; }
+    if (/C/.test(inp.memo.grade)) conf -= 0.1;
+    return { regime, confidence: r2(conf), model: inp.model };
+  }
+
+  // ── 실행: 입력 md(없으면 내장 예시) + 돌발 md ──
+  function run(inputMd, shockMd) {
+    const inp = parseInput(inputMd);
+    const check = { 기금: inp.fund, 기준일: inp.asof, 자산: inp.assets ? inp.assets.length : 0, 오류: inp.errors, 경고: inp.warnings };
+    if (inp.errors.length) return { failed: true, input_check: check };
+
+    let shockKind = null, shockTitle = null, needsSign = false, ipsText = null;
+    const ips = { ...inp.ips };
+    if (shockMd) {
+      shockTitle = (shockMd.match(/^#\s+(.+)$/m) || [, "돌발 과제"])[1].trim();
+      const kind = ((shockMd.match(/^유형\s*[:：]\s*(.+)$/m) || [, ""])[1]).trim();
+      const item = (k) => { const m = shockMd.match(new RegExp("^-\\s*" + k + "\\s*[:：]\\s*(.+)$", "m")); return m ? m[1].trim() : null; };
+      if (kind.includes("IPS")) { shockKind = "IPS"; const t = item("추적오차 한도"); if (t) { const ns = t.match(/\d+(?:\.\d+)?/g); ips.teLim = parseFloat(ns[ns.length - 1]); }
+        needsSign = true; ipsText = `IPS v2 — 추적오차 한도 ${inp.ips.teLim}% → ${ips.teLim}%`; }
+      else if (kind.includes("시장")) { shockKind = "시장"; inp.memo.lines = [...shockMd.split("\n").filter((l) => /^-\s/.test(l)).map((l) => l.replace(/^-\s*/, "")).slice(0, 3), ...inp.memo.lines]; }
+      else if (kind.includes("모델")) { shockKind = "모델"; inp.model = (item("판단 모델") || "새 모델") + " (교체)"; }
+      else shockKind = "모름";
+    }
+
+    const regime = regimeOf(inp, shockKind);
+    if (shockKind === "모델") regime.confidence = r2(regime.confidence - 0.07);
+    // 국면 규칙(예시): 침체 진입이면 주식 −2%p, 채권 +0.5%p로 기대수익을 조정한다
+    const adj = inp.assets.map((a) => regime.regime === "침체 진입" ? (/주식/.test(a.name) ? -2 : /채권/.test(a.name) ? 0.5 : 0) : 0);
+    const mu = inp.assets.map((a, i) => (a.mu + adj[i]) / 100);
+    const S = covOf(inp);
+    const cands = candidates(inp, S, mu).map((c) => evaluate(c, inp, S, mu, ips));
+    const el = cands.filter((c) => c.eligible);
+    const names = inp.assets.map((a) => a.name);
+    const pct = (w) => Object.fromEntries(names.map((n, i) => [n, r1(w[i] * 100)]));
+
+    const research = `# 리서치 브리프 (기준일 ${inp.asof})\n` + inp.memo.lines.map((l) => "- " + l).join("\n") + `\n- 근거 등급 ${inp.memo.grade}` + (needsSign ? `\n- ${ipsText}` : "");
+    const cma = { 기준일: inp.asof, 무위험: inp.rf + "%", 국면조정: regime.regime === "침체 진입" ? "주식 −2%p · 채권 +0.5%p" : "없음",
+      자산: Object.fromEntries(inp.assets.map((a, i) => [a.name, { 기대수익: r2(mu[i] * 100) + "%", 변동성: a.vol + "%" }])), 상관계수: "입력 파일 표 그대로 (공분산 = 상관 × 변동성 × 변동성)" };
+    const build = { 후보: cands.length, 적격: el.length, 탈락: cands.length - el.length,
+      후보별: cands.map((c) => ({ 안: c.name, 계열: c.family, 비중: pct(c.w), 기대수익: c.ret + "%", 변동성: c.vol + "%", 추적오차: c.te + "%", 유효종목수: c.neff, [inp.stressName]: c.stress + "%", 회전율: c.turnover + "%", 판정: c.eligible ? "적격" : "기각 — " + c.violations.join(" · ") })) };
+
+    let v = null, memo, cio, meta;
+    if (!el.length) {
+      cio = { 조합법: "현재 보유 유지 (적격 후보 없음)", 비중: pct(inp.assets.map((a) => a.cur / 100)), 추적오차: "—", 한도: ips.teLim, 유효종목수: "—", IPS위반: "—", 회전율: 0 };
+      memo = { 안건: `${inp.asof} 전략적 자산배분안`, 표결: "—", 권고: "상정 불가", 위원: MEMBERS.map((m) => [m.who, "—", "적격 후보가 없어 표결하지 않았다"]), 소수의견: "—",
+        CIO결정: "현재 보유 유지", CIO이유: "모든 후보가 IPS를 어겼다 — 입력 또는 IPS를 다시 본다" };
+    } else {
+      v = vote(el); const w = v.win, second = v.ranked[1];
+      const keep = v.verdict === "부결";
+      const final = keep ? cands.find((c) => c.id === "policy") : w;
+      cio = { 조합법: keep ? "현재 보유 유지 (IC 부결)" : w.name, 비중: keep ? pct(inp.assets.map((a) => a.cur / 100)) : pct(w.w),
+        추적오차: keep ? "—" : w.te, 한도: ips.teLim, 유효종목수: keep ? "—" : w.neff, IPS위반: keep ? "—" : 0, 회전율: keep ? 0 : w.turnover };
+      const dissent = v.members.filter((m) => m[1] === "반대");
+      memo = { 안건: `${inp.asof} 전략적 자산배분안` + (shockTitle ? ` (${shockTitle} 반영)` : ""), 표결: v.tally, 권고: v.verdict, 위원: v.members,
+        소수의견: dissent.length ? dissent.map((m) => `${m[0]}: ${m[2]}`).join(" / ") : "없음",
+        CIO결정: v.verdict === "승인" ? "IC 권고대로 승인" : v.verdict === "조건부 승인" ? "조건부 승인 → 승인으로 확정" : "부결 — 현재 보유 유지",
+        CIO이유: v.verdict === "승인" ? `권고와 같음 — 차점안: ${second ? second.name : "없음"} (점수 차 ${second ? v.score[w.id] - v.score[second.id] : "—"}점)`
+          : v.verdict === "조건부 승인" ? "찬반 동수 — IPS를 모두 지키므로 확정, 반대 의견은 ⑧ 메타 점검으로 넘김" : "찬성 1표 이하 — 바꾸지 않는다" };
+    }
+    const vote_file = v ? { 규칙: "위원마다 적격안 순위 → 보르다(1위 n−1점 … 꼴찌 0점)", 위원별순위: v.ballots,
+      점수: Object.fromEntries(v.ranked.map((c) => [c.name, v.score[c.id]])), "1위": v.win.name, "2위": v.ranked[1] ? v.ranked[1].name : "—" } : { 규칙: "적격 후보 없음 — 표결하지 않음" };
+    const ic = `# IC 보고서 (${inp.asof})\n국면: ${regime.regime} · 표결 ${memo.표결} · ${memo.권고}\n` +
+      memo.위원.map(([a, b, c]) => `- ${a} ${b}: ${c}`).join("\n") +
+      `\n\n## 기각된 안\n` + (cands.filter((c) => !c.eligible).map((c) => `- ${c.name}: ${c.violations.join(" · ")}`).join("\n") || "- 없음");
+
+    const alerts = [];
+    if (cio.추적오차 !== "—" && cio.추적오차 > 0.8 * ips.teLim) alerts.push(`추적오차가 한도의 ${Math.round(cio.추적오차 / ips.teLim * 100)}% — 여유가 적다`);
+    if (cio.유효종목수 !== "—" && cio.유효종목수 - ips.neffMin < 0.5) alerts.push(`유효 종목 수가 하한에 붙어 있다 (${cio.유효종목수})`);
+    if (regime.confidence < 0.6) alerts.push(`국면 확신도 ${regime.confidence} — 낮다`);
+    if (cands.length - el.length >= 3) alerts.push(`후보 ${cands.length - el.length}개가 IPS로 기각 — 범위나 한도가 빡빡한지 본다`);
+    inp.warnings.forEach((w) => alerts.push("입력 경고: " + w));
+    if (shockKind === "모름") alerts.push("예시 엔진이 모르는 돌발 유형 — 실제 엔진에서 판단");
+    meta = { 경보: alerts.length ? alerts : ["없음"], 개선안: alerts.length >= 2 ? 1 : 0, 분류: alerts.length >= 2 ? "큰 수정 → 사람 ③ 승인 대기" : "작은 수정 → 자동 기록" };
+
+    return { input_check: check, research, regime, cma, build, vote: vote_file, ic, cio, meta, memo,
+      needsSign, ipsText, shock: shockMd || null, scenario: shockTitle || "기본", fund: inp.fund };
+  }
+  return { run, parseInput };
+})();
+// ENGINE-END
+
+// ─────────────────────────────────────────────────────────────
+// 3-1. 엔진 호출 — 화면에서 바꿔야 할 곳은 여기 하나뿐
+//    실제 프로젝트:  return (await fetch("/api/run", {method:"POST",
+//                    body: JSON.stringify({mode, input_md: inputMd, shock_md: shockMd})})).json();
+// ─────────────────────────────────────────────────────────────
+async function callEngine(mode, shockMd) {
+  const out = ENGINE.run(inputMd || SAMPLE_INPUT, shockMd);
+  out.input = out.input_check;
+  out.input_name = inputFileName || "내장 예시 (SDAM_입력파일_예시_KFP.md)";
+  out.input.입력파일 = out.input_name;
+  const day = (out.input_check.기준일 || "run").replace(/[^0-9-]/g, "") || "run";
+  out.run_id = day + "_" + String(++runCount).padStart(2, "0");
+  out.mode = mode; out.scenario = out.scenario || "기본";
+  return out;
+}
+
+// ─────────────────────────────────────────────────────────────
+// 4. 화면 상태
+// ─────────────────────────────────────────────────────────────
+let runCount = 0, runs = [], current = null, stopped = false, waiting = null;
+let approveFor = null;   // 지금 ✓ 버튼이 무엇을 승인하는지
+let shockMd = null, shockFileName = null;
+let inputMd = null, inputFileName = null;
+const $ = (id) => document.getElementById(id);
+const esc = (t) => String(t).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const idx = (id) => STEPS.findIndex((s) => s.id === id);
+
+function drawSteps(doneUpTo, nowIdx, waitIdx, waitLabel) {
+  $("steps").innerHTML = STEPS.map((s, i) => {
+    let cls = i < doneUpTo ? "done" : "";
+    if (i === nowIdx) cls = "now";
+    if (i === waitIdx) cls = "wait";
+    if (s.human) cls += " human";
+    return `<li class="${cls}" data-i="${i}">${s.name}${i === waitIdx ? " — " + (waitLabel || "서명 대기") : ""}</li>`;
+  }).join("");
+}
+
+function showFile(i) {
+  if (!current) return;
+  const s = STEPS[i];
+  let data = current[s.id];
+  if (s.id === "shock") data = current.shock;
+  if (s.id === "signoff") data = current.signoff || "사람 CIO 승인 대기 중";
+  $("fileTitle").textContent = "② 근거 파일 · " + s.file;
+  $("fileBody").textContent = typeof data === "string" ? data : JSON.stringify(data, null, 2);
+  document.querySelectorAll(".steps li").forEach((li) => li.classList.toggle("sel", +li.dataset.i === i));
+}
+
+function showSummary(r) {
+  const c = r.cio;  // 파일(final_alloc.json)의 값을 그대로 쓴다 — 여기서 계산하지 않는다
+  let banner = "";
+  if (HUMAN_CIO) {
+    const so = r.signoff;
+    if (!so) banner = `<div class="banner wait">사람 CIO 승인 대기 — 아직 집행하지 않는다</div>`;
+    else if (so.결정 === "승인") banner = `<div class="banner ok">사람 CIO 승인 — 이 배분을 집행한다</div>`;
+    else banner = `<div class="banner bad">사람 CIO 반려 — 집행하지 않고 직전 배분을 유지한다</div>`;
+  }
+  const bars = Object.entries(c.비중).map(([k, v]) =>
+    `<div class="w"><span>${k}</span><div class="b" style="width:${v * 2}%"></div><span>${v}%</span></div>`).join("");
+  $("summary").innerHTML = banner + bars +
+    `<div class="kv"><span>조합법</span><b>${c.조합법}</b></div>
+     <div class="kv"><span>추적오차 (한도)</span><b>${c.추적오차 === "—" ? "—" : c.추적오차 + "%"} (≤ ${c.한도}%)</b></div>
+     <div class="kv"><span>회전율 (현재 보유 대비)</span><b>${c.회전율}%</b></div>
+     <div class="kv"><span>유효 종목 수</span><b>${c.유효종목수}</b></div>
+     <div class="kv"><span>IPS 위반</span><b class="${c.IPS위반 ? "bad" : "ok"}">${c.IPS위반 === "—" ? "—" : c.IPS위반 + "건"}</b></div>
+     <div class="kv"><span>실행 방식</span><b>${r.mode} · ${r.scenario}</b></div>
+     <div class="kv"><span>입력</span><b style="text-align:right">${esc(r.input_name)}</b></div>`;
+}
+
+function log(action, reason) {
+  const t = new Date().toLocaleTimeString("ko-KR");
+  const who = (action + reason).includes("CIO") ? SIGNER : "발표자";  // 실제로는 로그인한 사람 이름
+  const line = `${t} · ${who} · ${action} · ${reason} · run ${current ? current.run_id : "-"}`;
+  $("log").innerHTML = ($("log").textContent === "기록 없음" ? "" : $("log").innerHTML + "<br>") + line;
+}
+
+function setBusy(busy) {
+  ["btnLive", "btnReplay", "btnCompare"].forEach((id) => ($(id).disabled = busy));
+  $("btnShock").disabled = busy || !shockMd;
+  $("btnStop").disabled = !busy;
+}
+
+// 사람 결정을 기다린다 — 승인(✓)·반려(✕)·긴급 정지(■) 중 하나가 눌릴 때까지
+function waitHuman(what, allowReject) {
+  approveFor = what;
+  $("btnApprove").disabled = false;
+  $("btnReject").hidden = !allowReject; $("btnReject").disabled = !allowReject;
+  return new Promise((resolve) => (waiting = resolve)).then((v) => {
+    $("btnApprove").disabled = true; $("btnReject").disabled = true; $("btnReject").hidden = true;
+    return v;
+  });
+}
+
+// ─────────────────────────────────────────────────────────────
+// 5. 실행 — 라이브는 단계별로 천천히, 재생은 바로 보여 준다
+// ─────────────────────────────────────────────────────────────
+async function run(mode, md) {
+  stopped = false; $("btnApprove").disabled = true;
+  if (mode === "replay") {
+    // 재생: 새 실행이 아니라 마지막 실행의 저장 파일을 다시 읽는다 (같은 run_id · 같은 숫자 · 같은 서명)
+    if (!runs.length) { $("fileBody").textContent = "재생할 실행이 없다 — 먼저 ▶ 라이브 실행을 누른다."; return; }
+    current = { ...runs[runs.length - 1], mode: "replay" };
+  } else {
+    current = await callEngine(mode, md);
+    if (md) log("◆ 돌발 투입", shockFileName);
+    if (current.failed) {
+      STEPS = stepsFor(null);
+      $("runLabel").textContent = "run_id: " + current.run_id + " (중단)";
+      drawSteps(0, -1, 0, "입력 오류");
+      $("fileTitle").textContent = "② 근거 파일 · input_check.json";
+      $("fileBody").textContent = JSON.stringify(current.input, null, 2) + "\n\n입력 파일을 고친 뒤 다시 올린다 — 엔진은 오류가 있는 입력으로 계산하지 않는다.";
+      $("summary").innerHTML = '<div class="banner bad">입력 오류 — 계산하지 않았다</div>';
+      log("◇ 입력 오류로 중단", current.input_name);
+      return;
+    }
+  }
+  STEPS = stepsFor(current);
+  setBusy(true);
+  $("runLabel").textContent = "run_id: " + current.run_id;
+  const delay = mode === "live" ? 700 : 80;
+  const halt = (i) => { drawSteps(i, -1, -1); setBusy(false); };
+
+  for (let i = 0; i < STEPS.length; i++) {
+    const s = STEPS[i];
+    if (stopped) return halt(i);
+
+    // 돌발 IPS 변경: IPS 새 버전은 사람이 서명해야 ①부터 진행된다
+    if (s.id === "regime" && current.needsSign && mode === "live") {
+      drawSteps(i, -1, i, "IPS 서명 대기");
+      $("fileTitle").textContent = "② 근거 파일 · ips_v2.yaml";
+      $("fileBody").textContent = current.ipsText + "\n\n✓ 사람 승인 버튼으로 서명해야 다음 단계로 간다.";
+      const v = await waitHuman("IPS v2 서명", false);
+      if (stopped || v !== "approve") return halt(i);
+    }
+
+    // 사람 CIO 최종 승인: CIO 에이전트 결론(final_alloc.json)을 보고 승인하거나 반려한다
+    if (s.id === "signoff") {
+      if (mode === "live") {
+        drawSteps(i, -1, i, "승인 대기");
+        showSummary(current);
+        $("fileTitle").textContent = "② 근거 파일 · final_alloc.json (사람 CIO 검토)";
+        $("fileBody").textContent = JSON.stringify(current.cio, null, 2) +
+          `\n\nIC 권고: ${current.memo.권고} (표결 ${current.memo.표결})\nCIO 에이전트: ${current.memo.CIO결정}` +
+          "\n\n✓ 사람 승인 → 집행 · ✕ 반려 → 사유를 남기고 직전 배분 유지";
+        const v = await waitHuman("CIO 최종 승인", true);
+        if (stopped) return halt(i);
+        if (v === "approve") {
+          current.signoff = { 결정: "승인", 서명자: SIGNER, 시각: new Date().toLocaleString("ko-KR"), 사유: "CIO 에이전트 결론과 같음" };
+        } else {
+          const why = (window.prompt("반려 사유를 적는다 (개입 기록과 ⑧ 메타 점검으로 넘어간다)", "") || "").trim() || "사유 미기재";
+          current.signoff = { 결정: "반려", 서명자: SIGNER, 시각: new Date().toLocaleString("ko-KR"), 사유: why };
+          log("✕ CIO 반려", why);
+          current.meta = { ...current.meta, 경보: [...current.meta.경보, "사람 CIO 반려: " + why] };
+        }
+      }
+      showSummary(current);
+    }
+
+    drawSteps(i, i, -1); showFile(i);
+    await sleep(delay);
+  }
+  drawSteps(STEPS.length, -1, -1);
+  showFile(idx("ic"));       // 끝나면 IC 보고서를 먼저 연다
+  showSummary(current);
+  if (mode === "live") runs.push(current);
+  setBusy(false);
+  $("btnReport").disabled = false;
+  // 사람 ③: 메타 에이전트의 큰 수정안은 사람이 승인해야 다음 주기에 반영된다
+  if (mode === "live" && current.meta.분류.includes("승인 대기")) {
+    approveFor = "메타 개선안 승인 (다음 주기 반영)"; $("btnApprove").disabled = false;
+  }
+  showReport(current);       // 마지막 산출물 — IC 권고 · CIO 결정 · 사람 승인을 한 쪽으로
+}
+
+// ─────────────────────────────────────────────────────────────
+// 6. 비교표 — 두 실행의 파일 값을 나란히 놓기만 한다
+// ─────────────────────────────────────────────────────────────
+function compare() {
+  if (runs.length < 2) { $("compare").innerHTML = '<p class="hint">실행이 두 번 이상 필요하다</p>'; return; }
+  const [a, b] = runs.slice(-2);
+  const row = (k, f) => `<tr><td>${k}</td><td>${f(a)}</td><td>${f(b)}</td></tr>`;
+  $("compare").innerHTML = `<table>
+    <tr><th>항목</th><th>${a.run_id} (${a.scenario})</th><th>${b.run_id} (${b.scenario})</th></tr>
+    ${row("국면", (r) => r.regime.regime)}
+    ${row("입력 파일", (r) => esc(r.input_name))}
+    ${row("적격 / 후보", (r) => `${r.build.적격} / ${r.build.후보}`)}
+    ${Object.keys(b.cio.비중).map((k) => row(k, (r) => (r.cio.비중[k] ?? "—") + "%")).join("")}
+    ${row("추적오차 (한도)", (r) => `${r.cio.추적오차}${r.cio.추적오차 === "—" ? "" : "%"} (≤ ${r.cio.한도}%)`)}
+    ${row("IC 표결", (r) => r.memo.표결 + " · " + r.memo.권고)}
+    ${row("CIO 조합법", (r) => r.cio.조합법)}
+    ${HUMAN_CIO ? row("사람 CIO", (r) => (r.signoff ? r.signoff.결정 : "—")) : ""}
+  </table>`;
+}
+
+// ─────────────────────────────────────────────────────────────
+// 7. 1쪽 보고서 — report.json · final_alloc.json · cio_signoff.json의 값을 배치만 한다
+// ─────────────────────────────────────────────────────────────
+function showReport(r) {
+  const m = r.memo, c = r.cio, so = r.signoff;
+  const members = m.위원.map(([who, vote, why]) =>
+    `<tr><td>${who}</td><td><b style="color:${vote === "찬성" ? "var(--teal)" : "var(--red)"}">${vote}</b></td><td>${why}</td></tr>`).join("");
+  const weights = Object.entries(c.비중).map(([k, v]) => `<td>${k} <b>${v}%</b></td>`).join("");
+  const sign = !HUMAN_CIO ? "" : `
+    <h4>⑦+ 사람 CIO 최종 승인</h4>
+    <div class="sign">${so
+      ? `<div class="verdict"><span class="chip ${so.결정 === "승인" ? "final" : "no"}">${so.결정 === "승인" ? "승인 — 집행" : "반려 — 직전 배분 유지"}</span></div>
+         <div style="margin-top:6px">서명 ${so.서명자} · ${so.시각}<br>사유: ${so.사유}</div>`
+      : "승인 대기 — 서명 전에는 집행하지 않는다"}</div>`;
+  $("page").innerHTML = `${docActions("top")}
+    <h3>IC 보고서 · CIO 결정${HUMAN_CIO ? " · 사람 승인" : ""}</h3>
+    <div class="meta">run_id ${r.run_id} · 실행 ${r.mode} · 시나리오 ${r.scenario} · 국면 ${r.regime.regime} · 모델 ${r.regime.model} · 입력 ${esc(r.input_name)}</div>
+    <h4>안건</h4><div>${m.안건}</div>
+    <h4>⑥ IC 심의 — 권고</h4>
+    <div class="verdict"><span class="chip">표결 ${m.표결}</span><span class="chip">IC 권고: ${m.권고}</span></div>
+    <table style="margin-top:8px">${members}</table>
+    <h4>소수의견</h4><div class="minority">${m.소수의견}</div>
+    <h4>⑦ CIO 에이전트 결론</h4>
+    <div class="verdict"><span class="chip ${HUMAN_CIO ? "" : "final"}">${m.CIO결정}</span><span class="chip">조합법: ${c.조합법}</span></div>
+    <div style="margin-top:6px">사유: ${m.CIO이유}</div>
+    <table style="margin-top:8px"><tr>${weights}</tr></table>
+    <table><tr><td>추적오차 ${c.추적오차}${c.추적오차 === "—" ? "" : "%"} (한도 ${c.한도}%)</td><td>유효 종목 수 ${c.유효종목수}</td><td>IPS 위반 ${c.IPS위반}</td><td>회전율 ${c.회전율}%</td></tr></table>
+    ${sign}
+    <h4>⑧ 메타 점검 — 다음 주기로</h4>
+    <div>경보: ${r.meta.경보.join(", ")} · ${r.meta.분류}</div>
+    ${docActions("")}`;
+  $("overlay").classList.add("show");
+}
+
+// ─────────────────────────────────────────────────────────────
+// 8. 돌발 md 읽기 — 파일 선택 · 끌어다 놓기 · 예시 내려받기
+// ─────────────────────────────────────────────────────────────
+function readMd(file, cb) {
+  if (!file) return;
+  if (!/\.(md|markdown|txt)$/i.test(file.name)) { alert("md 파일만 올릴 수 있다 — " + file.name); return; }
+  const rd = new FileReader();
+  rd.onload = () => cb(String(rd.result), file.name);
+  rd.readAsText(file, "utf-8");
+}
+function loadShock(file) {
+  readMd(file, (text, name) => {
+    shockMd = text; shockFileName = name;
+    $("shockName").innerHTML = `<b>${esc(name)}</b> 읽음 — ◆ 돌발 과제 투입을 누른다`;
+    $("btnShock").disabled = false;
+    $("fileTitle").textContent = "② 근거 파일 · " + name + " (투입 전 미리보기)";
+    $("fileBody").textContent = shockMd;
+  });
+}
+function loadInput(file) {
+  readMd(file, (text, name) => {
+    const chk = ENGINE.parseInput(text);   // 올리는 순간 형식만 먼저 본다 — 계산은 실행할 때 엔진이 한다
+    inputMd = text; inputFileName = name;
+    $("inputName").innerHTML = chk.errors.length
+      ? `<b>${esc(name)}</b> — <span style="color:var(--red)">형식 오류 ${chk.errors.length}건 (실행하면 입력 검사에서 멈춘다)</span>`
+      : `<b>${esc(name)}</b> 읽음 — 자산 ${chk.assets.length}개 · ▶ 라이브 실행을 누른다`;
+    $("btnInputReset").disabled = false;
+    $("fileTitle").textContent = "② 근거 파일 · " + name + " (입력 파일 미리보기)";
+    $("fileBody").textContent = text;
+    log("📥 입력 파일 올림", name);
+  });
+}
+$("btnPickInput").onclick = () => $("inputFile").click();
+$("btnPickShock").onclick = () => $("shockFile").click();
+// 입력 칸 자체를 눌러도 파일 창이 열린다
+$("dropIn").onclick = () => $("inputFile").click();
+$("drop").onclick = () => $("shockFile").click();
+$("inputFile").onchange = (e) => { loadInput(e.target.files[0]); e.target.value = ""; };
+$("shockFile").onchange = (e) => { loadShock(e.target.files[0]); e.target.value = ""; };
+["dragenter", "dragover"].forEach((t) => document.addEventListener(t, (e) => { e.preventDefault(); const z = e.target.closest && e.target.closest(".drop"); document.querySelectorAll(".drop").forEach((d) => d.classList.toggle("over", d === z)); }));
+document.addEventListener("dragleave", (e) => { if (!e.relatedTarget) document.querySelectorAll(".drop").forEach((d) => d.classList.remove("over")); });
+document.addEventListener("drop", (e) => {
+  e.preventDefault(); document.querySelectorAll(".drop").forEach((d) => d.classList.remove("over"));
+  const f = e.dataTransfer.files[0]; if (!f) return;
+  const z = e.target.closest && e.target.closest(".drop");
+  if (z) return z.dataset.kind === "input" ? loadInput(f) : loadShock(f);
+  readMd(f, (text) => (/^##\s*자산/m.test(text) ? loadInput(f) : loadShock(f)));   // 칸 밖에 놓으면 내용으로 가른다
+});
+$("btnInputSample").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([SAMPLE_INPUT], { type: "text/markdown" }));
+  a.download = "SDAM_입력파일_예시_KFP.md"; a.click(); URL.revokeObjectURL(a.href);
+};
+$("btnInputReset").onclick = () => {
+  inputMd = null; inputFileName = null; $("btnInputReset").disabled = true;
+  $("inputName").textContent = "올린 파일 없음 · 내장 예시(KFP)로 실행";
+  log("📥 입력 되돌림", "내장 예시");
+};
+$("sample").onchange = (e) => {
+  const k = e.target.value; if (!k) return;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([SAMPLE_MD[k]], { type: "text/markdown" }));
+  a.download = `shock_${k}.md`; a.click(); URL.revokeObjectURL(a.href);
+  e.target.value = "";
+};
+
+// ─────────────────────────────────────────────────────────────
+// 보고서 공용 — 모든 보고서(1쪽 보고서 · 근거 파일)에 인쇄 · 닫기를 위아래로 단다
+// ─────────────────────────────────────────────────────────────
+function docActions(pos) {
+  return `<div class="actions ${pos}">
+      <button onclick="window.print()">🖨 인쇄 · PDF 저장</button>
+      <button class="main" onclick="closeDoc()">✕ 닫기</button>
+    </div>`;
+}
+function closeDoc() { $("overlay").classList.remove("show"); }
+
+// 지금 ② 칸에 열린 파일을 한 쪽짜리 보고서로 띄운다 — 파일 내용을 그대로 옮기기만 한다
+function showFileReport() {
+  const title = $("fileTitle").textContent.replace(/^② 근거 파일 · /, "");
+  const r = current;
+  $("page").innerHTML = `${docActions("top")}
+    <h3>${esc(title)}</h3>
+    <div class="meta">${r ? `run_id ${r.run_id} · 실행 ${r.mode} · 시나리오 ${esc(r.scenario)}` : "실행 전"} · 근거 파일</div>
+    <pre>${esc($("fileBody").textContent)}</pre>
+    ${docActions("")}`;
+  $("overlay").classList.add("show");
+}
+// ② 칸의 내용이 바뀔 때마다 인쇄 · 닫기를 켠다
+new MutationObserver(() => {
+  const on = $("fileTitle").textContent !== "② 근거 파일";
+  $("btnFilePrint").disabled = !on; $("btnFileClose").disabled = !on;
+}).observe($("fileBody"), { childList: true, characterData: true, subtree: true });
+
+// ─────────────────────────────────────────────────────────────
+// 9. 버튼 연결
+// ─────────────────────────────────────────────────────────────
+$("btnLive").onclick   = () => run("live");
+$("btnReplay").onclick = () => run("replay");
+$("btnShock").onclick  = () => run("live", shockMd);
+$("btnCompare").onclick = compare;
+$("btnReport").onclick  = () => current && showReport(current);
+$("overlay").onclick   = (e) => { if (e.target.id === "overlay") closeDoc(); };
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDoc(); });
+$("btnFilePrint").onclick = showFileReport;
+$("btnFileClose").onclick = () => {
+  $("fileTitle").textContent = "② 근거 파일";
+  $("fileBody").textContent = "파일을 닫았다 — 끝난 단계를 누르면 다시 열린다.";
+  document.querySelectorAll(".steps li").forEach((li) => li.classList.remove("sel"));
+};
+$("btnApprove").onclick = () => {
+  log("✓ 승인", approveFor);
+  if (waiting) { waiting("approve"); waiting = null; } else $("btnApprove").disabled = true;
+};
+$("btnReject").onclick = () => { if (waiting) { waiting("reject"); waiting = null; } };
+$("btnStop").onclick   = () => { stopped = true; log("■ 긴급 정지", "발표자 판단"); if (waiting) { waiting("stop"); waiting = null; } };
+$("steps").onclick = (e) => { const li = e.target.closest("li.done"); if (li) showFile(+li.dataset.i); };
+
+drawSteps(0, -1, -1);
+</script>
+</body>
+</html>

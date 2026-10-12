@@ -3,11 +3,21 @@
 BAF.60080 특강 XS 팀 프로젝트의 **제출물 예시**다. 이 폴더 그대로가 팀이 내는 zip의 모양이다.
 Ang·Azimbayev·Kim(2026)의 에이전트 구조를 13개 에이전트로 줄여, 2022.9~2025.7을 분기마다 다시 결정했다.
 
+## 시연 화면이 중심이다
+
+`start.command`(맥) · `start.bat`(윈도)를 더블클릭하면 **시연 화면**이 먼저 열린다 — 자율주행 시연 프로세스(단계 진행 · 근거 파일 · 사람 CIO 승인 · 1쪽 보고서 · 입력/돌발 md)를 예시 MVP 엔진으로 돌린다. 채점 콘솔은 그 화면 오른쪽 위 「채점 콘솔 (보조) →」(`/console`)이다. 세 가지 시연 방식과 올리는 md 예시는 [`demo/README.md`](demo/README.md).
+
+### 입력은 형식이 자유롭다
+
+시연 화면에 올리는 입력(IPS 변경)과 돌발 과제는 **표준 형식 md**(정해진 줄)로 써도 되고 **자유 형식**(메모 · 메일 · 문장, `.md` · `.txt`)으로 써도 된다.
+표준 형식은 그대로 엔진에 들어가고, 자유 형식은 **접수 에이전트**(`sdp/intake.py`)가 표준 형식으로 옮겨 근거 원문과 함께 보여 준다 — 사람이 ✓ 해석 확인을 눌러야 들어간다.
+쓰는 법 · 읽는 항목 · 예시 6개: **[`올릴파일/README.md`](올릴파일/README.md)**
+
 ## 채점자: 이것만 하면 된다
 
 1. zip을 푼다.
 2. **맥은 `start.command`, 윈도는 `start.bat`을 더블클릭한다.** 처음 한 번은 파이썬 패키지를 설치한다(1~2분, 파이썬 3.10 이상 필요).
-3. 브라우저에 **채점 콘솔**(http://localhost:8765)이 열린다.
+3. 브라우저에 **시연 화면**(http://localhost:8765)이 열린다. 오른쪽 위 「채점 콘솔 (보조) →」을 누르면 **채점 콘솔**(http://localhost:8765/console)이다.
 
 | 탭 | 하는 일 |
 |---|---|
@@ -54,13 +64,16 @@ PREREG.md                   사전 등록표
 CHANGELOG.md                변경 제안 → 승인·반려 → 테스트 → 승격·롤백
 INTERVENTIONS.md            CIO 결정 기록
 CLAUDE.md                   Claude Code 라이브 모드 규칙
-.claude/agents/             에이전트 13개 정의
+.claude/agents/             에이전트 13개 정의 + 시연 화면 앞단의 접수 에이전트(intake-agent)
 .claude/skills/             스킬 7개 (보호 파일)
 config/                     파라미터 (보호 파일)
 data/                       ETF 월간 수익률 · FRED 매크로 · 사람의 결정(cio_decisions.csv, approvals.csv)
 sdp/                        계산 코드 — 하네스·에이전트·오케스트레이터·점검·콘솔
 runs/{YYYY-MM}/             분기별 실행 증거 — cma · 배분안 · 적격 · CRO · 검토 · 투표 · IC 보고서 · CIO 결정 · trace.jsonl
 reports/                    성과 · 자가 점검 · 의결문
+console/                    index.html 채점 콘솔(보조, /console)
+올릴파일/                   ★ 시연 화면에 올리는 md — [입력] 1개 · [돌발A·B·C] 3개 (올릴파일/README.md)
+demo/                       ★ 시연 화면(중심, /) 시연화면_예시MVP.html · standalone/ 단독판 · 안내 demo/README.md
 ```
 
 ## 한 분기에 일어나는 일

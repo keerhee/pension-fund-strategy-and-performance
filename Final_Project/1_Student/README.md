@@ -6,10 +6,11 @@ BAF.60080 특강 XS · 학생 배포 묶음
 
 | 순서 | 파일 | 무엇 | 시간 |
 |---|---|---|---|
-| 1 | `1_Videos/1_XS_Project_Briefing.mp4` | 과제 안내 영상 | 2분 |
+| 1 | `1_Videos/1_XS_Project_Briefing.mp4` | 과제 안내 영상 — 자율주행 자산운용 회사 · 두 단계 · 팀 A~F · 시연 화면 | 7분 |
 | 2 | `1_Videos/2_SelfDriving_Portfolio_Concept.mp4` | 자율주행 포트폴리오 개념 (Ang 2026 · 이 과정과의 연결) | 3분 |
-| 3 | `2_Project_Guide/` | **과제문** (`XS_Team_Project_Guide.pdf` · 원본 `.md` · 발표용 요약 덱 `XS_Team_Project_Guide_Deck.pdf` 42장) — 한 줄 문제 · 필수 기능 · 데이터 · 제출물 · 채점 방법 · 점수표 | 30분 |
+| 3 | `2_Project_Guide/` | **과제 가이드 — 두 단계** · **1단계 프로포절**(`XS_Project_Guide_Stage1_Proposal.pdf` 6쪽, W09) · **2단계 최종 제품 — 자율주행 자산운용 회사**(`XS_Project_Guide_Stage2_SDAM_Company.pdf` 6쪽, W16) · 필수 기능의 상세 명세서(`XS_Team_Project_Guide.pdf` · 발표용 요약 덱 `XS_Team_Project_Guide_Deck.pdf` 43장) | 30분 |
 | 4 | `3_Example_MVP/` | **예시 MVP** — 제출물의 모양 그대로. `start.command`(맥) · `start.bat`(윈도)를 더블클릭하면 채점 콘솔이 열린다 | 15분 |
+| 5 | `4_Reference_Map/` | 참고 지도 — 세 섬 군도에서 이 과제(자율운용 섬)의 위치. 채점 대상 아님 · 선택 | 5분 |
 
 `.md` 파일은 옵시디언·VS Code·GitHub 등 마크다운 보기 도구로 열면 표와 수식이 제대로 보인다.
 
@@ -36,7 +37,7 @@ BAF.60080 특강 XS · 학생 배포 묶음
 
 ## 핵심 일정
 
-- 중간고사 시간(W08): 중간 프로포절 + **MVP v0** (우리 IPS로 첫 분기를 끝까지 돌린 저장소)
+- 중간고사 다음 주(W09): 중간 프로포절 + **MVP v0** (우리 IPS로 첫 분기를 끝까지 돌린 저장소)
 - 기말고사 주(W16): 최종 발표 + **MVP v1** (예시 MVP와 같은 모양의 zip)
 
 ## 기억할 다섯 문장

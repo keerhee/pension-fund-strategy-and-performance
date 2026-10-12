@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>시연 화면 — 자율주행 포트폴리오 (예시 MVP)</title>
+<!--
+  시연 화면 (합친 판) — start.command로 연 콘솔의 첫 화면(/).
+  자율주행 시연 프로세스(단계 진행 · 근거 파일 · 사람 CIO 승인 · 1쪽 보고서 · 실행 비교 · 입력/돌발 md)를 앞에 두고,
+  계산은 예시 MVP 엔진(sdp/demo.py → pipeline.run_quarter)이 임시 복사본에서 한다. 채점 콘솔은 /console (보조).
+-->
+<style>
+  :root {
+    --ink: #071A1D; --paper: #F7F5F0; --lime: #B7F34A; --teal: #0B6B68;
+    --red: #C00000; --muted: #64757D; --line: #DDE3E2; --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Noto Sans KR", system-ui, sans-serif; background: var(--paper); color: #102027; }
+  header { background: var(--ink); color: var(--white); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  header h1 { margin: 0; font-size: 20px; }
+  header .run { font-family: monospace; color: var(--lime); font-size: 14px; }
+
+  /* 버튼 줄 */
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 20px 6px; align-items: center; }
+  button, .filebtn { font: inherit; font-weight: 700; font-size: 15px; padding: 10px 14px; border-radius: 8px;
+           border: 2px solid var(--teal); background: var(--white); color: var(--teal); cursor: pointer; }
+  button:disabled { opacity: .35; cursor: not-allowed; }
+  button.main { background: var(--lime); border-color: var(--lime); color: #102027; }
+  button.human { background: var(--ink); border-color: var(--ink); color: var(--lime); }
+  button.stop, button.reject { border-color: var(--red); color: var(--red); }
+  select { font: inherit; padding: 9px; border-radius: 8px; border: 2px solid var(--teal); background: var(--white); }
+  .sep { width: 1px; align-self: stretch; background: var(--line); margin: 0 4px; }
+
+  /* 돌발 md 올리는 줄 */
+  .inbar { padding-bottom: 4px; }
+  .vh { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; pointer-events: none; }
+  .shockbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 6px 20px 14px; }
+  .drop { cursor: pointer; flex: 1 1 320px; border: 2px dashed var(--teal); border-radius: 8px; padding: 9px 12px; color: var(--muted); font-size: 14px; background: var(--white); }
+  .drop.over { background: #eefbd9; border-color: var(--lime); }
+  .drop b { color: #102027; }
+
+  /* 세 칸 화면 */
+  main { display: grid; grid-template-columns: 260px 1fr 300px; gap: 14px; padding: 0 20px 20px; }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+  .panel { background: var(--white); border: 1px solid var(--line); border-radius: 10px; padding: 16px; min-height: 360px; }
+  .panel.dark { background: var(--ink); color: var(--white); border: 0; }
+  .panel h2 { margin: 0 0 12px; font-size: 16px; color: var(--teal); }
+  .panel.dark h2 { color: var(--lime); }
+
+  /* ① 진행 단계 */
+  .steps { list-style: none; margin: 0; padding: 0; }
+  .steps li { padding: 7px 8px; border-radius: 6px; cursor: pointer; color: #9FB0B2; }
+  .steps li.done { color: var(--white); }
+  .steps li.done::before { content: "✓ "; color: var(--lime); }
+  .steps li.now { background: var(--lime); color: #102027; font-weight: 700; }
+  .steps li.now::before { content: "● "; }
+  .steps li.wait { background: #3a2a00; color: #FFD27A; font-weight: 700; }
+  .steps li.human { border-left: 3px solid #FFD27A; }
+  .steps li.sel { outline: 2px solid var(--lime); }
+
+  /* ② 근거 파일 */
+  pre { background: var(--paper); border-radius: 8px; padding: 12px; white-space: pre-wrap; font-size: 14px; line-height: 1.55; margin: 0; }
+  .hint { color: var(--muted); font-size: 13px; margin-top: 10px; }
+
+  /* ③ 결과 요약 */
+  .w { display: grid; grid-template-columns: 50px 1fr 52px; align-items: center; gap: 6px; margin: 6px 0; font-size: 14px; }
+  .w .b { height: 16px; background: var(--teal); border-radius: 3px; transition: width .6s; }
+  .kv { display: flex; justify-content: space-between; border-top: 1px solid var(--line); padding: 7px 0; font-size: 14px; }
+  .kv b.ok { color: var(--teal); } .kv b.bad { color: var(--red); }
+  .banner { padding: 8px 10px; border-radius: 6px; font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .banner.ok { background: var(--lime); } .banner.bad { background: #fde8e8; color: var(--red); }
+  .banner.wait { background: #fff3d6; color: #7a5200; }
+
+  /* 아래 줄: 비교표 · 개입 기록 */
+  .bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 20px 24px; }
+  @media (max-width: 900px) { .bottom { grid-template-columns: 1fr; } }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 6px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 400; }
+  .log { font-family: monospace; font-size: 13px; max-height: 180px; overflow: auto; }
+
+  /* 1쪽 보고서 (IC 보고서 + CIO 결정 + 사람 CIO 승인) */
+  .overlay { position: fixed; inset: 0; background: rgba(7,26,29,.6); display: none; overflow: auto; padding: 24px 12px; }
+  .overlay.show { display: block; }
+  .page { background: var(--white); max-width: 760px; margin: 0 auto; padding: 32px 36px; border-radius: 6px; font-size: 14px; line-height: 1.6; }
+  .page h3 { margin: 0; font-size: 22px; }
+  .page .meta { color: var(--muted); font-size: 12px; margin: 4px 0 14px; border-bottom: 3px solid var(--ink); padding-bottom: 8px; }
+  .page h4 { margin: 16px 0 6px; font-size: 15px; color: var(--teal); }
+  .page .verdict { display: flex; gap: 10px; flex-wrap: wrap; }
+  .page .chip { padding: 6px 12px; border-radius: 6px; background: var(--paper); font-weight: 700; }
+  .page .chip.final { background: var(--lime); }
+  .page .chip.no { background: #fde8e8; color: var(--red); }
+  .page .minority { border-left: 4px solid var(--red); padding: 6px 10px; background: #fff5f5; }
+  .page .sign { border: 2px solid var(--ink); border-radius: 6px; padding: 10px 12px; }
+  .page .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+  .page .actions.top { position: sticky; top: -24px; margin: -32px -36px 14px; padding: 10px 36px; background: var(--white); border-bottom: 1px solid var(--line); z-index: 1; }
+  .page pre { font-size: 14px; }
+  /* ② 근거 파일 머리 — 제목 + 인쇄 · 닫기 */
+  .phead { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 12px; }
+  .phead h2 { margin: 0 !important; }
+  .ftools { display: flex; gap: 6px; flex-shrink: 0; }
+  button.sm { font-size: 13px; padding: 5px 9px; border-width: 1.5px; }
+  @media print {
+    @page { margin: 18mm; }
+    body { background: #fff; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body > *:not(.overlay) { display: none !important; }
+    .overlay { position: static; background: none; padding: 0; display: block; }
+    .page { max-width: none; padding: 0; }
+    .page .actions { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>자율주행 포트폴리오 · 시연 화면 <span style="font-weight:400;font-size:15px;color:#9FB0B2">엔진: 예시 MVP (가상 기금 KFP · ETF 11개 · 에이전트 13개 + 접수 에이전트)</span></h1>
+  <span style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+    <a href="/console" style="color:var(--lime);font-size:14px">채점 콘솔 (보조) →</a>
+    <a href="/standalone" style="color:#9FB0B2;font-size:14px">단독판 →</a>
+    <span class="run" id="runLabel">run: —</span>
+  </span>
+</header>
+
+<!-- 버튼 줄 -->
+<div class="bar">
+  <label style="font-weight:700;color:var(--teal)">분기 <select id="qSel"></select></label>
+  <button class="main" id="btnLive">▶ 라이브 실행</button>
+  <button id="btnReplay">▷ 제출본 재생</button>
+  <button id="btnCompare">⇄ 두 실행 비교</button>
+  <span class="sep"></span>
+  <button class="human" id="btnApprove" disabled>✓ 사람 승인</button>
+  <button class="reject" id="btnReject" disabled hidden>✕ 반려</button>
+  <button class="stop" id="btnStop" disabled>■ 긴급 정지</button>
+  <button id="btnReport" disabled>📄 1쪽 보고서</button>
+</div>
+
+<!-- 입력 파일: 기준 분기 + IPS 변경 -->
+<div class="shockbar inbar">
+  <button type="button" class="filebtn" id="btnPickInput">📥 입력 파일 올리기</button>
+  <input type="file" id="inputFile" accept=".md,.markdown,.txt,text/markdown,text/plain" class="vh">
+  <div class="drop" id="dropIn" data-kind="input">입력 파일(.md · .txt — 형식 자유, 접수 에이전트가 읽는다)을 여기에 끌어다 놓아도 된다 — <span id="inputName">올린 파일 없음 · 제출본 IPS 그대로</span></div>
+  <select id="inputSample"><option value="">입력 예시 내려받기…</option></select>
+  <button class="human" id="btnInputOk" disabled hidden>✓ 해석 확인</button>
+  <button id="btnInputReset" disabled>입력 지우기</button>
+</div>
+
+<!-- 돌발 과제 md -->
+<div class="shockbar">
+  <button type="button" class="filebtn" id="btnPickShock">📄 돌발 과제 md 올리기</button>
+  <input type="file" id="shockFile" accept=".md,.markdown,.txt,text/markdown,text/plain" class="vh">
+  <div class="drop" id="drop" data-kind="shock">돌발 과제 <b>.md · .txt</b> (형식 자유)를 끌어다 놓아도 된다 — <span id="shockName">선택된 파일 없음</span></div>
+  <button class="human" id="btnShockOk" disabled hidden>✓ 해석 확인</button>
+  <button id="btnShock" disabled>◆ 돌발 과제 투입</button>
+  <select id="shockSample"><option value="">돌발 예시 내려받기…</option></select>
+</div>
+
+<main>
+  <section class="panel dark">
+    <h2>① 진행 단계</h2>
+    <ul class="steps" id="steps"></ul>
+    <p class="hint" style="color:#9FB0B2">끝난 단계를 누르면 그 단계의 파일이 열린다</p>
+  </section>
+  <section class="panel">
+    <div class="phead">
+      <h2 id="fileTitle">② 근거 파일</h2>
+      <span class="ftools"><button class="sm" id="btnFilePrint" disabled>🖨 인쇄</button><button class="sm" id="btnFileClose" disabled>✕ 닫기</button></span>
+    </div>
+    <pre id="fileBody">분기를 고르고 ▶ 라이브 실행을 누른다 — 예시 MVP 엔진이 그 분기를 임시 복사본에서 다시 계산한다.
+▷ 제출본 재생은 다시 계산하지 않고 제출된 runs/ 파일을 그대로 보여 준다.
+입력 파일(IPS 변경)과 돌발 과제 md를 올리면 그 내용을 반영해 계산한다. 제출 폴더는 바뀌지 않는다.</pre>
+    <p class="hint">화면은 엔진이 남긴 runs/{분기}/ 파일을 그대로 읽어 보여 준다 — 화면은 계산하지 않는다</p>
+  </section>
+  <section class="panel">
+    <h2>③ 결과 요약</h2>
+    <div id="summary"><p class="hint">아직 결과가 없다</p></div>
+  </section>
+</main>
+
+<div class="bottom">
+  <section class="panel" style="min-height:auto">
+    <h2>⇄ 실행 비교</h2>
+    <div id="compare"><p class="hint">실행을 두 번 이상 하면 비교할 수 있다</p></div>
+  </section>
+  <section class="panel" style="min-height:auto">
+    <h2>사람 개입 기록 (intervention_log)</h2>
+    <div class="log" id="log">기록 없음</div>
+  </section>
+</div>
+
+<div class="overlay" id="overlay"><div class="page" id="page"></div></div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// 시연 화면 (합친 판) — 자율주행 시연 프로세스를 앞에, 예시 MVP 엔진을 뒤에 둔다
+//   화면 규칙 3가지: ① 화면은 계산하지 않는다 ② 실행 번호를 항상 보인다 ③ 사람이 누른 버튼은 기록한다
+//   엔진 호출은 /api/demo/start · /api/demo/decide · /api/demo/replay 세 곳뿐이다 (sdp/demo.py)
+// ─────────────────────────────────────────────────────────────
+const NAMES = { "pc-equal": "동일가중", "pc-invvol": "역변동성", "pc-minvar": "최소분산", "pc-maxsharpe": "최대 샤프(MVO)", "pc-erc": "위험기여 균등(ERC)", "pc-adversarial": "적대적 분산자" };
+const nm = (k) => NAMES[k] || k || "없음";
+const SIGNER = "CIO (사람)";
+const BASE_STEPS = [
+  { id: "input",    name: "◇ 입력 검사",            file: "input_check.json" },
+  { id: "macro",    name: "① 매크로 국면",           file: "macro.md" },
+  { id: "cma",      name: "② CMA · 공분산",          file: "cma.json" },
+  { id: "research", name: "③ 리서치 메모",           file: "research_memo.md" },
+  { id: "pc",       name: "④ 배분안 6개",            file: "proposals/*.json" },
+  { id: "ips",      name: "⑤ IPS 적격 심사",         file: "eligibility.json" },
+  { id: "cro",      name: "⑥ CRO 위험 보고",         file: "cro_report.json" },
+  { id: "vote",     name: "⑦ 상호 검토 · 투표",       file: "votes.json" },
+  { id: "ic",       name: "⑧ IC 보고서",             file: "ic_report.md" },
+  { id: "cio",      name: "⑨ 사람 CIO 결정",          file: "cio_decision.md", human: true },
+  { id: "meta",     name: "⑩ 메타 리뷰 · 변경 제안",   file: "meta_review.json" },
+  { id: "trace",    name: "감사 기록",               file: "trace.jsonl" },
+];
+const stepsFor = (r) => BASE_STEPS.flatMap((x) => (x.id === "input" && r && r.shock ? [x, { id: "shock", name: "◆ 돌발 입력", file: "shock.md" }] : [x]));
+let STEPS = stepsFor(null);
+
+let runCount = 0, runs = [], current = null, stopped = false, waiting = null, approveFor = null;
+let inputMd = null, inputName = null, shockMd = null, shockName = null, SAMPLES = {};
+let pendingIntake = { input: null, shock: null }, intakeLog = {};   // 접수 에이전트 해석 — 사람이 확인해야 입력이 된다
+const $ = (id) => document.getElementById(id);
+const esc = (t) => String(t ?? "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const pct = (x, d = 1) => (x == null ? "—" : (x * 100).toFixed(d) + "%");
+const J = (o) => JSON.stringify(o, null, 2);
+async function api(path, body) {
+  const r = await fetch(path, body ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {});
+  return r.json();
+}
+
+// ── 단계별 파일 내용 — 엔진이 남긴 값을 옮겨 적기만 한다 ──
+function fileOf(id, r) {
+  const v = r.view || {};
+  switch (id) {
+    case "input": return J(r.input_check);
+    case "shock": return r.shock || "";
+    case "macro": return (v.macro || "") + "\n\n— macro.json —\n" + J(v.macro_json);
+    case "cma": { const c = v.cma || {}; const rows = (c.tickers || []).map((t, i) => `${t.padEnd(5)} 기대수익 ${pct(c.mu && c.mu[i], 2)}`).join("\n");
+      return `as_of ${c.as_of} · 추정 구간 ${(c.window || []).join(" ~ ")} (${c.T}개월)\n수축 강도 δ ${c.shrink_delta} · Ledoit–Wolf ${c.lw_shrinkage} · 무위험 ${pct(c.rf, 2)}\n\n${rows}\n\n공분산: ${c.cov}`; }
+    case "research": return (v.research || "") + ((v.proposals_change || []).length ? "\n\n— 변경 제안서 (proposals_change/) —\n" + J(v.proposals_change) : "");
+    case "pc": return Object.entries(v.proposals || {}).map(([k, p]) => `■ ${nm(k)} (${k}) · ${p.family || ""}\n  기대수익 ${pct(p.exp_ret, 2)} · 변동성 ${pct(p.exp_vol, 2)} · 샤프 ${p.exp_sharpe != null ? p.exp_sharpe.toFixed(2) : "—"}\n  ` +
+      Object.entries(p.weights || {}).map(([t, w]) => `${t} ${pct(w)}`).join(" · ")).join("\n\n");
+    case "ips": return Object.entries(v.eligibility || {}).map(([k, e]) => `${e.eligible ? "적격" : "기각"}  ${nm(k).padEnd(10)} 유효 종목 수 ${e.n_eff}${e.violations.length ? "\n      사유: " + e.violations.join("; ") : ""}`).join("\n");
+    case "cro": return Object.entries(v.cro || {}).map(([k, c]) => `■ ${nm(k)}\n  사전 변동성 ${pct(c.exp_vol, 2)} · 95% CVaR(월) ${pct(c.cvar95_m, 2)} · 역사적 MDD ${pct(c.hist_mdd)}\n  스트레스: ` +
+      Object.entries(c.stress || {}).map(([s, x]) => `${s} ${pct(x)}`).join(" · ") + `\n  위험기여 상위: ${(c.rc_top3 || []).map(([t, x]) => `${t} ${pct(x)}`).join(" · ")}`).join("\n\n");
+    case "vote": { const t = v.votes || {}; const res = t.result || {};
+      return `규칙: ${t.rule}\n\n순위: ${(t.ranking || []).map((k, i) => `${i + 1}. ${nm(k)}`).join("  ")}\n채택 후보: ${nm(t.winner)}\n\n` +
+        Object.entries(res).map(([k, x]) => `${nm(k).padEnd(10)} 득표 S ${x.S} · 정량 M ${x.M} · 점수 ${x.score}`).join("\n") +
+        `\n\n최하위 지목: ` + Object.entries(t.bottom_flags || {}).filter(([, a]) => a.length).map(([k, a]) => `${nm(k)} ← ${a.map(nm).join(", ")}`).join(" / ") +
+        `\n\n상호 검토 ${Object.keys(v.reviews || {}).length}건 (reviews.json)`; }
+    case "ic": return v.ic || "";
+    case "cio": return (v.cio || "") + (r.recorded_decision ? `\n\n— 제출본에 기록된 결정 (참고) —\n${r.recorded_decision.decision}: ${r.recorded_decision.reason}` : "") +
+      (r.signoff ? `\n\n— 화면에서 내린 결정 —\n${J(r.signoff)}` : "");
+    case "meta": { const m = v.meta; const ch = v.changes;
+      return (m ? `평가한 분기 ${m.evaluated} · 예측오차 MAE ${pct(m.mae)} (최근 평균 ${pct(m.rolling_mae)})\n분기 실현 수익: ` + Object.entries(m.quarter_return || {}).map(([k, x]) => `${nm(k)} ${pct(x, 2)}`).join(" · ") +
+        `\n변경 제안: ${(m.proposals || []).length}건` : "메타 리뷰 없음 (첫 분기 또는 직전 보유 없음)") +
+        (ch ? "\n\n— 변경 제안 처리 (changes.json) —\n" + (ch.length ? ch.map((c) => `${c.id}: ${c.change} → ${c.result} (${c.why})`).join("\n") : "없음") : "\n\n변경 제안 처리: CIO 결정 뒤에 진행된다"); }
+    case "trace": return (v.trace || []).map((t) => `${String(t.seq).padStart(2, "0")} ${t.agent} · ${t.skill || ""} → ${(t.outputs || []).map((o) => o.file.split("/").pop() + "#" + (o.sha || "").slice(0, 6)).join(", ")}  ${t.note || ""}`).join("\n");
+  }
+  return "";
+}
+
+function drawSteps(doneUpTo, nowIdx, waitIdx, waitLabel) {
+  $("steps").innerHTML = STEPS.map((s, i) => {
+    let cls = i < doneUpTo ? "done" : "";
+    if (i === nowIdx) cls = "now";
+    if (i === waitIdx) cls = "wait";
+    if (s.human) cls += " human";
+    return `<li class="${cls}" data-i="${i}">${s.name}${i === waitIdx ? " — " + (waitLabel || "결정 대기") : ""}</li>`;
+  }).join("");
+}
+function showFile(i) {
+  if (!current) return;
+  const s = STEPS[i];
+  $("fileTitle").textContent = "② 근거 파일 · " + s.file;
+  $("fileBody").textContent = fileOf(s.id, current);
+  document.querySelectorAll(".steps li").forEach((li) => li.classList.toggle("sel", +li.dataset.i === i));
+}
+
+function showSummary(r) {
+  const v = r.view || {}, t = v.votes || {}, el = v.eligibility || {};
+  const nEl = Object.values(el).filter((e) => e.eligible).length;
+  const hold = v.holdings && v.holdings.weights, win = t.winner;
+  const w = hold || (win && v.proposals[win] ? v.proposals[win].weights : null);
+  let banner = "";
+  if (r.mode === "replay") banner = `<div class="banner ok">제출본 재생 — 기록된 CIO 결정: ${esc((v.holdings || {}).decision || "—")}</div>`;
+  else if (!r.signoff) banner = `<div class="banner wait">사람 CIO 결정 대기 — 아직 집행하지 않는다</div>`;
+  else if (r.signoff.결정 === "승인") banner = `<div class="banner ok">사람 CIO 승인 — 권고안을 집행한다</div>`;
+  else banner = `<div class="banner bad">사람 CIO 반려 — 직전 보유를 유지한다</div>`;
+  const bars = w ? Object.entries(w).map(([k, x]) => `<div class="w"><span>${k}</span><div class="b" style="width:${Math.min(100, x * 300)}%"></div><span>${pct(x)}</span></div>`).join("") : "";
+  const cr = win && v.cro ? v.cro[win] : null;
+  $("summary").innerHTML = banner + `<p class="hint" style="margin:0 0 4px">${hold ? "집행 비중 (holdings.json)" : "권고안 비중 (집행 전)"}</p>` + bars +
+    `<div class="kv"><span>국면</span><b>${esc((v.macro_json || {}).label || "—")}</b></div>
+     <div class="kv"><span>IC 권고</span><b>${esc(nm(win))}</b></div>
+     <div class="kv"><span>IPS 적격</span><b>${nEl} / ${Object.keys(el).length}</b></div>
+     <div class="kv"><span>권고안 변동성 · 유효 종목 수</span><b>${cr ? pct(cr.exp_vol) : "—"} · ${win && el[win] ? el[win].n_eff.toFixed(2) : "—"}</b></div>
+     ${r.submitted_winner !== undefined ? `<div class="kv"><span>제출본 권고 (같은 분기)</span><b>${esc(r.submitted_winner ? nm(r.submitted_winner) : "없음 (새 분기)")}</b></div>` : ""}
+     <div class="kv"><span>실행</span><b>${r.mode === "replay" ? "제출본 재생" : "라이브 재계산"} · ${esc(r.q)}</b></div>
+     <div class="kv"><span>입력 · 돌발</span><b style="text-align:right">${esc(r.input_name || "—")}<br>${esc(r.shock_name || "돌발 없음")}</b></div>`;
+}
+
+function log(action, reason) {
+  const tm = new Date().toLocaleTimeString("ko-KR");
+  const who = /CIO/.test(action + reason) ? SIGNER : "발표자";
+  $("log").innerHTML = ($("log").textContent === "기록 없음" ? "" : $("log").innerHTML + "<br>") + esc(`${tm} · ${who} · ${action} · ${reason} · run ${current ? current.run_id : "-"}`);
+}
+function setBusy(b) {
+  ["btnLive", "btnReplay", "btnCompare", "qSel"].forEach((id) => ($(id).disabled = b));
+  $("btnShock").disabled = b || !shockMd; $("btnStop").disabled = !b;
+}
+function waitHuman(what, allowReject) {
+  approveFor = what; $("btnApprove").disabled = false;
+  $("btnReject").hidden = !allowReject; $("btnReject").disabled = !allowReject;
+  return new Promise((res) => (waiting = res)).then((x) => { $("btnApprove").disabled = true; $("btnReject").disabled = true; $("btnReject").hidden = true; return x; });
+}
+
+// ── 실행 ──
+async function run(mode, withShock) {
+  stopped = false; $("btnApprove").disabled = true; $("btnReport").disabled = true;
+  const q = $("qSel").value;
+  $("fileTitle").textContent = "② 근거 파일"; $("fileBody").textContent = mode === "replay" ? "제출본을 읽는 중…" : "예시 MVP 엔진이 임시 복사본에서 계산하는 중… (몇 초)";
+  setBusy(true);
+  let r;
+  try { r = mode === "replay" ? await api("/api/demo/replay?q=" + encodeURIComponent(q)) : await api("/api/demo/start", { q, input_md: inputMd, shock_md: withShock ? shockMd : null, intake: { 입력: inputMd ? intakeLog.input : null, 돌발: withShock ? intakeLog.shock : null } }); }
+  catch (e) { setBusy(false); $("fileBody").textContent = "엔진 호출 실패 — start.command로 연 콘솔에서만 동작한다.\n" + e; return; }
+  if (r.error) { setBusy(false); $("fileBody").textContent = r.error; return; }
+  if (r.selfcheck) { showCheck(r); setBusy(false); return; }
+  current = { ...r, mode, run_id: (r.q || q) + "_" + String(++runCount).padStart(2, "0"),
+              input_name: mode === "replay" ? "제출본" : (inputName || "없음 (제출본 IPS)"), shock_name: withShock ? shockName : null };
+  if (withShock) log("◆ 돌발 투입", shockName);
+  STEPS = stepsFor(current);
+  $("runLabel").textContent = "run: " + current.run_id;
+  if (r.failed && r.halted) {
+    drawSteps(0, -1, 0, "하네스 정지"); showFile(0);
+    $("summary").innerHTML = '<div class="banner bad">하네스가 멈췄다 — 주입한 결함(결정 시점 이후 정보)을 잡았다</div>'; log("◆ 하네스 정지 — 결함을 잡았다", current.shock_name || ""); setBusy(false); return;
+  }
+  if (r.failed) {
+    drawSteps(0, -1, 0, "입력 오류"); showFile(0);
+    $("fileBody").textContent += "\n\n입력을 고친 뒤 다시 올린다 — 엔진은 오류가 있는 입력으로 계산하지 않는다.";
+    $("summary").innerHTML = '<div class="banner bad">입력 오류 — 계산하지 않았다</div>'; log("◇ 입력 오류로 중단", current.input_name); setBusy(false); return;
+  }
+  if (r.note) log("엔진 메모", r.note);
+  const delay = mode === "replay" ? 60 : 650;
+  for (let i = 0; i < STEPS.length; i++) {
+    const s = STEPS[i];
+    if (stopped) { drawSteps(i, -1, -1); setBusy(false); return; }
+    if (s.id === "cio" && mode !== "replay") {
+      drawSteps(i, -1, i, "결정 대기"); showFile(i); showSummary(current);
+      $("fileBody").textContent = fileOf("ic", current).split("\n").slice(0, 14).join("\n") + "\n…\n\n✓ 사람 승인 → 권고안 집행 · ✕ 반려 → 사유를 남기고 직전 보유 유지";
+      const x = await waitHuman("CIO 결정", true);
+      if (stopped || x === "stop") { drawSteps(i, -1, -1); setBusy(false); return; }
+      const dec = x === "approve" ? "승인" : "반려";
+      const why = (window.prompt(`${dec} 사유를 적는다 (cio_decisions.csv의 reason 칸으로 들어간다)`, dec === "승인" ? "IC 권고와 같음" : "") || "").trim() || "사유 미기재";
+      $("fileBody").textContent = "결정을 반영해 이 분기를 마저 진행하는 중…";
+      const d = await api("/api/demo/decide", { sid: current.sid, decision: dec, reason: why });
+      if (!d.ok) { $("fileBody").textContent = "결정 반영 실패\n" + (d.log || d.error || ""); setBusy(false); return; }
+      current.view = d.view; current.csv_row = d.csv_row;
+      current.signoff = { 결정: dec, 서명자: SIGNER, 시각: new Date().toLocaleString("ko-KR"), 사유: why };
+      log(dec === "승인" ? "✓ CIO 승인" : "✕ CIO 반려", why);
+    }
+    drawSteps(i, i, -1); showFile(i);
+    await sleep(delay);
+  }
+  drawSteps(STEPS.length, -1, -1);
+  showFile(STEPS.findIndex((s) => s.id === "ic")); showSummary(current);
+  runs.push(current); setBusy(false); $("btnReport").disabled = false;
+  if (mode !== "replay") showReport(current);
+}
+
+function showCheck(r) {
+  const res = r.selfcheck, n = res.filter((x) => x.pass).length;
+  $("fileTitle").textContent = "공개 점검 결과 — " + r.title;
+  $("fileBody").textContent = res.map((x) => `${x.pass ? "✓ 통과" : "✕ 실패"}  ${x.id} ${x.name} (${x.sec}초)\n    ${x.detail}`).join("\n\n") +
+    "\n\n모든 점검은 임시 복사본에서 돌았다 — 제출 폴더는 바뀌지 않았다.\n\n[점검 지시서]\n" + JSON.stringify(r.input_check, null, 2);
+  $("summary").innerHTML = `<div class="banner ${n === res.length ? "ok" : "bad"}">공개 점검 ${res.map((x) => x.id).join(" · ")} — 통과 ${n} / ${res.length}</div>` +
+    `<table>${res.map((x) => `<tr><td><b>${esc(x.id)}</b></td><td>${esc(x.name)}</td><td>${x.pass ? "통과" : "<b style='color:var(--red)'>실패</b>"}</td></tr>`).join("")}</table>`;
+  res.forEach((x) => log(`${x.pass ? "✓" : "✕"} ${x.id} ${x.name}`, x.detail.slice(0, 90)));
+}
+
+function compare() {
+  if (runs.length < 2) { $("compare").innerHTML = '<p class="hint">실행이 두 번 이상 필요하다</p>'; return; }
+  const [a, b] = runs.slice(-2);
+  const top = (r) => { const v = r.view, w = (v.holdings && v.holdings.weights) || (v.votes.winner ? v.proposals[v.votes.winner].weights : {}); return Object.entries(w).sort((x, y) => y[1] - x[1]).slice(0, 3).map(([k, x]) => `${k} ${pct(x)}`).join(" · "); };
+  const row = (k, f) => `<tr><td>${k}</td><td>${f(a)}</td><td>${f(b)}</td></tr>`;
+  $("compare").innerHTML = `<table>
+    <tr><th>항목</th><th>${esc(a.run_id)}</th><th>${esc(b.run_id)}</th></tr>
+    ${row("실행", (r) => (r.mode === "replay" ? "제출본 재생" : "라이브"))}
+    ${row("입력 파일", (r) => esc(r.input_name))}
+    ${row("돌발", (r) => esc(r.shock_name || "없음"))}
+    ${row("국면", (r) => esc((r.view.macro_json || {}).label))}
+    ${row("IPS 적격", (r) => Object.values(r.view.eligibility).filter((e) => e.eligible).length + " / 6")}
+    ${row("IC 권고", (r) => esc(nm(r.view.votes.winner)))}
+    ${row("사람 CIO", (r) => esc(r.signoff ? r.signoff.결정 : r.mode === "replay" ? (r.view.holdings || {}).decision + " (기록)" : "—"))}
+    ${row("비중 상위 3", top)}
+  </table>`;
+}
+
+function docActions(pos) { return `<div class="actions ${pos}"><button onclick="window.print()">🖨 인쇄 · PDF 저장</button><button class="main" onclick="closeDoc()">✕ 닫기</button></div>`; }
+function closeDoc() { $("overlay").classList.remove("show"); }
+function showReport(r) {
+  const v = r.view, so = r.signoff;
+  const sign = r.mode === "replay" ? `<div class="sign">제출본 재생 — 기록된 결정 ${esc((v.holdings || {}).decision || "—")}</div>` : `<div class="sign">${so
+    ? `<div class="verdict"><span class="chip ${so.결정 === "승인" ? "final" : "no"}">${so.결정 === "승인" ? "승인 — 집행" : "반려 — 직전 보유 유지"}</span></div><div style="margin-top:6px">서명 ${esc(so.서명자)} · ${esc(so.시각)}<br>사유: ${esc(so.사유)}</div>
+       <div class="hint">data/cio_decisions.csv에 적을 행: <code>${esc((r.csv_row || []).join(","))}</code></div>`
+    : "결정 대기 — 서명 전에는 집행하지 않는다"}</div>`;
+  const m = v.meta;
+  $("page").innerHTML = `${docActions("top")}
+    <h3>IC 보고서 · 사람 CIO 결정</h3>
+    <div class="meta">run ${esc(r.run_id)} · ${r.mode === "replay" ? "제출본 재생" : "라이브 재계산"} · 분기 ${esc(r.q)} · 국면 ${esc((v.macro_json || {}).label)} · 입력 ${esc(r.input_name)} · 돌발 ${esc(r.shock_name || "없음")}</div>
+    ${r.note ? `<div class="minority">${esc(r.note)}</div>` : ""}
+    <h4>⑧ IC 보고서 (ic_report.md)</h4><pre>${esc(v.ic)}</pre>
+    <h4>⑨ 사람 CIO 결정</h4>${sign}
+    <h4>⑩ 메타 리뷰 — 다음 분기로</h4><div>${m ? `MAE ${pct(m.mae)} · 변경 제안 ${(m.proposals || []).length}건` : "없음"}${(v.changes || []).length ? " · " + v.changes.map((c) => `${esc(c.id)} ${esc(c.result)}`).join(", ") : ""}</div>
+    ${docActions("")}`;
+  $("overlay").classList.add("show");
+}
+function showFileReport() {
+  const title = $("fileTitle").textContent.replace(/^② 근거 파일 · /, "");
+  $("page").innerHTML = `${docActions("top")}<h3>${esc(title)}</h3><div class="meta">${current ? `run ${esc(current.run_id)} · 분기 ${esc(current.q)}` : "실행 전"} · 근거 파일</div><pre>${esc($("fileBody").textContent)}</pre>${docActions("")}`;
+  $("overlay").classList.add("show");
+}
+
+// ── 파일 올리기 · 끌어다 놓기 · 예시 내려받기 ──
+function readMd(file, cb) {
+  if (!file) return;
+  if (!/\.(md|markdown|txt)$/i.test(file.name)) { alert("md 파일만 올릴 수 있다 — " + file.name); return; }
+  const rd = new FileReader(); rd.onload = () => cb(String(rd.result), file.name); rd.readAsText(file, "utf-8");
+}
+// ── 접수 에이전트: 올린 파일을 표준 형식으로 옮긴다 (표준 형식이면 그대로) ──
+function intakeText(r, name) {
+  return `접수 에이전트 해석 — ${name}\n방식: ${r.method}\n유형: ${({ ips: "IPS 변경", market: "시장 충격", model: "모델 교체", defect: "결함 주입", check: "공개 점검", none: "찾지 못함" })[r.kind] || r.kind}\n\n` +
+    (r.mapping.length ? "[바꿀 항목 ← 근거가 된 원문]\n" + r.mapping.map((m) => `- ${m.항목} = ${m.값}   ← “${m.근거}”`).join("\n") + "\n\n" : "") +
+    (r.unclear.length ? "[확인 필요]\n" + r.unclear.map((u) => "- " + u).join("\n") + "\n\n" : "") +
+    `[엔진에 넘길 표준 형식]\n${r.standard_md}\n` + (r.can_confirm ? "✓ 해석 확인을 눌러야 입력이 된다." : "확인할 수 없다 — 파일을 고쳐 다시 올린다.");
+}
+async function intake(slot, text, name) {
+  const r = await api("/api/demo/intake", { text, slot, name });
+  if (r.error) { $("fileBody").textContent = "접수 에이전트 오류\n" + r.error; return null; }
+  return r;
+}
+async function setInput(text, name) {
+  $("fileTitle").textContent = "② 접수 에이전트 · " + name; $("fileBody").textContent = "접수 에이전트가 읽는 중…";
+  const r = await intake("input", text, name); if (!r) return;
+  log("📥 입력 파일 올림", name);
+  if (r.method.startsWith("표준 형식")) return acceptInput(r, name, "표준 형식 그대로");
+  pendingIntake.input = { r, name };
+  $("fileBody").textContent = intakeText(r, name);
+  $("btnInputOk").hidden = false; $("btnInputOk").disabled = !r.can_confirm;
+  $("inputName").innerHTML = `<b>${esc(name)}</b> — 자유 형식 · 접수 에이전트 해석을 확인한다 (✓ 해석 확인)`;
+}
+function acceptInput(r, name, how) {
+  inputMd = r.standard_md; inputName = name; $("btnInputReset").disabled = false;
+  $("btnInputOk").hidden = true; pendingIntake.input = null;
+  intakeLog.input = { 파일: name, 방식: r.method, 항목: r.mapping, 확인_필요: r.unclear, 확인: how };
+  $("inputName").innerHTML = `<b>${esc(name)}</b> — ${esc(how)} · ▶ 라이브 실행을 누른다`;
+  const m = inputMd.match(/^기준 분기\s*[:：]\s*(\d{4}-\d{2})/m); if (m && [...$("qSel").options].some((o) => o.value === m[1])) $("qSel").value = m[1];
+  if (how !== "표준 형식 그대로") log("✓ 접수 해석 확인 (입력)", name); else { $("fileTitle").textContent = "② 근거 파일 · " + name; $("fileBody").textContent = inputMd; }
+}
+async function setShock(text, name) {
+  $("fileTitle").textContent = "② 접수 에이전트 · " + name; $("fileBody").textContent = "접수 에이전트가 읽는 중…";
+  const r = await intake("shock", text, name); if (!r) return;
+  if (r.method.startsWith("표준 형식")) return acceptShock(r, name, "표준 형식 그대로");
+  pendingIntake.shock = { r, name };
+  $("fileBody").textContent = intakeText(r, name);
+  $("btnShockOk").hidden = false; $("btnShockOk").disabled = !r.can_confirm; $("btnShock").disabled = true;
+  $("shockName").innerHTML = `<b>${esc(name)}</b> — 자유 형식 · 접수 에이전트 해석을 확인한다 (✓ 해석 확인)`;
+}
+function acceptShock(r, name, how) {
+  shockMd = r.standard_md; shockName = name; $("btnShock").disabled = false;
+  $("btnShockOk").hidden = true; pendingIntake.shock = null;
+  intakeLog.shock = { 파일: name, 방식: r.method, 항목: r.mapping, 확인_필요: r.unclear, 확인: how };
+  $("shockName").innerHTML = `<b>${esc(name)}</b> — ${esc(how)} · ◆ 돌발 과제 투입을 누른다`;
+  if (how !== "표준 형식 그대로") log("✓ 접수 해석 확인 (돌발)", name); else { $("fileTitle").textContent = "② 근거 파일 · " + name + " (투입 전 미리보기)"; $("fileBody").textContent = shockMd; }
+}
+$("btnInputOk").onclick = () => { const p = pendingIntake.input; if (p) acceptInput(p.r, p.name, "접수 에이전트 해석을 사람이 확인"); };
+$("btnShockOk").onclick = () => { const p = pendingIntake.shock; if (p) acceptShock(p.r, p.name, "접수 에이전트 해석을 사람이 확인"); };
+$("btnPickInput").onclick = () => $("inputFile").click();
+$("btnPickShock").onclick = () => $("shockFile").click();
+$("dropIn").onclick = () => $("inputFile").click();
+$("drop").onclick = () => $("shockFile").click();
+$("inputFile").onchange = (e) => { readMd(e.target.files[0], setInput); e.target.value = ""; };
+$("shockFile").onchange = (e) => { readMd(e.target.files[0], setShock); e.target.value = ""; };
+["dragenter", "dragover"].forEach((t) => document.addEventListener(t, (e) => { e.preventDefault(); const z = e.target.closest && e.target.closest(".drop"); document.querySelectorAll(".drop").forEach((d) => d.classList.toggle("over", d === z)); }));
+document.addEventListener("dragleave", (e) => { if (!e.relatedTarget) document.querySelectorAll(".drop").forEach((d) => d.classList.remove("over")); });
+document.addEventListener("drop", (e) => {
+  e.preventDefault(); document.querySelectorAll(".drop").forEach((d) => d.classList.remove("over"));
+  const f = e.dataTransfer.files[0]; if (!f) return;
+  const z = e.target.closest && e.target.closest(".drop");
+  readMd(f, (text, name) => ((z ? z.dataset.kind === "input" : !/^유형\s*[:：]/m.test(text)) ? setInput(text, name) : setShock(text, name)));
+});
+$("btnInputReset").onclick = () => { inputMd = null; inputName = null; intakeLog.input = null; $("btnInputOk").hidden = true; $("btnInputReset").disabled = true; $("inputName").textContent = "올린 파일 없음 · 제출본 IPS 그대로"; log("📥 입력 지움", "제출본 IPS"); };
+function download(name) { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([SAMPLES[name]], { type: "text/markdown" })); a.download = name; a.click(); URL.revokeObjectURL(a.href); }
+$("inputSample").onchange = (e) => { if (e.target.value) download(e.target.value); e.target.value = ""; };
+$("shockSample").onchange = (e) => { if (e.target.value) download(e.target.value); e.target.value = ""; };
+
+// ── 버튼 ──
+$("btnLive").onclick = () => run("live", false);
+$("btnReplay").onclick = () => run("replay", false);
+$("btnShock").onclick = () => run("live", true);
+$("btnCompare").onclick = compare;
+$("btnReport").onclick = () => current && showReport(current);
+$("overlay").onclick = (e) => { if (e.target.id === "overlay") closeDoc(); };
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDoc(); });
+$("btnFilePrint").onclick = showFileReport;
+$("btnFileClose").onclick = () => { $("fileTitle").textContent = "② 근거 파일"; $("fileBody").textContent = "파일을 닫았다 — 끝난 단계를 누르면 다시 열린다."; document.querySelectorAll(".steps li").forEach((li) => li.classList.remove("sel")); };
+new MutationObserver(() => { const on = $("fileTitle").textContent !== "② 근거 파일"; $("btnFilePrint").disabled = !on; $("btnFileClose").disabled = !on; }).observe($("fileBody"), { childList: true, characterData: true, subtree: true });
+$("btnApprove").onclick = () => { if (waiting) { waiting("approve"); waiting = null; } };
+$("btnReject").onclick = () => { if (waiting) { waiting("reject"); waiting = null; } };
+$("btnStop").onclick = () => { stopped = true; log("■ 긴급 정지", "발표자 판단"); if (waiting) { waiting("stop"); waiting = null; } };
+$("steps").onclick = (e) => { const li = e.target.closest("li.done"); if (li) showFile(+li.dataset.i); };
+
+// ── 시작: 분기 목록과 예시 md를 엔진에서 받아 온다 ──
+(async () => {
+  drawSteps(0, -1, -1);
+  try {
+    const S = await api("/api/summary");
+    const qs = S.quarters.map((r) => r.q);
+    $("qSel").innerHTML = qs.map((q) => `<option ${q === "2024-02" ? "selected" : ""}>${q}</option>`).join("");
+    SAMPLES = await api("/api/demo/samples");
+    Object.keys(SAMPLES).forEach((n) => { const o = document.createElement("option"); o.value = n; o.textContent = n; (/\[입력/.test(n) ? $("inputSample") : $("shockSample")).appendChild(o); });
+  } catch (e) {
+    $("fileBody").textContent = "엔진에 연결하지 못했다 — 이 화면은 start.command(맥) · start.bat(윈도)로 연 콘솔에서 동작한다.\n파이썬 없이 보려면 demo/standalone/ 의 단독판을 연다.";
+  }
+})();
+</script>
+</body>
+</html>

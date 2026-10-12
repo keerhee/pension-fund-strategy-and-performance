@@ -42,7 +42,7 @@ label{font-size:13px;color:var(--muted);display:block;margin-top:8px}input,selec
 <body>
 <header>
   <h1>채점 콘솔 — 자율주행 포트폴리오 (예시 MVP)</h1>
-  <div class="sub">BAF.60080 특강 XS 팀 프로젝트 · 가상 기금 KFP · 평가 구간 2022.9~2025.7 · 분기 말 결정 12회</div>
+  <div class="sub">BAF.60080 특강 XS 팀 프로젝트 · 가상 기금 KFP · 평가 구간 2022.9~2025.7 · 분기 말 결정 12회 · <a href="/" style="color:#B7F34A">← 시연 화면 (중심)</a></div>
   <nav id="tabs"></nav>
 </header>
 <main id="main"></main>
@@ -141,12 +141,13 @@ async function recompute(){
 const TDESC = {T1:"새 폴더(실행 기록 없음)에서 README대로 첫 분기 실행",T2:"SPY 50% 배분안을 후보에 끼워 넣기",T3:"meta-reviewer가 파라미터 파일을 직접 고치게 하기",T4:"as_of 이후 데이터를 읽게 하기",T5:"과제 문서 §5 M8의 4인 투표 예제",T6:"같은 분기를 두 번 실행해 숫자 비교",T7:"한 분기의 trace로 입력 → CIO 결정까지 거슬러 가기",T8:"제출된 runs/에서 두 분기를 골라 다시 돌려 대조"};
 async function check(){
   const sc = S.selfcheck || [];
-  const rows = (sc.length?sc:Object.keys(TDESC).map(id=>({id,name:"",pass:null,detail:""}))).map(r=>`<tr><td><b>${r.id}</b></td><td>${esc(TDESC[r.id])}</td><td>${r.pass===null?'<span class="pill wait">미실행</span>':r.pass?'<span class="pill ok">통과</span>':'<span class="pill no">실패</span>'}</td><td class="small">${esc(r.detail)}</td><td class="small">${r.sec??""}${r.sec!=null?"초":""}</td></tr>`).join("");
+  const rows = (sc.length?sc:Object.keys(TDESC).map(id=>({id,name:"",pass:null,detail:""}))).map(r=>`<tr><td><b>${r.id}</b></td><td>${esc(TDESC[r.id])}</td><td>${r.pass===null?'<span class="pill wait">미실행</span>':r.pass?'<span class="pill ok">통과</span>':'<span class="pill no">실패</span>'}</td><td class="small">${esc(r.detail)}</td><td class="small">${r.sec??""}${r.sec!=null?"초":""}</td><td><button class="btn" onclick="runOne('${r.id}')" ${STATIC?"disabled":""}>▶ 이것만</button></td></tr>`).join("");
   $("#main").innerHTML = `<div class="card"><h3>공개 점검 T1~T8 — 팀이 제출 전에 돌리고, 채점자가 똑같이 다시 돌린다</h3>
     <p class="small">모든 점검은 임시 복사본에서 돈다. 제출 폴더는 바뀌지 않는다. 판단 문장(LLM 부분)은 정확히 같은지 보지 않고, 코드로 계산한 숫자만 정확히 대조한다.</p>
     <button class="btn alt" id="sc" onclick="runCheck()" ${STATIC?"disabled":""}>T1~T8 전체 실행 (약 10초)</button>
-    <table style="margin-top:12px"><tr><th>#</th><th>방법</th><th>결과</th><th>내용</th><th>시간</th></tr>${rows}</table></div>`;
+    <table style="margin-top:12px"><tr><th>#</th><th>방법</th><th>결과</th><th>내용</th><th>시간</th><th></th></tr>${rows}</table></div>`;
 }
+async function runOne(id){ const r=await api("/api/selfcheck",{only:[id]}); const cur=(S.selfcheck&&S.selfcheck.length)?S.selfcheck:Object.keys(TDESC).map(k=>({id:k,name:"",pass:null,detail:""})); S.selfcheck=cur.map(x=>x.id===id?r[0]:x); check(); }
 async function runCheck(){ const b=$("#sc"); busy(b,true); const r=await api("/api/selfcheck",{}); S.selfcheck=r; check(); }
 
 async function live(){
