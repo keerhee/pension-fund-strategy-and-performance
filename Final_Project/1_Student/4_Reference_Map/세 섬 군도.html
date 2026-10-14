@@ -1,0 +1,829 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>세 섬 군도</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: 세 섬(강의·자율운용·NeoQuant)을 다리로 잇는 3D 군도 + 섬 탭 + 투어 카드 + 섬별 색인. 낮=라이트, 밤=다크 */
+:root{
+  --bg:#EBEFEE; --ink:#1C2428; --muted:#5A666A; --panel:#FCFBF7; --line:#D5DCDA;
+  --accent:#2E6E73; --chip:#E2E8E6;
+  --f-display:"Do Hyeon","IBM Plex Sans KR",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E151B; --ink:#E4EBEC; --muted:#97A4A8; --panel:#152027; --line:#26353D;
+  --accent:#7CC4C4; --chip:#1C2A31; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E151B; --ink:#E4EBEC; --muted:#97A4A8; --panel:#152027; --line:#26353D;
+  --accent:#7CC4C4; --chip:#1C2A31; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px;padding-block:28px 56px;display:grid;gap:20px}
+header{display:grid;gap:8px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(32px,5.6vw,56px);line-height:1.05;margin:0;text-wrap:balance}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{margin:0;max-width:66ch;color:var(--muted)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tabs button{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer;display:flex;gap:8px;align-items:center}
+.tabs button::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--dot,var(--muted))}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.stage{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--chip)}
+#scene{display:block;width:100%;height:min(70vh,680px);min-height:400px;touch-action:none;cursor:grab}
+#scene:active{cursor:grabbing}
+.tools{position:absolute;top:12px;right:12px;display:flex;gap:6px}
+.stage.journey .tools{top:68px}
+.stage.journey .hint{display:none}
+.tools button,.nav button{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer}
+button:focus-visible,.stop:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hint{position:absolute;left:12px;top:12px;font-size:12px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.card{position:absolute;left:16px;bottom:16px;width:min(490px,calc(100% - 32px));background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:grid;gap:10px;box-shadow:0 10px 30px rgb(0 0 0 / .14)}
+.card-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.badge{font-family:var(--f-mono);font-size:12px;background:var(--ink);color:var(--panel);border-radius:8px;padding:3px 9px;font-variant-numeric:tabular-nums}
+.zone{font-weight:700;font-size:13px}
+.isle{font-size:12px;color:var(--muted)}
+.card h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:25px;line-height:1.15;text-wrap:balance}
+.claim{margin:0;font-weight:500}
+.ep{margin:0;font-size:13px;color:var(--muted)}
+.tex{min-height:30px;overflow-x:auto;color:var(--ink);font-size:15px}
+.bridge{margin:0;display:grid;grid-template-columns:5.5em 1fr;gap:4px 10px;font-size:13px}
+.bridge dt{font-weight:700;color:var(--accent)}
+.bridge dd{margin:0;min-width:0}
+.pass{border:1.5px dashed var(--accent);border-radius:10px;padding:8px 10px;display:grid;gap:4px}
+.pass-h{display:flex;justify-content:space-between;gap:8px;font-weight:700;font-size:13px;color:var(--accent)}
+.pass-h small{font-weight:500;color:var(--muted)}
+.pass table{border-collapse:collapse;font-size:12.5px;width:100%}
+.pass th{text-align:left;font-weight:500;color:var(--muted);padding:1px 10px 1px 0;white-space:nowrap;vertical-align:top}
+.pass td{padding:1px 0}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-size:12px;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:2px 9px}
+.nav{display:flex;gap:8px;justify-content:space-between;align-items:center}
+.nav .count{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.index{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px}
+.icol{display:grid;gap:12px;align-content:start}
+.icol>h3{margin:0;font-family:var(--f-display);font-weight:400;font-size:24px;display:flex;gap:10px;align-items:baseline;border-bottom:3px solid var(--ic);padding-bottom:4px}
+.icol>h3 small{font-family:var(--f-body);font-size:13px;color:var(--muted)}
+.zgrp{display:grid;gap:2px}
+.zgrp h4{margin:0;font-size:13px;color:var(--zc);display:flex;justify-content:space-between}
+.stop{all:unset;cursor:pointer;display:grid;grid-template-columns:56px 1fr;gap:8px;padding:4px 6px;border-radius:8px;font-size:14px}
+.stop:hover,.stop[aria-current="true"]{background:var(--chip)}
+.stop b{font-family:var(--f-mono);font-weight:500;font-size:12px;color:var(--muted);padding-top:2px}
+.stop span{min-width:0}
+.stop i{font-style:normal;color:var(--muted);font-size:13px}
+.jbar{position:absolute;left:12px;right:12px;top:12px;display:flex;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px;box-shadow:0 6px 18px rgb(0 0 0 / .14);max-width:460px}
+.jbar button{font:inherit;font-size:15px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer;min-height:40px}
+.jbar button.go{background:#C2563E;border-color:#C2563E;color:#fff;font-weight:700}
+.jbar button:disabled{opacity:.4;cursor:default}
+.jb-mid{flex:1;min-width:0;display:grid;line-height:1.25}
+.jb-mid b{font-family:var(--f-mono);font-size:11.5px;font-weight:500;color:var(--muted)}
+.jb-mid span{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ablock{border-left-color:#B8862E}
+.ag-pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.ag-pick button{font:inherit;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:12px;padding:10px 12px;cursor:pointer;display:grid;gap:2px;border-left:5px solid var(--ac)}
+.ag-pick button[aria-pressed="true"]{outline:2px solid var(--ac);outline-offset:1px}
+.ag-pick b{font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--muted)}
+.ag-pick span{font-weight:700}.ag-pick small{color:var(--muted)}
+.ag-steps{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.ag-steps button{all:unset;cursor:pointer;display:grid;grid-template-columns:28px 92px 1fr;gap:10px;align-items:start;width:100%;box-sizing:border-box;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel);font-size:14px}
+.ag-steps button:focus-visible{outline:2px solid var(--accent)}
+.ag-steps button[aria-current="true"]{border-color:#B8862E;box-shadow:0 0 0 2px color-mix(in srgb,#B8862E 35%,transparent)}
+.ag-steps .no{font-family:var(--f-mono);font-size:12px;color:var(--muted);padding-top:2px}
+.ag-steps .st{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:2px 8px;border:1px solid var(--line);background:var(--sc);color:#1c2428;text-align:center}
+.ag-steps .tx{min-width:0}.ag-steps .tx b{display:block}.ag-steps .tx small{color:var(--muted)}
+.ag-steps li.done .no{color:var(--accent)}
+@media (max-width:560px){.ag-steps button{grid-template-columns:24px 1fr}.ag-steps .st{grid-column:2;justify-self:start}.ag-steps .tx{grid-column:2}}
+.jblock{background:var(--chip);border-radius:10px;padding:8px 10px;display:grid;gap:4px;border-left:4px solid var(--accent)}
+.jh{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.jm{margin:0;font-weight:700;font-size:14px}
+.jg{margin:0;font-size:13px;color:var(--muted)}.jg b{color:var(--ink)}
+.passport{display:grid;gap:14px}
+.pp-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.pp-head h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:28px}
+.pp-head p{margin:0;color:var(--muted);max-width:60ch}
+.pp-actions{display:flex;gap:8px}
+.pp-actions button{font:inherit;font-size:14px;border-radius:999px;padding:7px 16px;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:var(--panel)}
+.pp-actions #j-exit{background:var(--panel);color:var(--ink);border-color:var(--line)}
+.chapters{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.chap{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:12px 14px;display:grid;gap:8px;align-content:start}
+.chap-h{display:grid;grid-template-columns:44px 1fr;gap:10px;align-items:center}
+.stamp{width:44px;height:44px;border-radius:50%;border:2px dashed var(--line);display:grid;place-items:center;font-family:var(--f-display);font-size:18px;color:var(--muted);transform:rotate(-8deg)}
+.chap.done .stamp{border:3px double var(--sc);color:var(--sc);background:color-mix(in srgb,var(--sc) 10%,transparent)}
+.chap-h b{display:block;font-size:15px}.chap-h small{color:var(--muted);font-family:var(--f-mono);font-size:11.5px}
+.jsteps{display:grid;gap:2px;margin:0;padding:0;list-style:none}
+.jsteps button{all:unset;cursor:pointer;display:grid;grid-template-columns:18px 1fr;gap:6px;font-size:13px;padding:3px 4px;border-radius:6px}
+.jsteps button:hover,.jsteps button[aria-current="true"]{background:var(--chip)}
+.jsteps button:focus-visible{outline:2px solid var(--accent)}
+.jsteps i{font-style:normal;color:var(--muted)}
+.jsteps button.got i{color:var(--accent)}
+footer{font-size:12px;color:var(--muted);display:grid;gap:4px}
+@media (max-width:760px){
+  #scene{height:58vh;min-height:330px}
+  .stage{overflow:visible;border-radius:14px}
+  .card{position:static;width:auto;margin:0;border-radius:0 0 14px 14px;border-width:1px 0 0;box-shadow:none}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">교육 · 운용 · 알파 엔진</div>
+    <h1>세 섬 <em>군도</em></h1>
+    <p class="lede">왼쪽은 연기금 강의 섬, 오른쪽은 NeoQuant 섬, 아래 가운데가 둘을 잇는 자율운용 섬, 위쪽 작은 섬은 매주 지식이 들어오는 지식 항구입니다. 16주 동안 사람이 해 온 IC는 자율운용 섬에서 에이전트가 맡고, 검증을 통과한 알파는 NeoQuant 섬에서 다리로 건너오며, 새 지식은 항구에서 판독을 거쳐 배편으로 세 섬에 실려 갑니다. 섬 이름을 누르면 그 섬으로 갑니다.</p>
+    <div class="tabs" id="tabs" role="group" aria-label="섬 선택"></div>
+  </header>
+
+  <section class="stage" aria-label="군도 지도">
+    <canvas id="scene" aria-label="세 섬 군도 3D 지도. 드래그해 돌려 볼 수 있습니다."></canvas>
+    <div class="hint" id="hint">드래그로 회전 · 가까이 가면 건물 이름이 보임</div>
+    <div class="jbar abar" id="abar" hidden><button id="ab-prev" aria-label="이전 단계">‹</button><div class="jb-mid"><b id="ab-step"></b><span id="ab-name"></span></div><button id="ab-next" class="go" aria-label="다음 단계">다음 단계 ›</button></div>
+    <div class="jbar" id="jbar" hidden><button id="jb-prev" aria-label="이전 미션">‹</button><div class="jb-mid"><b id="jb-step"></b><span id="jb-name"></span></div><button id="jb-next" class="go" aria-label="다음 미션">다음 ›</button></div>
+    <div class="tools">
+      <button id="zin" aria-label="확대">＋</button>
+      <button id="zout" aria-label="축소">－</button>
+    </div>
+    <article class="card" id="card" aria-live="polite">
+      <div class="jblock ablock" id="c-agenda" hidden><div class="jh"><span id="a-step"></span><span id="a-stage"></span></div><p class="jm" id="a-text"></p><p class="jg">남는 것 · <b id="a-result"></b></p><p class="jg" id="a-branch"></p></div>
+      <div class="jblock" id="c-journey" hidden><div class="jh"><span id="j-step"></span><span id="j-ch"></span></div><p class="jm" id="j-mission"></p><p class="jg">얻는 것 · <b id="j-gain"></b></p></div>
+      <div class="card-top"><span class="badge" id="c-code"></span><span class="zone" id="c-zone"></span><span class="isle" id="c-isle"></span></div>
+      <h2 id="c-title"></h2>
+      <p class="claim" id="c-claim"></p>
+      <div class="tex" id="c-tex"></div>
+      <dl class="bridge" id="c-bridge" hidden><dt>건너는 것</dt><dd id="c-cross"></dd><dt>통행 조건</dt><dd id="c-toll"></dd><dt>돌아오는 것</dt><dd id="c-back"></dd></dl>
+      <div class="pass" id="c-pass" hidden><div class="pass-h"><span id="c-pass-title">통행증 견본</span><small id="c-pass-iss"></small></div><table><tbody id="c-pass-rows"></tbody></table></div>
+      <p class="ep" id="c-ep"></p>
+      <div class="chips" id="c-parts"></div>
+      <div class="nav">
+        <button id="prev" aria-label="이전 건물">‹ 이전</button>
+        <span class="count" id="c-count"></span>
+        <button id="next" aria-label="다음 건물">다음 ›</button>
+      </div>
+    </article>
+  </section>
+
+  <section class="passport" id="passport" aria-label="신입사원 여정">
+    <div class="pp-head"><div><h2>신입사원 여정</h2><p>입사 첫날 항구에 내려 석 달 동안 네 섬을 도는 길입니다. 들르는 곳마다 미션을 하나씩 끝내고 도장을 받습니다.</p></div>
+      <div class="pp-actions"><button id="j-start">여정 시작</button><button id="j-exit" hidden>여정 끝내기</button></div></div>
+    <div class="chapters" id="chapters"></div>
+  </section>
+
+  <section class="passport" id="agenda" aria-label="안건 처리 과정">
+    <div class="pp-head"><div><h2>안건 처리 과정</h2><p>안건 하나가 제출되고 접수되어 처리되기까지 지나는 곳을 따라갑니다. 봉투가 섬과 다리를 건너 움직이고, 단계마다 무엇을 하는지와 무엇이 기록으로 남는지를 보여 줍니다.</p></div>
+      <div class="pp-actions"><button id="a-start">처리 시작</button><button id="a-exit" hidden>끝내기</button></div></div>
+    <div class="ag-pick" id="ag-pick" role="group" aria-label="안건 고르기"></div>
+    <ol class="ag-steps" id="ag-steps"></ol>
+  </section>
+
+  <section class="index" id="index" aria-label="섬별 색인"></section>
+  <footer>
+    <span>강의 섬: 2026 가을학기 과정 저장소 순서 · 자율운용 섬: XS 특강 MVP(에이전트 7개)와 2026-08-22 강의 시뮬레이션 결과 · NeoQuant 섬: formal method edition v1.1</span>
+    <span>NeoQuant 섬의 교차 자산 검증·포트폴리오·IC 리포트·실시간 모니터링·RL 실거래는 확장 설계(결과 수치 없음) · NeoQuant 카드의 수식은 개념을 설명하는 일반형으로 논문 표기와 다를 수 있음 · 실증 결과는 동결 전 · 리서치 도서관과 알파 다리는 구상 단계 · 배편: 지식 항구(Smarter Weekly 화면 구조 기반, a·b·c·d 정의는 화면 문구로 추정) · 다리 위 화물: 섬 색 상자는 건너는 것, 청록·보라 상자는 돌아오는 피드백</span>
+  </footer>
+</div>
+
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']]},svg:{fontCache:'global'},
+  startup:{typeset:false,ready(){MathJax.startup.defaultReady();MathJax.startup.promise.then(()=>renderTex())}}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ================= data ================= */
+const ISLANDS=[
+ {id:'lec',name:'연기금 강의 섬',short:'강의',sub:'BAF.60080 · 16주',center:[-44,16],r:24,land:'#B9CF8E',color:'#D9973A',road:'hub',hub:[1,-1],
+  zones:{plaza:{name:'기금 광장',color:'#D9973A'},work:{name:'배분 공방',color:'#C2563E'},water:{name:'부채·목표 저수지',color:'#3E7FB0'},tower:{name:'관제탑',color:'#6A5BA8'},street:{name:'자산군 거리',color:'#3F8A5C'},light:{name:'TPA 등대',color:'#B8862E'},shore:{name:'특별세션 해안',color:'#4F8F94'}},
+  stops:[
+ {code:'W01·M1',zone:'plaza',name:'기금 정문',topic:'시장 개요와 자산소유자',claim:'기금의 성격이 운용자율권의 폭을 정한다',tex:'',ep:'GPFG와 CPPIB 비교 · 운용자율권 4차원',parts:['본편','프라이머','IC 케이스','실습'],pos:[-11,1],type:'hallP',c:'#F1E3C2'},
+ {code:'W02·M2',zone:'plaza',name:'알파 시장',topic:'자산배분과 CAPM',claim:'벤치마크가 기금 수익 변동의 99%를 설명한다',tex:'\\alpha = R_p - \\left[r_f + \\beta\\,(R_m - r_f)\\right]',ep:'노르웨이 2008년 −3.37%p와 Ang·Goetzmann·Schaefer(2009) 보고서',parts:['본편','프라이머','IC 케이스','실습'],pos:[-6.5,0.5],type:'market',c:'#E9B04A'},
+ {code:'W03·M3',zone:'plaza',name:'CMA 기상대',topic:'연기금 모델과 CMA',claim:'위험예산은 배분보다 입력값에 더 민감하다',tex:'RC_i = \\frac{w_i\\,(\\Sigma w)_i}{\\sigma_p}',ep:'σ 출처만 바꿔도 60/40 주식 위험기여 87.6% → 98.2%',parts:['본편','프라이머','IC 케이스','실습'],pos:[-10,6],type:'observatory',c:'#E6E1D6'},
+ {code:'W04·M4',zone:'work',name:'기금위원회 회관',topic:'MVO와 공분산 추정',claim:'목표비중을 올려도 매도 속도는 시장이 받아줄 만큼만',tex:'w^{*} = \\frac{1}{\\delta}\\,\\Sigma^{-1}\\mu',ep:'2026.5.28 기금위 국내주식 목표 14.9% → 20.8%',parts:['본편','프라이머','기금운용위 케이스','실습'],pos:[-4.5,-10],type:'hallP',c:'#E9D2C2'},
+ {code:'W04·M5',zone:'work',name:'BL 망원경',topic:'블랙-리터만(Black-Litterman)',claim:'균형수익률에서 출발해 뷰의 확신만큼만 기운다',tex:'\\pi = \\delta\\,\\Sigma\\,w_{mkt}',ep:'Black(1984) Goldman Sachs 합류 · Ω 정직성 판정',parts:['본편','IC 케이스','실습'],pos:[0,-13],type:'observatory',c:'#D9DEE6'},
+ {code:'W05·M6',zone:'work',name:'위험 저울',topic:'리스크 패리티와 HRP',claim:'60/40 포트폴리오 위험의 93%는 주식에서 나온다',tex:'RC_i = \\frac{\\sigma_p}{N}\\quad(i=1,\\dots,N)',ep:'Bridgewater All Weather · Dalio',parts:['본편','프라이머','IC 케이스','팀 과제'],pos:[3,-9],type:'scale',c:'#C2563E'},
+ {code:'W06·M7',zone:'water',name:'LDI 저수지',topic:'LDI(부채연계투자)',claim:'부채 L을 헤지 수단 H로 b단위 사서 막는다',tex:'b = \\frac{D_L\\,L}{D_H},\\qquad w_{hedge} = \\frac{b}{A}',ep:'2022년 영국 LDI 위기 · Duration Gap',parts:['본편','프라이머','IC 케이스','Colab 실습'],pos:[10,-9.5],type:'reservoir',c:'#8FB9D6'},
+ {code:'W06·M8',zone:'water',name:'GBI 학교',topic:'GBI(목표기반투자)',claim:'은퇴 목표는 금액이 아니라 연금 흐름으로 정의한다',tex:'E_{risky} = m\\,(A - F)',ep:'Martellini·Milhau retirement bond · CPPI',parts:['본편','IC 케이스 2종','Colab·몬테카를로 실습'],pos:[14.5,-5],type:'school',c:'#F0E2C8'},
+ {code:'W07·M9',zone:'work',name:'글라이드패스 언덕',topic:'동적 포트폴리오와 장기투자',claim:'젊을 때의 인적자본이 높은 주식 비중을 정당화한다',tex:'w^{*} = \\frac{\\mu - r}{\\gamma\\,\\sigma^{2}}',ep:'Samuelson·Merton 1969 퍼즐 · 보강 TDF·동적 배분 모델·강화학습',parts:['본편 I·II','프라이머','IC 케이스','팀 과제','보강 3종'],pos:[-4,-5.5],type:'house',c:'#F3E7CF'},
+ {code:'W07·SS2',zone:'shore',name:'리밸런싱 풍차',topic:'특별세션 · 리밸런싱 프리미엄',claim:'분산 수익(diversification return)이 리밸런싱의 원천이다',tex:'DR = \\tfrac12\\Big(\\sum_i w_i\\sigma_i^{2} - \\sigma_p^{2}\\Big)',ep:'Shannon의 악마 100 → 126.6 · 2008년',parts:['특별세션 본편','IC 케이스 2종','프라이머'],pos:[-18.5,-5],type:'windmill',c:'#EFE6D2'},
+ {code:'W09·M10',zone:'tower',name:'위험 관제탑',topic:'위험관리와 성과평가',claim:'VaR가 보지 못하는 꼬리를 CVaR로, 수익은 Brinson으로 나눈다',tex:'\\mathrm{VaR}_\\alpha = \\inf\\{\\ell : P(L>\\ell) \\le 1-\\alpha\\}',ep:'부분가법성 반례 · KS-PME',parts:['본편','프라이머','IC 케이스 2종','실습'],pos:[2,1],type:'tower',c:'#D7D2E8'},
+ {code:'W10·M11',zone:'street',name:'퀀트 공장',topic:'주식 퀀트 모델',claim:'NPS 해외주식 수익을 팩터로 분해하면 알파는 작다',tex:'\\text{bet} = \\max(0,\\;2p-1)',ep:'NPS +82.44% 분해 예제',parts:['본편','프라이머','IC 케이스'],pos:[6.5,6],type:'factory',c:'#D8CFC0'},
+ {code:'W11·M12',zone:'street',name:'채권 은행',topic:'채권 투자',claim:'2022년 금리 425bp 상승이 듀레이션 손실로 번졌다',tex:'\\frac{\\Delta P}{P} \\approx -D\\,\\Delta y',ep:'PIMCO −14% · KIC −14.4%, NPS −8.2%',parts:['본편','프라이머','IC 케이스'],pos:[10,9],type:'hallP',c:'#E3E8EE'},
+ {code:'W12·M13',zone:'street',name:'팩터 연구소',topic:'팩터 투자',claim:'팩터는 오래 버틸 각오가 있어야 받는 보상이다',tex:'F = R_{top} - R_{bottom}',ep:'Value의 겨울과 부활 · 멀티팩터 Sharpe',parts:['본편','프라이머','IC 케이스'],pos:[5,11],type:'house',c:'#E7EFE2'},
+ {code:'W13·M14',zone:'street',name:'CTA 풍향탑',topic:'글로벌 매크로와 CTA',claim:'위기 국면에서 보험처럼 작동한 전략군',tex:'w_i = \\mathrm{sign}(r_i)\\,\\frac{c}{\\sigma_i}',ep:'Soros 1992 · 거북이 트레이더 · SG Trend 2022 +27.4%',parts:['본편','프라이머','IC 케이스'],pos:[13,4],type:'vane',c:'#6FA37E'},
+ {code:'W13·SS1',zone:'shore',name:'환헤지 세관',topic:'특별세션 · 최적 통화 헤지',claim:'최적 헤지비율은 자산과 통화의 공분산이 정한다',tex:'h^{*} = 1 + \\frac{\\mathrm{Cov}(R_a,R_c)}{\\mathrm{Var}(R_c)}',ep:'NPS와 GPFG의 환헤지 정책 비교',parts:['특별세션 본편','IC 케이스 2종','프라이머'],pos:[-3,18],type:'customs',c:'#D7E6E6'},
+ {code:'W14·M15',zone:'street',name:'대체투자 농장',topic:'대체투자와 비유동성',claim:'평활화된 수익률은 위험을 낮게 보이게 한다',tex:'\\mathrm{TVPI} = \\frac{\\text{Distributions} + \\text{NAV}}{\\text{Paid-in}}',ep:'Yale 모델 · RJR Nabisco · Hilton',parts:['본편','프라이머','IC 케이스'],pos:[12.5,13],type:'barn',c:'#B7533F'},
+ {code:'W14·SS3',zone:'shore',name:'세금 사무소',topic:'특별세션 · 세금 효율 투자',claim:'세율에 따라 지방채가 이기는 구간이 따로 있다',tex:'TEY = \\frac{r_{muni}}{1-\\tau}',ep:'Muni Puzzle · 손실 수확(tax-loss harvesting)',parts:['특별세션 본편','IC 케이스 3종','프라이머'],pos:[-14,12],type:'house',c:'#E9E1F0'},
+ {code:'W15·M16',zone:'light',name:'TPA 등대',topic:'TPA: 설계와 성과평가',claim:'기준 포트폴리오 대비 부가가치로 성적을 매긴다',tex:'\\text{Added Value} = R_{fund} - R_{RP}',ep:'CPPIB · NZ Super Wiseman · 종강, W16 캡스톤 발표',parts:['본편','프라이머','IC 케이스'],pos:[20,-1],type:'lighthouse',c:'#F2F0EA'}
+ ]},
+ {id:'sda',name:'자율운용 섬',short:'자율',sub:'Self-Driving Asset Management',center:[0,-30],r:22,land:'#BFCBA0',color:'#2E6E73',road:'ring',loopTo:1,
+  zones:{bridge:{name:'연결',color:'#6B7A3E'},gov:{name:'거버넌스',color:'#7A5AA6'},explore:{name:'탐색',color:'#5B6BB5'},input:{name:'입력',color:'#3E7FB0'},build:{name:'구성',color:'#C2563E'},vote:{name:'비평·투표',color:'#B8862E'},human:{name:'사람의 결정',color:'#2E6E73'},agenda:{name:'안건 처리',color:'#B8862E'},improve:{name:'자기개선',color:'#6A5BA8'}},
+  stops:[
+ {zone:'bridge',name:'강의 다리',pass:[['방법 · 주차','CMA 추정 · W03'],['스킬','cma-builder'],['검산 기준','60/40 주식 위험기여 87.6% 재현'],['데이터','W03 실습 패키지 (2016-09~2026-08)'],['발급처','강의 섬 검산소'],['유효기간','강의본 개정 전까지']],topic:'여섯 층 ↔ 16주 교재',claim:'주차별 방법이 에이전트 스킬 명세로 바뀌어 건너간다 — 느리고 적고, 이미 검증된 것',tex:'',ep:'다리는 두 섬 사이의 계약이다 · 정해진 꾸러미, 입구의 검사, 반대 방향 피드백으로 이루어진다',cross:'W03→cma-builder · W04 M4·M5→alloc-mvo·alloc-bl · W05→alloc-riskparity · W09→meta-reviewer · W01·W15 IPS→ips-guardian · 매주 IC의 판단 기준→ic-critic 채점표',toll:'재현성 — 누가 돌려도 같은 숫자가 나와야 한다(_reference 구현)',back:'운용 결과가 다시 강의 케이스가 된다 · 첫 사례: 기각된 MVO의 실현수익이 가장 높았다 → XS IC 안건',parts:['XS 특강 강의본','XS IC 케이스','Ang·Azimbayev·Kim(2026)'],pos:[-12,12],type:'tollhouse',c:'#DCD9C2'},
+ {zone:'gov',name:'IPS 의사당',topic:'ips-guardian',claim:'IPS가 전 과정을 제약한다 — 사람 운용역을 규율하던 바로 그 문서다',tex:'N_{\\text{eff}} = \\frac{1}{\\sum_i w_i^{2}} \\;\\ge\\; 4.0',ep:'행동을 바꾸려면 코드가 아니라 ips.md를 고친다 · 하한을 3.5로 낮춰도 이번 결론은 그대로',parts:['IPS 해석','위반 판정','7.4항 킬스위치'],pos:[-2,15],type:'capitol',c:'#EDE6F3'},
+ {zone:'bridge',name:'알파 다리',pass:[['CX 번호 · 원장','CX41 · ledger v51 (2026-07-27)'],['백서','알파 백서 md 1편'],['사다리','통과 단계 기록'],['클론 검사','기존 슬리브와의 최대 상관 < 기준'],['메커니즘 패밀리','패밀리명'],['용량 · 비용','추정 용량 · 펀딩비 · 거래비용'],['발급처','NeoQuant 원장 보관소'],['유효기간','메타 리뷰어의 소멸 판정 전까지']],topic:'NeoQuant → 탐색·구성 층',claim:'검증을 통과한 알파 슬리브가 새 배분 후보로 건너온다 — 빠르고 많고, 불확실한 것',tex:'',ep:'NeoQuant 대상은 크립토 무기한선물이라 연기금 IPS와 맞지 않는다 — 교차 자산 검증장에서 주식·채권선물·FX·원자재 전략이 게이트를 통과하면 그 전략은 IPS 허용 자산군이라 바로 심사 대상이 된다 · 크립토 전략은 IPS에 대안 알파 슬리브 조항(상한·레버리지·유동성)을 두거나, 포지션 대신 방법(팩터 구성법·오버레이 규칙)만 건너게 한다',cross:'알파 슬리브 꾸러미 — point-in-time 수익률 시계열 · 백서 · 메커니즘 패밀리 · 클론 검사 결과 · 사다리 통과 단계 · 용량·비용 추정',toll:'두 겹 — NeoQuant 쪽 안전 발견 사다리 통과, 자율운용 쪽 ips-guardian 적격 심사(비중 한도·유동성·허용 자산군)',back:'메타 리뷰어가 측정한 실현 성과가 NeoQuant 원장으로 돌아가 알파 소멸(decay)을 감지하고 퇴출 근거가 된다',parts:['구상','IPS 조항 필요'],pos:[12,12],type:'tollhouse',c:'#DCD9C2'},
+ {zone:'agenda',name:'안건 접수처',topic:'제출 · 접수 · 처리',claim:'어느 섬에서 올라온 안건이든 이 창구 한 곳으로 들어와 같은 절차를 밟는다',tex:'',ep:'안건 종류: 배분 변경(구성 층) · 슬리브 편입(알파 다리) · IPS 개정(리서치 도서관) · 지시문 수정(메타 리뷰어) · 운영 개선(지식 항구) · 지도 위 봉투 색: 흰색 제출 → 노랑 접수·사전 검토 → 파랑 심의 → 초록 의결',passTitle:'안건 처리 절차',passNote:'견본 AG-2026-031 · 신규 슬리브 편입(주식 팩터, 교차 자산 검증 통과) · 예시',pass:[['1 제출','IC 리포트실·리서치 도서관·메타 리뷰어·지식 항구가 안건서를 낸다'],['2 접수','접수번호 부여 · 필수 첨부(근거 백서·통행증·위험 영향) 형식 검사 · 누락 시 반려'],['3 사전 검토','ips-guardian 적격 판정 — 부적격이면 상정하지 않고 사유를 회신'],['4 상정·심의','IC 회의실 · ic-critic 네 관점 표결과 반대 의견'],['5 의결','CIO — 승인 · 조건부 승인 · 부결 · 보류'],['6 통보·이행','승인분만 실행 · 지시문 수정은 IPS 7.4항에 따라 사람 승인 뒤 반영'],['7 기록·사후 점검','안건 대장에 기록 · 메타 리뷰어가 예측 대 실현을 추적해 다음 안건의 근거로']],parts:['안건 대장','반려 사유 회신','견본 AG-2026-031'],pos:[5,8.5],type:'registry',c:'#F3E7CF'},
+ {zone:'explore',name:'리서치 도서관',topic:'탐색 층 · 리서치 에이전트',claim:'시황·새 리서치·새 논문을 읽고 새 구성법과 IPS 개정안을 올린다',tex:'',ep:'MVP에서는 생략한 층 · 팀 프로젝트의 확장 과제로 둠 · IPS 개정안은 안건으로 접수처에 제출된다',parts:['리서치 에이전트','IPS 개정 제안','구상'],pos:[16,3],type:'library',c:'#E4E6F2'},
+ {zone:'input',name:'CMA 기상대',topic:'cma-builder',claim:'CMA는 크게 틀렸다 — 평균 절대오차 6.85%p',tex:'\\mathrm{MAE} = \\frac{1}{N}\\sum_{i=1}^{N} \\big|\\hat\\mu_i - \\mu_i^{\\text{real}}\\big|',ep:'금은 18.2%p 빗나감 · 성과가 나쁘지 않았던 건 예측이 맞아서가 아니라 제약이 분산을 강제했기 때문 (W03)',parts:['기대수익률','공분산','cma.json'],pos:[15,-6],type:'observatory',c:'#E3E8EE'},
+ {zone:'build',name:'MVO 공방',topic:'alloc-mvo',claim:'실현수익 8.58%로 가장 높았지만 분산 요건 위반으로 자동 기각',tex:'w^{*} = \\frac{1}{\\delta}\\,\\Sigma^{-1}\\mu',ep:'유효 종목 수 3.93 < 4.0 · W04 M4의 코너해가 그대로 나옴 · 기대 5.93% · MDD −5.0%',parts:['W04 M4','자동 기각'],pos:[8,-13],type:'workshop',c:'#F0DEC4'},
+ {zone:'build',name:'BL 공방',topic:'alloc-bl',claim:'적격 판정을 받았지만 표결 22.50으로 밀렸다',tex:'\\pi = \\delta\\,\\Sigma\\,w_{mkt}',ep:'유효 종목 수 5.53 · 기대 2.33% · 실현 4.80% · MDD −10.3%',parts:['W04 M5','적격'],pos:[-1,-15.5],type:'workshop',c:'#EED4B8'},
+ {zone:'build',name:'리스크 패리티 저울',topic:'alloc-riskparity',claim:'유효 종목 수 9.92, 표결 35.96으로 채택',tex:'RC_i = \\frac{\\sigma_p}{N}\\quad(i=1,\\dots,N)',ep:'기대 5.25% · 실현 7.43% · MDD −7.6% (W05)',parts:['W05','채택'],pos:[-10,-12],type:'scale',c:'#C2563E'},
+ {zone:'vote',name:'IC 회의실',topic:'ic-critic',claim:'적격 심사를 거친 후보만 네 관점으로 표결한다',tex:'\\text{규율의 대가} = 8.58\\% - 7.43\\% = 1.15\\%p',ep:'기각된 MVO가 실현수익은 가장 높았다 — XS IC 케이스의 안건 · 자산 11개, 학습 84개월·평가 35개월 · 안건 접수처에서 사전 검토를 통과한 안건만 상정된다',parts:['적격 심사','네 관점 표결','XS IC 케이스'],pos:[-16,-3],type:'hallN',c:'#EDE3CF'},
+ {zone:'human',name:'위험 계기탑',topic:'BaR · DaR',claim:'IC 보고서와 함께 믿음의 위험(BaR)과 결정의 위험(DaR)을 CIO 앞에 띄운다',tex:'',ep:'종합 덱에서 비전공자도 따라오도록 풀어 설명 · DaR는 Decision Governance 논문의 개념',parts:['BaR','DaR','종합 덱'],pos:[-9,4],type:'gauge',c:'#D6E2E2'},
+ {zone:'human',name:'CIO 집무실',topic:'사람의 결론',claim:'에이전트 IC가 올린 보고서를 받아 CIO 한 사람이 결론을 낸다',tex:'',ep:'팀 프로젝트 표준 설계 · 4명이 역할을 나눠 시스템 전체를 구축하고 최종 결정만 사람이 · 의결 결과는 안건 접수처로 돌아가 대장에 기록되고 제출처에 통보된다',parts:['팀 프로젝트','작동하는 MVP 제출'],pos:[-1,3],type:'cio',c:'#E8E0D0'},
+ {zone:'improve',name:'메타 리뷰어 관제탑',topic:'meta-reviewer',claim:'예측을 실현과 대조해 지시문 수정을 제안하지만, 자동 반영은 막혀 있다',tex:'e_i = \\hat\\mu_i - \\mu_i^{\\text{real}}',ep:'수정 제안 2건 · IPS 7.4항 킬스위치로 보류 (W09) · 수정 제안은 안건으로 접수처에 제출된다',parts:['예측 대 실현','지시문 수정 제안','킬스위치'],pos:[6,1],type:'tower',c:'#D7D2E8'}
+ ]},
+ {id:'neo',name:'NeoQuant 섬',short:'NQ',sub:'Research-to-Alpha Engine',center:[48,14],r:28,land:'#B4C19B',color:'#A3552A',road:'chain',
+  zones:{know:{name:'지식',color:'#5B6BB5'},propose:{name:'제안 공방',color:'#C0782E'},gate:{name:'조립·검증',color:'#A3552A'},verify:{name:'교차 자산 검증',color:'#3E7FB0'},pf:{name:'포트폴리오·IC',color:'#B8862E'},live:{name:'실시간 운용',color:'#C2563E'},book:{name:'실행·장부',color:'#2F7F78'},claim:{name:'증명·검증 계획',color:'#7A5AA6'}},
+  stops:[
+ {zone:'know',name:'지식 천문대',topic:'point-in-time GraphRAG',claim:'논문과 리서치를 그 시점에 알 수 있었던 것만 별자리로 엮는다',tex:'\\mathcal{G}_t = \\{\\, d \\in \\mathcal{D} : \\tau(d) \\le t \\,\\}',ep:'문서 d의 공개 시점 τ(d)가 t 이후면 그래프에 들어가지 않는다',parts:['논문 그래프','공개 시점 태그'],pos:[-21,-9],type:'observatory',stars:1,c:'#E3E0F0'},
+ {zone:'know',name:'PIT 데이터 창고',topic:'point-in-time 데이터 표면',claim:'모든 입력은 t 시점의 정보 집합 안에서만 꺼낸다',tex:'x_{i,t} \\in \\mathcal{F}_t \\;\\Rightarrow\\; \\hat f_{i,t} = g\\big(\\{x_{i,s}\\}_{s\\le t}\\big)',ep:'미래 정보 누설(look-ahead)을 데이터 계층에서 막는다',parts:['가격·거래량','펀딩비','미결제약정'],pos:[-16,-2],type:'warehouse',c:'#D9D2C2'},
+ {zone:'propose',name:'팩터 공방',topic:'1계층 · factor',claim:'팩터는 다음 기 수익의 횡단면 순위를 예측하는 함수다',tex:'\\mathrm{IC}_t = \\rho_{\\text{rank}}\\big(f_{i,t},\\, r_{i,t+1}\\big)',ep:'LLM이 실행 가능한 Python 모듈로 팩터를 제안',parts:['팩터 스트림'],pos:[-13,-13],type:'workshop',c:'#F0DEC4'},
+ {zone:'propose',name:'시그널 공방',topic:'2계층 · signal',claim:'예측과 방향을 분리한다 — 시그널은 팩터를 매매 방향으로 바꾼다',tex:'s_{i,t} = \\phi\\big(f_{i,t}\\big) \\in [-1,\\,1]',ep:'팩터 예측력과 매매 방향 결정을 다른 계층에 둔다',parts:['시그널 스트림'],pos:[-7,-18],type:'workshop',c:'#EED4B8'},
+ {zone:'propose',name:'전략 공방',topic:'3계층 · strategy',claim:'전략은 시그널을 포트폴리오 행동(비중·회전율)으로 옮긴다',tex:'w_{t} = \\pi\\big(s_{t}\\big),\\qquad \\textstyle\\sum_i |w_{i,t}| \\le L',ep:'factor–signal–strategy 계약은 제안 방법이 바뀌어도 유지',parts:['전략 스트림'],pos:[-1,-14],type:'workshop',c:'#EACBAA'},
+ {zone:'gate',name:'다양성 관문',topic:'패밀리 쿼터 · 신규성 · 아카이브 게이트',claim:'비슷한 알파는 관문에서 걸러 다양성을 사후에 지킨다',tex:'\\text{novelty}(f) = 1 - \\max_{g \\in \\mathcal{A}} \\big|\\rho(f, g)\\big|',ep:'AlphaSAGE의 GFlowNet(학습형 다양성)과 대비되는 사후 게이트 방식',parts:['패밀리 쿼터','신규성 점수','아카이브'],pos:[1,-7],type:'gate',c:'#C9B79C'},
+ {zone:'gate',name:'Composer 조립장',topic:'Structured Composer 6단계',claim:'결합 가중치를 학습하지 않고 고정된 6단계로 조립해 감사할 수 있게 한다',tex:'\\tilde f_k = f_k - \\textstyle\\sum_{j<k} \\beta_{kj} f_j,\\qquad |w_i| \\le c',ep:'방향 정렬·직교성·유계성을 증명 가능한 성질로 얻고, 적응 요소는 유계 오버레이 배분 하나뿐',parts:['6단계 고정 프로그램','유계 오버레이'],pos:[7,-12.5],type:'composer',c:'#D4D9E2'},
+ {zone:'gate',name:'안전 발견 사다리',topic:'Safe Discovery Ladder',claim:'후보 알파는 사다리를 한 칸씩 올라야 실행으로 넘어간다',tex:'P\\big(\\mu > 0 \\mid \\mathcal{D}\\big) \\ge 1-\\alpha',ep:'동반 논문(평가 게이트) · 다양성을 고려한 베이지안 알파 발견 · 통행증 발급 시험장',parts:['동반 논문','단계별 게이트','발급 시험'],pos:[13,-6],type:'ladder',c:'#B9C6D8'},
+ {zone:'verify',name:'교차 자산 검증장',topic:'크립토 밖에서도 통하는가',claim:'같은 리서치 엔진이 크립토와 다른 자산군에서도 모든 게이트를 통과하는 전략을 실제로 만들어 내는지 확인한다',tex:'\\text{pass}_a = \\frac{\\#\\{\\,s \\in S_a : s \\text{ clears } G_1,\\dots,G_K\\,\\}}{\\#S_a}',ep:'트랙마다 자산군 하나 — 크립토 무기한선물 · 주식 · 채권선물 · FX · 원자재 · 엔진은 그대로 두고 데이터 표면만 바꿔 다시 돌린다 · 판정: 자산군마다 전 게이트 통과 전략이 나오는가, 통과한 전략의 메커니즘 패밀리가 자산군 사이에서 일관적인가 · 검증 설계 단계, 결과 수치 없음',parts:['5개 자산군 트랙','전 게이트 통과율','패밀리 일관성','결과 대기'],pos:[19,-13],type:'proving',c:'#D9E3EC'},
+ {zone:'pf',name:'포트폴리오 조립소',topic:'통과한 전략을 한 포트폴리오로',claim:'게이트를 통과한 전략들을 위험 예산 안에서 하나의 포트폴리오로 묶는다',tex:'\\max_{w}\; w^{\\top}\\mu - \\tfrac{\\lambda}{2}\\, w^{\\top}\\Sigma w \\quad \\text{s.t.}\;\; |w_i| \\le c,\;\; \\textstyle\\sum_i |w_i| \\le L',ep:'전략 간 상관이 낮을수록 같은 위험으로 더 많이 담는다 · 슬리브별 한도와 레버리지 상한은 Composer의 유계성과 같은 원칙',parts:['위험 예산','슬리브 한도','레버리지 상한'],pos:[22,-4],type:'pie',c:'#F1E6CF'},
+ {zone:'pf',name:'IC 리포트실',topic:'에이전트가 쓰고 사람이 결재',claim:'포트폴리오 제안마다 IC 리포트를 자동으로 쓰고, 채택 여부는 사람이 정한다',tex:'',ep:'리포트 항목: 편입 전략과 근거 백서 · 통과한 게이트 · 기대 위험과 상관 · 스트레스 결과 · 반대 의견 · 승인·조건부·부결 선택지 · 작성된 리포트는 안건서가 되어 알파 다리를 건너 자율운용 섬 안건 접수처로 제출된다',parts:['IC 리포트 자동 작성','반대 의견 칸','사람 결재'],pos:[15.5,1],type:'icroom',c:'#EDE3CF'},
+ {zone:'live',name:'실시간 관제탑',topic:'실시간 모니터링',claim:'실거래 중인 포트폴리오를 실시간으로 지켜보고, 한도를 넘으면 자동으로 줄인다',tex:'\\mathrm{DD}_t = 1 - \\frac{V_t}{\\max_{s \\le t} V_s} \;\\ge\; \\bar d \;\\Rightarrow\; \\text{de-risk}',ep:'감시 항목: 손익 · 낙폭 · 펀딩비 · 슬리피지 · 전략별 실현 IC 소멸 · 데이터 지연 · 이상 신호는 원장으로 돌아가 슬리브 퇴출 근거가 된다',parts:['낙폭 킬스위치','IC 소멸 감시','알림'],pos:[21,7],type:'radar',c:'#E7D9D3'},
+ {zone:'live',name:'RL 실거래 데스크',topic:'강화학습 실행 에이전트',claim:'무엇을 살지는 게이트가 정하고, 언제·얼마나·어떻게 체결할지는 강화학습 에이전트가 정한다',tex:'\\pi_\\theta(a_t \\mid s_t),\\qquad r_t = \\Delta \\mathrm{PnL}_t - \\kappa\\, \\mathrm{cost}_t - \\eta\\, \\mathrm{risk}_t',ep:'상태: 호가·체결·펀딩비·보유 포지션 · 행동: 주문 크기·타이밍·지정가/시장가 · 보상에서 비용과 위험을 뺀다 · 행동 범위는 관제탑 한도 안으로 묶는다',parts:['정책 π','비용 차감 보상','한도 안 행동'],pos:[13,9.5],type:'rldesk',c:'#E3E8EE'},
+ {zone:'book',name:'실행 부두',topic:'크립토 무기한선물 실행',claim:'성과는 펀딩비와 거래비용을 뺀 뒤에 계산한다',tex:'\\mathrm{PnL}_{t+1} = w_t^{\\top} r_{t+1} - w_t^{\\top}\\mathrm{fund}_t - c\\,\\lVert \\Delta w_t \\rVert_1',ep:'대상: 크립토 무기한선물(perpetual futures) · 검증장에서 통과한 다른 자산군은 해당 거래소·브로커 연결로 확장',parts:['실행 백엔드','펀딩비','거래비용'],pos:[23,14],type:'pier',c:'#CFE0E2'},
+ {zone:'book',name:'CX 슬리브 마을',topic:'횡단면 알파 슬리브 CX1–CX41',claim:'알파는 슬리브 단위로 원장에 올리고, 복제본은 들이지 않는다',tex:'\\max_{j}\\, \\rho\\big(r_{\\text{new}},\\, r_{\\text{CX}_j}\\big) < \\bar\\rho',ep:'슬리브마다 메커니즘 패밀리·클론 검사·계보를 기록',parts:['41개 슬리브','클론 검사'],pos:[5,17],type:'cxvillage',c:'#E7E2D4'},
+ {zone:'book',name:'원장 보관소',topic:'book ledger · 백서',claim:'알파 하나를 들일 때마다 백서를 발행하고 원장 버전을 올린다',tex:'',ep:'2026-07-27 CX41 편입 · ledger v51 · 알파 다리의 통행증 발급소: 원장 기록이 곧 통행증',parts:['원장 v51','알파 백서','통행증 발급소'],pos:[-4,12.5],type:'archive',c:'#E2DAC8'},
+ {zone:'claim',name:'명제 도서관',topic:'명제 7개 · Claim Ledger',claim:'엔진이 지키는 성질을 명제와 증명으로 못박는다',tex:'',ep:'명제 7개와 따름정리, 증명 · 주장마다 근거를 적는 Claim Ledger',parts:['명제 7개','Claim Ledger'],pos:[-10,5],type:'library',c:'#ECE6F2'},
+ {zone:'claim',name:'사전등록 경기장',topic:'두 arm 사전등록',claim:'결과를 보기 전에 비교 설계를 먼저 공개한다',tex:'H_0:\\; SR_{\\text{Full}} - SR_{\\text{July}} \\le 0',ep:'as-executed July baseline vs Versioned Full · 실증은 동결 전, 수치 주장 없음',parts:['July baseline','Versioned Full'],pos:[-16,12],type:'stadium',c:'#D8C9E6'}
+ ]},
+ {id:'kos',name:'지식 항구',short:'항구',sub:'Weekly Knowledge Loop',center:[0,46],r:15,land:'#C6D0A8',color:'#4F8F94',road:'chain',trees:40,
+  zones:{collect:{name:'수집',color:'#4F8F94'},triage:{name:'AI 판독',color:'#3E7FB0'},approve:{name:'승인',color:'#2E6E73'},learn:{name:'내 것으로 만들기',color:'#B8862E'},retro:{name:'회고',color:'#6A5BA8'},ferry:{name:'배편',color:'#C2563E'}},
+  stops:[
+ {zone:'collect',name:'수집 부두',topic:'수집함',claim:'논문·GitHub·RSS·영상·메모·업무에서 들어온 정보가 한 곳에 모인다',tex:'',ep:'자동·수동 수집 · 들어온 항목마다 출처를 기록',parts:['RSS','GitHub','영상','메모','업무'],pos:[0,9.5],type:'customs',c:'#D7E6E6'},
+ {zone:'triage',name:'AI 판독소',topic:'a · b · c · d 분류',claim:'"이번 주에 쓸 데가 있나, 어느 프로젝트에 붙나"로 네 갈래를 가른다',tex:'',ep:'a 알아둘 것 · b 시스템에 맡길 것 · c 깊이 이해할 것 · d 버릴 것 · 기준: 프로젝트 관련성·재사용성·중복·행동 가능성',parts:['판독 보드','4갈래 분류'],pos:[-6,3],type:'sorter',c:'#E3E8EE'},
+ {zone:'approve',name:'승인 창구',topic:'승인함',claim:'AI는 제안하고 사람은 승인한다 — 승인된 것만 실제 변경으로 넘어간다',tex:'',ep:'거절과 만료도 기록 · b·d 항목은 승인 제안으로 자동 생성 · 자율운용 섬 IPS 7.4항 킬스위치와 같은 원칙 · 운영 개선 안건은 배편으로 자율운용 섬 안건 접수처에 제출된다',parts:['대기','거절·만료 기록'],pos:[6,3],type:'hallN',c:'#E2EDEA'},
+ {zone:'learn',name:'학습관',topic:'내 것으로 만들기 (teach-back)',claim:'c 항목은 읽기에서 끝내지 않고 직접 설명해 본다',tex:'',ep:'3문장 설명 → 자기평가 → 복습 일정 · 주간 집중 예산 180분',parts:['3문장 설명','자기평가','복습 일정'],pos:[-6,-5.5],type:'school',c:'#F0E2C8'},
+ {zone:'retro',name:'회고 등대',topic:'월간 회고 · 출처 관리',claim:'매달 출처의 품질을 재고, 90일 동안 쓸모없던 출처는 삭제 후보로 올린다',tex:'\\text{유용 출처 비율} = \\frac{n_a + n_c}{n}',ep:'승인율 · c 완료율 · 폐기율 · 시스템 개선 제안',parts:['출처별 품질','개선 제안'],pos:[6,-6],type:'lighthouse',c:'#F2F0EA'},
+ {zone:'ferry',name:'배편 매표소',topic:'세 섬으로 가는 주간 배편',claim:'판독 결과에 따라 지식을 세 섬으로 실어 보낸다 — 다리가 계약이라면 배편은 매주 오가는 화물이다',tex:'',ep:'배는 주간 리뷰 뒤 출항 · 판독 등급별 색: c 황토 · b 청록 · a 파랑',passTitle:'운항표',passNote:'출항: 지식 항구 · 하역 검사: 도착 섬',pass:[['c → 강의 섬','teach-back 노트가 강의 보강·케이스 소재로'],['b → 자율운용 섬','승인된 제안이 리서치 도서관을 거쳐 IPS 개정안·스킬 수정으로'],['a → NeoQuant 섬','공개 시점을 붙여 지식 천문대 그래프로'],['d','폐기 기록만 남김'],['운항 주기','매주 · 주간 리뷰 뒤']],parts:['주간 운항','3개 항로'],pos:[0,-11],type:'tollhouse',c:'#DCD9C2'}
+ ]}
+];
+/* flatten for the global tour: 강의 → 자율운용 → NeoQuant */
+const STOPS=[];
+ISLANDS.forEach((I,ii)=>I.stops.forEach((s,k)=>{s.isl=ii;if(!s.code)s.code=String(k+1).padStart(2,'0');
+  s.world=[I.center[0]+s.pos[0],I.center[1]+s.pos[1]];s.gi=STOPS.length;STOPS.push(s);}));
+const hid=s=>ISLANDS[s.isl].id+'-'+s.code.replace('·','-').toLowerCase();
+
+/* ================= UI ================= */
+const $=id=>document.getElementById(id);
+let cur=0,focusIsl=-1;
+const tabs=$('tabs');
+[{name:'전체 보기',color:'#8a9a9c',i:-1},...ISLANDS.map((I,i)=>({name:I.name,color:I.color,i})),{name:'신입사원 여정',color:'#C2563E',i:-2},{name:'안건 처리',color:'#B8862E',i:-3}].forEach(t=>{
+  const b=document.createElement('button');b.textContent=t.name;b.style.setProperty('--dot',t.color);b.dataset.i=t.i;
+  b.onclick=()=>t.i===-3?startAgenda():t.i===-2?startJourney():t.i<0?overview():goIsland(t.i);tabs.appendChild(b);});
+function markTabs(){const on=window.__jon,aon=window.__aon;tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',(aon?+b.dataset.i===-3:on?+b.dataset.i===-2:+b.dataset.i===focusIsl)?'true':'false'));}
+const idx=$('index');
+ISLANDS.forEach((I,ii)=>{const col=document.createElement('div');col.className='icol';col.style.setProperty('--ic',I.color);
+  col.innerHTML=`<h3>${I.name}<small>${I.sub}</small></h3>`;
+  for(const [k,z] of Object.entries(I.zones)){const its=I.stops.filter(s=>s.zone===k);if(!its.length)continue;
+    const g=document.createElement('div');g.className='zgrp';g.style.setProperty('--zc',z.color);g.innerHTML=`<h4>${z.name}</h4>`;
+    its.forEach(s=>{const b=document.createElement('button');b.className='stop';b.dataset.i=s.gi;
+      b.innerHTML=`<b>${s.code}</b><span>${s.name}<br><i>${s.topic}</i></span>`;
+      b.onclick=()=>{go(s.gi);$('scene').scrollIntoView({behavior:'smooth',block:'center'})};g.appendChild(b)});
+    col.appendChild(g);}
+  idx.appendChild(col);});
+function renderTex(){const el=$('c-tex');const t=STOPS[cur].tex;el.hidden=!t;if(!t)return;
+  el.textContent='\\('+t+'\\)';
+  if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetClear&&MathJax.typesetClear([el]);MathJax.typesetPromise([el]).catch(()=>{})}}
+function fillCard(){const s=STOPS[cur],I=ISLANDS[s.isl],z=I.zones[s.zone];
+  $('c-code').textContent=I.short+' '+s.code;$('c-zone').textContent=z.name;$('c-zone').style.color=z.color;$('c-isle').textContent=I.name;
+  $('c-title').textContent=`${s.name} · ${s.topic}`;$('c-claim').textContent=s.claim;$('c-ep').textContent=s.ep;
+  const br=!!s.cross;$('c-bridge').hidden=!br;if(br){$('c-cross').textContent=s.cross;$('c-toll').textContent=s.toll;$('c-back').textContent=s.back;}
+  const ps=s.pass;$('c-pass').hidden=!ps;if(ps){$('c-pass-rows').innerHTML=ps.map(([k,v])=>`<tr><th>${k}</th><td>${v}</td></tr>`).join('');$('c-pass-title').textContent=s.passTitle||'통행증 견본';const iss=ps.find(r=>r[0]==='발급처');$('c-pass-iss').textContent=s.passNote||(iss?'발급: '+iss[1]+' · 검사: ips-guardian':'');}
+  $('c-parts').innerHTML=s.parts.map(p=>`<span>${p}</span>`).join('');
+  $('c-count').textContent=String(cur+1).padStart(2,'0')+' / '+STOPS.length;
+  document.querySelectorAll('.stop').forEach(b=>b.setAttribute('aria-current',+b.dataset.i===cur?'true':'false'));
+  renderTex();try{history.replaceState(null,'','#'+hid(s))}catch(e){}}
+$('prev').onclick=()=>(window.__aon)?ago(A.k-1):(window.__jon)?jgo(J.k-1):go((cur-1+STOPS.length)%STOPS.length);
+$('next').onclick=()=>(window.__aon)?ago(A.k+1):(window.__jon)?jgo(J.k+1):go((cur+1)%STOPS.length);
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')$('next').click();if(e.key==='ArrowLeft')$('prev').click();});
+const hashIdx=STOPS.findIndex(s=>'#'+hid(s)===location.hash);
+cur=hashIdx>=0?hashIdx:ISLANDS[0].stops.length+1;  /* default card: IPS 의사당 */
+fillCard();markTabs();
+
+/* ================= scene ================= */
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canvas=$('scene');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(38,1,0.5,700);
+const hemi=new THREE.HemisphereLight(0xffffff,0x8a9a8a,0.75);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff2dc,0.85);sun.position.set(-50,80,40);sun.castShadow=true;
+sun.shadow.mapSize.set(4096,4096);Object.assign(sun.shadow.camera,{left:-92,right:92,top:92,bottom:-92,near:1,far:260});scene.add(sun);
+const lineMat=new THREE.LineBasicMaterial({color:0x262b2c,transparent:true,opacity:.55});
+const winMat=new THREE.MeshLambertMaterial({color:0x5f7a86,emissive:0x000000});
+const lampMat=new THREE.MeshLambertMaterial({color:0xfff0b4,emissive:0x5a4a1c});
+const M=c=>new THREE.MeshLambertMaterial({color:c,flatShading:true});
+function mesh(geo,mat,edges=true){const m=new THREE.Mesh(geo,typeof mat==='string'||typeof mat==='number'?M(mat):mat);
+  m.castShadow=true;m.receiveShadow=true;if(edges)m.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo,30),lineMat));return m;}
+const at=(m,x,y,z)=>{m.position.set(x,y,z);return m};
+const sea=new THREE.Mesh(new THREE.CircleGeometry(400,56),new THREE.MeshLambertMaterial({color:0x98c6c4}));sea.rotation.x=-Math.PI/2;sea.position.y=-1.1;sea.receiveShadow=true;scene.add(sea);
+ISLANDS.forEach(I=>{const g=new THREE.Group();
+  const top=mesh(new THREE.CylinderGeometry(I.r,I.r+1,2,60),I.land,false);top.position.y=-1;top.castShadow=false;g.add(top);
+  const sd=mesh(new THREE.CylinderGeometry(I.r+1.6,I.r+2.4,1.7,60),'#E6DCBC',false);sd.position.y=-1.35;g.add(sd);
+  g.position.set(I.center[0],0,I.center[1]);scene.add(g);});
+
+/* roads */
+const pathMat=M('#E8DDC2'),plank=M('#9C7A55');
+function path(a,b,w=1.3,y=.02,mat=pathMat){const dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz);
+  const p=new THREE.Mesh(new THREE.BoxGeometry(L,0.06,w),mat);p.receiveShadow=true;
+  p.position.set((a[0]+b[0])/2,y,(a[1]+b[1])/2);p.rotation.y=-Math.atan2(dz,dx);scene.add(p);return p;}
+const SEGS=[];
+ISLANDS.forEach(I=>{const W=s=>s.world,C=I.center;
+  if(I.road==='hub'){const h=[C[0]+I.hub[0],C[1]+I.hub[1]];I.stops.forEach(s=>SEGS.push([h,W(s)]));
+    const P=p=>[C[0]+p[0],C[1]+p[1]];SEGS.push([P([-11,1]),P([-10,6])],[P([-4.5,-10]),P([3,-9])],[P([6.5,6]),P([12.5,13])]);
+    const pl=mesh(new THREE.CylinderGeometry(2.4,2.4,.12,24),'#E4D7B6',false);pl.position.set(h[0],.06,h[1]);scene.add(pl);}
+  else{const ss=I.stops;for(let i=0;i<ss.length-1;i++)SEGS.push([W(ss[i]),W(ss[i+1])]);if(I.road==='ring')SEGS.push([W(ss[ss.length-1]),W(ss[I.loopTo||0])]);}});
+SEGS.forEach(([a,b])=>path(a,b));
+/* bridges: 강의 → 자율운용, NeoQuant → 자율운용 */
+const bridgeHits=[];function tagBridge(o,i){o.userData.i=i;o.userData.bridge=true;bridgeHits.push(o);return o;}
+function bridge(a,b,gi){const p=path(a,b,2,.2,plank);p.castShadow=true;tagBridge(p,gi);const dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz),n=Math.floor(L/3.2);
+  const nx=-dz/L,nz=dx/L;for(let k=1;k<n;k++){const t=k/n;for(const s of[-1,1])scene.add(tagBridge(at(mesh(new THREE.CylinderGeometry(.18,.18,2.4,6),'#6d5235',false),a[0]+dx*t+nx*s*.9,-.8,a[1]+dz*t+nz*s*.9),gi));}}
+const SDA=ISLANDS[1];
+const edge=(I,toward,off=0)=>{const dx=toward[0]-I.center[0],dz=toward[1]-I.center[1],L=Math.hypot(dx,dz);return[I.center[0]+dx/L*(I.r+off),I.center[1]+dz/L*(I.r+off)];};
+const lecStart=edge(ISLANDS[0],SDA.center,-1),neoStart=edge(ISLANDS[2],SDA.center,-1);
+const lecB=SDA.stops.find(s=>s.name==='강의 다리'),neoB=SDA.stops.find(s=>s.name==='알파 다리'),lecEnd=lecB.world,neoEnd=neoB.world;
+bridge(lecStart,lecEnd,lecB.gi);bridge(neoStart,neoEnd,neoB.gi);
+/* cargo: forward = 건너는 것, backward = 돌아오는 것 */
+const CARGO=[];
+function cargo(a,b,fwdColor,backColor,n,gi){const dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz),nx=-dz/L,nz=dx/L;
+  for(let k=0;k<n;k++)for(const dir of[1,-1]){const c=mesh(new THREE.BoxGeometry(.9,.7,.9),dir>0?fwdColor:backColor);
+    c.rotation.y=-Math.atan2(dz,dx);tagBridge(c,gi);scene.add(c);CARGO.push({c,a,b,nx,nz,dir,ph:k/n});}}
+cargo(lecStart,lecEnd,'#D9973A','#2E6E73',3,lecB.gi);
+cargo(neoStart,neoEnd,'#A3552A','#6A5BA8',4,neoB.gi);
+/* 안건 봉투: 제출 → 접수 → 사전 검토 → 심의 → 의결 → 기록 */
+const AGB=SDA.stops.find(s=>s.name==='안건 접수처');const W=n=>SDA.stops.find(s=>s.name===n).world;
+const MAIL=[];const ENV_COL=['#f7f3ea','#F0C84A','#6F9BD1','#7FB27A'];
+function courier(pts,segCol,n,spd){const L=[];let tot=0;for(let i=0;i<pts.length-1;i++){const d=Math.hypot(pts[i+1][0]-pts[i][0],pts[i+1][1]-pts[i][1]);L.push(d);tot+=d;}
+  for(let k=0;k<n;k++){const e=mesh(new THREE.BoxGeometry(.9,.12,.6),ENV_COL[0]);const band=new THREE.Mesh(new THREE.BoxGeometry(.92,.13,.12),M('#C2563E'));e.add(band);
+    tagBridge(e,AGB.gi);scene.add(e);MAIL.push({e,pts,L,tot,segCol,ph:k/n,spd});}}
+courier([neoEnd,AGB.world],[0],2,.05);
+courier([AGB.world,W('IPS 의사당'),W('IC 회의실'),W('CIO 집무실'),AGB.world],[1,2,3,3],5,.035);
+/* 배편: 지식 항구 → 세 섬 (주간 화물) */
+const KOS=ISLANDS[3],FERRY=[];
+const ferryB=KOS.stops.find(s=>s.name==='배편 매표소');
+function ferry(destIsl,landing,color,k){const from=edge(KOS,landing,1.5),to=landing;
+  for(const end of[from,to])scene.add(tagBridge(at(mesh(new THREE.BoxGeometry(1.4,.3,1.4),'#9C7A55'),end[0],-.35,end[1]),ferryB.gi));
+  const b=new THREE.Group();b.add(at(mesh(new THREE.BoxGeometry(1.4,.6,3),color),0,0,0));b.add(at(mesh(new THREE.BoxGeometry(1,.7,1.1),'#f4efe2'),0,.6,-.3));
+  b.traverse(o=>{if(o.isMesh)tagBridge(o,ferryB.gi)});scene.add(b);FERRY.push({b,from,to,ph:k*.33});}
+ferry(0,edge(ISLANDS[0],KOS.center,1.5),'#B8862E',0);
+ferry(1,edge(ISLANDS[1],KOS.center,1.5),'#2E6E73',1);
+ferry(2,edge(ISLANDS[2],KOS.center,1.5),'#3E7FB0',2);
+/* 통행증 발급소 표시: 강의 섬 검산소(다리 입구 부스), NeoQuant 원장 보관소 위 깃발 */
+const PASS_TAGS=[];
+function booth(at2,gi){const g=new THREE.Group();g.add(at(mesh(new THREE.BoxGeometry(1.6,1.6,1.6),'#F4E9CF'),0,.8,0));
+  const r=mesh(new THREE.BoxGeometry(2.1,.25,2.1),'#D9973A');r.position.y=1.75;g.add(r);
+  const w=new THREE.Mesh(new THREE.PlaneGeometry(.9,.5),winMat);w.position.set(0,1,.81);g.add(w);
+  const dx=SDA.center[0]-at2[0],dz=SDA.center[1]-at2[1];g.rotation.y=Math.atan2(dx,dz);
+  const L=Math.hypot(dx,dz);g.position.set(at2[0]-dx/L*2.2+(-dz/L)*2.2,0,at2[1]-dz/L*2.2+(dx/L)*2.2);
+  g.traverse(o=>{if(o.isMesh)tagBridge(o,gi)});scene.add(g);return g;}
+const lecBooth=booth(lecStart,lecB.gi);
+PASS_TAGS.push({pos:[lecBooth.position.x,lecBooth.position.z],y:3.4,text:'통행증 발급소',sub:'강의 섬 검산소'});
+{const led=ISLANDS[2].stops.find(s=>s.name==='원장 보관소');PASS_TAGS.push({pos:led.world,y:7.2,text:'통행증 발급소',sub:'원장 기록 = 통행증'});}
+
+/* building kit */
+function windows(g,w,h,d,rows=1){const n=Math.max(2,Math.round(w/1.1));for(let r=0;r<rows;r++)for(let i=0;i<n;i++){
+  const p=new THREE.Mesh(new THREE.PlaneGeometry(.38,.42),winMat);p.position.set(-w/2+(i+.5)*w/n,h*(r+.6)/(rows+.4),d/2+.01);g.add(p);}}
+function house(g,w,d,h,wall,roof){g.add(at(mesh(new THREE.BoxGeometry(w,h,d),wall),0,h/2,0));
+  const r=mesh(new THREE.ConeGeometry(Math.max(w,d)*.78,1.3,4),roof);r.rotation.y=Math.PI/4;r.scale.set(w/Math.max(w,d),1,d/Math.max(w,d));r.position.y=h+.65;g.add(r);
+  windows(g,w,h,d);const door=new THREE.Mesh(new THREE.PlaneGeometry(.5,.8),M('#6f553b'));door.position.set(0,.4,d/2+.012);g.add(door);return h+1.3;}
+function hallN(g,c,w=4.2,cols=4){g.add(at(mesh(new THREE.BoxGeometry(w,2.6,2.8),c),0,1.3,0));
+  const ped=mesh(new THREE.ConeGeometry(w*.62,1,4),'#8e8478');ped.rotation.y=Math.PI/4;ped.scale.set(1,1,.55);ped.position.y=3.1;g.add(ped);
+  g.add(at(mesh(new THREE.BoxGeometry(w+.4,.3,3.2),'#8e8478'),0,2.7,0));
+  for(let i=0;i<cols;i++)g.add(at(mesh(new THREE.CylinderGeometry(.13,.13,2.4,8),'#f4f1ea'),-(w-1.2)/2+i*(w-1.2)/(cols-1),1.2,1.6));windows(g,w,2.6,2.8,2);return 3.6;}
+function gear(c){const g=new THREE.Group();g.add(mesh(new THREE.CylinderGeometry(.9,.9,.3,16),c));
+  for(let i=0;i<8;i++){const t=mesh(new THREE.BoxGeometry(.35,.3,.5),c,false);const a=i*Math.PI/4;t.position.set(Math.cos(a),0,Math.sin(a));t.rotation.y=-a;g.add(t);}
+  g.rotation.x=Math.PI/2;return g;}
+const BUILD={
+ hallP:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(4.2,2.6,2.8),c),0,1.3,0));g.add(at(mesh(new THREE.BoxGeometry(4.6,.3,3.2),'#8d7b66'),0,2.75,0));
+   for(let i=0;i<4;i++)g.add(at(mesh(new THREE.CylinderGeometry(.13,.13,2.4,8),'#f5f1e6'),-1.5+i,1.2,1.6));windows(g,4.2,2.6,2.8,2);return 2.9;},
+ hallN:(g,c)=>hallN(g,c),
+ market:(g,c)=>{for(let i=0;i<3;i++){g.add(at(mesh(new THREE.BoxGeometry(1.3,.9,1),'#d8c3a0'),-1.6+i*1.6,.45,0));
+   const r=mesh(new THREE.BoxGeometry(1.5,.12,1.2),[c,'#C2563E','#3E7FB0'][i]);r.position.set(-1.6+i*1.6,1.7,.15);r.rotation.x=.25;g.add(r);
+   for(const s of[-.6,.6])g.add(at(mesh(new THREE.CylinderGeometry(.05,.05,1.6,6),'#6b5641',false),-1.6+i*1.6+s,.8,.5));}return 1.9;},
+ observatory:(g,c,s)=>{g.add(at(mesh(new THREE.CylinderGeometry(1.4,1.5,2,16),c),0,1,0));
+   g.add(at(mesh(new THREE.SphereGeometry(1.45,16,10,0,Math.PI*2,0,Math.PI/2),'#5c6aa8'),0,2,0));
+   const t=mesh(new THREE.CylinderGeometry(.18,.25,1.6,8),'#2f3550');t.position.set(.5,3,.3);t.rotation.z=-.7;g.add(t);
+   if(s&&s.stars){const st=new THREE.Group();for(let i=0;i<9;i++){const o=new THREE.Mesh(new THREE.OctahedronGeometry(.16),lampMat);o.position.set(Math.cos(i*.7)*(1.6+i*.12),5+Math.sin(i*1.9)*.8,Math.sin(i*.7)*(1.6+i*.12));st.add(o);}
+     g.add(st);g.userData.spin=st;g.userData.spinType='stars';return 4.2;}return 3.7;},
+ scale:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(1.4,.4,1.4),'#8d7b66'),0,.2,0));g.add(at(mesh(new THREE.CylinderGeometry(.14,.14,3,8),'#6b5641'),0,1.9,0));
+   const beam=new THREE.Group();beam.position.y=3.3;beam.add(mesh(new THREE.BoxGeometry(4,.14,.14),'#4a3a2a'));
+   for(const s of[-1.8,1.8]){beam.add(at(mesh(new THREE.CylinderGeometry(.7,.5,.25,12),c),s,-.9,0));beam.add(at(mesh(new THREE.BoxGeometry(.04,.8,.04),'#4a3a2a',false),s,-.45,0));}
+   g.add(beam);g.userData.spin=beam;g.userData.spinType='tilt';return 3.8;},
+ house:(g,c)=>house(g,2.4,2.2,1.9,c,'#C9724F'),
+ school:(g,c)=>{const h=house(g,3.6,2.4,2.2,c,'#3E7FB0');g.add(at(mesh(new THREE.BoxGeometry(.7,1.3,.7),'#f2ead8'),0,h+.2,0));return h+.9;},
+ reservoir:(g,c)=>{g.add(at(mesh(new THREE.CylinderGeometry(3.2,3.3,.7,28),'#cfc6b2'),0,.35,0));
+   const w=new THREE.Mesh(new THREE.CylinderGeometry(2.85,2.85,.1,28),new THREE.MeshLambertMaterial({color:c,emissive:0x0b2234}));w.position.y=.66;g.add(w);
+   g.add(at(mesh(new THREE.BoxGeometry(1.2,1.2,1.2),'#e8e1d0'),3.4,.6,1.2));return 1.6;},
+ tower:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(1.4,5,1.4),c),0,2.5,0));g.add(at(mesh(new THREE.BoxGeometry(2.4,1.2,2.4),'#3d3f5c'),0,5.6,0));
+   const glass=new THREE.Mesh(new THREE.BoxGeometry(2.2,.6,2.42),winMat);glass.position.y=5.6;g.add(glass);g.add(at(mesh(new THREE.ConeGeometry(.15,1.2,6),'#C2563E'),0,6.8,0));return 7.3;},
+ factory:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(3.4,1.8,2.4),c),0,.9,0));
+   for(let i=0;i<3;i++){const r=mesh(new THREE.BoxGeometry(1.1,.6,2.4),'#7b8a96');r.position.set(-1.1+i*1.1,2.05,0);r.rotation.z=.45;g.add(r);}
+   g.add(at(mesh(new THREE.CylinderGeometry(.25,.32,2.6,10),'#8a4b3a'),1.3,2.4,-.6));windows(g,3.4,1.8,2.4);return 3.8;},
+ vane:(g,c)=>{g.add(at(mesh(new THREE.CylinderGeometry(.6,.8,1,8),'#cfc6b2'),0,.5,0));g.add(at(mesh(new THREE.CylinderGeometry(.08,.08,4.5,6),'#4a4a48'),0,3.2,0));
+   const v=new THREE.Group();v.position.y=5.3;v.add(mesh(new THREE.BoxGeometry(2.2,.08,.08),'#2c2c2a'));const tip=mesh(new THREE.ConeGeometry(.22,.6,4),c);tip.rotation.z=-Math.PI/2;tip.position.x=1.3;v.add(tip);
+   v.add(at(mesh(new THREE.BoxGeometry(.6,.5,.04),c),-1.1,0,0));g.add(v);g.userData.spin=v;g.userData.spinType='vane';return 5.9;},
+ barn:(g,c)=>{const h=house(g,2.8,3,2.1,c,'#6b3a2e');const cols=['#d9c06a','#9cbf63','#c7a85a'];
+   for(let i=0;i<3;i++){const f=new THREE.Mesh(new THREE.BoxGeometry(1.3,.14,3),M(cols[i]));f.receiveShadow=true;f.position.set(2.4+i*1.45,.07,.2);g.add(f);}return h;},
+ lighthouse:(g,c)=>{for(let i=0;i<5;i++){const r0=1.1-i*.15;g.add(at(mesh(new THREE.CylinderGeometry(r0-.15,r0,1.3,14),i%2?'#C2563E':c),0,.65+i*1.3,0));}
+   const lamp=new THREE.Mesh(new THREE.CylinderGeometry(.5,.5,.8,12),lampMat);lamp.position.y=7.2;g.add(lamp);g.add(at(mesh(new THREE.ConeGeometry(.7,.8,12),'#3a3a3a'),0,8,0));
+   const beam=new THREE.Mesh(new THREE.ConeGeometry(1.6,9,16,1,true),new THREE.MeshBasicMaterial({color:0xfff4c0,transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false}));
+   beam.rotation.z=Math.PI/2;beam.position.x=4.5;const pv=new THREE.Group();pv.position.y=7.2;pv.add(beam);g.add(pv);g.userData.spin=pv;g.userData.spinType='beam';g.userData.beam=beam;return 8.6;},
+ customs:(g,c)=>{const h=house(g,3,2.2,1.9,c,'#4F8F94');const pier=mesh(new THREE.BoxGeometry(1.1,.2,5),'#a88a63');pier.position.set(2.2,-.25,3.4);g.add(pier);
+   g.add(at(mesh(new THREE.BoxGeometry(1,.5,2),'#C2563E'),3.6,-.85,5.2));return h;},
+ windmill:(g,c)=>{g.add(at(mesh(new THREE.CylinderGeometry(.8,1.3,4,8),c),0,2,0));g.add(at(mesh(new THREE.ConeGeometry(1.05,1.1,8),'#8a4b3a'),0,4.55,0));
+   const hb=new THREE.Group();hb.position.set(0,3.9,1.05);for(let i=0;i<4;i++){const b=mesh(new THREE.BoxGeometry(.5,2.6,.06),'#f4ecdc');b.position.y=1.4;const a=new THREE.Group();a.rotation.z=i*Math.PI/2;a.add(b);hb.add(a);}
+   g.add(hb);g.userData.spin=hb;g.userData.spinType='mill';return 5.4;},
+ warehouse:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(4.6,2,2.8),c),0,1,0));
+   const roof=mesh(new THREE.CylinderGeometry(1.45,1.45,4.6,14,1,false,0,Math.PI),'#7f8896');roof.rotation.z=Math.PI/2;roof.position.y=2;g.add(roof);
+   const door=new THREE.Mesh(new THREE.PlaneGeometry(1.6,1.5),M('#8e9399'));door.position.set(0,.75,1.41);g.add(door);
+   for(let i=0;i<3;i++)g.add(at(mesh(new THREE.BoxGeometry(.6,.6,.6),'#c7a873'),2.8,.3+i*.6,.6-i*.2));return 3.6;},
+ workshop:(g,c)=>{const h=house(g,2.6,2.3,2,c,'#8a5a3a');const gr=gear('#C0782E');gr.position.set(0,h+.9,0);gr.scale.setScalar(.8);g.add(gr);g.userData.spin=gr;g.userData.spinType='gear';return h+1.8;},
+ gate:(g,c)=>{for(const x of[-2.2,2.2])g.add(at(mesh(new THREE.BoxGeometry(.7,3.8,.7),c),x,1.9,0));
+   g.add(at(mesh(new THREE.BoxGeometry(5.4,.6,.9),'#8a5a3a'),0,4,0));
+   for(let i=0;i<5;i++)g.add(at(mesh(new THREE.BoxGeometry(.08,2.2,.08),'#4a4a48',false),-1.4+i*.7,1.5,0));
+   g.add(at(mesh(new THREE.BoxGeometry(1.2,.8,1.2),'#9aa3ad'),3.4,.4,1));return 4.4;},
+ composer:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(6.4,2.2,2.6),c),0,1.1,-.9));
+   for(let i=0;i<3;i++){const r=mesh(new THREE.BoxGeometry(2.1,.6,2.6),'#6f7c8c');r.position.set(-2.1+i*2.1,2.45,-.9);r.rotation.z=.4;g.add(r);}
+   g.add(at(mesh(new THREE.BoxGeometry(7.2,.35,.9),'#3b3f46'),0,.4,1.2));
+   const cols=['#5B6BB5','#6F86C0','#2F7F78','#6B9A57','#C0782E','#A3552A'];const bl=new THREE.Group();
+   cols.forEach((cc,i)=>{const b=mesh(new THREE.BoxGeometry(.6,.6,.6),cc);b.position.set(-3+i*1.2,.9,1.2);bl.add(b);});g.add(bl);
+   g.add(at(mesh(new THREE.CylinderGeometry(.28,.34,2.4,10),'#7b4a38'),2.6,3,-1.6));g.userData.spin=bl;g.userData.spinType='belt';return 3.8;},
+ ladder:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(1.8,6.5,1.8),c),0,3.25,0));
+   for(const x of[-.55,.55])g.add(at(mesh(new THREE.BoxGeometry(.1,6.6,.1),'#4a4036',false),x,3.3,.98));
+   for(let i=0;i<9;i++)g.add(at(mesh(new THREE.BoxGeometry(1.1,.08,.08),'#4a4036',false),0,.5+i*.72,.98));
+   g.add(at(mesh(new THREE.BoxGeometry(.9,.55,.04),'#A3552A'),.5,7.5,0));g.add(at(mesh(new THREE.CylinderGeometry(.04,.04,1.6,6),'#333',false),0,7.3,0));return 8.2;},
+ pier:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(2.4,.25,7),'#9C7A55'),0,-.2,3.6));
+   g.add(at(mesh(new THREE.BoxGeometry(3.4,2.4,2.6),c),0,1.2,-.6));g.add(at(mesh(new THREE.BoxGeometry(3.8,.3,3),'#2F7F78'),0,2.55,-.6));
+   const tk=new THREE.Mesh(new THREE.PlaneGeometry(2.6,.45),lampMat);tk.position.set(0,1.9,.71);g.add(tk);
+   const boat=mesh(new THREE.BoxGeometry(1.2,.6,2.6),'#C0782E');boat.position.set(2.2,-.85,6);g.add(boat);g.userData.spin=boat;g.userData.spinType='bob';return 3;},
+ cxvillage:(g)=>{const tones=['#E7E2D4','#D9E3E0','#E6D7CB','#DCDDE8'],roofs=['#2F7F78','#5c6e8a','#9a5b3f','#6B7A3E'];
+   for(let k=0;k<41;k++){const row=Math.floor(k/7),col=k%7,s=new THREE.Group();
+     s.add(at(mesh(new THREE.BoxGeometry(.7,.6,.7),tones[k%4]),0,.3,0));const r=mesh(new THREE.ConeGeometry(.55,.45,4),roofs[(k*3)%4]);r.rotation.y=Math.PI/4;r.position.y=.82;s.add(r);
+     s.position.set(-3.3+col*1.1+(row%2)*.3,0,-2.7+row*1.1);g.add(s);}return 1.8;},
+ archive:(g,c)=>{const h=hallN(g,c,4.6,5);const v=mesh(new THREE.CylinderGeometry(.55,.55,.12,20),'#8e8478');v.rotation.x=Math.PI/2;v.position.set(0,1,1.47);g.add(v);return h;},
+ library:(g,c)=>{const h=hallN(g,c,4.4,6);g.add(at(mesh(new THREE.SphereGeometry(1.1,14,8,0,Math.PI*2,0,Math.PI/2),'#5B6BB5'),0,h-.5,0));return h+.6;},
+ stadium:(g,c)=>{const ring=mesh(new THREE.TorusGeometry(3,.35,6,28),'#cfc4b0');ring.rotation.x=Math.PI/2;ring.position.y=.35;g.add(ring);
+   const f=new THREE.Mesh(new THREE.CircleGeometry(2.7,28),M('#97b77c'));f.rotation.x=-Math.PI/2;f.position.y=.06;f.receiveShadow=true;g.add(f);
+   [['#5B6BB5',-1.4],['#A3552A',1.4]].forEach(([fc,x])=>{g.add(at(mesh(new THREE.CylinderGeometry(.05,.05,3.2,6),'#333',false),x,1.6,0));g.add(at(mesh(new THREE.BoxGeometry(1,.6,.04),fc),x+.52,2.85,0));});
+   g.add(at(mesh(new THREE.BoxGeometry(1.6,.8,.4),c),0,.4,-3.4));return 3.6;},
+ tollhouse:(g,c)=>{const h=house(g,2.2,2,1.8,c,'#6B7A3E');g.add(at(mesh(new THREE.BoxGeometry(.12,1.4,.12),'#333',false),-1.8,.7,1.2));
+   g.add(at(mesh(new THREE.BoxGeometry(2.4,.12,.12),'#C0782E'),-.6,1.4,1.2));return h;},
+ sorter:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(3.2,2.6,2.4),c),0,1.3,-.6));const r=mesh(new THREE.ConeGeometry(2.4,1.1,4),'#3E7FB0');r.rotation.y=Math.PI/4;r.scale.set(1,1,.75);r.position.set(0,3.15,-.6);g.add(r);
+   [['#3E7FB0','a'],['#2E6E73','b'],['#B8862E','c'],['#9aa0a6','d']].forEach(([cc],i)=>{const ch=mesh(new THREE.BoxGeometry(.55,.12,2),cc);ch.position.set(-1.2+i*.8,1,1.3);ch.rotation.x=.45;g.add(ch);
+     g.add(at(mesh(new THREE.BoxGeometry(.7,.5,.7),cc),-1.2+i*.8,.25,2.5));});windows(g,3.2,2.6,.6);return 3.9;},
+ proving:(g,c)=>{const cols=['#C0782E','#5B6BB5','#2F7F78','#6B9A57','#A3552A'],names=['크립토','주식','채권선물','FX','원자재'];
+   const flags=new THREE.Group();
+   cols.forEach((cc,i)=>{const lane=new THREE.Mesh(new THREE.BoxGeometry(7.6,.08,.9),M(i%2?'#cfc7b4':'#ddd5c2'));lane.receiveShadow=true;lane.position.set(0,.05,-2+i*1);g.add(lane);
+     const pole=mesh(new THREE.CylinderGeometry(.05,.05,1.4,6),'#333',false);pole.position.set(-3.6,.7,-2+i*1);g.add(pole);
+     const f=mesh(new THREE.BoxGeometry(.6,.35,.04),cc);f.position.set(-3.28,1.25,-2+i*1);flags.add(f);
+     const runner=mesh(new THREE.BoxGeometry(.45,.45,.45),cc);runner.position.set(-3,.3,-2+i*1);runner.userData.lane=i;flags.add(runner);});
+   g.add(flags);
+   for(const x of[3.2])for(const z of[-2.7,2.7])g.add(at(mesh(new THREE.BoxGeometry(.4,3,.4),c),x,1.5,z));
+   g.add(at(mesh(new THREE.BoxGeometry(.6,.5,6),'#3E7FB0'),3.2,3.1,0));
+   for(let k=0;k<4;k++)g.add(at(mesh(new THREE.BoxGeometry(.12,.35,.5),'#f4efe2',false),3.2,2.6,-1.8+k*1.2));
+   g.userData.spin=flags;g.userData.spinType='race';return 4.1;},
+ pie:(g,c)=>{g.add(at(mesh(new THREE.CylinderGeometry(1.8,1.9,2.2,20),c),0,1.1,0));
+   const cols=['#5B6BB5','#2F7F78','#C0782E','#A3552A','#6B9A57'],sh=[.3,.25,.2,.15,.1];let a0=0;
+   sh.forEach((w,i)=>{const seg=mesh(new THREE.CylinderGeometry(1.95,1.95,.45+i*.12,24,1,false,a0,w*Math.PI*2),cols[i],false);seg.position.y=2.4+(.45+i*.12)/2;g.add(seg);a0+=w*Math.PI*2;});
+   windows(g,2.6,2.2,3.4);return 3.6;},
+ icroom:(g,c)=>{const h=hallN(g,c,4.4,5);const st=new THREE.Group();
+   for(let i=0;i<5;i++){const d=mesh(new THREE.BoxGeometry(.9,.08,1.2),i%2?'#f7f3ea':'#ece5d4',false);d.position.set(2.9,.05+i*.09,1.4);d.rotation.y=i*.12;st.add(d);}
+   g.add(st);g.add(at(mesh(new THREE.BoxGeometry(.5,.5,.06),'#B8862E'),0,h+.1,1.45));return h;},
+ radar:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(1.5,5,1.5),c),0,2.5,0));g.add(at(mesh(new THREE.BoxGeometry(2.6,1.2,2.6),'#3d3f5c'),0,5.6,0));
+   const glass=new THREE.Mesh(new THREE.BoxGeometry(2.4,.6,2.62),winMat);glass.position.y=5.6;g.add(glass);
+   const dish=new THREE.Group();dish.position.y=6.6;const d=mesh(new THREE.SphereGeometry(.9,14,8,0,Math.PI*2,0,Math.PI/3),'#e8e8ea');d.rotation.x=-Math.PI/2.4;d.position.z=.2;dish.add(d);
+   dish.add(at(mesh(new THREE.CylinderGeometry(.06,.06,.6,6),'#333',false),0,-.2,0));g.add(dish);
+   const lamp=new THREE.Mesh(new THREE.SphereGeometry(.18,10,8),lampMat);lamp.position.set(0,7.5,0);g.add(lamp);
+   g.userData.spin=dish;g.userData.spinType='dish';return 7.9;},
+ rldesk:(g,c)=>{const h=house(g,3.2,2.6,2.2,c,'#5c6e8a');const loop=new THREE.Group();loop.position.set(0,h+1.1,0);
+   const ring=mesh(new THREE.TorusGeometry(.9,.1,6,24,Math.PI*1.7),'#C2563E',false);loop.add(ring);
+   const tip=mesh(new THREE.ConeGeometry(.22,.45,8),'#C2563E',false);tip.position.set(.9,0,0);tip.rotation.z=Math.PI;loop.add(tip);
+   loop.rotation.x=Math.PI/2;g.add(loop);
+   for(let i=0;i<3;i++)g.add(at(mesh(new THREE.BoxGeometry(.8,.5,.6),['#2F7F78','#C0782E','#5B6BB5'][i]),-2.3,.25+i*.5,.6-i*.15));
+   g.userData.spin=loop;g.userData.spinType='loop';return h+2;},
+ registry:(g,c)=>{const h=house(g,3.4,2.6,2.2,c,'#B8862E');
+   const slot=new THREE.Mesh(new THREE.PlaneGeometry(1.1,.18),M('#2a2a28'));slot.position.set(-.9,1.4,1.31);g.add(slot);
+   const box=mesh(new THREE.BoxGeometry(.7,1.1,.6),'#C2563E');box.position.set(2.4,.55,1);g.add(box);
+   ['#f7f3ea','#F0C84A','#6F9BD1','#7FB27A'].forEach((cc,i)=>{g.add(at(mesh(new THREE.BoxGeometry(1.1,.12,.8),cc),-2.5,.15+i*.28,.9));});
+   g.add(at(mesh(new THREE.BoxGeometry(1.6,.6,.08),'#fbfaf5'),0,h+.45,1.0));return h+.8;},
+ capitol:(g,c)=>{const h=hallN(g,c,5,6);g.add(at(mesh(new THREE.CylinderGeometry(1.2,1.2,1,16),'#f4f1ea'),0,h,0));
+   g.add(at(mesh(new THREE.SphereGeometry(1.25,16,10,0,Math.PI*2,0,Math.PI/2),'#7A5AA6'),0,h+.5,0));
+   g.add(at(mesh(new THREE.BoxGeometry(1.6,.12,2),'#efe9da'),0,.06,2.6));return h+2;},
+ gauge:(g,c)=>{g.add(at(mesh(new THREE.CylinderGeometry(1,1.2,4.4,8),c),0,2.2,0));const ns=[];
+   [[-.95,'BaR'],[.95,'DaR']].forEach(([x],j)=>{const d=new THREE.Mesh(new THREE.CircleGeometry(.75,24),M('#fbfaf5'));d.position.set(x,4.3,1.12);g.add(d);
+     const n=new THREE.Mesh(new THREE.BoxGeometry(.06,.6,.02),M(j?'#C2563E':'#2E6E73'));n.geometry.translate(0,.28,0);n.position.set(x,4.3,1.14);g.add(n);ns.push(n);
+     g.add(at(mesh(new THREE.BoxGeometry(1.7,1.7,.2),'#3c4a50'),x,4.3,1.0));});
+   g.userData.spin=ns;g.userData.spinType='needles';return 5.6;},
+ cio:(g,c)=>{const h=house(g,3,2.6,2.6,c,'#2E6E73');g.add(at(mesh(new THREE.CylinderGeometry(.05,.05,2.4,6),'#333',false),1.9,1.2,1.4));
+   g.add(at(mesh(new THREE.BoxGeometry(.9,.55,.04),'#2E6E73'),2.36,2.1,1.4));g.add(at(mesh(new THREE.BoxGeometry(1.4,.3,.5),'#8d7b66'),-1.9,.25,1.6));return h;}
+};
+
+/* labels */
+function rr(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath();}
+function label(name,sub,color,big){const W=big?1024:512,H=big?260:170;const cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+  rr(x,8,8,W-16,H-20,big?34:22);x.fillStyle='#fcfbf7';x.fill();x.lineWidth=big?10:6;x.strokeStyle='#262b2c';x.stroke();
+  x.fillStyle=color;rr(x,8,8,big?34:22,H-20,big?16:10);x.fill();
+  x.fillStyle='#1c2428';x.textAlign='center';let fs=big?120:64;const fam='"Do Hyeon","IBM Plex Sans KR",sans-serif';x.font=fs+'px '+fam;
+  while(x.measureText(name).width>W-80&&fs>30){fs-=4;x.font=fs+'px '+fam;}x.fillText(name,W/2+10,big?140:92);
+  x.fillStyle='#5a666a';x.font=`500 ${big?40:30}px "JetBrains Mono",monospace`;x.fillText(sub,W/2+10,big?210:138);
+  const t=new THREE.CanvasTexture(cv);t.anisotropy=4;const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true}));
+  if(big)sp.scale.set(22,5.6,1);else sp.scale.set(3.6,1.2,1);return sp;}
+
+const groups=[],hits=[],isleLabels=[],labelHits=[];
+function buildAll(){
+  STOPS.forEach((s,i)=>{const I=ISLANDS[s.isl];const g=new THREE.Group();const top=BUILD[s.type](g,s.c,s);
+    g.position.set(s.world[0],0,s.world[1]);
+    const face=I.road==='hub'?[I.center[0]+I.hub[0],I.center[1]+I.hub[1]]:I.center;
+    if(s.type==='pier')g.rotation.y=Math.PI/2;else if(s.type!=='cxvillage')g.rotation.y=Math.atan2(face[0]-s.world[0],face[1]-s.world[1]);
+    const sp=label(s.name,s.code,I.zones[s.zone].color);sp.position.set(s.world[0],top+1.1,s.world[1]);sp.userData.i=i;labelHits.push(sp);scene.add(sp);g.userData.sprite=sp;g.userData.top=top;
+    g.traverse(o=>{if(o.isMesh){o.userData.i=i;hits.push(o)}});scene.add(g);groups.push(g);});
+  PASS_TAGS.forEach(t=>{const sp=label(t.text,t.sub,'#2E6E73');sp.scale.set(3.2,1.07,1);sp.position.set(t.pos[0],t.y,t.pos[1]);scene.add(sp);t.sp=sp;});
+  ISLANDS.forEach(I=>{const sp=label(I.name,I.sub,I.color,true);sp.position.set(I.center[0],16,I.center[1]);scene.add(sp);isleLabels.push(sp);});
+}
+/* trees */
+(function trees(){let seed=13;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  const leaf=['#5f9a57','#4f8a4c','#77a85d'],trunk=M('#6f553b');
+  const nearRoad=(x,z)=>SEGS.some(([a,b])=>{const dx=b[0]-a[0],dz=b[1]-a[1],L2=dx*dx+dz*dz||1;let t=((x-a[0])*dx+(z-a[1])*dz)/L2;t=Math.max(0,Math.min(1,t));return Math.hypot(x-a[0]-t*dx,z-a[1]-t*dz)<1.4;});
+  ISLANDS.forEach(I=>{let n=0,guard=0;const R=I.r-1.5;
+    while(n<(I.trees||95)&&guard++<5000){const ang=rnd()*Math.PI*2,r=Math.sqrt(rnd())*R,x=I.center[0]+Math.cos(ang)*r,z=I.center[1]+Math.sin(ang)*r;
+      if(I.stops.some(s=>Math.hypot(s.world[0]-x,s.world[1]-z)<(s.type==='cxvillage'?5:s.type==='composer'||s.type==='proving'?5:3.7))||nearRoad(x,z))continue;
+      const t=new THREE.Group();t.add(at(mesh(new THREE.CylinderGeometry(.12,.16,.8,6),trunk,false),0,.4,0));
+      const s=.6+rnd()*.5;t.add(at(mesh(I.id==='neo'&&rnd()<.5?new THREE.ConeGeometry(s,s*2.2,6):new THREE.IcosahedronGeometry(s,0),leaf[n%3]),0,.8+s,0));t.position.set(x,0,z);scene.add(t);n++;}});})();
+
+/* camera */
+const HOME={theta:0,phi:.92,r:200,target:[2,0,6]};
+const orbit={theta:HOME.theta,phi:HOME.phi,r:HOME.r,target:new THREE.Vector3(...HOME.target)};
+const want={theta:HOME.theta,phi:HOME.phi,r:HOME.r,target:orbit.target.clone()};
+function placeCam(){const sp=Math.sin(orbit.phi);camera.position.set(orbit.target.x+orbit.r*sp*Math.sin(orbit.theta),orbit.target.y+orbit.r*Math.cos(orbit.phi),orbit.target.z+orbit.r*sp*Math.cos(orbit.theta));camera.lookAt(orbit.target);}
+function snap(){if(reduce){Object.assign(orbit,{theta:want.theta,phi:want.phi,r:want.r});orbit.target.copy(want.target);}}
+function go(i){cur=i;focusIsl=STOPS[i].isl;fillCard();markTabs();const s=STOPS[i];want.target.set(s.world[0],1.5,s.world[1]);want.r=24;want.phi=.9;snap();}
+function goIsland(k){focusIsl=k;markTabs();const I=ISLANDS[k];want.target.set(I.center[0],0,I.center[1]);want.r=I.r<20?52:I.r>26?80:72;want.phi=.95;snap();
+  if(STOPS[cur].isl!==k){cur=I.stops[0].gi;fillCard();}}
+function overview(){focusIsl=-1;markTabs();want.target.set(...HOME.target);want.r=HOME.r;want.phi=HOME.phi;snap();}
+$('zin').onclick=()=>{want.r=Math.max(12,want.r*.8)};
+$('zout').onclick=()=>{want.r=Math.min(260,want.r*1.25)};
+let drag=null;
+canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,t:want.theta,p:want.phi,moved:0};canvas.setPointerCapture(e.pointerId)});
+canvas.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.moved=Math.max(drag.moved,Math.hypot(dx,dy));
+  want.theta=drag.t-dx*.006;want.phi=Math.min(1.25,Math.max(.4,drag.p-dy*.004));});
+canvas.addEventListener('pointerup',e=>{const tol=e.pointerType==='touch'?18:8;if(drag&&drag.moved<tol)pick(e);drag=null});
+canvas.addEventListener('pointercancel',()=>{drag=null});
+canvas.addEventListener('wheel',e=>{e.preventDefault();want.r=Math.min(260,Math.max(12,want.r*(e.deltaY>0?1.1:.9)))},{passive:false});
+const ray=new THREE.Raycaster(),ndc=new THREE.Vector2();
+function setNdc(e){const b=canvas.getBoundingClientRect();ndc.set((e.clientX-b.left)/b.width*2-1,-(e.clientY-b.top)/b.height*2+1);ray.setFromCamera(ndc,camera);}
+function vis(o){while(o){if(o.visible===false)return false;o=o.parent;}return true;}
+const gplane=new THREE.Plane(new THREE.Vector3(0,1,0),0),gp=new THREE.Vector3();
+function pickIndex(){const h=ray.intersectObjects(hits.concat(bridgeHits,labelHits),false).find(x=>vis(x.object));
+  if(h)return{i:h.object.userData.i,bridge:!!h.object.userData.bridge};
+  if(ray.ray.intersectPlane(gplane,gp)){let best=-1,bd=orbit.r>110?12:6.5;STOPS.forEach((s,k)=>{const d=Math.hypot(s.world[0]-gp.x,s.world[1]-gp.z);if(d<bd){bd=d;best=k;}});
+    if(best>=0)return{i:best,bridge:false};
+    const k=ISLANDS.findIndex(I=>Math.hypot(I.center[0]-gp.x,I.center[1]-gp.z)<I.r+2);if(k>=0)return{isl:k};}
+  return null;}
+function pick(e){setNdc(e);const r=pickIndex();if(!r)return;
+  if(r.isl!==undefined){goIsland(r.isl);return;}
+  if(r.bridge||orbit.r<=110)go(r.i);else goIsland(STOPS[r.i].isl);}
+canvas.addEventListener('mousemove',e=>{if(drag)return;setNdc(e);canvas.style.cursor=ray.intersectObjects(hits.concat(bridgeHits,labelHits),false).some(x=>vis(x.object))?'pointer':'grab'});
+
+/* theme */
+function isDark(){const t=document.documentElement.dataset.theme;return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches}
+function applyTheme(){const d=isDark();
+  scene.background=new THREE.Color(d?0x131d30:0xd5e6e4);scene.fog=new THREE.Fog(d?0x131d30:0xd5e6e4,220,420);
+  sea.material.color.set(d?0x26455a:0x98c6c4);hemi.intensity=d?.36:.75;hemi.color.set(d?0x9fb4e0:0xffffff);
+  sun.intensity=d?.34:.85;sun.color.set(d?0xaebfff:0xfff2dc);
+  winMat.emissive.set(d?0xffc95a:0x000000);winMat.color.set(d?0xffd77a:0x5f7a86);lampMat.emissive.set(d?0xffd35a:0x5a4a1c);
+  groups.forEach(g=>{if(g.userData.beam)g.userData.beam.material.opacity=d?.22:0});}
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme);
+new MutationObserver(applyTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+new ResizeObserver(resize).observe(canvas);
+
+const clock=new THREE.Clock(),tmp=new THREE.Vector3();
+function tick(){const t=clock.getElapsedTime(),k=reduce?1:.07;
+  orbit.theta+=(want.theta-orbit.theta)*k;orbit.phi+=(want.phi-orbit.phi)*k;orbit.r+=(want.r-orbit.r)*k;orbit.target.lerp(want.target,k);placeCam();
+  const far=orbit.r>110;isleLabels.forEach(l=>l.visible=far);
+  PASS_TAGS.forEach(p=>{if(p.sp)p.sp.visible=!far&&camera.position.distanceTo(tmp.set(p.pos[0],0,p.pos[1]))<95;});
+  groups.forEach((g,i)=>{const sel=i===cur;const by=sel&&!reduce?Math.abs(Math.sin(t*3))*.25:0;g.position.y=by;
+    const sp=g.userData.sprite;sp.position.y=g.userData.top+1.1+by;sp.scale.set(sel?4.3:3.6,sel?1.43:1.2,1);
+    sp.visible=!far&&camera.position.distanceTo(tmp.set(sp.position.x,0,sp.position.z))<95;
+    const s=g.userData.spin;if(s&&!reduce){const ty=g.userData.spinType;
+      if(ty==='mill')s.rotation.z=t*.9;else if(ty==='beam')s.rotation.y=t*.8;else if(ty==='vane')s.rotation.y=Math.sin(t*.4)*1.2;
+      else if(ty==='tilt')s.rotation.z=Math.sin(t*.8)*.14;else if(ty==='gear')s.rotation.z=t*.8;else if(ty==='stars')s.rotation.y=t*.25;
+      else if(ty==='belt')s.children.forEach((b,j)=>{b.position.x=-3+((j*1.2+t*.8)%7.2)});
+      else if(ty==='bob')s.position.y=-.85+Math.sin(t*1.4)*.08;
+      else if(ty==='dish')s.rotation.y=t*.9;else if(ty==='loop')s.rotation.z=-t*1.2;
+      else if(ty==='race')s.children.forEach(o=>{if(o.userData.lane!==undefined)o.position.x=-3+((t*(.7+o.userData.lane*.13)+o.userData.lane*.9)%6.4);});
+      else if(ty==='needles')s.forEach((n,j)=>n.rotation.z=Math.sin(t*(.6+j*.35)+j)*1.1);}});
+  FERRY.forEach(f=>{const u=reduce?.5:(Math.sin(t*.18+f.ph*6.28)+1)/2;const x=f.from[0]+(f.to[0]-f.from[0])*u,z=f.from[1]+(f.to[1]-f.from[1])*u;
+    f.b.position.set(x,-.75+Math.sin(t*1.3+f.ph)*.06,z);f.b.rotation.y=Math.atan2(f.to[0]-f.from[0],f.to[1]-f.from[1]);});
+  MAIL.forEach(m=>{let d=(((reduce?.3:t*m.spd)+m.ph)%1)*m.tot,i=0;while(i<m.L.length-1&&d>m.L[i]){d-=m.L[i];i++;}
+    const a=m.pts[i],b=m.pts[i+1],u=m.L[i]?d/m.L[i]:0;m.e.position.set(a[0]+(b[0]-a[0])*u,1.3+Math.sin(t*3+m.ph*6)*.08,a[1]+(b[1]-a[1])*u);
+    m.e.rotation.y=Math.atan2(b[0]-a[0],b[1]-a[1]);m.e.material.color.set(ENV_COL[m.segCol[i]]);});
+  CARGO.forEach(o=>{let u=((reduce?0:t*.06)+o.ph)%1;if(o.dir<0)u=1-u;const off=o.dir*.45;
+    o.c.position.set(o.a[0]+(o.b[0]-o.a[0])*u+o.nx*off,.62,o.a[1]+(o.b[1]-o.a[1])*u+o.nz*off);});
+  if(window.journeyTick)journeyTick(t);
+  if(window.agendaTick)agendaTick(t);
+  renderer.render(scene,camera);requestAnimationFrame(tick);}
+
+
+/* ================= 신입사원 여정 ================= */
+const CHAPTERS=[
+ {t:'항구 도착',p:'Day 1',c:'#4F8F94',g:'港'},
+ {t:'강의 섬 연수',p:'Week 1–2',c:'#D9973A',g:'講'},
+ {t:'첫 통행증',p:'Week 2 끝',c:'#6B7A3E',g:'證'},
+ {t:'자율운용 섬 배치',p:'Month 1',c:'#2E6E73',g:'運'},
+ {t:'NeoQuant 견학',p:'Month 2',c:'#A3552A',g:'算'},
+ {t:'항구로 귀환',p:'Month 3',c:'#6A5BA8',g:'修'}];
+const JSTEPS=[
+ [0,'kos','수집 부두','입사 첫날, 이번 주 수집함에 들어온 리서치 10건을 훑어본다','수집 출처 목록'],
+ [0,'kos','AI 판독소','10건을 a·b·c·d로 나누고, 깊이 이해할 c 하나를 고른다','첫 판독 기록'],
+ [0,'kos','배편 매표소','고른 c 항목을 들고 강의 섬행 배에 오른다','승선권'],
+ [1,'lec','기금 정문','GPFG와 CPPIB의 IPS를 읽고 운용자율권 4차원을 표로 정리한다','IPS 독해 노트'],
+ [1,'lec','CMA 기상대','W03 실습 패키지를 돌려 60/40 주식 위험기여 87.6%를 재현한다','재현 결과'],
+ [1,'lec','기금위원회 회관','MVO 코너해를 직접 만들고 유효 종목 수를 계산해 본다','MVO 계산표'],
+ [1,'lec','위험 저울','같은 자산으로 리스크 패리티를 만들어 MVO와 나란히 비교한다','RP 대 MVO 비교표'],
+ [1,'lec','위험 관제탑','예측과 실현을 견주는 성과평가 틀을 익힌다','성과평가 틀'],
+ [2,'sda','강의 다리','검산소에서 cma-builder 통행증을 받고 다리를 건넌다 — 발급 조건은 87.6% 재현','첫 통행증 (cma-builder)'],
+ [3,'sda','안건 접수처','안건 처리 7단계를 익히고 견본 안건 AG-2026-031이 제출에서 기록까지 가는 길을 따라간다','안건 처리 절차표'],
+ [3,'sda','IPS 의사당','ips.md를 정독하고 유효 종목 수 하한 4.0과 7.4항 킬스위치를 둔 이유를 설명한다','IPS 서약'],
+ [3,'sda','CMA 기상대','통행증으로 들여온 cma-builder를 실제로 돌리고 평균 절대오차 6.85%p를 확인한다','첫 산출물 cma.json'],
+ [3,'sda','MVO 공방','MVO가 자동 기각된 사유(유효 종목 수 3.93 < 4.0)를 기록한다','기각 사유서'],
+ [3,'sda','IC 회의실','네 관점 표결을 읽고, 규율의 대가 1.15%p에 대한 의견서를 쓴다','IC 의견서'],
+ [3,'sda','위험 계기탑','BaR와 DaR 두 계기를 읽는 법을 배운다','계기판 판독'],
+ [3,'sda','CIO 집무실','첫 주간 보고서를 CIO에게 올린다 — 결론은 CIO가 낸다','첫 보고서'],
+ [3,'sda','메타 리뷰어 관제탑','지시문 수정 제안 2건이 왜 보류됐는지 확인한다','킬스위치 이해'],
+ [4,'sda','알파 다리','알파 통행증 견본(CX41 · v51)을 ips-guardian 심사 항목과 대조하며 다리를 건넌다','입국 심사 체크리스트'],
+ [4,'neo','안전 발견 사다리','후보 알파가 사다리를 한 칸씩 오르는 과정을 따라간다','사다리 견학증'],
+ [4,'neo','Composer 조립장','고정된 6단계 조립이 왜 감사 가능한지 설명한다','Composer 메모'],
+ [4,'neo','교차 자산 검증장','같은 엔진이 주식·채권선물·FX·원자재에서도 전 게이트 통과 전략을 내는지 판정표를 읽는다','교차 자산 판정표'],
+ [4,'neo','IC 리포트실','에이전트가 쓴 IC 리포트의 반대 의견 칸을 직접 채워 본다','반대 의견서'],
+ [4,'neo','실시간 관제탑','낙폭 킬스위치가 언제 작동하는지 기준을 확인한다','관제 한도표'],
+ [4,'neo','RL 실거래 데스크','RL이 정하는 것(체결)과 정하지 않는 것(종목 선택)을 구분해 설명한다','RL 권한 메모'],
+ [4,'neo','원장 보관소','원장 기록이 곧 통행증이 되는 발급 과정을 본다','원장 열람'],
+ [4,'neo','지식 천문대','공개 시점 태그가 미래 정보 누설을 막는 원리를 익힌다','PIT 원칙'],
+ [5,'kos','학습관','석 달 동안 붙든 c 항목 하나를 3문장으로 설명한다','teach-back 통과'],
+ [5,'kos','승인 창구','첫 개선 제안을 안건서로 써서 배편으로 접수처에 제출하고 접수번호를 받는다','첫 안건 접수증'],
+ [5,'kos','회고 등대','첫 월간 회고에 참여해 출처 품질을 평가한다','수료 · 군도 여권 완성']
+].map(([ch,isl,name,mission,gain])=>{const ii=ISLANDS.findIndex(I=>I.id===isl);const st=ISLANDS[ii].stops.find(x=>x.name===name);return{ch,isl:ii,gi:st.gi,mission,gain};});
+const J={on:false,k:-1,reached:-1,travel:null,lastT:0};
+try{const v=+localStorage.getItem('archi-journey');if(v>=0&&v<JSTEPS.length)J.reached=v;}catch(e){}
+
+/* chapter cards */
+const chapEl=$('chapters');
+function renderChapters(){chapEl.innerHTML='';
+  CHAPTERS.forEach((C,ci)=>{const steps=JSTEPS.map((x,k)=>[x,k]).filter(([x])=>x.ch===ci);const last=steps[steps.length-1][1];
+    const d=document.createElement('div');d.className='chap'+(J.reached>=last?' done':'');d.style.setProperty('--sc',C.c);
+    d.innerHTML=`<div class="chap-h"><div class="stamp">${J.reached>=last?C.g:ci+1}</div><div><b>${ci+1}장 · ${C.t}</b><small>${C.p}</small></div></div>`;
+    const ul=document.createElement('ul');ul.className='jsteps';
+    steps.forEach(([x,k])=>{const li=document.createElement('li');const b=document.createElement('button');
+      b.className=J.reached>=k?'got':'';b.setAttribute('aria-current',J.on&&J.k===k?'true':'false');
+      b.innerHTML=`<i>${J.reached>=k?'✓':'·'}</i><span>${STOPS[x.gi].name}</span>`;
+      b.onclick=()=>{if(!J.on)enterJourney();jgo(k);$('scene').scrollIntoView({behavior:'smooth',block:'center'});};li.appendChild(b);ul.appendChild(li);});
+    d.appendChild(ul);chapEl.appendChild(d);});
+  $('j-start').textContent=J.reached>=0&&J.reached<JSTEPS.length-1?'이어서 가기':J.reached>=JSTEPS.length-1?'처음부터 다시':'여정 시작';}
+renderChapters();
+
+/* character + boat */
+const hero=new THREE.Group();
+hero.add(at(mesh(new THREE.CylinderGeometry(.34,.4,1,10),'#2c3e66'),0,.7,0));
+hero.add(at(mesh(new THREE.SphereGeometry(.34,14,10),'#f2d2b0',false),0,1.5,0));
+hero.add(at(mesh(new THREE.SphereGeometry(.36,14,8,0,Math.PI*2,0,Math.PI/2.2),'#2a2320',false),0,1.56,0));
+hero.add(at(mesh(new THREE.BoxGeometry(.5,.55,.25),'#C2563E'),0,.85,-.32));
+hero.add(at(mesh(new THREE.BoxGeometry(.16,.2,.04),'#f0c84a',false),.12,.85,.36));
+hero.scale.setScalar(1.25);hero.visible=false;scene.add(hero);
+const skiff=new THREE.Group();skiff.add(at(mesh(new THREE.BoxGeometry(1.5,.5,2.8),'#f4efe2'),0,0,0));skiff.add(at(mesh(new THREE.BoxGeometry(1.2,.12,.9),'#C2563E'),0,.3,-.6));
+skiff.visible=false;scene.add(skiff);
+
+/* routes between islands */
+function viaPoints(a,b){const A=ISLANDS[STOPS[a].isl].id,B=ISLANDS[STOPS[b].isl].id;
+  const R={'kos>lec':[[FERRY[0].from,0],[FERRY[0].to,1]],'lec>sda':[[lecStart,0],[lecEnd,0]],'sda>neo':[[neoEnd,0],[neoStart,0]],'neo>kos':[[FERRY[2].to,0],[FERRY[2].from,1]]};
+  if(A===B)return[];if(R[A+'>'+B])return R[A+'>'+B];
+  if(R[B+'>'+A]){const f=R[B+'>'+A];const out=[];for(let i=f.length-1;i>=0;i--)out.push([f[i][0],i===f.length-1?0:f[i+1][1]]);out[0][1]=0;
+    /* reversed: boat flag belongs to the segment ending at the point */
+    const pts=f.map(x=>x[0]).reverse(),flags=f.map(x=>x[1]).reverse();return pts.map((p,i)=>[p,i===0?0:flags[i-1]]);}
+  const S=STOPS[a].world,T=STOPS[b].world;return[[[S[0]+(T[0]-S[0])*.15,S[1]+(T[1]-S[1])*.15],0],[[S[0]+(T[0]-S[0])*.85,S[1]+(T[1]-S[1])*.85],1]];}
+function heroOffset(gi){const w=STOPS[gi].world;return[w[0]+1.8,w[1]+2.2];}
+function jgo(k){if(k<0||k>=JSTEPS.length)return;const oldK=J.k,step=JSTEPS[k];
+  const adj=hero.visible&&oldK>=0&&Math.abs(k-oldK)===1&&!reduce;
+  const end=heroOffset(step.gi);
+  J.k=k;if(k>J.reached){J.reached=k;try{localStorage.setItem('archi-journey',String(k))}catch(e){}}
+  cur=step.gi;focusIsl=step.isl;fillCard();markTabs();renderChapters();
+  if(adj){const pts=viaPoints(JSTEPS[oldK].gi,step.gi);pts.push([end,0]);J.travel={pts,i:0};}
+  else{hero.visible=true;hero.position.set(end[0],0,end[1]);J.travel=null;arrive();}}
+function arrive(){const s=STOPS[cur];want.target.set(s.world[0],1.5,s.world[1]);want.r=26;want.phi=.9;skiff.visible=false;hero.visible=true;}
+window.journeyTick=function(t){const dt=Math.min(.05,t-(J.lastT||t));J.lastT=t;
+  if(!J.travel)return;const T=J.travel;let budget=dt*7;
+  while(budget>0&&T.i<T.pts.length){const [p,boat]=T.pts[T.i];const dx=p[0]-hero.position.x,dz=p[1]-hero.position.z,d=Math.hypot(dx,dz);
+    const onBoat=!!boat;skiff.visible=onBoat;hero.position.y=onBoat?-.35:0;
+    if(d<1e-3){T.i++;continue;}
+    const stepL=Math.min(d,budget*(onBoat?2.4:1));hero.position.x+=dx/d*stepL;hero.position.z+=dz/d*stepL;hero.rotation.y=Math.atan2(dx,dz);
+    budget-=stepL/(onBoat?2.4:1);if(stepL>=d)T.i++;}
+  if(skiff.visible){skiff.position.set(hero.position.x,-.85,hero.position.z);skiff.rotation.y=hero.rotation.y;}
+  if(!skiff.visible)hero.position.y=Math.abs(Math.sin(t*9))*.08;
+  want.target.set(hero.position.x,1,hero.position.z);want.r=skiff.visible?48:34;
+  if(T.i>=T.pts.length){J.travel=null;arrive();}};
+function showJourneyBlock(){const on=J.on&&J.k>=0&&JSTEPS[J.k].gi===cur;$('c-journey').hidden=!on;if(!on)return;const st=JSTEPS[J.k],C=CHAPTERS[st.ch];
+  $('j-step').textContent=`여정 ${String(J.k+1).padStart(2,'0')} / ${JSTEPS.length}`;$('j-ch').textContent=`${st.ch+1}장 ${C.t} · ${C.p}`;
+  $('j-mission').textContent='미션 · '+st.mission;$('j-gain').textContent=st.gain;}
+function updateBar(){const on=J.on&&J.k>=0;$('jbar').hidden=!on;document.querySelector('.stage').classList.toggle('journey',on);if(!on)return;
+  const st=JSTEPS[J.k],C=CHAPTERS[st.ch];$('jb-step').textContent=`여정 ${J.k+1}/${JSTEPS.length} · ${st.ch+1}장 ${C.t}`;$('jb-name').textContent=STOPS[st.gi].name+' — '+st.gain;
+  $('jb-prev').disabled=J.k<=0;$('jb-next').textContent=J.k>=JSTEPS.length-1?'수료 ✓':'다음 ›';$('jb-next').disabled=J.k>=JSTEPS.length-1;}
+const _fill=fillCard;fillCard=function(){_fill();showJourneyBlock();if(J.on)$('c-count').textContent=`여정 ${J.k+1} / ${JSTEPS.length}`;updateBar();};
+$('jb-prev').onclick=()=>jgo(J.k-1);$('jb-next').onclick=()=>jgo(J.k+1);
+function enterJourney(){J.on=true;window.__jon=true;$('j-exit').hidden=false;markTabs();}
+function startJourney(){enterJourney();let k=0;const resume=J.reached>=0&&J.reached<JSTEPS.length-1;
+  if(J.reached>=JSTEPS.length-1){J.reached=-1;try{localStorage.setItem('archi-journey','-1')}catch(e){}}
+  if(resume)k=J.reached;J.k=-1;hero.visible=false;jgo(k);
+  if(resume)setTimeout(()=>{if(J.on&&J.k===k)jgo(k+1);},700);
+  document.querySelector('.stage').scrollIntoView({behavior:'smooth',block:'start'});}
+$('j-start').onclick=startJourney;
+$('j-exit').onclick=()=>{J.on=false;window.__jon=false;J.travel=null;hero.visible=false;skiff.visible=false;$('j-exit').hidden=true;fillCard();renderChapters();overview();markTabs();};
+
+/* ================= 안건 처리 과정 ================= */
+const AG_STATE=['제출','접수·검토','심의','의결·이행'];
+const AGENDAS=[
+ {id:'AG-2026-031',title:'신규 슬리브 편입',sub:'주식 팩터 · 교차 자산 검증 통과 · NeoQuant 제출',color:'#A3552A',steps:[
+  ['neo','IC 리포트실','제출','에이전트가 IC 리포트를 쓰고 안건서로 묶는다 — 근거 백서·통행증·위험 영향을 첨부','안건서',0,''],
+  ['sda','알파 다리','이동','다리 입구에서 알파 통행증(원장 기록)을 확인받고 자율운용 섬으로 건넌다','통행 기록',0,'통행증이 만료됐으면 다리를 건너지 못하고 NeoQuant로 되돌아간다'],
+  ['sda','안건 접수처','접수','접수번호 AG-2026-031을 붙이고 필수 첨부를 확인한다','접수증',1,'첨부가 빠졌으면 반려 — 보완해 다시 제출'],
+  ['sda','IPS 의사당','사전 검토','ips-guardian이 허용 자산군·비중 한도·유효 종목 수를 판정한다 — 주식이라 적격','적격 판정서',1,'부적격이면 상정하지 않고 사유를 회신 (크립토 슬리브는 IPS 조항이 없으면 여기서 멈춘다)'],
+  ['sda','IC 회의실','상정·심의','ic-critic이 네 관점으로 표결하고 반대 의견을 붙인다','표결 기록',2,''],
+  ['sda','위험 계기탑','위험 확인','BaR·DaR 두 계기로 편입 뒤 위험이 얼마나 바뀌는지 확인한다','계기판 기록',2,''],
+  ['sda','CIO 집무실','의결','CIO가 조건부 승인 — 편입 비중 상한 2%, 6개월 뒤 재심','의결서',3,'부결이면 사유를 통보 — 근거를 바꾸지 않은 같은 안건은 다시 받지 않는다'],
+  ['sda','안건 접수처','통보','의결 결과를 안건 대장에 기록하고 NeoQuant에 통보한다','통보문 · 대장 기록',3,''],
+  ['neo','원장 보관소','이행','원장에 편입 상태를 기록한다 — 실거래는 관제탑 한도 안에서 시작','원장 갱신',3,''],
+  ['sda','메타 리뷰어 관제탑','사후 점검','예측과 실현을 추적해 6개월 재심 안건의 근거로 쓴다','점검 일정',3,'']]},
+ {id:'AG-2026-032',title:'운영 개선',sub:'출처 품질 기준 변경 · 지식 항구 제출',color:'#4F8F94',steps:[
+  ['kos','승인 창구','제출','월간 회고 결과로 "90일 동안 쓸모없던 출처는 삭제 후보" 기준을 바꾸는 안건서를 쓴다','안건서',0,''],
+  ['kos','배편 매표소','이동','주간 배편에 실어 자율운용 섬으로 보낸다','승선 기록',0,''],
+  ['sda','안건 접수처','접수','접수번호 AG-2026-032를 붙이고 형식을 확인한다','접수증',1,'첨부가 빠졌으면 반려'],
+  ['sda','IPS 의사당','사전 검토','운영 기준은 IPS 대상이 아니므로 "해당 없음"으로 분류한다','분류 기록',1,''],
+  ['sda','CIO 집무실','의결','운영 개선은 IC 표결 없이 CIO 전결로 승인','의결서',3,''],
+  ['sda','안건 접수처','통보','대장에 기록하고 지식 항구에 통보한다','통보문',3,''],
+  ['kos','회고 등대','이행','다음 월간 회고부터 새 기준을 적용한다','적용 기록',3,'']]},
+ {id:'AG-2026-033',title:'지시문 수정',sub:'cma-builder 수정 제안 · 킬스위치 대상',color:'#6A5BA8',steps:[
+  ['sda','메타 리뷰어 관제탑','제출','CMA 오차(평균 절대오차 6.85%p)를 줄이려는 cma-builder 지시문 수정안을 낸다','안건서',0,''],
+  ['sda','안건 접수처','접수','접수번호 AG-2026-033 · IPS 7.4항 대상으로 표시한다','접수증',1,''],
+  ['sda','IPS 의사당','사전 검토','7.4항 킬스위치 — 자동 반영 금지, 사람 승인이 필요한 안건으로 분류','킬스위치 표시',1,''],
+  ['sda','IC 회의실','상정·심의','반대 의견: 평가 표본 35개월로는 수정 효과를 판단할 근거가 부족하다','반대 의견서',2,''],
+  ['sda','CIO 집무실','의결','보류 — 12개월 더 관측한 뒤 다시 상정','보류 의결',3,'보류는 부결과 달리 새 근거가 쌓이면 같은 안건을 다시 올릴 수 있다'],
+  ['sda','안건 접수처','통보','대장에 보류로 기록하고 재상정 일정을 등록한다','재상정 일정',3,'']]}
+];
+const AG_STEPS=AGENDAS.map(ag=>ag.steps.map(([isl,name,stage,text,result,state,branch])=>{const ii=ISLANDS.findIndex(I=>I.id===isl);const st=ISLANDS[ii].stops.find(x=>x.name===name);return{gi:st.gi,isl:ii,stage,text,result,state,branch};}));
+const A={on:false,a:0,k:-1,travel:null,lastT:0};
+const env=new THREE.Group();
+const envBody=mesh(new THREE.BoxGeometry(1.8,.22,1.25),'#f7f3ea');env.add(envBody);
+env.add(at(mesh(new THREE.BoxGeometry(1.82,.23,.2),'#C2563E',false),0,0,0));
+env.add(at(mesh(new THREE.CylinderGeometry(.22,.22,.08,14),'#8a2b1c',false),0,.15,0));
+env.visible=false;scene.add(env);
+function aOffset(gi){const w=STOPS[gi].world;return[w[0]-1.9,w[1]+2.3];}
+function aArrive(){const s=STOPS[cur];want.target.set(s.world[0],1.5,s.world[1]);want.r=28;want.phi=.9;}
+function ago(k){const S=AG_STEPS[A.a];if(k<0||k>=S.length)return;const old=A.k,st=S[k],end=aOffset(st.gi);
+  const adj=env.visible&&old>=0&&Math.abs(k-old)===1&&!reduce;
+  A.k=k;cur=st.gi;focusIsl=st.isl;envBody.material.color.set(ENV_COL[st.state]);fillCard();markTabs();renderAgenda();
+  if(adj){const pts=viaPoints(S[old].gi,st.gi);pts.push([end,0]);A.travel={pts,i:0};}
+  else{env.visible=true;env.position.set(end[0],1.6,end[1]);A.travel=null;aArrive();}}
+window.agendaTick=function(t){const dt=Math.min(.05,t-(A.lastT||t));A.lastT=t;if(!env.visible)return;
+  env.rotation.y+=reduce?0:dt*.6;
+  if(!A.travel){env.position.y=1.6+(reduce?0:Math.sin(t*2.2)*.15);return;}
+  const T=A.travel;let budget=dt*18;
+  while(budget>0&&T.i<T.pts.length){const p=T.pts[T.i][0];const dx=p[0]-env.position.x,dz=p[1]-env.position.z,d=Math.hypot(dx,dz);
+    if(d<1e-3){T.i++;continue;}const l=Math.min(d,budget);env.position.x+=dx/d*l;env.position.z+=dz/d*l;budget-=l;if(l>=d)T.i++;}
+  env.position.y=2.2;want.target.set(env.position.x,1,env.position.z);want.r=40;
+  if(T.i>=T.pts.length){A.travel=null;aArrive();}};
+function showAgendaBlock(){const on=A.on&&A.k>=0&&AG_STEPS[A.a][A.k].gi===cur;$('c-agenda').hidden=!on;if(!on)return;
+  const ag=AGENDAS[A.a],st=AG_STEPS[A.a][A.k];$('a-step').textContent=`${ag.id} · ${A.k+1}/${AG_STEPS[A.a].length}`;$('a-stage').textContent=`${st.stage} · 봉투 ${AG_STATE[st.state]}`;
+  $('a-text').textContent=st.text;$('a-result').textContent=st.result;$('a-branch').hidden=!st.branch;$('a-branch').textContent=st.branch?'달라지는 경우 · '+st.branch:'';}
+function updateABar(){const on=A.on&&A.k>=0;$('abar').hidden=!on;if(on)document.querySelector('.stage').classList.add('journey');if(!on)return;
+  const ag=AGENDAS[A.a],S=AG_STEPS[A.a],st=S[A.k];$('ab-step').textContent=`${ag.id} ${ag.title} · ${A.k+1}/${S.length} · ${st.stage}`;$('ab-name').textContent=STOPS[st.gi].name+' — '+st.result;
+  $('ab-prev').disabled=A.k<=0;const last=A.k>=S.length-1;$('ab-next').textContent=last?'처리 완료 ✓':'다음 단계 ›';$('ab-next').disabled=last;}
+const _fillA=fillCard;fillCard=function(){_fillA();showAgendaBlock();if(A.on){$('c-count').textContent=`${AGENDAS[A.a].id} · ${A.k+1} / ${AG_STEPS[A.a].length}`;}updateABar();};
+$('ab-prev').onclick=()=>ago(A.k-1);$('ab-next').onclick=()=>ago(A.k+1);
+function renderAgenda(){const pk=$('ag-pick');pk.innerHTML='';
+  AGENDAS.forEach((ag,i)=>{const b=document.createElement('button');b.style.setProperty('--ac',ag.color);b.setAttribute('aria-pressed',i===A.a?'true':'false');
+    b.innerHTML=`<b>${ag.id}</b><span>${ag.title}</span><small>${ag.sub}</small>`;
+    b.onclick=()=>{A.a=i;if(A.on){env.visible=false;A.travel=null;ago(0);}else renderAgenda();};pk.appendChild(b);});
+  const ol=$('ag-steps');ol.innerHTML='';
+  AG_STEPS[A.a].forEach((st,k)=>{const li=document.createElement('li');if(A.on&&k<=A.k)li.className='done';const b=document.createElement('button');
+    b.setAttribute('aria-current',A.on&&k===A.k?'true':'false');
+    b.innerHTML=`<span class="no">${A.on&&k<A.k?'✓':String(k+1).padStart(2,'0')}</span><span class="st" style="--sc:${ENV_COL[st.state]}">${st.stage}</span><span class="tx"><b>${STOPS[st.gi].name}</b><small>${st.result}</small></span>`;
+    b.onclick=()=>{if(!A.on)enterAgenda();ago(k);document.querySelector('.stage').scrollIntoView({behavior:'smooth',block:'start'});};li.appendChild(b);ol.appendChild(li);});
+  $('a-start').textContent=A.on?'처음부터':'처리 시작';}
+function exitJourneyIfOn(){if(window.__jon)$('j-exit').onclick();}
+function enterAgenda(){exitJourneyIfOn();A.on=true;window.__aon=true;$('a-exit').hidden=false;markTabs();}
+function exitAgenda(){A.on=false;window.__aon=false;A.travel=null;A.k=-1;env.visible=false;$('a-exit').hidden=true;$('abar').hidden=true;document.querySelector('.stage').classList.remove('journey');fillCard();renderAgenda();overview();markTabs();}
+function startAgenda(){enterAgenda();env.visible=false;A.travel=null;A.k=-1;ago(0);document.querySelector('.stage').scrollIntoView({behavior:'smooth',block:'start'});}
+$('a-start').onclick=startAgenda;$('a-exit').onclick=exitAgenda;
+{const _sj=startJourney;startJourney=function(){if(A.on)exitAgenda();_sj();};$('j-start').onclick=startJourney;}
+renderAgenda();
+
+const fontReady=Promise.race([Promise.all([document.fonts.load('64px "Do Hyeon"'),document.fonts.load('500 30px "JetBrains Mono"')]),new Promise(r=>setTimeout(r,1500))]);
+fontReady.catch(()=>{}).finally(()=>{buildAll();applyTheme();resize();if(hashIdx>=0)go(cur);tick();});
+</script>
+
+</body></html>
