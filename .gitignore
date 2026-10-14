@@ -13,8 +13,8 @@
 # 제3자 저작물 — 재배포하지 않고 원문 링크로 대신한다 (_참고자료/README.md 참조)
 _참고자료/CPP_TPA리포트_MeasuringWhatMatters_2026-07_EN.pdf
 _pdf/CPP_TPA리포트_MeasuringWhatMatters_2026-07_EN.pdf
-보충교재/17_LDI_GBI 수식도출/GBI/07_Das_Markowitz_Scheid_Statman_2010_JFQA_원문.pdf
-보충교재/17_LDI_GBI 수식도출/GBI/*_원문.pdf
+보충교재/05_LDI와GBI/GBI/07_Das_Markowitz_Scheid_Statman_2010_JFQA_원문.pdf
+보충교재/05_LDI와GBI/GBI/*_원문.pdf
 
 # 강의계획서 — 학과 제출 문서라 공개하지 않는다.
 # 편집 원본 .docx는 위 규칙으로 이미 제외되므로, 렌더한 PDF만 여기서 막는다.
@@ -52,14 +52,14 @@ _구판/
 *.mov
 
 # 보충교재 — 덱 빌드 소스(스크립트·중간 그림)는 올리지 않는다
-보충교재/04_TPA_W15/TPA_Brief_Deck_Source_v01/
+보충교재/14_TPA/TPA_Brief_Deck_Source_v01/
 # 대체투자 폴더는 과정 덱(02_Courses)과 사모대출 브리핑(05_PrivateCredit_Stress)의 PDF만 공개한다 — 펀드 덱·확장판·대시보드·README는 제외
-보충교재/08_대체투자_W14/*
-!보충교재/08_대체투자_W14/02_Courses/
-!보충교재/08_대체투자_W14/05_PrivateCredit_Stress/
+보충교재/13_대체투자/*
+!보충교재/13_대체투자/02_Courses/
+!보충교재/13_대체투자/05_PrivateCredit_Stress/
 _build/lecfix/_eq/
 _build/lecfix/_art/
-보충교재/15_적극적운용의기본법칙/FLAM_Deck_Source/
+보충교재/09_위험관리와적극적운용/적극적운용의기본법칙/FLAM_Deck_Source/
 
 # 과제 정답지 — 교수용 폴더는 공개 저장소에 올리지 않는다.
 Assignment/**/2_Instructor/

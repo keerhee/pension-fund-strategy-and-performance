@@ -71,11 +71,11 @@ DECKS = {
         (25, [37, 38, 39, 40, 41], "(37–41p)", "부록"),
         (31, [38, 39, 40], "(38–40p)", "부록"),
     ]),
-    "보충교재/07_블랙리터맨_W04/BL_Expected_Return_Update_bj": dict(
+    "보충교재/03_MVO와블랙리터맨/블랙리터맨/BL_Expected_Return_Update_bj": dict(
         geom=dict(y=7.035, h=0.28, right=12.42, fs=11, font="맑은 고딕", ink="1B2A41"),
         pdf_font=("맑은 고딕", "Pretendard"),                 # 이 덱의 PDF는 Pretendard로 바꿔 찍어 왔다
         refs=[(10, [21, 22, 23, 24, 25], "부록 A", "부록 A")]),
-    "보충교재/09_HRP와NCO_W05/HRP_NCO_JJ_Brief_II": dict(
+    "보충교재/04_위험기반배분과HRP/HRP와NCO/HRP_NCO_JJ_Brief_II": dict(
         geom=dict(y=0.10, h=0.30, right=8.32, fs=11, font="맑은 고딕", ink="1E4E8C"),   # 맨 위 띠, 쪽번호(8.40~) 앞
         pdf_font=("맑은 고딕", "Pretendard"),
         refs=[(9, list(range(53, 63)), "부록 A", "부록 A")]),
