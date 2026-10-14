@@ -123,7 +123,7 @@ W07 보충 자료 세 묶음이다. **`01_종합/`**으로 전체 수식을 한 
 
 | 자료 | 쪽 | 무엇을 다루나 |
 |---|---:|---|
-| [`W07_Dynamic_Portfolio_Formula_CheatSheet_ZeroOne_XVII.pdf`](06_%EB%8F%99%EC%A0%81%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4/01_%EC%A2%85%ED%95%A9/W07_Dynamic_Portfolio_Formula_CheatSheet_ZeroOne_XVII.pdf) | 38 | **동적 포트폴리오 핵심 수식** — 매달 비중을 정하는 6단계 워크플로우 · 11절 수식과 숫자 예 · 여섯 층 요약 |
+| [`W07_Dynamic_Portfolio_Formula_CheatSheet_ZeroOne_XVII.pdf`](06_%EB%8F%99%EC%A0%81%ED%8F%AC%ED%8A%B8%ED%8F%B4%EB%A6%AC%EC%98%A4/01_%EC%A2%85%ED%95%A9/W07_Dynamic_Portfolio_Formula_CheatSheet_ZeroOne_XVII.pdf) | 38 | **동적 포트폴리오 핵심 수식** — 매달 비중을 정하는 6단계 워크플로우 · 11절 수식과 숫자 예 · 여섯 층 요약 · ▶ 영상: [45초 Shorts](https://youtu.be/LqkAv_eMlZw) · [재생목록](https://www.youtube.com/playlist?list=PLS1E5UlBVX2o) |
 
 ---
 
