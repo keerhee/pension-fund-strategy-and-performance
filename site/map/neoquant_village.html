@@ -1,0 +1,395 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>NeoQuant 마을</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=IBM+Plex+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: 파이프라인 도로가 섬을 S자로 가로지르는 3D 지도 + 투어 카드 + 단계별 색인. 낮=라이트, 밤=다크 */
+:root{
+  --bg:#ECEEF1; --ink:#1B2130; --muted:#5A6272; --panel:#FBFAF7; --line:#D6DAE1;
+  --accent:#A3552A; --chip:#E4E7EC;
+  --f-display:"Do Hyeon","IBM Plex Sans KR",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1220; --ink:#E5E8EF; --muted:#9AA2B4; --panel:#161C2C; --line:#283149;
+  --accent:#E59B66; --chip:#1E2639; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1220; --ink:#E5E8EF; --muted:#9AA2B4; --panel:#161C2C; --line:#283149;
+  --accent:#E59B66; --chip:#1E2639; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:28px 56px;display:grid;gap:22px}
+header{display:grid;gap:8px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(34px,6vw,58px);line-height:1.05;margin:0;text-wrap:balance}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{margin:0;max-width:64ch;color:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+.flow span{background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:2px 10px}
+.flow i{font-style:normal;color:var(--muted)}
+.stage{position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--chip)}
+#scene{display:block;width:100%;height:min(66vh,640px);min-height:380px;touch-action:none;cursor:grab}
+#scene:active{cursor:grabbing}
+.tools{position:absolute;top:12px;right:12px;display:flex;gap:6px}
+.tools button,.nav button{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer}
+.tools button:focus-visible,.nav button:focus-visible,.stop:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hint{position:absolute;left:12px;top:12px;font-size:12px;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 10px}
+.card{position:absolute;left:16px;bottom:16px;width:min(480px,calc(100% - 32px));background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 20px;display:grid;gap:10px;box-shadow:0 10px 30px rgb(0 0 0 / .14)}
+.card-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.badge{font-family:var(--f-mono);font-size:12px;background:var(--ink);color:var(--panel);border-radius:8px;padding:3px 9px;font-variant-numeric:tabular-nums}
+.zone{font-weight:700;font-size:13px}
+.card h2{margin:0;font-family:var(--f-display);font-weight:400;font-size:26px;line-height:1.15;text-wrap:balance}
+.claim{margin:0;font-weight:500}
+.ep{margin:0;font-size:13px;color:var(--muted)}
+.tex{min-height:30px;overflow-x:auto;color:var(--ink);font-size:15px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-size:12px;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:2px 9px}
+.nav{display:flex;gap:8px;justify-content:space-between;align-items:center}
+.nav .count{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.index{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.zcol{display:grid;gap:6px;align-content:start;padding-top:10px;border-top:3px solid var(--zc)}
+.zcol h3{margin:0;font-size:15px;display:flex;justify-content:space-between;gap:8px}
+.zcol h3 small{font-family:var(--f-mono);font-weight:500;color:var(--muted);font-size:12px}
+.stop{all:unset;cursor:pointer;display:grid;grid-template-columns:30px 1fr;gap:8px;padding:5px 6px;border-radius:8px;font-size:14px}
+.stop:hover,.stop[aria-current="true"]{background:var(--chip)}
+.stop b{font-family:var(--f-mono);font-weight:500;font-size:12px;color:var(--muted);padding-top:2px}
+.stop span{min-width:0}
+.stop i{font-style:normal;color:var(--muted);font-size:13px}
+footer{font-size:12px;color:var(--muted)}
+@media (max-width:760px){
+  #scene{height:56vh;min-height:320px}
+  .stage{overflow:visible;border-radius:14px}
+  .card{position:static;width:auto;margin:0;border-radius:0 0 14px 14px;border-width:1px 0 0;box-shadow:none}
+}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Research-to-Alpha Engine · formal method edition v1.1</div>
+    <h1>NeoQuant <em>마을</em></h1>
+    <p class="lede">논문을 읽는 천문대에서 실거래 데스크까지, 알파 하나가 만들어져 다른 자산군에서 검증되고 포트폴리오에 담겨 실제로 거래되기까지의 길을 건물 19채로 지었습니다. 도로가 곧 파이프라인입니다. ‹ › 를 누르면 그 순서대로 갑니다.</p>
+    <div class="flow" aria-label="파이프라인 요약"><span>지식</span><i>→</i><span>제안</span><i>→</i><span>조립·검증</span><i>→</i><span>교차 자산 검증</span><i>→</i><span>포트폴리오·IC</span><i>→</i><span>실시간 운용</span><i>→</i><span>실행·장부</span><i>→</i><span>증명·검증 계획</span><i>→</i><span>계보</span></div>
+  </header>
+
+  <section class="stage" aria-label="마을 지도">
+    <canvas id="scene" aria-label="NeoQuant 마을 3D 지도. 드래그해 돌려 볼 수 있습니다."></canvas>
+    <div class="hint">드래그로 회전 · 건물을 누르면 카드</div>
+    <div class="tools">
+      <button id="zin" aria-label="확대">＋</button>
+      <button id="zout" aria-label="축소">－</button>
+      <button id="overview">전체 보기</button>
+    </div>
+    <article class="card" id="card" aria-live="polite">
+      <div class="card-top"><span class="badge" id="c-code">01</span><span class="zone" id="c-zone"></span></div>
+      <h2 id="c-title"></h2>
+      <p class="claim" id="c-claim"></p>
+      <div class="tex" id="c-tex"></div>
+      <p class="ep" id="c-ep"></p>
+      <div class="chips" id="c-parts"></div>
+      <div class="nav">
+        <button id="prev" aria-label="이전 건물">‹ 이전</button>
+        <span class="count" id="c-count">01 / 19</span>
+        <button id="next" aria-label="다음 건물">다음 ›</button>
+      </div>
+    </article>
+  </section>
+
+  <section class="index" id="index" aria-label="단계별 색인"></section>
+  <footer>프로토타입 · 실증 결과는 사전등록 후 동결 전이라 수치 주장을 넣지 않음 · 교차 자산 검증·포트폴리오·IC 리포트·실시간 모니터링·RL 실거래는 확장 설계로, 결과 수치 없음 · 카드의 수식은 개념을 설명하는 일반형으로, 논문 본문의 표기와 다를 수 있음</footer>
+</div>
+
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']]},svg:{fontCache:'global'},
+  startup:{typeset:false,ready(){MathJax.startup.defaultReady();MathJax.startup.promise.then(()=>renderTex())}}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js" async></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const ZONES={
+  know:{name:'지식',color:'#5B6BB5'},
+  propose:{name:'제안 공방',color:'#C0782E'},
+  gate:{name:'조립·검증',color:'#A3552A'},
+  verify:{name:'교차 자산 검증',color:'#3E7FB0'},
+  pf:{name:'포트폴리오·IC',color:'#B8862E'},
+  live:{name:'실시간 운용',color:'#C2563E'},
+  book:{name:'실행·장부',color:'#2F7F78'},
+  claim:{name:'증명·검증 계획',color:'#7A5AA6'},
+  line:{name:'계보',color:'#6B7A3E'}
+};
+const STOPS=[
+ {zone:'know',name:'지식 천문대',topic:'point-in-time GraphRAG',claim:'논문과 리서치를 그 시점에 알 수 있었던 것만 별자리로 엮는다',tex:'\\mathcal{G}_t = \\{\\, d \\in \\mathcal{D} : \\tau(d) \\le t \\,\\}',ep:'문서 d의 공개 시점 τ(d)가 t 이후면 그래프에 들어가지 않는다',parts:['논문 그래프','리서치 메모','공개 시점 태그'],pos:[-21,-9],type:'observatory',c:'#E3E0F0'},
+ {zone:'know',name:'PIT 데이터 창고',topic:'point-in-time 데이터 표면',claim:'모든 입력은 t 시점의 정보 집합 안에서만 꺼낸다',tex:'x_{i,t} \\in \\mathcal{F}_t \\quad\\Rightarrow\\quad \\hat f_{i,t} = g\\big(\\{x_{i,s}\\}_{s\\le t}\\big)',ep:'미래 정보 누설(look-ahead)을 데이터 계층에서 막는다',parts:['가격·거래량','펀딩비','미결제약정','온체인 지표'],pos:[-16,-2],type:'warehouse',c:'#D9D2C2'},
+ {zone:'propose',name:'팩터 공방',topic:'1계층 · factor',claim:'팩터는 다음 기 수익의 횡단면 순위를 예측하는 함수다',tex:'\\mathrm{IC}_t = \\rho_{\\text{rank}}\\big(f_{i,t},\\, r_{i,t+1}\\big)',ep:'LLM이 실행 가능한 Python 모듈로 팩터를 제안',parts:['팩터 스트림','실행 가능 코드'],pos:[-13,-13],type:'workshop',c:'#F0DEC4'},
+ {zone:'propose',name:'시그널 공방',topic:'2계층 · signal',claim:'예측과 방향을 분리한다 — 시그널은 팩터를 매매 방향으로 바꾼다',tex:'s_{i,t} = \\phi\\big(f_{i,t}\\big) \\in [-1,\\,1]',ep:'팩터 예측력과 매매 방향 결정을 다른 계층에 둔다',parts:['시그널 스트림','방향 정렬'],pos:[-7,-18],type:'workshop',c:'#EED4B8'},
+ {zone:'propose',name:'전략 공방',topic:'3계층 · strategy',claim:'전략은 시그널을 포트폴리오 행동(비중·회전율)으로 옮긴다',tex:'w_{t} = \\pi\\big(s_{t}\\big),\\qquad \\textstyle\\sum_i |w_{i,t}| \\le L',ep:'factor–signal–strategy 계약은 제안 방법이 바뀌어도 유지',parts:['전략 스트림','레버리지 한도'],pos:[-1,-14],type:'workshop',c:'#EACBAA'},
+ {zone:'gate',name:'다양성 관문',topic:'패밀리 쿼터 · 신규성 · 아카이브 게이트',claim:'비슷한 알파는 관문에서 걸러 다양성을 사후에 지킨다',tex:'\\text{novelty}(f) = 1 - \\max_{g \\in \\mathcal{A}} \\big|\\rho(f, g)\\big|',ep:'AlphaSAGE의 GFlowNet(학습형 다양성)과 대비되는 사후 게이트 방식',parts:['패밀리 쿼터','신규성 점수','아카이브'],pos:[1,-7],type:'gate',c:'#C9B79C'},
+ {zone:'gate',name:'Composer 조립장',topic:'Structured Composer 6단계',claim:'결합 가중치를 학습하지 않고 고정된 6단계로 조립해 감사할 수 있게 한다',tex:'\\tilde f_k = f_k - \\textstyle\\sum_{j<k} \\beta_{kj} f_j,\\qquad |w_i| \\le c',ep:'방향 정렬·직교성·유계성을 증명 가능한 성질로 얻고, 적응 요소는 유계 오버레이 배분 하나뿐',parts:['6단계 고정 프로그램','유계 오버레이','AlphaForge와 대비'],pos:[7,-12.5],type:'composer',c:'#D4D9E2'},
+ {zone:'gate',name:'안전 발견 사다리',topic:'Safe Discovery Ladder',claim:'후보 알파는 사다리를 한 칸씩 올라야 실행으로 넘어간다',tex:'P\\big(\\mu > 0 \\mid \\mathcal{D}\\big) \\ge 1-\\alpha',ep:'동반 논문(평가 게이트) · 다양성을 고려한 베이지안 알파 발견',parts:['동반 논문','베이지안 판정','단계별 게이트'],pos:[13,-6],type:'ladder',c:'#B9C6D8'},
+ {zone:'verify',name:'교차 자산 검증장',topic:'크립토 밖에서도 통하는가',claim:'같은 리서치 엔진이 크립토와 다른 자산군에서도 모든 게이트를 통과하는 전략을 실제로 만들어 내는지 확인한다',tex:'\\text{pass}_a = \\frac{\\#\\{\\,s \\in S_a : s \\text{ clears } G_1,\\dots,G_K\\,\\}}{\\#S_a}',ep:'트랙마다 자산군 하나 — 크립토 무기한선물 · 주식 · 채권선물 · FX · 원자재 · 엔진은 그대로 두고 데이터 표면만 바꿔 다시 돌린다 · 판정: 자산군마다 전 게이트 통과 전략이 나오는가, 통과한 전략의 메커니즘 패밀리가 자산군 사이에서 일관적인가 · 검증 설계 단계, 결과 수치 없음',parts:['5개 자산군 트랙','전 게이트 통과율','패밀리 일관성','결과 대기'],pos:[19,-13],type:'proving',c:'#D9E3EC'},
+ {zone:'pf',name:'포트폴리오 조립소',topic:'통과한 전략을 한 포트폴리오로',claim:'게이트를 통과한 전략들을 위험 예산 안에서 하나의 포트폴리오로 묶는다',tex:'\\max_{w}\; w^{\\top}\\mu - \\tfrac{\\lambda}{2}\\, w^{\\top}\\Sigma w \\quad \\text{s.t.}\;\; |w_i| \\le c,\;\; \\textstyle\\sum_i |w_i| \\le L',ep:'전략 간 상관이 낮을수록 같은 위험으로 더 많이 담는다 · 슬리브별 한도와 레버리지 상한은 Composer의 유계성과 같은 원칙',parts:['위험 예산','슬리브 한도','레버리지 상한'],pos:[22,-4],type:'pie',c:'#F1E6CF'},
+ {zone:'pf',name:'IC 리포트실',topic:'에이전트가 쓰고 사람이 결재',claim:'포트폴리오 제안마다 IC 리포트를 자동으로 쓰고, 채택 여부는 사람이 정한다',tex:'',ep:'리포트 항목: 편입 전략과 근거 백서 · 통과한 게이트 · 기대 위험과 상관 · 스트레스 결과 · 반대 의견 · 승인·조건부·부결 선택지',parts:['IC 리포트 자동 작성','반대 의견 칸','사람 결재'],pos:[15.5,1],type:'icroom',c:'#EDE3CF'},
+ {zone:'live',name:'실시간 관제탑',topic:'실시간 모니터링',claim:'실거래 중인 포트폴리오를 실시간으로 지켜보고, 한도를 넘으면 자동으로 줄인다',tex:'\\mathrm{DD}_t = 1 - \\frac{V_t}{\\max_{s \\le t} V_s} \;\\ge\; \\bar d \;\\Rightarrow\; \\text{de-risk}',ep:'감시 항목: 손익 · 낙폭 · 펀딩비 · 슬리피지 · 전략별 실현 IC 소멸 · 데이터 지연 · 이상 신호는 원장으로 돌아가 슬리브 퇴출 근거가 된다',parts:['낙폭 킬스위치','IC 소멸 감시','알림'],pos:[21,7],type:'radar',c:'#E7D9D3'},
+ {zone:'live',name:'RL 실거래 데스크',topic:'강화학습 실행 에이전트',claim:'무엇을 살지는 게이트가 정하고, 언제·얼마나·어떻게 체결할지는 강화학습 에이전트가 정한다',tex:'\\pi_\\theta(a_t \\mid s_t),\\qquad r_t = \\Delta \\mathrm{PnL}_t - \\kappa\\, \\mathrm{cost}_t - \\eta\\, \\mathrm{risk}_t',ep:'상태: 호가·체결·펀딩비·보유 포지션 · 행동: 주문 크기·타이밍·지정가/시장가 · 보상에서 비용과 위험을 뺀다 · 행동 범위는 관제탑 한도 안으로 묶는다',parts:['정책 π','비용 차감 보상','한도 안 행동'],pos:[13,9.5],type:'rldesk',c:'#E3E8EE'},
+ {zone:'book',name:'실행 부두',topic:'크립토 무기한선물 실행',claim:'성과는 펀딩비와 거래비용을 뺀 뒤에 계산한다',tex:'\\mathrm{PnL}_{t+1} = w_t^{\\top} r_{t+1} - w_t^{\\top}\\mathrm{fund}_t - c\\,\\lVert \\Delta w_t \\rVert_1',ep:'대상: 크립토 무기한선물(perpetual futures) · 검증장에서 통과한 다른 자산군은 해당 거래소·브로커 연결로 확장',parts:['실행 백엔드','펀딩비','거래비용'],pos:[23,14],type:'pier',c:'#CFE0E2'},
+ {zone:'book',name:'CX 슬리브 마을',topic:'횡단면 알파 슬리브 CX1–CX41',claim:'알파는 슬리브 단위로 원장에 올리고, 복제본은 들이지 않는다',tex:'\\max_{j}\\, \\rho\\big(r_{\\text{new}},\\, r_{\\text{CX}_j}\\big) < \\bar\\rho',ep:'슬리브마다 메커니즘 패밀리·클론 검사·계보를 기록',parts:['41개 슬리브','클론 검사','메커니즘 패밀리'],pos:[5,17],type:'cxvillage',c:'#E7E2D4'},
+ {zone:'book',name:'원장 보관소',topic:'book ledger · 백서',claim:'알파 하나를 들일 때마다 백서를 발행하고 원장 버전을 올린다',tex:'',ep:'2026-07-27 CX41 편입 · ledger v51',parts:['원장 v51','알파 백서 md','계보 기록'],pos:[-4,12.5],type:'archive',c:'#E2DAC8'},
+ {zone:'claim',name:'명제 도서관',topic:'명제 7개 · Claim Ledger',claim:'엔진이 지키는 성질을 명제와 증명으로 못박는다',tex:'',ep:'명제 7개와 따름정리, 증명 · 주장마다 근거를 적는 Claim Ledger',parts:['명제 7개','따름정리','Claim Ledger'],pos:[-10,5],type:'library',c:'#ECE6F2'},
+ {zone:'claim',name:'사전등록 경기장',topic:'두 arm 사전등록',claim:'결과를 보기 전에 비교 설계를 먼저 공개한다',tex:'H_0:\\; SR_{\\text{Full}} - SR_{\\text{July}} \\le 0',ep:'as-executed July baseline vs Versioned Full · 실증은 동결 전, 수치 주장 없음',parts:['July baseline','Versioned Full','사전등록'],pos:[-16,12],type:'stadium',c:'#D8C9E6'},
+ {zone:'line',name:'계보 다리',topic:'AMOI → NeoQuant → NeoMatrix',claim:'운영 인프라에서 알파 엔진으로, 다시 통합 투자지능 플랫폼으로',tex:'',ep:'서쪽 섬 AMOI(자산운용 운영 인프라) · 동쪽 섬 NeoMatrix(통합 투자지능 플랫폼)',parts:['AMOI 제안서','NeoQuant 논문','NeoMatrix 제안서'],pos:[-24,3],type:'tollhouse',c:'#DCD9C2'}
+];
+STOPS.forEach((s,i)=>s.code=String(i+1).padStart(2,'0'));
+
+/* ---------- card + index ---------- */
+const $=id=>document.getElementById(id);
+let cur=0;
+const idx=$('index');
+for(const [k,z] of Object.entries(ZONES)){
+  const col=document.createElement('div');col.className='zcol';col.style.setProperty('--zc',z.color);
+  const its=STOPS.map((s,i)=>[s,i]).filter(([s])=>s.zone===k);
+  col.innerHTML=`<h3>${z.name}<small>${its[0][0].code}${its.length>1?'–'+its[its.length-1][0].code:''}</small></h3>`;
+  its.forEach(([s,i])=>{const b=document.createElement('button');b.className='stop';b.dataset.i=i;
+    b.innerHTML=`<b>${s.code}</b><span>${s.name}<br><i>${s.topic}</i></span>`;
+    b.onclick=()=>{go(i);$('scene').scrollIntoView({behavior:'smooth',block:'center'})};col.appendChild(b)});
+  idx.appendChild(col);
+}
+function renderTex(){
+  const el=$('c-tex');const t=STOPS[cur].tex;el.hidden=!t;if(!t)return;
+  el.textContent='\\('+t+'\\)';
+  if(window.MathJax&&MathJax.typesetPromise){MathJax.typesetClear&&MathJax.typesetClear([el]);MathJax.typesetPromise([el]).catch(()=>{})}
+}
+function fillCard(){
+  const s=STOPS[cur],z=ZONES[s.zone];
+  $('c-code').textContent=s.code;$('c-zone').textContent=z.name;$('c-zone').style.color=z.color;
+  $('c-title').textContent=`${s.name} · ${s.topic}`;$('c-claim').textContent=s.claim;$('c-ep').textContent=s.ep;
+  $('c-parts').innerHTML=s.parts.map(p=>`<span>${p}</span>`).join('');
+  $('c-count').textContent=s.code+' / '+STOPS.length;
+  document.querySelectorAll('.stop').forEach(b=>b.setAttribute('aria-current',+b.dataset.i===cur?'true':'false'));
+  renderTex();
+  try{history.replaceState(null,'','#s'+s.code)}catch(e){}
+}
+$('prev').onclick=()=>go((cur-1+STOPS.length)%STOPS.length);
+$('next').onclick=()=>go((cur+1)%STOPS.length);
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')$('next').click();if(e.key==='ArrowLeft')$('prev').click();});
+const hadHash=/^#s\d\d$/.test(location.hash);
+if(hadHash){const f=STOPS.findIndex(s=>'#s'+s.code===location.hash);if(f>=0)cur=f;}
+fillCard();
+
+/* ---------- 3D scene ---------- */
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canvas=$('scene');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(38,1,0.5,500);
+const hemi=new THREE.HemisphereLight(0xffffff,0x8a8f9a,0.75);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff1de,0.85);sun.position.set(-30,48,25);sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-52,right:52,top:52,bottom:-52,near:1,far:140});scene.add(sun);
+const lineMat=new THREE.LineBasicMaterial({color:0x252a33,transparent:true,opacity:.55});
+const winMat=new THREE.MeshLambertMaterial({color:0x5d7088,emissive:0x000000});
+const lampMat=new THREE.MeshLambertMaterial({color:0xffe6b0,emissive:0x4a3a18});
+const M=c=>new THREE.MeshLambertMaterial({color:c,flatShading:true});
+function mesh(geo,mat,edges=true){const m=new THREE.Mesh(geo,typeof mat==='string'||typeof mat==='number'?M(mat):mat);
+  m.castShadow=true;m.receiveShadow=true;if(edges)m.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo,30),lineMat));return m;}
+const at=(m,x,y,z)=>{m.position.set(x,y,z);return m};
+
+/* islands */
+function island(x,z,r,land){const g=new THREE.Group();
+  const top=mesh(new THREE.CylinderGeometry(r,r+1,2,56),land,false);top.position.y=-1;top.castShadow=false;g.add(top);
+  const sd=mesh(new THREE.CylinderGeometry(r+1.6,r+2.4,1.7,56),'#E3DBC6',false);sd.position.y=-1.35;g.add(sd);g.position.set(x,0,z);scene.add(g);}
+island(0,0,28,'#B4C19B');
+const AMOI=[-43,2],NMX=[44,-14];
+island(AMOI[0],AMOI[1],6,'#C3C9A4');island(NMX[0],NMX[1],7,'#A9BCA6');
+const sea=new THREE.Mesh(new THREE.CircleGeometry(260,48),new THREE.MeshLambertMaterial({color:0x93b4c4}));sea.rotation.x=-Math.PI/2;sea.position.y=-1.1;sea.receiveShadow=true;scene.add(sea);
+
+/* roads: the pipeline itself */
+const pathMat=M('#E2D8C0');
+function path(a,b,w=1.4,y=.02,mat=pathMat){const dx=b[0]-a[0],dz=b[1]-a[1],L=Math.hypot(dx,dz);
+  const p=new THREE.Mesh(new THREE.BoxGeometry(L,0.06,w),mat);p.receiveShadow=true;
+  p.position.set((a[0]+b[0])/2,y,(a[1]+b[1])/2);p.rotation.y=-Math.atan2(dz,dx);scene.add(p);return p;}
+for(let i=0;i<STOPS.length-1;i++)path(STOPS[i].pos,STOPS[i+1].pos);
+path(STOPS[STOPS.length-1].pos,STOPS[0].pos);
+/* bridges to the lineage islands */
+const plank=M('#9C7A55');
+function bridge(a,b){const p=path(a,b,1.8,.15,plank);p.castShadow=true;
+  const dx=b[0]-a[0],dz=b[1]-a[1],n=Math.floor(Math.hypot(dx,dz)/3);
+  for(let k=1;k<n;k++){const t=k/n;scene.add(at(mesh(new THREE.CylinderGeometry(.18,.18,2.2,6),'#6d5235'),a[0]+dx*t,-.7,a[1]+dz*t+.9));}}
+bridge([-27,2.5],[AMOI[0]+5.5,AMOI[1]]);
+bridge([27,-11],[NMX[0]-6.5,NMX[1]+1]);
+
+/* building kit */
+function windows(g,w,h,d,rows=1){const n=Math.max(2,Math.round(w/1.1));for(let r=0;r<rows;r++)for(let i=0;i<n;i++){
+  const p=new THREE.Mesh(new THREE.PlaneGeometry(.38,.42),winMat);p.position.set(-w/2+(i+.5)*w/n,h*(r+.6)/(rows+.4),d/2+.01);g.add(p);}}
+function house(g,w,d,h,wall,roof){g.add(at(mesh(new THREE.BoxGeometry(w,h,d),wall),0,h/2,0));
+  const r=mesh(new THREE.ConeGeometry(Math.max(w,d)*.78,1.3,4),roof);r.rotation.y=Math.PI/4;r.scale.set(w/Math.max(w,d),1,d/Math.max(w,d));r.position.y=h+.65;g.add(r);
+  windows(g,w,h,d);const door=new THREE.Mesh(new THREE.PlaneGeometry(.5,.8),M('#6f553b'));door.position.set(0,.4,d/2+.012);g.add(door);return h+1.3;}
+function hall(g,c,w=4.2,cols=4){g.add(at(mesh(new THREE.BoxGeometry(w,2.6,2.8),c),0,1.3,0));
+  const ped=mesh(new THREE.ConeGeometry(w*.62,1,4),'#8e8478');ped.rotation.y=Math.PI/4;ped.scale.set(1,1,.55);ped.position.y=3.1;g.add(ped);
+  g.add(at(mesh(new THREE.BoxGeometry(w+.4,.3,3.2),'#8e8478'),0,2.7,0));
+  for(let i=0;i<cols;i++)g.add(at(mesh(new THREE.CylinderGeometry(.13,.13,2.4,8),'#f4f1ea'),-(w-1.2)/2+i*(w-1.2)/(cols-1),1.2,1.6));windows(g,w,2.6,2.8,2);return 3.6;}
+function gear(c){const g=new THREE.Group();g.add(mesh(new THREE.CylinderGeometry(.9,.9,.3,16),c));
+  for(let i=0;i<8;i++){const t=mesh(new THREE.BoxGeometry(.35,.3,.5),c,false);const a=i*Math.PI/4;t.position.set(Math.cos(a)*1,0,Math.sin(a)*1);t.rotation.y=-a;g.add(t);}
+  g.rotation.x=Math.PI/2;return g;}
+const BUILD={
+ observatory:(g,c)=>{g.add(at(mesh(new THREE.CylinderGeometry(1.5,1.6,2.2,16),c),0,1.1,0));
+   g.add(at(mesh(new THREE.SphereGeometry(1.55,16,10,0,Math.PI*2,0,Math.PI/2),'#4e5c9e'),0,2.2,0));
+   const t=mesh(new THREE.CylinderGeometry(.2,.28,1.8,8),'#2c3150');t.position.set(.55,3.2,.3);t.rotation.z=-.7;g.add(t);
+   const stars=new THREE.Group();for(let i=0;i<9;i++){const s=new THREE.Mesh(new THREE.OctahedronGeometry(.16),lampMat);s.position.set(Math.cos(i*.7)*(1.6+i*.12),5+Math.sin(i*1.9)*.8,Math.sin(i*.7)*(1.6+i*.12));stars.add(s);}
+   g.add(stars);g.userData.spin=stars;g.userData.spinType='stars';return 4.2;},
+ warehouse:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(4.6,2,2.8),c),0,1,0));
+   const roof=mesh(new THREE.CylinderGeometry(1.45,1.45,4.6,14,1,false,0,Math.PI),'#7f8896');roof.rotation.z=Math.PI/2;roof.position.y=2;g.add(roof);
+   const door=new THREE.Mesh(new THREE.PlaneGeometry(1.6,1.5),M('#8e9399'));door.position.set(0,.75,1.41);g.add(door);
+   for(let i=0;i<3;i++)g.add(at(mesh(new THREE.BoxGeometry(.6,.6,.6),'#c7a873'),2.8,.3+i*.6,.6-i*.2));return 3.6;},
+ workshop:(g,c)=>{const h=house(g,2.6,2.3,2,c,'#8a5a3a');const gr=gear('#C0782E');gr.position.set(0,h+.9,0);gr.scale.setScalar(.8);g.add(gr);g.userData.spin=gr;g.userData.spinType='gear';return h+1.8;},
+ gate:(g,c)=>{for(const x of[-2.2,2.2])g.add(at(mesh(new THREE.BoxGeometry(.7,3.8,.7),c),x,1.9,0));
+   g.add(at(mesh(new THREE.BoxGeometry(5.4,.6,.9),'#8a5a3a'),0,4,0));
+   for(let i=0;i<5;i++)g.add(at(mesh(new THREE.BoxGeometry(.08,2.2,.08),'#4a4a48',false),-1.4+i*.7,1.5,0));
+   const bin=mesh(new THREE.BoxGeometry(1.2,.8,1.2),'#9aa3ad');bin.position.set(3.4,.4,1);g.add(bin);return 4.4;},
+ composer:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(6.4,2.2,2.6),c),0,1.1,-.9));
+   for(let i=0;i<3;i++){const r=mesh(new THREE.BoxGeometry(2.1,.6,2.6),'#6f7c8c');r.position.set(-2.1+i*2.1,2.45,-.9);r.rotation.z=.4;g.add(r);}
+   g.add(at(mesh(new THREE.BoxGeometry(7.2,.35,.9),'#3b3f46'),0,.4,1.2));
+   const cols=['#5B6BB5','#6F86C0','#2F7F78','#6B9A57','#C0782E','#A3552A'];const blocks=new THREE.Group();
+   cols.forEach((cc,i)=>{const b=mesh(new THREE.BoxGeometry(.6,.6,.6),cc);b.position.set(-3+i*1.2,.9,1.2);blocks.add(b);});g.add(blocks);
+   g.add(at(mesh(new THREE.CylinderGeometry(.28,.34,2.4,10),'#7b4a38'),2.6,3,-1.6));g.userData.spin=blocks;g.userData.spinType='belt';windows(g,6.4,2.2,.8);return 3.8;},
+ ladder:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(1.8,6.5,1.8),c),0,3.25,0));
+   for(const x of[-.55,.55])g.add(at(mesh(new THREE.BoxGeometry(.1,6.6,.1),'#4a4036',false),x,3.3,.98));
+   for(let i=0;i<9;i++)g.add(at(mesh(new THREE.BoxGeometry(1.1,.08,.08),'#4a4036',false),0,.5+i*.72,.98));
+   const flag=mesh(new THREE.BoxGeometry(.9,.55,.04),'#A3552A');flag.position.set(.5,7.5,0);g.add(flag);g.add(at(mesh(new THREE.CylinderGeometry(.04,.04,1.6,6),'#333',false),0,7.3,0));return 8.2;},
+ pier:(g,c)=>{const deck=mesh(new THREE.BoxGeometry(2.4,.25,7),'#9C7A55');deck.position.set(0,-.2,3.6);g.add(deck);
+   g.add(at(mesh(new THREE.BoxGeometry(3.4,2.4,2.6),c),0,1.2,-.6));const r=mesh(new THREE.BoxGeometry(3.8,.3,3),'#2F7F78');r.position.set(0,2.55,-.6);g.add(r);
+   const ticker=new THREE.Mesh(new THREE.PlaneGeometry(2.6,.45),lampMat);ticker.position.set(0,1.9,.71);g.add(ticker);windows(g,3.4,1.4,1.2);
+   const boat=mesh(new THREE.BoxGeometry(1.2,.6,2.6),'#C0782E');boat.position.set(2.2,-.85,6);g.add(boat);g.userData.spin=boat;g.userData.spinType='bob';return 3;},
+ cxvillage:(g,c)=>{const tones=['#E7E2D4','#D9E3E0','#E6D7CB','#DCDDE8'],roofs=['#2F7F78','#5c6e8a','#9a5b3f','#6B7A3E'];
+   for(let k=0;k<41;k++){const row=Math.floor(k/7),col=k%7;const s=new THREE.Group();
+     s.add(at(mesh(new THREE.BoxGeometry(.7,.6,.7),tones[k%4]),0,.3,0));const r=mesh(new THREE.ConeGeometry(.55,.45,4),roofs[(k*3)%4]);r.rotation.y=Math.PI/4;r.position.y=.82;s.add(r);
+     s.position.set(-3.3+col*1.1+(row%2)*.3,0,-2.7+row*1.1);g.add(s);}return 1.8;},
+ archive:(g,c)=>{const h=hall(g,c,4.6,5);const v=mesh(new THREE.CylinderGeometry(.55,.55,.12,20),'#8e8478');v.rotation.x=Math.PI/2;v.position.set(0,1,1.47);g.add(v);
+   g.add(at(mesh(new THREE.BoxGeometry(1.4,.9,1),'#efe9da'),3.2,.45,1));return h;},
+ library:(g,c)=>{const h=hall(g,c,4.4,6);g.add(at(mesh(new THREE.SphereGeometry(1.1,14,8,0,Math.PI*2,0,Math.PI/2),'#7A5AA6'),0,h-.5,0));return h+.6;},
+ stadium:(g,c)=>{const ring=mesh(new THREE.TorusGeometry(3,.35,6,28),'#cfc4b0');ring.rotation.x=Math.PI/2;ring.position.y=.35;g.add(ring);
+   const field=new THREE.Mesh(new THREE.CircleGeometry(2.7,28),M('#97b77c'));field.rotation.x=-Math.PI/2;field.position.y=.06;field.receiveShadow=true;g.add(field);
+   const flags=[];[['#5B6BB5',-1.4],['#A3552A',1.4]].forEach(([fc,x])=>{g.add(at(mesh(new THREE.CylinderGeometry(.05,.05,3.2,6),'#333',false),x,1.6,0));
+     const f=mesh(new THREE.BoxGeometry(1,.6,.04),fc);f.position.set(x+.52,2.85,0);g.add(f);flags.push(f);});
+   g.add(at(mesh(new THREE.BoxGeometry(1.6,.8,.4),c),0,.4,-3.4));return 3.6;},
+ proving:(g,c)=>{const cols=['#C0782E','#5B6BB5','#2F7F78','#6B9A57','#A3552A'],names=['크립토','주식','채권선물','FX','원자재'];
+   const flags=new THREE.Group();
+   cols.forEach((cc,i)=>{const lane=new THREE.Mesh(new THREE.BoxGeometry(7.6,.08,.9),M(i%2?'#cfc7b4':'#ddd5c2'));lane.receiveShadow=true;lane.position.set(0,.05,-2+i*1);g.add(lane);
+     const pole=mesh(new THREE.CylinderGeometry(.05,.05,1.4,6),'#333',false);pole.position.set(-3.6,.7,-2+i*1);g.add(pole);
+     const f=mesh(new THREE.BoxGeometry(.6,.35,.04),cc);f.position.set(-3.28,1.25,-2+i*1);flags.add(f);
+     const runner=mesh(new THREE.BoxGeometry(.45,.45,.45),cc);runner.position.set(-3,.3,-2+i*1);runner.userData.lane=i;flags.add(runner);});
+   g.add(flags);
+   for(const x of[3.2])for(const z of[-2.7,2.7])g.add(at(mesh(new THREE.BoxGeometry(.4,3,.4),c),x,1.5,z));
+   g.add(at(mesh(new THREE.BoxGeometry(.6,.5,6),'#3E7FB0'),3.2,3.1,0));
+   for(let k=0;k<4;k++)g.add(at(mesh(new THREE.BoxGeometry(.12,.35,.5),'#f4efe2',false),3.2,2.6,-1.8+k*1.2));
+   g.userData.spin=flags;g.userData.spinType='race';return 4.1;},
+ pie:(g,c)=>{g.add(at(mesh(new THREE.CylinderGeometry(1.8,1.9,2.2,20),c),0,1.1,0));
+   const cols=['#5B6BB5','#2F7F78','#C0782E','#A3552A','#6B9A57'],sh=[.3,.25,.2,.15,.1];let a0=0;
+   sh.forEach((w,i)=>{const seg=mesh(new THREE.CylinderGeometry(1.95,1.95,.45+i*.12,24,1,false,a0,w*Math.PI*2),cols[i],false);seg.position.y=2.4+(.45+i*.12)/2;g.add(seg);a0+=w*Math.PI*2;});
+   windows(g,2.6,2.2,3.4);return 3.6;},
+ icroom:(g,c)=>{const h=hall(g,c,4.4,5);const st=new THREE.Group();
+   for(let i=0;i<5;i++){const d=mesh(new THREE.BoxGeometry(.9,.08,1.2),i%2?'#f7f3ea':'#ece5d4',false);d.position.set(2.9,.05+i*.09,1.4);d.rotation.y=i*.12;st.add(d);}
+   g.add(st);g.add(at(mesh(new THREE.BoxGeometry(.5,.5,.06),'#B8862E'),0,h+.1,1.45));return h;},
+ radar:(g,c)=>{g.add(at(mesh(new THREE.BoxGeometry(1.5,5,1.5),c),0,2.5,0));g.add(at(mesh(new THREE.BoxGeometry(2.6,1.2,2.6),'#3d3f5c'),0,5.6,0));
+   const glass=new THREE.Mesh(new THREE.BoxGeometry(2.4,.6,2.62),winMat);glass.position.y=5.6;g.add(glass);
+   const dish=new THREE.Group();dish.position.y=6.6;const d=mesh(new THREE.SphereGeometry(.9,14,8,0,Math.PI*2,0,Math.PI/3),'#e8e8ea');d.rotation.x=-Math.PI/2.4;d.position.z=.2;dish.add(d);
+   dish.add(at(mesh(new THREE.CylinderGeometry(.06,.06,.6,6),'#333',false),0,-.2,0));g.add(dish);
+   const lamp=new THREE.Mesh(new THREE.SphereGeometry(.18,10,8),lampMat);lamp.position.set(0,7.5,0);g.add(lamp);
+   g.userData.spin=dish;g.userData.spinType='dish';return 7.9;},
+ rldesk:(g,c)=>{const h=house(g,3.2,2.6,2.2,c,'#5c6e8a');const loop=new THREE.Group();loop.position.set(0,h+1.1,0);
+   const ring=mesh(new THREE.TorusGeometry(.9,.1,6,24,Math.PI*1.7),'#C2563E',false);loop.add(ring);
+   const tip=mesh(new THREE.ConeGeometry(.22,.45,8),'#C2563E',false);tip.position.set(.9,0,0);tip.rotation.z=Math.PI;loop.add(tip);
+   loop.rotation.x=Math.PI/2;g.add(loop);
+   for(let i=0;i<3;i++)g.add(at(mesh(new THREE.BoxGeometry(.8,.5,.6),['#2F7F78','#C0782E','#5B6BB5'][i]),-2.3,.25+i*.5,.6-i*.15));
+   g.userData.spin=loop;g.userData.spinType='loop';return h+2;},
+ tollhouse:(g,c)=>{const h=house(g,2.2,2,1.8,c,'#6B7A3E');g.add(at(mesh(new THREE.BoxGeometry(.12,1.4,.12),'#333',false),-1.8,.7,1.2));
+   const bar=mesh(new THREE.BoxGeometry(2.4,.12,.12),'#C0782E');bar.position.set(-.6,1.4,1.2);g.add(bar);return h;}
+};
+
+/* labels */
+function rr(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath();}
+function label(name,sub,color){const cv=document.createElement('canvas');cv.width=512;cv.height=170;const x=cv.getContext('2d');
+  rr(x,8,8,496,150,22);x.fillStyle='#fbfaf7';x.fill();x.lineWidth=6;x.strokeStyle='#252a33';x.stroke();
+  x.fillStyle=color;rr(x,8,8,22,150,10);x.fill();
+  x.fillStyle='#1b2130';x.textAlign='center';let fs=64;x.font=fs+'px "Do Hyeon","IBM Plex Sans KR",sans-serif';
+  while(x.measureText(name).width>440&&fs>36){fs-=4;x.font=fs+'px "Do Hyeon","IBM Plex Sans KR",sans-serif';}x.fillText(name,262,92);
+  x.fillStyle='#5a6272';x.font='500 30px "JetBrains Mono",monospace';x.fillText(sub,262,138);
+  const t=new THREE.CanvasTexture(cv);t.anisotropy=4;const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:t}));sp.scale.set(3.6,1.2,1);return sp;}
+
+const groups=[],hits=[];
+function buildAll(){
+  STOPS.forEach((s,i)=>{const g=new THREE.Group();const top=BUILD[s.type](g,s.c);g.position.set(s.pos[0],0,s.pos[1]);
+    if(s.type!=='cxvillage'&&s.type!=='pier'){g.rotation.y=Math.atan2(-s.pos[0],-s.pos[1]);}
+    if(s.type==='pier')g.rotation.y=Math.PI/2;
+    const sp=label(s.name,s.code,ZONES[s.zone].color);sp.position.set(s.pos[0],top+1.1,s.pos[1]);scene.add(sp);g.userData.sprite=sp;g.userData.top=top;
+    g.traverse(o=>{if(o.isMesh){o.userData.i=i;hits.push(o)}});scene.add(g);groups.push(g);});
+  /* lineage islets */
+  const a=new THREE.Group();house(a,3,2.4,2,'#E6E1CF','#6B7A3E');a.position.set(AMOI[0],0,AMOI[1]);a.rotation.y=Math.PI/2;scene.add(a);
+  const la=label('AMOI','운영 인프라',ZONES.line.color);la.position.set(AMOI[0],4.4,AMOI[1]);scene.add(la);
+  const n=new THREE.Group();n.add(at(mesh(new THREE.CylinderGeometry(1.4,1.8,5,6),'#D9DEE8'),0,2.5,0));n.add(at(mesh(new THREE.OctahedronGeometry(1.1),lampMat),0,6,0));
+  for(const [dx,dz] of[[-3,1.5],[3,-1],[0,3.2]])n.add(at(mesh(new THREE.BoxGeometry(1.4,1.6,1.4),'#E5E7EE'),dx,.8,dz));
+  n.position.set(NMX[0],0,NMX[1]);scene.add(n);const ln=label('NeoMatrix','통합 투자지능',ZONES.line.color);ln.position.set(NMX[0],8,NMX[1]);scene.add(ln);
+}
+/* trees */
+(function trees(){let seed=11;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+  const leaf=['#5d8f5a','#4e7f52','#7aa064'],trunk=M('#6f553b');let n=0,guard=0;
+  const segs=STOPS.map((s,i)=>[s.pos,STOPS[(i+1)%STOPS.length].pos]);
+  const nearRoad=(x,z)=>segs.some(([a,b])=>{const dx=b[0]-a[0],dz=b[1]-a[1],L2=dx*dx+dz*dz;let t=((x-a[0])*dx+(z-a[1])*dz)/L2;t=Math.max(0,Math.min(1,t));return Math.hypot(x-a[0]-t*dx,z-a[1]-t*dz)<1.4;});
+  while(n<140&&guard++<5000){const ang=rnd()*Math.PI*2,r=Math.sqrt(rnd())*26.5,x=Math.cos(ang)*r,z=Math.sin(ang)*r;
+    if(STOPS.some(s=>Math.hypot(s.pos[0]-x,s.pos[1]-z)<(s.type==='cxvillage'?5:s.type==='composer'||s.type==='proving'?5:3.8))||nearRoad(x,z))continue;
+    const t=new THREE.Group();t.add(at(mesh(new THREE.CylinderGeometry(.12,.16,.8,6),trunk,false),0,.4,0));
+    const s=.6+rnd()*.5;t.add(at(mesh(rnd()<.5?new THREE.IcosahedronGeometry(s,0):new THREE.ConeGeometry(s,s*2.2,6),leaf[n%3]),0,.8+s,0));t.position.set(x,0,z);scene.add(t);n++;}})();
+
+/* camera control */
+const HOME={theta:-.35,phi:.95,r:88};
+const orbit={...HOME,target:new THREE.Vector3(0,0,-1)};
+const want={...HOME,target:orbit.target.clone()};
+function placeCam(){const sp=Math.sin(orbit.phi);camera.position.set(orbit.target.x+orbit.r*sp*Math.sin(orbit.theta),orbit.target.y+orbit.r*Math.cos(orbit.phi),orbit.target.z+orbit.r*sp*Math.cos(orbit.theta));camera.lookAt(orbit.target);}
+function go(i){cur=i;fillCard();const s=STOPS[i];want.target.set(s.pos[0],1.5,s.pos[1]);want.r=s.type==='tollhouse'?56:s.type==='proving'?28:22;want.phi=.9;
+  if(s.type==='tollhouse')want.target.set(0,0,-4);
+  if(reduce){Object.assign(orbit,{theta:want.theta,phi:want.phi,r:want.r});orbit.target.copy(want.target);}}
+$('overview').onclick=()=>{want.target.set(0,0,-1);want.r=HOME.r;want.phi=HOME.phi};
+$('zin').onclick=()=>{want.r=Math.max(12,want.r*.8)};
+$('zout').onclick=()=>{want.r=Math.min(115,want.r*1.25)};
+let drag=null;
+canvas.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,t:want.theta,p:want.phi,moved:0};canvas.setPointerCapture(e.pointerId)});
+canvas.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;drag.moved=Math.max(drag.moved,Math.hypot(dx,dy));
+  want.theta=drag.t-dx*.006;want.phi=Math.min(1.25,Math.max(.45,drag.p-dy*.004));});
+canvas.addEventListener('pointerup',e=>{if(drag&&drag.moved<6)pick(e);drag=null});
+canvas.addEventListener('wheel',e=>{e.preventDefault();want.r=Math.min(115,Math.max(12,want.r*(e.deltaY>0?1.1:.9)))},{passive:false});
+const ray=new THREE.Raycaster(),ndc=new THREE.Vector2();
+function setNdc(e){const b=canvas.getBoundingClientRect();ndc.set((e.clientX-b.left)/b.width*2-1,-(e.clientY-b.top)/b.height*2+1);ray.setFromCamera(ndc,camera);}
+function pick(e){setNdc(e);const h=ray.intersectObjects(hits,false)[0];if(h)go(h.object.userData.i);}
+canvas.addEventListener('mousemove',e=>{if(drag)return;setNdc(e);canvas.style.cursor=ray.intersectObjects(hits,false).length?'pointer':'grab'});
+
+/* theme: day / night */
+function isDark(){const t=document.documentElement.dataset.theme;return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches}
+function applyTheme(){const d=isDark();
+  scene.background=new THREE.Color(d?0x121a33:0xdbe3ec);scene.fog=new THREE.Fog(d?0x121a33:0xdbe3ec,95,200);
+  sea.material.color.set(d?0x243e57:0x93b4c4);hemi.intensity=d?.36:.75;hemi.color.set(d?0x9fb0e6:0xffffff);
+  sun.intensity=d?.33:.85;sun.color.set(d?0xa9b8ff:0xfff1de);
+  winMat.emissive.set(d?0xffc760:0x000000);winMat.color.set(d?0xffd57c:0x5d7088);lampMat.emissive.set(d?0xffcf5a:0x4a3a18);}
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme);
+new MutationObserver(applyTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
+new ResizeObserver(resize).observe(canvas);
+
+const clock=new THREE.Clock();
+function tick(){const t=clock.getElapsedTime(),k=reduce?1:.07;
+  orbit.theta+=(want.theta-orbit.theta)*k;orbit.phi+=(want.phi-orbit.phi)*k;orbit.r+=(want.r-orbit.r)*k;orbit.target.lerp(want.target,k);placeCam();
+  groups.forEach((g,i)=>{const sel=i===cur;const by=sel&&!reduce?Math.abs(Math.sin(t*3))*.25:0;g.position.y=by;
+    g.userData.sprite.position.y=g.userData.top+1.1+by;g.userData.sprite.scale.set(sel?4.3:3.6,sel?1.43:1.2,1);
+    const sp=g.userData.spin;if(sp&&!reduce){const ty=g.userData.spinType;
+      if(ty==='gear')sp.rotation.z=t*.8;else if(ty==='stars')sp.rotation.y=t*.25;
+      else if(ty==='belt')sp.children.forEach((b,j)=>{b.position.x=-3+((j*1.2+t*.8)%7.2)});
+      else if(ty==='bob')sp.position.y=-.85+Math.sin(t*1.4)*.08;
+      else if(ty==='dish')sp.rotation.y=t*.9;
+      else if(ty==='loop')sp.rotation.z=-t*1.2;
+      else if(ty==='race')sp.children.forEach(o=>{if(o.userData.lane!==undefined)o.position.x=-3+((t*(.7+o.userData.lane*.13)+o.userData.lane*.9)%6.4);});}});
+  renderer.render(scene,camera);requestAnimationFrame(tick);}
+
+const fontReady=Promise.race([Promise.all([document.fonts.load('64px "Do Hyeon"'),document.fonts.load('500 30px "JetBrains Mono"')]),new Promise(r=>setTimeout(r,1500))]);
+fontReady.catch(()=>{}).finally(()=>{buildAll();applyTheme();resize();if(hadHash)go(cur);tick();});
+</script>
+
+</body></html>
