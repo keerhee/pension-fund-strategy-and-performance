@@ -6,7 +6,7 @@
 |---|---|
 | `세 섬 군도.html` | 강의 섬 · 자율운용 섬 · NeoQuant 섬 · 지식 항구를 그린 3D 지도. 건물을 누르면 설명이 열린다 (인터넷 연결 필요) |
 | `NeoQuant 마을.html` | NeoQuant 섬만 확대한 지도 |
-| `archipelago_tour_1min.mp4` · `archipelago_tour_1min_II.mp4` | 세 섬 군도 지도를 둘러보는 1분 영상 두 편 — 유튜브 [I](https://youtu.be/Xebk92gLbsM) · [II](https://youtu.be/5Rm9hwowgak) |
+| `archipelago_tour_1min.mp4` · `archipelago_tour_2min_II_slow.mp4` | 세 섬 군도 지도를 둘러보는 영상 두 편(1분 · 낮게 천천히 나는 2분) — 유튜브 [I](https://youtu.be/Xebk92gLbsM) · [II](https://youtu.be/kKBBI1haUXI) |
 | `neoquant_island_tour.mp4` | NeoQuant 섬을 둘러보는 1분 영상 — 유튜브 [Shorts](https://youtu.be/oCZ7JbIWxrw) |
 | `Agenda_Process_Tracker.xlsx` · `안건서_예시_….md` | 안건 처리 7단계와 안건서 예시 (가상 안건) |
 
