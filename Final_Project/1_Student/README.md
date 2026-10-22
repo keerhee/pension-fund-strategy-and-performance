@@ -6,6 +6,7 @@ BAF.60080 특강 XS · 학생 배포 묶음
 
 | 순서 | 파일 | 무엇 | 시간 |
 |---|---|---|---|
+| 0 | `2_Project_Guide/XS_AI_Basics_CheatSheet.pdf` | **AI 기초 가이드 겸 치트시트**(15장) — Claude Code를 다루는 법 · 에이전트 · 멀티에이전트 · 하네스 · LLM의 약점 · 프롬프트 다섯 문장. Claude Code나 멀티에이전트가 처음이면 이것부터 | 15분 |
 | 1 | [과제 안내 영상 (유튜브)](https://youtu.be/AWTGIp71xgM) | 과제 안내 영상 — 자율주행 자산운용 회사 · 두 단계 · 여섯 역할 · 시연 화면 | 7분 |
 | 2 | [개념 영상 (유튜브)](https://youtu.be/bfOLa39dldg) | 자율주행 포트폴리오 개념 (Ang 2026 · 이 과정과의 연결) — 두 편 모두 [재생목록](https://www.youtube.com/playlist?list=PLM8J6IgGgG-Y) | 3분 |
 | 3 | `2_Project_Guide/` | **과제 가이드 — 두 단계** · **1단계 프로포절 준비 매뉴얼**(`XS_1단계_프로포절_준비_매뉴얼.pdf` 4쪽 — 할 일마다 어느 문서 몇 쪽을 볼지, 먼저 읽기) · **1단계 프로포절**(`XS_Project_Guide_Stage1_Proposal.pdf` 6쪽, W09) · **2단계 최종 제품 — 자율주행 자산운용 회사**(`XS_Project_Guide_Stage2_SDAM_Company.pdf` 6쪽, W16) · 필수 기능의 상세 명세서(`XS_Team_Project_Guide.pdf` · 발표용 요약 덱 `XS_Team_Project_Guide_Deck.pdf` 43장) | 30분 |
