@@ -12,6 +12,7 @@ BAF.60080 특강 XS(자율주행 포트폴리오)와 짝을 이루는 기말 팀
 | `1_Student/1_Videos/` | ① [과제 안내 영상](https://youtu.be/AWTGIp71xgM)(6분 40초 — 두 단계 · 5~6명 팀 · 시연 화면) · [자율주행 포트폴리오 개념 영상](https://youtu.be/bfOLa39dldg)(3분) — 영상 파일은 저장소에 올리지 않고 유튜브로 본다([재생목록](https://www.youtube.com/playlist?list=PLM8J6IgGgG-Y)) |
 | `1_Student/2_Project_Guide/` | ② **과제 가이드 — 두 단계**: 1단계 프로포절 준비 매뉴얼(`XS_1단계_프로포절_준비_매뉴얼.pdf`, 4쪽 — 어디를 볼지 안내) · 1단계 프로포절(`XS_Project_Guide_Stage1_Proposal.pdf`, W09) · 2단계 최종 제품 = 자율주행 자산운용 회사(`XS_Project_Guide_Stage2_SDAM_Company.pdf`, W16) · 필수 기능 상세 명세서 `XS_Team_Project_Guide.pdf`(17쪽) · 원본 `.md` |
 | `1_Student/3_Example_MVP/` | ③ **예시 MVP** — 제출물의 모양 그대로. `start.command`(맥) · `start.bat`(윈도)를 더블클릭하면 채점 콘솔이 열린다. 파이썬이 없으면 `dashboard.html` |
+| `1_Student/5_보충교재/` | ④ **보충교재** — Self-Driving Portfolio 해부 덱(43쪽, 논문 v2 2026.9 시연 수치) · 손계산 워크북(9쪽, 본편 수식 다섯 개) |
 | `2_Instructor/` | 강사 키트 — 진행안 · 평가 운영 · 점검 문제 은행 · 영상 내레이션 키트 (공개 저장소에서 제외) |
 
 ## 일정
