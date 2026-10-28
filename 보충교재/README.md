@@ -29,6 +29,7 @@
 | [`15_포식적거래/`](15_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98/) | W15 TPA · W06 LDI | 포식적 거래 본편 4부 + 손계산 워크북 |
 | [`16_자율주행자산운용/`](16_%EC%9E%90%EC%9C%A8%EC%A3%BC%ED%96%89%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9/) | XS · 기말 팀 프로젝트 | 자율운행 자산운용 운영체계 기안 · 투자정책서(IPS) · IPS 조항 예문집 |
 | [`17_자율운용기금MVP/`](17_%EC%9E%90%EC%9C%A8%EC%9A%B4%EC%9A%A9%EA%B8%B0%EA%B8%88MVP/) | 기말 팀 프로젝트 · 공통 학습자료 | 자율운용 기금 MVP의 기본 개념 — 기금 목적 · 유동성 · 후보안 · 심의 규칙 · 자율 에이전트 설계 |
+| [`18_거버넌스된자기진화/`](18_%EA%B1%B0%EB%B2%84%EB%84%8C%EC%8A%A4%EB%90%9C%EC%9E%90%EA%B8%B0%EC%A7%84%ED%99%94/) | 자율운용 · 논문 리뷰 | Steward — 불변 코어를 가진 멀티에이전트 LLM 운용 시스템의 거버넌스된 자기진화 |
 
 W11 채권투자에는 아직 보충교재가 없다. 웹툰 숏폼 같은 영상 자료는 [`../기초영상/`](../%EA%B8%B0%EC%B4%88%EC%98%81%EC%83%81/)에 따로 모았다.
 
@@ -314,7 +315,6 @@ Part 1 → 4 순서로 읽고, 계산은 워크북에서 손으로 따라간다.
 | [`Self_Driving_AM_Course_Based_Proposal_ZeroOne.pdf`](16_%EC%9E%90%EC%9C%A8%EC%A3%BC%ED%96%89%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9/Self_Driving_AM_Course_Based_Proposal_ZeroOne.pdf) | 32 | Ang·Azimbayev·Kim(2026) *The Self-Driving Portfolio*의 감독형 운영체계를 이 과정의 16주 자산(강의 · 실습데이터 · IC · XS MVP)으로 조립하는 기안. 8개 구성요소 ↔ 주차 지도, IPS 자동 검증과 수치 사례, Reviewer·CIO Agent와 IC 절차, TPA 매핑, 되돌림 규칙과 RUN ID 감사 기록, 90일 일정과 신규 개발 3건 |
 | [`IPS_Investment_Policy_Statement_ZeroOne.pdf`](16_%EC%9E%90%EC%9C%A8%EC%A3%BC%ED%96%89%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9/IPS_Investment_Policy_Statement_ZeroOne.pdf) | 44 | **투자정책서(IPS)** — 왜 문서로 약속하는가(네 가지 기능 · 실패 사례 · 문서 위계), 무엇을 적는가(RRTTLLU · 필요 수익률 · 위험허용도), 7단계 구축 절차와 TPA 사례, 3층 거버넌스와 위임 매트릭스, 운용사 · 패밀리오피스 · 개인으로의 확장. 기안이 IPS를 운영체계의 첫 제약으로 쓰므로 그 바탕이 된다 |
 | [`IPS_Clause_Examples_ZeroOne.pdf`](16_%EC%9E%90%EC%9C%A8%EC%A3%BC%ED%96%89%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9/IPS_Clause_Examples_ZeroOne.pdf) | 38 | **IPS 조항 예문집** — IPS 덱의 예시편. 가상 기관 다섯 곳(한빛국부펀드 · 누리연금 · 새솔자산운용 · 가람 패밀리오피스 · 투자자 A)의 조항을 실제 문장으로 쓰고, 좋은 조항의 다섯 요소(주체 · 조건 · 수치 · 기한 · 예외)와 나쁜 예문을 고치는 법을 보인다. 기관명과 수치는 교육용 가정이다 |
-| [`Steward_Governed_Self_Evolution_Deck.pdf`](16_%EC%9E%90%EC%9C%A8%EC%A3%BC%ED%96%89%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9/Steward_Governed_Self_Evolution_Deck.pdf) | 41 | **논문 리뷰 — 거버넌스된 자기진화와 자율 투자** (Steward, arXiv 2610.30557, NTU·UCL 2026.10) — 불변 코어를 가진 멀티에이전트 LLM 운용 시스템. 안전장치는 프롬프트가 아니라 코드와 타입 시스템에, 개선 신호는 자기평가가 아니라 결과로 계산한다. 5개월 라이브(페이퍼) 운용 기록 |
 
 XS MVP를 출발 코드로 삼아 기관용 운영체계로 넓히는 기안이다. 16주 동안 배운 IPS · CMA · 최적화 · IC · TPA가 각각 어느 에이전트와 엔진의 명세가 되는지 한 장씩 짚으므로 과정 전체를 되짚는 정리로도 쓸 수 있다. IPS가 낯설면 `IPS_Investment_Policy_Statement`를 먼저 보고, 조항을 써 볼 때는 `IPS_Clause_Examples`를 옆에 둔다. W01 IPS 독해 과제의 배경 자료로도 쓴다.
 
@@ -325,6 +325,14 @@ XS MVP를 출발 코드로 삼아 기관용 운영체계로 넓히는 기안이�
 | [`Endowment_MVP_Core_Concepts_Navy.pdf`](17_%EC%9E%90%EC%9C%A8%EC%9A%B4%EC%9A%A9%EA%B8%B0%EA%B8%88MVP/Endowment_MVP_Core_Concepts_Navy.pdf) | 51 | **자율운용 기금 MVP의 기본 개념** — 기금 목적 · 유동성 · 후보안 · 심의 규칙 · 자율 에이전트 설계를 정의 → 예제 → 설계 원칙 순서로 정리하고, 마지막에 팀별 자기 점검표를 둔다 |
 
 모든 팀이 프로포절과 MVP를 설계하고 점검할 때 쓰는 기본 지식이다. 예제 숫자는 USD 500M 규모의 가상 대학기금을 기준으로 한 교육용 값이다. 16_자율주행자산운용의 기안 · IPS와 함께 본다.
+
+## 18_거버넌스된자기진화 — 자율운용 · 논문 리뷰
+
+| 자료 | 쪽 | 무엇을 다루나 |
+|---|---:|---|
+| [`Steward_Governed_Self_Evolution_Deck.pdf`](18_%EA%B1%B0%EB%B2%84%EB%84%8C%EC%8A%A4%EB%90%9C%EC%9E%90%EA%B8%B0%EC%A7%84%ED%99%94/Steward_Governed_Self_Evolution_Deck.pdf) | 41 | **논문 리뷰 — 거버넌스된 자기진화와 자율 투자** (Steward, arXiv 2610.30557, NTU·UCL 2026.10) — 불변 코어를 가진 멀티에이전트 LLM 운용 시스템. 안전장치는 프롬프트가 아니라 코드와 타입 시스템에, 개선 신호는 자기평가가 아니라 결과로 계산한다. 5개월 라이브(페이퍼) 운용 기록 |
+
+자기 지시문을 고쳐 쓰는 에이전트가 자기 안전장치까지 고치지 못하게 하는 설계를 본다. 16_자율주행자산운용 · 17_자율운용기금MVP의 에이전트 설계와 함께 읽는다. 초과수익은 주장하지 않는 논문이다.
 
 ---
 
