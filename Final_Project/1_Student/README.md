@@ -12,6 +12,7 @@ BAF.60080 특강 XS · 학생 배포 묶음
 | 3 | `2_Project_Guide/` | **과제 가이드 — 두 단계** · **1단계 프로포절 준비 매뉴얼**(`XS_1단계_프로포절_준비_매뉴얼.pdf` 4쪽 — 할 일마다 어느 문서 몇 쪽을 볼지, 먼저 읽기) · **1단계 프로포절**(`XS_Project_Guide_Stage1_Proposal.pdf` 6쪽, W09) · **2단계 최종 제품 — 자율주행 자산운용 회사**(`XS_Project_Guide_Stage2_SDAM_Company.pdf` 6쪽, W16) · 필수 기능의 상세 명세서(`XS_Team_Project_Guide.pdf` · 발표용 요약 덱 `XS_Team_Project_Guide_Deck.pdf` 43장) | 30분 |
 | 4 | `3_Example_MVP/` | **예시 MVP** — 제출물의 모양 그대로. `start.command`(맥) · `start.bat`(윈도)를 더블클릭하면 채점 콘솔이 열린다 | 15분 |
 | 5 | `5_보충교재/` | **보충교재 — Self-Driving Portfolio 해부**: 본편 덱(`SDP_Self_Driving_Portfolio_Anatomy.pdf` 43쪽 — Ang · Azimbayev · Kim(2026) 에이전트 SAA 체계를 기초 개념으로 읽고 Claude Code 설계와 팀 프로젝트로 옮긴다) · 손계산 워크북(`SDP_Self_Driving_Portfolio_Workbook.pdf` 9쪽 — CMA 판정 · 수정 보르다 투표 · 혼합 점수 · CIO 채점 · 역추적오차 가중) | 40분 |
+| 6 | `6_SDAM_사전학습/` | **SDAM 사전학습** — AI · 멀티에이전트 구현의 기초 덱(`SDAM_AI_MultiAgent_Basics.pdf` 48쪽: 모델 → 에이전트 → 멀티에이전트 → 하네스)을 먼저 보고, 5_보충교재의 SDP 해부 · 워크북으로 이어 간다 | 30분 |
 
 `.md` 파일은 옵시디언·VS Code·GitHub 등 마크다운 보기 도구로 열면 표와 수식이 제대로 보인다.
 
