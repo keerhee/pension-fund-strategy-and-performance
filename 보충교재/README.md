@@ -22,7 +22,7 @@
 | [`08_중간고사문항해설/`](08_%EC%A4%91%EA%B0%84%EA%B3%A0%EC%82%AC%EB%AC%B8%ED%95%AD%ED%95%B4%EC%84%A4/) | **W08** 중간시험 | 모의시험 II 문항 해설 두 편 — LDI 헤지 · 레딩턴, 동적 포트폴리오 · TDF |
 | [`09_위험관리와적극적운용/`](09_%EC%9C%84%ED%97%98%EA%B4%80%EB%A6%AC%EC%99%80%EC%A0%81%EA%B7%B9%EC%A0%81%EC%9A%B4%EC%9A%A9/) | **W09** 위험관리와성과평가 | `VaR와미달손실확률/` VaR · 미달손실확률 · `적극적운용의기본법칙/` FLAM 일반화 식과 증명 |
 | [`10_데이터/`](10_%EB%8D%B0%EC%9D%B4%ED%84%B0/) | **W10** 주식퀀트모델 · XS | 주식 데이터 아키텍처 검토 |
-| [`11_팩터/`](11_%ED%8C%A9%ED%84%B0/) | **W12** 팩터투자 | Fama-French 3요인 · Quality·Defensive |
+| [`11_팩터/`](11_%ED%8C%A9%ED%84%B0/) | **W12** 팩터투자 | Fama-French 3요인 · Quality·Defensive · `팩터오디션/` 팩터 오디션 실습 세트(입문 프라이머 · 본 강의 · QDL 가이드 · SDAM 실습 · APT 실습) |
 | [`12_매크로전략/`](12_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5/) | **W13** 글로벌매크로와CTA · SS1 | 글로벌 매크로·국제금융·캐리·추세추종·인플레이션 헤지 강의덱 11편 + 외부 참고자료 11편 |
 | [`13_대체투자/`](13_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90/) | **W14** 대체투자와비유동성 | `02_Courses/` Direct Lending · Residential Credit·ABS · `05_PrivateCredit_Stress/` 사모대출 스트레스 2026 |
 | [`14_TPA/`](14_TPA/) | **W15** TPA | TPA 설계 프레임 · 13F 전략적 공시와 포식적 거래 |
@@ -222,6 +222,16 @@ W07 SS2의 리밸런싱 규칙(밴드·빈도)과 같은 질문을 동적 최적
 | [`Moskowitz_Quality_Defensive_Investing.pdf`](11_%ED%8C%A9%ED%84%B0/Moskowitz_Quality_Defensive_Investing.pdf) | 36 | Quality·Defensive 투자 — 좋은 기업을 합리적 가격에, 안전한 자산에 레버리지를 (Yale SOM Master Class) |
 
 W12 강의본이 결론만 쓰는 대목의 근거다. Fama-French로 팩터의 구성법을, Moskowitz로 Quality·Defensive를 본다.
+
+**팩터오디션** — 팩터 오디션 실습 세트. 프라이머 → 본 강의 → QDL 가이드 → 실습 순서로 진행한다. 준비물은 BAF634 저장소(github.com/jaepil-choi/KAIST-BAF634-2025)와 강의 데이터, Claude Code(수강생은 지시문으로 시킨다). 실습 코드와 지시문은 실제 JKP 데이터로 실행해 보지 않았다.
+
+| 자료 | 쪽 | 무엇을 다루나 |
+|---|---:|---|
+| [`Factor_Model_Intro_Primer_Navy_V.pdf`](11_%ED%8C%A9%ED%84%B0/%ED%8C%A9%ED%84%B0%EC%98%A4%EB%94%94%EC%85%98/1_Primer/Factor_Model_Intro_Primer_Navy_V.pdf) | 62 | **팩터 모델 입문 — 비전공자용 사전학습** — 수익률과 위험 · CAPM · 팩터 · 다중검정 보정(본페로니·홀름·BH·BY) · 경험적 베이지안 · 부록 Bryzgalova·Huang·Julliard 2023 |
+| [`Factor_Audition_Lecture_Navy_II.pdf`](11_%ED%8C%A9%ED%84%B0/%ED%8C%A9%ED%84%B0%EC%98%A4%EB%94%94%EC%85%98/2_Lecture/Factor_Audition_Lecture_Navy_II.pdf) | 45 | **팩터 오디션 — 본 강의** — 팩터 동물원 · 계층적 베이지안 검정 · 한국 재현율 · 사전 등록과 시점 규칙 · 드로다운 대응 · SDAM 리서치 에이전트 |
+| [`QDL_Beginner_Guide.md`](11_%ED%8C%A9%ED%84%B0/%ED%8C%A9%ED%84%B0%EC%98%A4%EB%94%94%EC%85%98/3_QDL_Guide/QDL_Beginner_Guide.md) | — | **QDL 사용 가이드** — 설치 · 데이터 배치 · 함수 다섯 개 · 처음 해 보는 연습 다섯 개 |
+| [`Factor_Audition_SDAM_Lab_III.md`](11_%ED%8C%A9%ED%84%B0/%ED%8C%A9%ED%84%B0%EC%98%A4%EB%94%94%EC%85%98/4_Lab/Factor_Audition_SDAM_Lab_III.md) | — | **팩터 오디션 SDAM 실습과제** — 0~6단계와 가산 단계 · Claude Code 지시문 P0~P7 · 부록 팩터 복제 연습 |
+| [`LopezLira_Roussanov_APT_Lab.md`](11_%ED%8C%A9%ED%84%B0/%ED%8C%A9%ED%84%B0%EC%98%A4%EB%94%94%EC%85%98/5_Extra_APT_Lab/LopezLira_Roussanov_APT_Lab.md) | — | **Lopez-Lira · Roussanov APT 실습 (별도)** — BAF634용 — 베타중립 포트폴리오 구현 |
 
 ## 12_매크로전략 — W13 글로벌매크로와CTA · SS1 통화 헤지
 
