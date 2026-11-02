@@ -5,6 +5,8 @@ const { build, C } = require("./primer_deck.js");
 
 module.exports = {
   art: "w10",
+  wordmark: "",        // v1.7 워드마크 금지
+  eqKind: "white",     // v1.10 수식 카드는 흰 카드 + 잉크색
   out: "W10_주식퀀트모델/W10_0_프라이머_팩터모델은수익을어떻게나누나.pptx",
   eyebrow: "연기금 운용전략과 성과평가 · W10 사전학습",
   coverTitle: "팩터 모델은 수익을\n어떻게 나누나",

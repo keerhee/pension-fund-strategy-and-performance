@@ -4,8 +4,10 @@
 //  · 그림 비율은 PNG에서 직접 읽는다 — 손으로 적으면 찌그러진다
 const fs = require("fs");
 const path = require("path");
-const T = require(
-  "/Users/keerhee/Project/.claude/skills/zeroone-pitch-deck/scripts/template.js");
+// 템플릿: 옛 프로젝트 사본(.claude/skills/zeroone-pitch-deck)은 2026-10-13에 빠졌다.
+// claude.ai 동기화본(v1.11~)을 쓴다. ZO_TEMPLATE로 바꿔 끼울 수 있다.
+const T = require(process.env.ZO_TEMPLATE ||
+  "/Users/keerhee/.claude/skills/synced/6a672863-e83f-481a-b0f5-8d9879345faa_528c1cd5-61c9-4543-927c-27df014bc8b9/zeroone-pitch-deck/scripts/template.js");
 const C = T.C;
 
 const ROOT = path.join(__dirname, "..");
@@ -26,7 +28,7 @@ function build(spec) {
   let page = 1;
 
   // ── 표지 ──
-  T.setBrand({ eyebrow: spec.eyebrow, wordmark: "BAF.60080" });
+  T.setBrand({ eyebrow: spec.eyebrow, wordmark: spec.wordmark != null ? spec.wordmark : "BAF.60080" });  // v1.7: 새로 빌드하는 덱은 wordmark:""
   T.cover(T.slide(true), {
     title: spec.coverTitle,
     sub: spec.coverSub,
@@ -78,7 +80,7 @@ function build(spec) {
         w = Math.min(T.CW, Math.max(eqW + pad * 2 + 0.5, capNeed));
       }
       const y2 = T.eqInCard(s, {
-        y: cy + 0.06, h, kind: "ghost", cap: it.cap, w,
+        y: cy + 0.06, h, kind: spec.eqKind || "ghost", cap: it.cap, w,   // v1.10: 흰 카드("white")
         x: T.M + (T.CW - w) / 2, path: ART(it.file), ratio,
       });
       if (it.cards) T.cards(s, it.cards, { y: y2 + 0.26, h: it.cardH || 1.16 });
