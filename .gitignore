@@ -53,10 +53,12 @@ _구판/
 
 # 보충교재 — 덱 빌드 소스(스크립트·중간 그림)는 올리지 않는다
 보충교재/14_TPA/TPA_Brief_Deck_Source_v01/
-# 대체투자 폴더는 과정 덱(02_Courses)과 사모대출 브리핑(05_PrivateCredit_Stress)의 PDF만 공개한다 — 펀드 덱·확장판·대시보드·README는 제외
+# 대체투자 폴더는 과정 덱(02_Courses)·사모대출 브리핑(05_PrivateCredit_Stress)·유동성 최적화(06_Liquidity_Optimization)의 PDF만 공개한다 — 펀드 덱·확장판·대시보드·README는 제외
 보충교재/13_대체투자/*
 !보충교재/13_대체투자/02_Courses/
 !보충교재/13_대체투자/05_PrivateCredit_Stress/
+!보충교재/13_대체투자/06_Liquidity_Optimization/
+보충교재/13_대체투자/06_Liquidity_Optimization/code/
 _build/lecfix/_eq/
 _build/lecfix/_art/
 보충교재/09_위험관리와적극적운용/적극적운용의기본법칙/FLAM_Deck_Source/

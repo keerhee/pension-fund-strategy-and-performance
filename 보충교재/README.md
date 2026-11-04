@@ -24,7 +24,7 @@
 | [`10_데이터/`](10_%EB%8D%B0%EC%9D%B4%ED%84%B0/) | **W10** 주식퀀트모델 · XS | 주식 데이터 아키텍처 검토 |
 | [`11_팩터/`](11_%ED%8C%A9%ED%84%B0/) | **W12** 팩터투자 | Fama-French 3요인 · Quality·Defensive · `팩터오디션/` 팩터 오디션 실습 세트(입문 프라이머 · 본 강의 · QDL 가이드 · SDAM 실습 · APT 실습) |
 | [`12_매크로전략/`](12_%EB%A7%A4%ED%81%AC%EB%A1%9C%EC%A0%84%EB%9E%B5/) | **W13** 글로벌매크로와CTA · SS1 | 글로벌 매크로·국제금융·캐리·추세추종·인플레이션 헤지 강의덱 11편 + 외부 참고자료 11편 |
-| [`13_대체투자/`](13_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90/) | **W14** 대체투자와비유동성 | `02_Courses/` Direct Lending · Residential Credit·ABS · `05_PrivateCredit_Stress/` 사모대출 스트레스 2026 |
+| [`13_대체투자/`](13_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90/) | **W14** 대체투자와비유동성 | `02_Courses/` Direct Lending · Residential Credit·ABS · `05_PrivateCredit_Stress/` 사모대출 스트레스 2026 · `06_Liquidity_Optimization/` 유동성 제약 자산배분 최적화 |
 | [`14_TPA/`](14_TPA/) | **W15** TPA | TPA 설계 프레임 · 13F 전략적 공시와 포식적 거래 |
 | [`15_포식적거래/`](15_%ED%8F%AC%EC%8B%9D%EC%A0%81%EA%B1%B0%EB%9E%98/) | W15 TPA · W06 LDI | 포식적 거래 본편 4부 + 손계산 워크북 |
 | [`16_자율주행자산운용/`](16_%EC%9E%90%EC%9C%A8%EC%A3%BC%ED%96%89%EC%9E%90%EC%82%B0%EC%9A%B4%EC%9A%A9/) | XS · 기말 팀 프로젝트 | 자율운행 자산운용 운영체계 기안 · 투자정책서(IPS) · IPS 조항 예문집 |
@@ -284,6 +284,7 @@ W12 강의본이 결론만 쓰는 대목의 근거다. Fama-French로 팩터의 
 | [`Residential_Credit_ABS_Course_bj.pdf`](13_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90/02_Courses/Residential_Credit_ABS_Course_bj.pdf) | 52 | Residential Credit와 ABS 투자 — 주거용 신용, 대출 심사, RMBS·ABS 구조 (8주 과정) |
 | [`PrivateCredit_Stress_2026_zeroone.pdf`](13_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90/05_PrivateCredit_Stress/PrivateCredit_Stress_2026_zeroone.pdf) | 28 | 사모대출 스트레스 2026 — 2008년형 위기가 아니라 비유동 대출 펀드의 첫 신용 사이클. 사모대출·BDC 기본 구조 · 5% 환매 한도 · 2025.9~2026.10 전개 · 장부가 마킹 · 환매 대기열과 역선택 · LTV와 AI 디스럽션 · 2008년 비교와 체크리스트 (2026.10 브리핑) |
 | [`PrivateCredit_Stress_2026_workbook.pdf`](13_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90/05_PrivateCredit_Stress/PrivateCredit_Stress_2026_workbook.pdf) | 7 | 사모대출 스트레스 2026 손계산 워크북 — 본편의 네 가지 계산(마킹 · 환매 대기열 · LTV)을 계산기 없이 |
+| [`Liquidity_Optimization_2026.pdf`](13_%EB%8C%80%EC%B2%B4%ED%88%AC%EC%9E%90/06_Liquidity_Optimization/Liquidity_Optimization_2026.pdf) | 27 | 유동성 제약 자산배분 최적화 — 비유동 한도를 어림이 아니라 최적화 문제로 푼다. MVO의 한계 → 다기간 확률계획(CRRA γ=3, 시나리오 200~250개, HiGHS 선형계획) · KIC 최적 비유동 32%(γ=5면 16%, 프리미엄·세컨더리 조건에 따라 15~37%) · NPS 최적해는 하강 글라이드패스 · 두 기관 비교와 한계. W14 강의본의 비유동성 논의를 이어받는다 |
 
 ## 14_TPA — W15 TPA
 
