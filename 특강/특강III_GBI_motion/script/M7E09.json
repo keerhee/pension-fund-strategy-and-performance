@@ -1,7 +1,7 @@
 {
   "id": "M7E09",
   "title": "실습 · LDI 미니 시뮬레이터 — 손으로 하지 말고 Claude Code에게",
-  "source": "W06_M7_LDI_부채연계투자_강의본.pdf pp.65–70",
+  "source": "W06_1_M7_LDI_부채연계투자_강의본.pdf pp.65–70",
   "scenes": [
     {"id": "S0_boxes", "lines": [
       {"cap": "코딩 경험 없이 — 원하는 바를 말로 설명하고 결과를 검토한다",
