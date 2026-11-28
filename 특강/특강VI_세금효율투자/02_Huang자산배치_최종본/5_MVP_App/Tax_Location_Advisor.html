@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>계좌 배치 추천</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600&family=Noto+Serif+KR:wght@600&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* VOICE work: 자산관리 상담 창구에서 쓰는 계산기와 고객 보고서
+   IDEA 상담사가 고객에게 건네는 '계좌 배치 처방전' — 계좌별 칸에 무엇을 담을지 적힌 한 장
+   PICTURE 계좌마다 지금/추천 두 줄 막대, 칸 색이 자산. 위에 세후 가치 개선 금액
+   COLOUR white, ink #10131a, prussian #0b4f8a 주도, carmine #c1121f 개선 표시; night #0f1217
+   TYPE Literata·Noto Serif KR 600 제목 + Noto Sans KR 본문
+   LAYOUT 노트북: 입력 왼쪽 1/3, 결과 그림 오른쪽 2/3, 아래 보고서 전폭 / 폰: 제목, 결과, 입력 */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0f1217);--ink:light-dark(#10131a,#e9ecf2);--mut:light-dark(#525a68,#a5adbb);--rule:light-dark(#dde1e8,#2a303a);--soft:light-dark(#f3f6fa,#171c24);--blue:light-dark(#0b4f8a,#6aa8e0);--red:light-dark(#c1121f,#ff6b74);--c0:light-dark(#0b4f8a,#4f93d4);--c1:light-dark(#5b9bd5,#8cc0ee);--c2:light-dark(#a9cbe9,#c4ddf3);--c3:light-dark(#8a94a3,#6c7686)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 "Noto Sans KR",system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Literata,"Noto Serif KR",serif;font-weight:600;letter-spacing:-.02em;line-height:1.12;margin:0}
+h1{font-size:clamp(28px,4vw,40px);text-wrap:balance}
+h2{font-size:clamp(22px,2.6vw,28px);margin-bottom:12px}
+h3{font-size:18px;margin:0 0 8px}
+.band{padding:clamp(20px,3vw,40px) max(4vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.top{border-bottom:1px solid var(--rule)}
+.lede{color:var(--mut);margin:8px 0 0;max-width:62ch}
+.grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,8fr);gap:28px;margin-top:22px}
+.panel{background:var(--soft);border:1px solid var(--rule);border-radius:10px;padding:18px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tabs button{flex:1 1 140px}
+button{font:inherit;min-height:44px;padding:8px 14px;border-radius:8px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);cursor:pointer}
+button[aria-pressed=true],button.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid color-mix(in srgb,var(--blue) 45%,transparent);outline-offset:2px}
+label{display:block;font-size:14px;color:var(--mut);margin-bottom:4px}
+input,select{font:inherit;font-size:16px;width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--rule);border-radius:8px;background:var(--bg);color:var(--ink)}
+input[type=number]{text-align:right;font-variant-numeric:tabular-nums}
+input[type=checkbox]{width:20px;min-height:20px;height:20px;margin:0}
+.chk{display:flex;gap:10px;align-items:center;font-size:15px;color:var(--ink);margin:10px 0 0}
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-top:12px}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:7px 8px;border-bottom:1px solid var(--rule);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-size:14px;color:var(--mut);font-weight:500}
+.hold input{min-height:40px;padding:6px 8px}
+.hold td{padding:4px 3px}
+.scroll{overflow-x:auto}
+.unit{font-size:13px;color:var(--mut);margin-top:6px}
+.err{color:var(--red);font-weight:500;margin-top:10px;min-height:1px}
+.find{font-size:clamp(20px,2.4vw,26px);font-family:Literata,"Noto Serif KR",serif;font-weight:600;line-height:1.25;margin:0 0 6px}
+.big{color:var(--red);white-space:nowrap}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:14px 0 18px}
+.kpi{border-top:3px solid var(--ink);padding-top:8px}
+.kpi b{display:block;font-size:clamp(20px,2.4vw,26px);font-variant-numeric:tabular-nums;white-space:nowrap}
+.kpi span{font-size:14px;color:var(--mut)}
+.acc{margin:0 0 16px}
+.acc .hd{display:flex;justify-content:space-between;gap:8px;font-size:15px;margin-bottom:4px}
+.acc .hd b{font-weight:700}
+.bar{display:flex;height:30px;border-radius:5px;overflow:hidden;background:var(--soft)}
+.bar.now{height:12px;margin-bottom:5px;opacity:.55}
+.bar i{display:block;height:100%}
+.bar i+i{border-left:2px solid var(--bg)}
+.bar i span{display:block;color:#fff;font-size:13px;font-style:normal;line-height:30px;padding:0 6px;overflow:hidden;white-space:nowrap;text-overflow:clip}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:14px;color:var(--mut);margin-bottom:14px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.rep{border-top:6px solid var(--blue)}
+.rephead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:8px}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.sec{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;padding:22px 0;border-top:1px solid var(--rule)}
+.sec.one{grid-template-columns:minmax(0,1fr)}
+.sec p{margin:0 0 10px;max-width:70ch}
+ol,ul{margin:0;padding-left:1.3em}
+li{margin-bottom:8px}
+.hb{display:grid;grid-template-columns:minmax(9em,auto) minmax(0,1fr) auto;gap:6px 10px;align-items:center;font-size:15px}
+.hb .t{height:22px;background:var(--soft);border-radius:4px;overflow:hidden}
+.hb .t i{display:block;height:100%;background:var(--c3)}
+.hb .t i.best{background:var(--blue)}
+.hb .v{font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.pos{color:var(--red);font-weight:700}
+.neg{color:var(--mut)}
+.note{font-size:14px;color:var(--mut)}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:15px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+button.calc{width:100%;min-height:52px;font-size:17px;font-weight:700;margin-top:16px}
+button.calc:disabled{opacity:.7;cursor:progress}
+.empty{border:1px dashed var(--rule);border-radius:10px;padding:28px;color:var(--mut);display:grid;gap:10px;align-content:center;min-height:360px}
+.empty b{font-family:Literata,"Noto Serif KR",serif;font-size:22px;color:var(--ink);font-weight:600}
+.spin{width:28px;height:28px;border:3px solid var(--rule);border-top-color:var(--blue);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(1turn)}}
+.stale #res,.stale-rep{opacity:.45}
+.stalemsg{display:none;color:var(--red);font-weight:500;margin:0 0 10px}
+.stale .stalemsg{display:block}
+#res{animation:fi .35s ease-out}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+details summary{cursor:pointer;color:var(--blue);font-size:15px;margin-top:14px;min-height:32px}
+@media(prefers-reduced-motion:reduce){.toast{transition:none}#res{animation:none}.spin{animation-duration:3s}}
+@media(max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}.sec{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.hold input{padding:4px 5px}.hold td:first-child{font-size:13px}table{font-size:13px}th,td{padding:6px 4px}.hb{grid-template-columns:minmax(7em,auto) minmax(0,1fr) auto;font-size:14px}}
+@media print{.inputs,.top .acts,.acts,.toast{display:none!important}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="band top"><div class="wrap">
+  <h1>계좌 배치 추천</h1>
+  <p class="lede">고객의 계좌와 보유 자산을 넣으면 같은 자산배분을 유지하면서 세후 가치가 가장 큰 배치를 찾습니다. 일반·ISA·연금저축·IRP, 2026년 11월 세법 기준.</p>
+  <div class="grid">
+    <section class="inputs panel" aria-label="고객 입력">
+      <label for="cname">고객 이름</label>
+      <input id="cname" value="김민수 (예시 고객)">
+      <div class="tabs" role="group" aria-label="입력 방식" style="margin-top:14px">
+        <button id="mHold" aria-pressed="true">현재 보유로 입력</button>
+        <button id="mBal" aria-pressed="false">잔액과 목표 비중</button>
+      </div>
+      <div id="holdBox">
+        <div class="scroll"><table class="hold" id="holdTbl"></table></div>
+        <p class="unit">단위 만 원. 계좌 잔액은 행 합계, 목표 배분은 열 합계로 정합니다.</p>
+        <label for="fxForm" style="margin-top:10px">일반계좌의 해외주식 보유 형태</label>
+        <select id="fxForm"><option value="kr">국내상장 해외주식형 ETF</option><option value="us">해외상장 주식·ETF 직접 보유</option></select>
+      </div>
+      <div id="balBox" hidden>
+        <div class="row2" id="balInputs"></div>
+        <div class="row2" id="wInputs"></div>
+        <p class="unit">잔액은 만 원, 비중은 % (합계 100).</p>
+      </div>
+      <div class="row2">
+        <div><label for="tau">연금 받을 때 세율</label>
+          <select id="tau"><option value="0.055">55~69세 5.5%</option><option value="0.044">70~79세 4.4%</option><option value="0.033">80세 이상·종신형 3.3%</option><option value="0.165">연 1,500만 원 초과 16.5%</option></select></div>
+        <div><label for="isa">ISA 유형</label>
+          <select id="isa"><option>일반형</option><option>서민형</option></select></div>
+        <div><label for="T">투자 기간 (년)</label><input id="T" type="number" min="1" max="40" value="10"></div>
+      </div>
+      <label class="chk"><input type="checkbox" id="allowUS"> 일반계좌에서 해외상장 직접투자도 검토</label>
+      <details><summary>수익 가정 바꾸기</summary>
+        <div class="row2">
+          <div><label for="rKR">국내주식 연 상승률 %</label><input id="rKR" type="number" step="0.5" value="6"></div>
+          <div><label for="rFX">해외주식 연 상승률 %</label><input id="rFX" type="number" step="0.5" value="7"></div>
+          <div><label for="rBD">채권 연 이자율 %</label><input id="rBD" type="number" step="0.5" value="4"></div>
+        </div>
+      </details>
+      <button class="pri calc" id="calc">최적 배치 계산하기</button>
+      <p class="err" id="err" role="alert"></p>
+    </section>
+    <section class="result" id="result" aria-live="polite">
+      <div class="empty" id="empty"><b>고객 정보를 넣고 계산하세요</b><span>계좌별 보유 금액과 연금 받을 때 세율을 확인한 뒤 <strong>최적 배치 계산하기</strong>를 누르면, 세후 가치가 가장 큰 배치와 고객 보고서가 만들어집니다.</span><span class="note">입력칸에는 예시 고객이 들어 있습니다.</span></div>
+      <p class="stalemsg">입력이 바뀌었습니다. 다시 계산하면 결과가 새로 나옵니다.</p>
+      <div id="res" hidden>
+      <p class="find" id="find"></p>
+      <div class="kpis" id="kpis"></div>
+      <div class="legend" id="legend"></div>
+      <div id="bars"></div>
+      <p class="note">위 얇은 막대는 지금, 아래 굵은 막대는 추천 배치입니다. 막대 길이는 계좌 잔액에 비례합니다.</p>
+      </div>
+    </section>
+  </div>
+</div></header>
+
+<main class="band" id="repband" hidden><div class="wrap rep" id="report"></div></main>
+<div class="toast" id="toast"></div>
+<script>
+// 한국형 자산배치 엔진 (alm_model/model.py의 배치 LP를 JS로 옮김). 금액 단위: 만 원
+const TAX = {
+  DIV: 0.154, FCGT: 0.22, FDED: 250, ISA_TAX: 0.099,
+  ISA_ALLOW: { "일반형": 200, "서민형": 400 }, IRP_RISKY: 0.70,
+};
+const GROUPS = ["국내주식", "해외주식", "채권"];
+
+// ---------- 단체법 (2단계, Bland 규칙)
+function lpSolve(c, rows) {            // max c·x, rows: {a, b, t:'<='|'>='|'='}, x ≥ 0
+  const n = c.length, R = rows.map(r => r.b < 0 ? { a: r.a.map(v => -v), b: -r.b, t: r.t === "<=" ? ">=" : r.t === ">=" ? "<=" : "=" } : r);
+  const m = R.length; let ns = 0, na = 0;
+  R.forEach(r => { if (r.t !== "=") ns++; if (r.t !== "<=") na++; });
+  const N = n + ns + na, T = [], basis = [], art = new Array(N).fill(false);
+  let si = n, ai = n + ns;
+  R.forEach((r, i) => {
+    const row = new Array(N + 1).fill(0); r.a.forEach((v, j) => row[j] = v); row[N] = r.b;
+    if (r.t === "<=") { row[si] = 1; basis.push(si++); }
+    else { if (r.t === ">=") row[si++] = -1; row[ai] = 1; art[ai] = true; basis.push(ai++); }
+    T.push(row);
+  });
+  const run = (obj, allowed) => {
+    T[m] = obj;
+    for (let it = 0; it < 5000; it++) {
+      let e = -1; for (let j = 0; j < N; j++) if (allowed[j] && T[m][j] < -1e-9) { e = j; break; }
+      if (e < 0) return true;
+      let r = -1, best = Infinity;
+      for (let i = 0; i < m; i++) if (T[i][e] > 1e-9) {
+        const q = T[i][N] / T[i][e];
+        if (q < best - 1e-12 || (Math.abs(q - best) <= 1e-12 && basis[i] < basis[r])) { best = q; r = i; }
+      }
+      if (r < 0) throw new Error("unbounded");
+      pivot(r, e);
+    }
+    throw new Error("iteration limit");
+  };
+  const pivot = (r, e) => {
+    const p = T[r][e]; for (let j = 0; j <= N; j++) T[r][j] /= p;
+    for (let i = 0; i <= m; i++) if (i !== r && Math.abs(T[i][e]) > 0) { const f = T[i][e]; if (f) for (let j = 0; j <= N; j++) T[i][j] -= f * T[r][j]; }
+    basis[r] = e;
+  };
+  // 1단계
+  if (na) {
+    const o = new Array(N + 1).fill(0); for (let j = 0; j < N; j++) if (art[j]) o[j] = 1;
+    for (let i = 0; i < m; i++) if (art[basis[i]]) for (let j = 0; j <= N; j++) o[j] -= T[i][j];
+    run(o, new Array(N).fill(true));
+    if (T[m][N] < -1e-6) throw new Error("infeasible");
+    for (let i = 0; i < m; i++) if (art[basis[i]]) { const j = T[i].findIndex((v, k) => k < N && !art[k] && Math.abs(v) > 1e-9); if (j >= 0) pivot(i, j); }
+  }
+  // 2단계
+  const o = new Array(N + 1).fill(0); c.forEach((v, j) => o[j] = -v);
+  for (let i = 0; i < m; i++) { const f = o[basis[i]]; if (f) for (let j = 0; j <= N; j++) o[j] -= f * T[i][j]; }
+  run(o, art.map(a => !a));
+  const x = new Array(n).fill(0); basis.forEach((b, i) => { if (b < n) x[b] = T[i][N]; });
+  return { x, value: T[m][N] };
+}
+
+// ---------- 1원당 계수
+function unitCoef(acc, a, T) {
+  const out = { net: 0, gfor: 0, gisa: 0, share: 1 };
+  if (acc.kind === "taxable") {
+    let V = 1, basis = 1;
+    for (let t = 0; t < T; t++) { const d = V * a.d; V *= 1 + a.g; const af = d * (1 - TAX.DIV); V += af; basis += af; }
+    const gain = V - basis;
+    if (a.type === "kr_equity") out.net = V;
+    else if (a.type === "kr_listed") out.net = V - TAX.DIV * gain;
+    else { out.net = V; out.gfor = gain; }
+  } else if (acc.kind === "isa") {
+    const V = (1 + a.g + a.d) ** T; out.net = V; out.gisa = V - 1;
+  } else {
+    const V = (1 + a.g + a.d) ** T; out.net = V * (1 - acc.tau) + acc.tau * (acc.nd || 0); out.share = 1 - acc.tau;
+  }
+  return out;
+}
+const allowed = (acc, a) => !(a.type === "foreign" && acc.kind !== "taxable");
+
+function index(P) {
+  const pairs = [];
+  P.accounts.forEach((acc, i) => P.assets.forEach((a, k) => { if (allowed(acc, a)) pairs.push([i, k]); }));
+  const coef = pairs.map(([i, k]) => unitCoef(P.accounts[i], P.assets[k], P.T));
+  return { pairs, coef };
+}
+function valueOf(P, I, x) {
+  let net = 0, gf = 0, gi = 0, gross = 0;
+  I.pairs.forEach(([i, k], j) => {
+    const c = I.coef[j], a = P.assets[k]; net += c.net * x[j]; gf += c.gfor * x[j]; gi += c.gisa * x[j];
+    gross += x[j] * (1 + a.g + a.d) ** P.T;
+  });
+  const tf = TAX.FCGT * Math.max(0, gf - TAX.FDED), ti = TAX.ISA_TAX * Math.max(0, gi - TAX.ISA_ALLOW[P.isaType]);
+  const value = net - tf - ti;
+  return { value, taxForeign: tf, taxIsa: ti, gross, leak: gross - value };
+}
+function tableOf(P, I, x) {
+  const tab = P.accounts.map(() => P.assets.map(() => 0));
+  I.pairs.forEach(([i, k], j) => tab[i][k] = x[j]); return tab;
+}
+
+// mode "pretax": target = 그룹별 금액 / "aftertax": target = 그룹별 세후 비중
+function solveLocation(P, target, mode = "pretax") {
+  const I = index(P), n = I.pairs.length, nv = n + 2, rows = [];
+  const c = new Array(nv).fill(0); I.coef.forEach((k, j) => c[j] = k.net); c[n] = -1; c[n + 1] = -1;
+  P.accounts.forEach((acc, i) => { const a = new Array(nv).fill(0); I.pairs.forEach(([ii], j) => { if (ii === i) a[j] = 1; }); rows.push({ a, b: acc.bal, t: "=" }); });
+  if (mode === "pretax") {
+    GROUPS.forEach((g, gi) => { const a = new Array(nv).fill(0); I.pairs.forEach(([, k], j) => { if (P.assets[k].group === gi) a[j] = 1; }); rows.push({ a, b: target[gi], t: "=" }); });
+  } else {
+    const s = target.reduce((p, v) => p + v, 0), w = target.map(v => v / s);
+    for (let gi = 0; gi < GROUPS.length - 1; gi++) {
+      const a = new Array(nv).fill(0);
+      I.pairs.forEach(([, k], j) => a[j] = I.coef[j].share * ((P.assets[k].group === gi ? 1 : 0) - w[gi]));
+      rows.push({ a, b: 0, t: "=" });
+    }
+  }
+  P.accounts.forEach((acc, i) => { if (acc.name === "IRP") { const a = new Array(nv).fill(0); I.pairs.forEach(([ii, k], j) => { if (ii === i && P.assets[k].risky) a[j] = 1; }); rows.push({ a, b: TAX.IRP_RISKY * acc.bal, t: "<=" }); } });
+  let a = new Array(nv).fill(0); I.coef.forEach((k, j) => a[j] = TAX.FCGT * k.gfor); a[n] = -1; rows.push({ a, b: TAX.FCGT * TAX.FDED, t: "<=" });
+  a = new Array(nv).fill(0); I.coef.forEach((k, j) => a[j] = TAX.ISA_TAX * k.gisa); a[n + 1] = -1; rows.push({ a, b: TAX.ISA_TAX * TAX.ISA_ALLOW[P.isaType], t: "<=" });
+  const r = lpSolve(c, rows), x = r.x.slice(0, n).map(v => Math.max(0, v));
+  return { x, I, table: tableOf(P, I, x), ...valueOf(P, I, x) };
+}
+
+// 계좌별 한계가치 Z: 세후 비중을 유지하며 계좌에 δ를 더했을 때 가치 증가 ÷ 일반계좌의 같은 값
+function marginalZ(P, weights, delta = 10) {
+  const base = solveLocation(P, weights, "aftertax").value, lam = {};
+  P.accounts.forEach((acc, i) => {
+    const Q = { ...P, accounts: P.accounts.map((b, j) => j === i ? { ...b, bal: b.bal + delta } : b) };
+    lam[acc.name] = (solveLocation(Q, weights, "aftertax").value - base) / delta;
+  });
+  const Z = {}; Object.keys(lam).forEach(k => Z[k] = lam[k] / lam["일반"]);
+  return { lam, Z };
+}
+
+// 기준 전략 (그룹 목표를 각 그룹의 기본 상품으로 담는다)
+function defaultAsset(P, gi) { return P.assets.findIndex(a => a.group === gi && a.type !== "foreign"); }
+function xFromTable(P, I, tab) { return I.pairs.map(([i, k]) => tab[i][k]); }
+function proportional(P, target) {
+  const I = index(P), tot = target.reduce((p, v) => p + v, 0), tab = P.accounts.map(() => P.assets.map(() => 0));
+  P.accounts.forEach((acc, i) => GROUPS.forEach((g, gi) => tab[i][defaultAsset(P, gi)] = acc.bal * target[gi] / tot));
+  return xFromTable(P, I, tab);
+}
+function fillOrder(P, target, orderGroups) {
+  const I = index(P), left = [...target], tab = P.accounts.map(() => P.assets.map(() => 0));
+  for (const name of ["IRP", "연금저축", "ISA"]) {
+    const i = P.accounts.findIndex(a => a.name === name); if (i < 0) continue;
+    const acc = P.accounts[i]; let room = acc.bal, rr = name === "IRP" ? TAX.IRP_RISKY * acc.bal : Infinity;
+    const put = gi => { const k = defaultAsset(P, gi), risky = P.assets[k].risky; const cap = Math.max(0, Math.min(room, left[gi], risky ? rr : Infinity)); tab[i][k] += cap; left[gi] -= cap; room -= cap; if (risky) rr -= cap; };
+    orderGroups.forEach(put); if (room > 1e-9) GROUPS.forEach((g, gi) => put(gi));
+  }
+  const g = P.accounts.findIndex(a => a.kind === "taxable");
+  GROUPS.forEach((_, gi) => tab[g][defaultAsset(P, gi)] += left[gi]);
+  return xFromTable(P, I, tab);
+}
+function evaluate(P, x) { const I = index(P); return { x, I, table: tableOf(P, I, x), ...valueOf(P, I, x) }; }
+
+if (typeof module !== "undefined") module.exports = { TAX, GROUPS, lpSolve, solveLocation, marginalZ, proportional, fillOrder, evaluate, index, tableOf };
+
+{
+const $ = id => document.getElementById(id);
+const ACC = ["일반", "ISA", "연금저축", "IRP"];
+const GN = ["국내주식", "해외주식", "채권"];
+const COL = ["var(--c0)", "var(--c1)", "var(--c3)", "var(--c2)"];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const n0 = v => Math.round(v).toLocaleString("ko-KR");
+const won = v => { const r = Math.round(v), a = Math.abs(r), e = Math.floor(a / 10000), m = a % 10000; return (r < 0 ? "−" : "") + (e ? e + "억 " + (m ? m.toLocaleString("ko-KR") + "만" : "") : m.toLocaleString("ko-KR") + "만") + " 원"; };
+const sgn = v => (v >= 0.5 ? "+" : v <= -0.5 ? "−" : "") + won(Math.abs(v)).replace(" 원", "") + " 원";
+const st = { mode: "hold", hold: [[3000, 4000, 3000], [1200, 1600, 1200], [900, 1200, 900], [900, 1200, 900]], bal: [10000, 4000, 3000, 3000], w: [30, 40, 30] };
+
+// ---------- 입력 화면
+$("holdTbl").innerHTML = "<thead><tr><th>계좌</th>" + GN.map(g => `<th>${g}</th>`).join("") + "</tr></thead><tbody>" +
+  ACC.map((a, i) => `<tr><td>${a}</td>` + GN.map((g, j) => `<td><input type="number" min="0" step="100" id="h${i}${j}" aria-label="${a} ${g}" value="${st.hold[i][j]}"></td>`).join("") + "</tr>").join("") + "</tbody>";
+$("balInputs").innerHTML = ACC.map((a, i) => `<div><label for="b${i}">${a} 잔액</label><input type="number" min="0" step="100" id="b${i}" value="${st.bal[i]}"></div>`).join("");
+$("wInputs").innerHTML = GN.map((g, j) => `<div><label for="w${j}">${g} 비중 %</label><input type="number" min="0" max="100" id="w${j}" value="${st.w[j]}"></div>`).join("");
+const setMode = m => { st.mode = m; $("mHold").setAttribute("aria-pressed", m === "hold"); $("mBal").setAttribute("aria-pressed", m === "bal"); $("holdBox").hidden = m !== "hold"; $("balBox").hidden = m !== "bal"; markStale(); };
+$("mHold").onclick = () => setMode("hold"); $("mBal").onclick = () => setMode("bal");
+
+function readInputs() {
+  const num = id => Math.max(0, parseFloat($(id).value) || 0);
+  const r = { kr: num("rKR") / 100, fx: num("rFX") / 100, bd: num("rBD") / 100 };
+  const assets = [
+    { name: "국내주식형 ETF", short: "국내주식", group: 0, g: r.kr, d: 0, type: "kr_equity", risky: true },
+    { name: "국내상장 해외주식형 ETF", short: "해외주식", group: 1, g: r.fx, d: 0, type: "kr_listed", risky: true },
+    { name: "채권 ETF", short: "채권", group: 2, g: 0, d: r.bd, type: "kr_listed", risky: false },
+  ];
+  const usHeld = st.mode === "hold" && $("fxForm").value === "us" && num("h01") > 0;
+  if ($("allowUS").checked || usHeld) assets.push({ name: "해외상장 주식·ETF", short: "해외상장", group: 1, g: r.fx, d: 0, type: "foreign", risky: true });
+  const tau = parseFloat($("tau").value), T = Math.min(40, Math.max(1, Math.round(num("T")) || 10));
+  let bal, target, hold = null;
+  if (st.mode === "hold") {
+    hold = ACC.map((a, i) => GN.map((g, j) => num(`h${i}${j}`)));
+    bal = hold.map(r => r.reduce((p, v) => p + v, 0)); target = GN.map((g, j) => hold.reduce((p, r) => p + r[j], 0));
+  } else {
+    bal = ACC.map((a, i) => num(`b${i}`)); const w = GN.map((g, j) => num(`w${j}`)), ws = w.reduce((p, v) => p + v, 0) || 1;
+    const tot = bal.reduce((p, v) => p + v, 0); target = w.map(v => tot * v / ws);
+  }
+  const accounts = ACC.map((a, i) => ({ name: a, bal: bal[i], tau, nd: 0, kind: a === "일반" ? "taxable" : a === "ISA" ? "isa" : "pension" }));
+  const P = { assets, accounts, T, isaType: $("isa").value };
+  let cur = null;
+  if (hold) {
+    const I = index(P), tab = accounts.map(() => assets.map(() => 0));
+    hold.forEach((row, i) => row.forEach((v, j) => {
+      let k = assets.findIndex(a => a.group === j && a.type !== "foreign");
+      if (i === 0 && j === 1 && usHeld) k = assets.findIndex(a => a.type === "foreign");
+      tab[i][k] += v;
+    }));
+    cur = evaluate(P, I.pairs.map(([i, k]) => tab[i][k]));
+  }
+  return { P, target, cur, name: $("cname").value.trim() || "고객", tau };
+}
+
+// ---------- 계산
+function compute(inp) {
+  const { P, target, cur } = inp;
+  const tot = target.reduce((p, v) => p + v, 0);
+  if (tot <= 0) throw new Error("금액을 입력해 주세요.");
+  const opt = solveLocation(P, target);
+  const bench = [
+    ["계좌마다 같은 비중", evaluate(P, proportional(P, target))],
+    ["채권부터 절세계좌", evaluate(P, fillOrder(P, target, [2, 1, 0]))],
+    ["해외주식부터 절세계좌", evaluate(P, fillOrder(P, target, [1, 2, 0]))],
+  ];
+  if (cur) bench.unshift(["지금 배치", cur]);
+  bench.push(["추천 배치", opt]);
+  const z = marginalZ(P, target.map(v => v / tot));
+  const sens = [0.033, 0.055, 0.165].map(t => {
+    const Q = { ...P, accounts: P.accounts.map(a => a.kind === "pension" ? { ...a, tau: t } : a) };
+    try { return [t, solveLocation(Q, target)]; } catch (e) { return [t, null]; }
+  });
+  const leak = P.assets.map(a => { const r = unitCoef({ kind: "taxable" }, a, P.T), gross = (1 + a.g + a.d) ** P.T; return 1 - (r.net - (a.type === "foreign" ? TAX.FCGT * r.gfor : 0)) / gross; });
+  const ref = cur || bench[0][1];
+  return { opt, bench, z, sens, leak, ref, refName: cur ? "지금" : "같은 비중" };
+}
+
+// ---------- 그리기
+function barsHTML(P, tab, max, cls) {
+  const bw = $("bars").clientWidth || 600;
+  const sum = tab.reduce((p, v) => p + v, 0);
+  if (sum <= 0) return `<div class="bar ${cls}" style="width:2%"></div>`;
+  return `<div class="bar ${cls}" style="width:${(100 * sum / max).toFixed(2)}%">` + tab.map((v, k) => v > 0.5 ?
+    `<i style="width:${(100 * v / sum).toFixed(2)}%;background:${COL[k]}">${cls ? "" : `<span>${bw * (sum / max) * (v / sum) > 96 ? esc(P.assets[k].short) + " " + n0(v) : ""}</span>`}</i>` : "").join("") + "</div>";
+}
+function render(inp, R) {
+  const { P } = inp, { opt, bench, z, sens, leak, ref, refName } = R;
+  const gain = opt.value - ref.value, leakCut = ref.leak - opt.leak;
+  $("find").innerHTML = gain > 0.5 ? `추천 배치는 ${P.T}년 뒤 세후 가치를 ${refName} 배치보다 <span class="big">${sgn(gain)}</span> 늘립니다`
+    : `${refName} 배치가 이미 최적에 가깝습니다`;
+  $("kpis").innerHTML = [[won(opt.value), `${P.T}년 뒤 세후 가치 (추천)`], [won(ref.value), `${P.T}년 뒤 세후 가치 (${refName})`], [won(opt.leak), `세금으로 나가는 돈 (추천, ${leakCut >= 0 ? n0(leakCut) + "만 원 감소" : n0(-leakCut) + "만 원 증가"})`]]
+    .map(([b, s]) => `<div class="kpi"><b>${b}</b><span>${s}</span></div>`).join("");
+  $("legend").innerHTML = P.assets.map((a, k) => `<span><i style="background:${COL[k]}"></i>${esc(a.name)}</span>`).join("");
+  const max = Math.max(...P.accounts.map(a => a.bal), 1);
+  $("bars").innerHTML = P.accounts.map((a, i) => `<div class="acc"><div class="hd"><b>${a.name}</b><span>${n0(a.bal)}만 원</span></div>` +
+    barsHTML(P, ref.table[i], max, "now") + barsHTML(P, opt.table[i], max, "") + "</div>").join("");
+  $("report").innerHTML = reportHTML(inp, R);
+  bindReport(inp, R);
+}
+
+function reportHTML(inp, R) {
+  const { P, name, tau } = inp, { opt, bench, z, sens, leak, ref, refName } = R;
+  const today = new Date().toLocaleDateString("ko-KR", { year: "numeric", month: "long", day: "numeric" });
+  const gain = opt.value - ref.value;
+  // 계좌별 변경 표
+  const rows = []; P.accounts.forEach((a, i) => P.assets.forEach((s, k) => {
+    const o = opt.table[i][k], c = ref.table[i][k]; if (o > 0.5 || c > 0.5) rows.push(`<tr><td>${a.name}</td><td style="text-align:left">${esc(s.name)}</td><td>${n0(c)}</td><td><b>${n0(o)}</b></td><td class="${o - c > 0.5 ? "pos" : ""}">${Math.abs(o - c) < 0.5 ? "—" : (o > c ? "+" : "−") + n0(Math.abs(o - c))}</td></tr>`);
+  }));
+  // 실행 순서
+  const steps = [], chg = i => P.assets.map((s, k) => [s, opt.table[i][k] - ref.table[i][k]]).filter(([, d]) => Math.abs(d) > 0.5);
+  const say = d => d.map(([s, v]) => `${s.name} ${n0(Math.abs(v))}만 원 ${v > 0 ? "매수" : "매도"}`).join(", ");
+  [2, 3].forEach(i => { const d = chg(i); if (d.length) steps.push(`<b>${ACC[i]} 안에서 교체</b>: ${say(d)}. 연금계좌 안의 매매에는 세금이 없습니다.${i === 3 ? " 교체 뒤에도 위험자산은 잔액의 70% 이내입니다." : ""}`); });
+  { const d = chg(1); if (d.length) steps.push(`<b>ISA 안에서 교체</b>: ${say(d)}. ISA 안의 손익은 만기에 한꺼번에 정산하므로 지금 세금이 없습니다.`); }
+  { const d = chg(0); if (d.length) {
+    const sells = d.filter(([s, v]) => v < 0), taxed = sells.filter(([s]) => s.type !== "kr_equity");
+    steps.push(`<b>일반계좌 조정</b>: ${say(d)}.` + (taxed.length ? ` ${taxed.map(([s]) => s.name).join("·")}를 팔면 그동안의 차익에 ${taxed.some(([s]) => s.type === "foreign") ? "22%(연 250만 원 공제 후) 또는 " : ""}15.4%가 붙을 수 있습니다. 새로 들어오는 돈과 분배금으로 천천히 맞추거나 손실 난 종목부터 파는 편이 낫습니다.` : sells.length ? " 국내주식형 ETF는 매매차익이 비과세라 팔아도 세금이 없습니다." : ""));
+  } }
+  if (!steps.length) steps.push("지금 배치를 그대로 유지합니다.");
+  if (inp.cur) steps.push("순서는 연금계좌 → ISA → 일반계좌가 좋습니다. 세금 없이 바꿀 수 있는 곳부터 바꾸고, 일반계좌는 마지막에 필요한 만큼만 움직입니다.");
+  // 이유
+  const why = P.assets.map((s, k) => {
+    const where = P.accounts.map((a, i) => [a.name, opt.table[i][k]]).filter(([, v]) => v > 0.5).map(([a, v]) => `${a} ${n0(v)}`).join(" · ") || "담지 않음";
+    const ex = { kr_equity: "일반계좌에서도 매매차익이 비과세라 절세계좌 자리를 쓸 이유가 적습니다.", foreign: "일반계좌에서만 살 수 있습니다. 연 250만 원 공제 뒤 22%로 과세되어 국내상장 ETF보다 유리할 때가 있습니다.",
+      kr_listed: s.group === 2 ? "이자가 매년 15.4%씩 과세되어 일반계좌에서 가장 많이 새는 편입니다. 다만 기대수익이 낮아 절세계좌에서 아끼는 금액도 작습니다." : "일반계좌에서는 팔 때 차익 전체에 15.4%가 붙습니다. 기대수익이 커서 절세계좌에 둘 때 아끼는 금액이 큽니다." }[s.type];
+    return `<li><b>${esc(s.name)}</b> → ${where}. 일반계좌에 ${P.T}년 두면 1만 원당 약 ${n0(leak[k] * 10000)}원이 세금으로 나갑니다. ${ex}</li>`;
+  }).join("");
+  // 전략 비교
+  const vmin = Math.min(...bench.map(b => b[1].value)), vmax = Math.max(...bench.map(b => b[1].value)), lo = vmin - (vmax - vmin + 1) * 0.6;
+  const hb = bench.map(([k, r]) => `<span>${k}</span><div class="t"><i class="${k === "추천 배치" ? "best" : ""}" style="width:${(100 * (r.value - lo) / (vmax - lo)).toFixed(1)}%"></i></div><span class="v">${n0(r.value)} <span class="${r.value - opt.value < -0.5 ? "neg" : ""}">(${r.value - opt.value < -0.5 ? "−" + n0(opt.value - r.value) : "최적"})</span></span>`).join("");
+  // Z
+  const zr = Object.entries(z.Z).sort((a, b) => b[1] - a[1]);
+  const zl = zr.map(([k, v]) => `<tr><td>${k}</td><td>${(z.lam[k]).toFixed(3)}</td><td><b>${v.toFixed(3)}</b></td></tr>`).join("");
+  // 민감도
+  const sr = sens.map(([t, r]) => {
+    if (!r) return `<tr><td>${(t * 100).toFixed(1)}%</td><td colspan="3">계산할 수 없음</td></tr>`;
+    const pen = P.assets.map((s, k) => [s, r.table[2][k] + r.table[3][k]]).filter(([, v]) => v > 0.5).map(([s, v]) => `${s.short} ${n0(v)}`).join(" · ");
+    return `<tr${Math.abs(t - tau) < 1e-9 ? ' style="font-weight:700"' : ""}><td>${(t * 100).toFixed(1)}%</td><td style="text-align:left">${pen || "—"}</td><td>${n0(r.value)}</td></tr>`;
+  }).join("");
+  return `<div class="rephead"><div><h2>계좌 배치 추천 보고서</h2><p class="note" style="margin:0">${esc(inp.name)} 님 · ${today} 작성 · 금액 단위 만 원</p></div>
+    <div class="acts"><button class="pri" id="dl">보고서 내려받기 (HTML)</button><button id="cp">요약 복사</button></div></div>
+  <div class="sec"><div><h3>결론</h3><p>${gain > 0.5 ? `같은 자산배분을 유지하면서 계좌별 담는 자산만 바꾸면 ${P.T}년 뒤 세후 가치가 <b>${won(opt.value)}</b>로, ${refName} 배치보다 <b class="pos">${sgn(gain)}</b> 늘어납니다.` : `${refName} 배치가 이미 최적과 같습니다.`} 세금으로 나가는 돈은 ${won(ref.leak)}에서 ${won(opt.leak)}로 바뀝니다.</p>
+    <p>전체 자산배분은 국내주식 ${n0(inp.target[0])} · 해외주식 ${n0(inp.target[1])} · 채권 ${n0(inp.target[2])}로 그대로입니다. 시장이 움직일 때 손익도 같습니다. 달라지는 것은 세금뿐입니다.</p></div>
+    <div><h3>가정</h3><ul class="note"><li>투자 기간 ${P.T}년, 연금은 연금으로 받을 때 세율 ${(tau * 100).toFixed(1)}%</li><li>수익 가정: 국내주식 ${(P.assets[0].g * 100).toFixed(1)}%, 해외주식 ${(P.assets[1].g * 100).toFixed(1)}%, 채권 이자 ${(P.assets[2].d * 100).toFixed(1)}% (연)</li><li>ISA ${P.isaType}: 비과세 ${TAX.ISA_ALLOW[P.isaType]}만 원, 초과분 9.9%, ${P.T}년 뒤 한 번 정산</li><li>IRP 위험자산은 잔액의 70% 이내</li></ul></div></div>
+  <div class="sec one"><div><h3>계좌별 추천 보유</h3><div class="scroll"><table><thead><tr><th>계좌</th><th style="text-align:left">상품</th><th>${refName}</th><th>추천</th><th>변경</th></tr></thead><tbody>${rows.join("")}</tbody></table></div></div></div>
+  <div class="sec"><div><h3>실행 순서</h3><ol>${steps.map(s => `<li>${s}</li>`).join("")}</ol></div><div><h3>왜 이렇게 두나</h3><ul>${why}</ul></div></div>
+  <div class="sec"><div><h3>배치 방식별 ${P.T}년 뒤 세후 가치</h3><div class="hb">${hb}</div><p class="note" style="margin-top:10px">모든 방식의 전체 자산배분은 같습니다. 막대는 가장 낮은 값 근처에서 시작합니다.</p></div>
+    <div><h3>다음 1원은 어느 계좌에</h3><div class="scroll"><table><thead><tr><th>계좌</th><th>1원 → ${P.T}년 뒤</th><th>Z (일반=1)</th></tr></thead><tbody>${zl}</tbody></table></div>
+    <p class="note" style="margin-top:8px">Z는 같은 자산배분을 유지하며 그 계좌에 돈을 더 넣을 때 ${P.T}년 뒤 세후 가치가 일반계좌의 몇 배인지입니다. 연금저축·IRP에 새로 넣는 돈은 여기에 세액공제 13.2%(총급여 5,500만 원 이하 16.5%, 연 900만 원 한도)가 더해집니다. 소득이 있어야 납입할 수 있습니다.</p></div></div>
+  <div class="sec"><div><h3>연금 받을 때 세율이 바뀌면</h3><div class="scroll"><table><thead><tr><th>세율</th><th style="text-align:left">연금저축 + IRP에 담을 것</th><th>세후 가치</th></tr></thead><tbody>${sr}</tbody></table></div>
+    <p class="note" style="margin-top:8px">사적연금이 연 1,500만 원을 넘으면 16.5% 분리과세나 종합과세를 고릅니다. 세율이 높아지면 연금계좌에 기대수익이 큰 자산을 둘 이점이 줄어듭니다.</p></div>
+    <div><h3>유의사항</h3><ul class="note"><li>기대 수익 경로로 계산한 결정론적 추정이며 실제 수익은 다릅니다.</li><li>일반계좌의 국내상장 해외주식형·채권 ETF는 과표기준가 대신 실제 차익으로, 해외상장 분배금은 15.4%로 단순화했습니다. 종합과세, 외국납부세액, 건강보험료는 반영하지 않았습니다.</li><li>지금 보유 종목을 팔 때 생기는 세금과 거래비용은 반영하지 않았습니다.</li><li>세법은 2026년 11월 기준이며 바뀔 수 있습니다. 투자 자문이 아니라 의사결정을 돕는 참고 자료입니다.</li></ul></div></div>`;
+}
+
+function summaryText(inp, R) {
+  const { P } = inp, { opt, ref, refName } = R;
+  const lines = [`계좌 배치 추천 — ${inp.name} 님`, `${P.T}년 뒤 세후 가치: 추천 ${n0(opt.value)}만 원 / ${refName} ${n0(ref.value)}만 원 (${sgn(opt.value - ref.value)})`, ""];
+  P.accounts.forEach((a, i) => lines.push(`${a.name} ${n0(a.bal)}: ` + (P.assets.map((s, k) => [s, opt.table[i][k]]).filter(([, v]) => v > 0.5).map(([s, v]) => `${s.name} ${n0(v)}`).join(", ") || "없음")));
+  lines.push("", "금액 단위 만 원. 2026년 11월 세법, 기대 수익 경로 기준 추정.");
+  return lines.join("\n");
+}
+let downloads = null;
+if (window.claude && window.claude.use) window.claude.use("downloads").then(d => { downloads = d; }).catch(() => {});
+const toast = m => { const t = $("toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove("on"), 2400); };
+function bindReport(inp, R) {
+  $("dl").onclick = async () => {
+    if (!downloads) { toast("이 화면에서는 내려받기를 쓸 수 없습니다. 요약 복사를 이용해 주세요."); return; }
+    const css = document.querySelector("style").textContent;
+    const html = `<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>계좌 배치 추천 보고서</title><link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,600&family=Noto+Serif+KR:wght@600&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet"><style>${css}</style></head><body><section class="band"><div class="wrap"><h1>계좌 배치 추천</h1><p class="find" style="margin-top:12px">${$("find").innerHTML}</p><div class="kpis">${$("kpis").innerHTML}</div><div class="legend">${$("legend").innerHTML}</div>${$("bars").innerHTML}</div></section><main class="band"><div class="wrap rep">${$("report").innerHTML}</div></main></body></html>`;
+    const fname = "Tax_Location_Report_" + inp.name.replace(/[^\p{L}\p{N}]+/gu, "_").replace(/^_|_$/g, "") + ".html";
+    try { await downloads.save({ filename: fname, data: html }); toast("보고서를 저장했습니다. 브라우저에서 열어 인쇄하면 PDF가 됩니다."); }
+    catch (e) { toast(e && e.code === "declined" ? "내려받기를 취소했습니다." : "내려받지 못했습니다. 요약 복사를 이용해 주세요."); }
+  };
+  $("cp").onclick = async () => { try { await navigator.clipboard.writeText(summaryText(inp, R)); toast("요약을 복사했습니다."); } catch (e) { toast("복사하지 못했습니다."); } };
+}
+
+let last = null;
+function markStale() { if (last) { $("result").classList.add("stale"); $("report").classList.add("stale-rep"); } }
+function run() {
+  $("err").textContent = "";
+  const btn = $("calc");
+  let inp, R;
+  try { inp = readInputs(); R = compute(inp); }
+  catch (e) { $("err").textContent = /infeasible/.test(e.message) ? "조건을 모두 지킬 수 없습니다. IRP는 위험자산이 70% 이내여야 하므로 채권이 IRP 잔액의 30% 이상 필요합니다." : e.message; return; }
+  btn.disabled = true; btn.textContent = "계산하는 중…";
+  $("res").hidden = true; $("empty").hidden = false;
+  $("empty").innerHTML = `<div class="spin" aria-hidden="true"></div><b>최적 배치를 찾는 중</b><span>${inp.P.accounts.length}개 계좌 × ${inp.P.assets.length}개 상품 조합을 비교하고 기준 전략 ${R.bench.length - 1}개, 세율 3가지와 견줍니다.</span>`;
+  setTimeout(() => {
+    last = { inp, R };
+    $("empty").hidden = true; $("res").hidden = false; $("repband").hidden = false;
+    $("result").classList.remove("stale"); $("report").classList.remove("stale-rep");
+    render(inp, R);
+    btn.disabled = false; btn.textContent = "다시 계산하기";
+    if (window.innerWidth <= 860) $("result").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  }, 700);
+}
+$("calc").onclick = run;
+let lastW = 0; new ResizeObserver(() => { const w = $("bars").clientWidth; if (last && Math.abs(w - lastW) > 30) { lastW = w; render(last.inp, last.R); } }).observe($("result"));
+document.querySelector(".inputs").addEventListener("input", markStale);
+document.querySelector(".inputs").addEventListener("keydown", e => { if (e.key === "Enter" && e.target.tagName === "INPUT") run(); });
+}
+</script>
+</body>
+</html>
